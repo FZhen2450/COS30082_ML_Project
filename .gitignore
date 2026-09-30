@@ -42,4 +42,7 @@ checkpoints/
 
 # Assignment Briefs & Documents
 AS02 ML Project.pdf
-
+Project Plan (5 Members).docx
+Project Plan.docx
+*.docx
+populate_plan.py
