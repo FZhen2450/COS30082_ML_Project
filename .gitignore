@@ -39,3 +39,7 @@ checkpoints/
 *.keras
 *.pt
 *.pth
+
+# Assignment Briefs & Documents
+AS02 ML Project.pdf
+
