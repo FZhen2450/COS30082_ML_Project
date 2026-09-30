@@ -1,0 +1,84 @@
+======================================================================
+COS30082 APPLIED MACHINE LEARNING - DPD-SMALL DATASET EDA REPORT
+Prepared by Member 1 (Data Engineering & Robustness Lead: Andy Wei Jian CHU)
+======================================================================
+
+1. DATASET SPLIT CARDINALITY
+----------------------------------------------------------------------
+- Training Images (Seen):        8,000  (69.88%)
+- Test Seen Images:              2,000  (17.47%)
+- Test Unseen Images (OOD):      1,448  (12.65%)
+- TOTAL DATASET SIZE:           11,448 images (All 11,448 verified on disk)
+
+2. CLASS CARDINALITY
+----------------------------------------------------------------------
+- Unique Crop Categories:        55
+- Unique Disease Categories:     175
+- Seen Composition Categories:   323
+- Unseen Composition Categories: 10 (Strictly disjoint from seen compositions)
+
+3. CLASS IMBALANCE & STATISTICS (TRAIN SET)
+----------------------------------------------------------------------
+- Samples per Composition Class:
+  * Minimum:                     1
+  * Maximum:                     544
+  * Mean:                        24.77
+  * Median:                      7.00
+  * Standard Deviation:          48.30
+
+- Top 5 Most Common Crops:
+crop_name
+tomato     1164
+cassava    1160
+apple      1016
+corn        910
+paddy       576
+
+- Top 5 Least Common Crops:
+crop_name
+carrot     5
+walnut     5
+apricot    4
+celery     4
+maple      3
+
+- Top 5 Most Common Diseases:
+disease_name
+healthy           1594
+mosaic             564
+rust               297
+brown_spot         261
+powdery_mildew     226
+
+- Top 5 Least Common Diseases:
+disease_name
+dappula_tertia             1
+dot_leaf                   1
+melanose                   1
+purple_discoloration       1
+aulacaspis_tubercularis    1
+
+4. ZERO-SHOT / OUT-OF-DISTRIBUTION (UNSEEN) COMPOSITIONS
+----------------------------------------------------------------------
+The 10 Unseen Test Compositions:
+composition_name
+tomato_early_blight           472
+grape_black_rot               271
+pepper_bell_bacterial_spot    220
+cotton_bacterial_blight       125
+mango_anthracnose              95
+sugarcane_rust                 89
+cherry_aphis_spp               72
+cucumber_powdery_mildew        37
+corn_brown_spot                35
+cucumber_downy_mildew          32
+
+5. RESOLUTION INSPECTION
+----------------------------------------------------------------------
+- Image Dimensions Sampled:      {(500, 666), (1080, 1440), (1200, 900), (640, 480), (448, 299), (224, 224), (500, 774), (256, 256)}
+- Target Input Resolution:       224 x 224 (Standardized via torchvision transforms)
+- Color Channels:                RGB (3 channels)
+
+======================================================================
+All figures have been saved to the 'eda_figures/' folder.
+======================================================================

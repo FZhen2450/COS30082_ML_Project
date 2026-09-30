@@ -1,0 +1,41 @@
+# Large raw image dataset & archives (DO NOT COMMIT)
+DPD_Small_dataset/
+DPD_Small.7z
+*.7z
+*.zip
+*.tar
+*.gz
+
+# Virtual environment & packages
+.venv/
+env/
+venv/
+ENV/
+build/
+dist/
+*.egg-info/
+
+# Python cache & compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# IDE & Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Temporary & checkpoint files
+*.log
+checkpoints/
+*.h5
+*.keras
+*.pt
+*.pth
