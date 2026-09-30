@@ -14,12 +14,12 @@ In real-world agricultural environments, automated visual diagnosis models frequ
 ## 👥 Team & Workload Allocation (Balanced 20% Contribution)
 
 | Member Name | Core Role | Primary Responsibility | Contribution |
-| :--- | :---: | :--- | :--- | :---: |
-| **Andy** | **Data Engineering & Robustness Lead** | Data pipeline, stratified splits, augmentations, field perturbation suite | **20%** |
-| **FaZhen** | **Multi-Task & Baseline Lead** | Git setup, Baseline 1 (Independent CNNs), Baseline 2 (Multi-Task CNN) | **20%** |
-| **Team Member 3** | **Proposed Deep Learning Researcher** | Proposed novel architecture, zero-shot transfer loss, unseen class evaluation | **20%** |
-| **Team Member 4** | **Evaluation & Metrics Lead** | Evaluation harness (Top-1/5, Harmonic Mean $H$), confusion matrix, benchmark tables | **20%** |
-| **Team Member 5** | **UI & Retrieval Specialist** | Interactive GUI (Streamlit/Gradio), image similarity retrieval engine, video presentation | **20%** |
+| :--- | :---: | :--- | :---: |
+| Andy | Data Engineering & Robustness Lead | Data pipeline, stratified splits, augmentations, field perturbation suite | 20% |
+| FaZhen | Multi-Task & Baseline Lead | Git setup, Baseline 1 (Independent CNNs), Baseline 2 (Multi-Task CNN) | 20% |
+| Team Member 3 | Proposed Deep Learning Researcher | Proposed novel architecture, zero-shot transfer loss, unseen class evaluation | 20% |
+| Team Member 4 | Evaluation & Metrics Lead | Evaluation harness (Top-1/5, Harmonic Mean H), confusion matrix, benchmark tables | 20% |
+| Team Member 5 | UI & Retrieval Specialist | Interactive GUI (Streamlit/Gradio), image similarity retrieval engine, video presentation | 20% |
 
 ---
 
