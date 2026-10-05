@@ -18,7 +18,7 @@ The system addresses the challenge of identifying unseen crop-disease categories
 | **Andy Wei Jian CHU** | **104401283** | **Data Engineering & Robustness Lead (M1)** | Data pipeline, stratified splits, augmentations, field perturbation suite | **20%** |
 | **Fa Zhen NG** | **104400141** | **Multi-Task & Baseline Lead (M2)** | Git setup, Baseline 1 (Independent CNNs), Baseline 2 (Multi-Task CNN) | **20%** |
 | **Team Member 3** | *[Student ID]* | **Proposed Deep Learning Lead (M3)** | Proposed novel model, zero-shot transfer loss, unseen class evaluation | **20%** |
-| **Team Member 4** | *[Student ID]* | **Evaluation & Metrics Lead (M4)** | Evaluation harness (Top-1/5, Harmonic Mean $H$), confusion matrix, benchmark tables | **20%** |
+| **Jonathan Zheng Li CHAI** | *104400675* | **Evaluation & Metrics Lead (M4)** | Evaluation harness (Top-1/5, Harmonic Mean $H$), confusion matrix, benchmark tables | **20%** |
 | **Team Member 5** | *[Student ID]* | **UI & Retrieval Specialist (M5)** | Interactive GUI (Streamlit/Gradio), vector similarity image retrieval, presentation video | **20%** |
 
 ---
