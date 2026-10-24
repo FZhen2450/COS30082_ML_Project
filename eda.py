@@ -1,7 +1,7 @@
 """
 Exploratory Data Analysis (EDA) Script for DPD-Small Dataset
 COS30082 Applied Machine Learning - AS02 Plant Disease Identification
-Member 1: Data Engineering & Robustness Lead (Andy Wei Jian CHU)
+WP1 Data + independent baseline (Andy Wei Jian CHU / Fa Zhen NG)
 
 Generates:
 1. Dataset verification and sanity checks (corrupt/missing files).
@@ -10,24 +10,26 @@ Generates:
 4. Formal statistical summary report in 'eda_summary.txt' for the final report.
 """
 
+import argparse
+import json
 import os
 import random
-import matplotlib.pyplot as plt
-import numpy as np
 import pandas as pd
-import seaborn as sns
 from PIL import Image
 
-# Set aesthetic styling for publication-quality figures
-sns.set_theme(style="whitegrid", font="sans-serif")
-plt.rcParams.update({
-    "font.size": 11,
-    "axes.labelsize": 12,
-    "axes.titlesize": 13,
-    "xtick.labelsize": 10,
-    "ytick.labelsize": 10,
-    "figure.titlesize": 14,
-})
+from data_utils import audit_images, validate_metadata
+
+def configure_plotting():
+    """Load visualization dependencies only for the full EDA command."""
+    global plt, np, sns
+    import matplotlib.pyplot as plt
+    import numpy as np
+    import seaborn as sns
+    sns.set_theme(style="whitegrid", font="sans-serif")
+    plt.rcParams.update({
+        "font.size": 11, "axes.labelsize": 12, "axes.titlesize": 13,
+        "xtick.labelsize": 10, "ytick.labelsize": 10, "figure.titlesize": 14,
+    })
 
 COLUMN_NAMES = [
     "image_name",
@@ -40,7 +42,6 @@ COLUMN_NAMES = [
 ]
 
 OUTPUT_DIR = "eda_figures"
-os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
 def load_datasets():
@@ -51,29 +52,10 @@ def load_datasets():
 
 
 def verify_image_files(train_df, test_seen_df, test_unseen_df, img_dir="DPD_Small_dataset"):
-    print("Verifying image files on disk...")
-    all_dfs = [("Train", train_df), ("Test Seen", test_seen_df), ("Test Unseen", test_unseen_df)]
-    corrupted_or_missing = []
-    
-    total_checked = 0
-    sample_sizes = []
-    
-    for split_name, df in all_dfs:
-        for idx, fname in enumerate(df["image_name"]):
-            fpath = os.path.join(img_dir, str(fname))
-            if not os.path.exists(fpath):
-                corrupted_or_missing.append((split_name, fname, "Missing"))
-            else:
-                total_checked += 1
-                if idx < 50:  # Sample size check
-                    try:
-                        with Image.open(fpath) as img:
-                            sample_sizes.append(img.size)
-                    except Exception as e:
-                        corrupted_or_missing.append((split_name, fname, f"Corrupt: {e}"))
-
-    print(f"Verified {total_checked} image files. Corrupted or missing: {len(corrupted_or_missing)}")
-    return corrupted_or_missing, sample_sizes
+    print("Fully decoding every metadata-listed image...")
+    failures, sizes = audit_images([train_df, test_seen_df, test_unseen_df], img_dir)
+    print(f"Decoded {len(sizes)} images. Corrupt or missing: {len(failures)}")
+    return failures, sizes
 
 
 def plot_split_overview(train_df, test_seen_df, test_unseen_df):
@@ -206,29 +188,37 @@ def plot_sample_grid(train_df, img_dir="DPD_Small_dataset"):
     plt.close()
 
 
-def generate_summary_report(train_df, test_seen_df, test_unseen_df, sample_sizes):
+def generate_summary_report(train_df, test_seen_df, test_unseen_df, sample_sizes,
+                            failures=None, images_checked=False, figures_generated=False):
     comp_train = train_df["composition_id"].value_counts()
     crops_train = train_df["crop_name"].value_counts()
     diseases_train = train_df["disease_name"].value_counts()
+    audit = validate_metadata(train_df, test_seen_df, test_unseen_df)
+    image_status = (f"{len(sample_sizes)} decoded; {len(failures or [])} failed"
+                    if images_checked else "NOT RUN (metadata-only; image integrity unverified)")
 
     summary_text = f"""======================================================================
 COS30082 APPLIED MACHINE LEARNING - DPD-SMALL DATASET EDA REPORT
-Prepared by Member 1 (Data Engineering & Robustness Lead: Andy Wei Jian CHU)
+WP1 Data + independent baseline (Andy Wei Jian CHU / Fa Zhen NG)
 ======================================================================
 
 1. DATASET SPLIT CARDINALITY
 ----------------------------------------------------------------------
-- Training Images (Seen):        8,000  (69.88%)
-- Test Seen Images:              2,000  (17.47%)
-- Test Unseen Images (OOD):      1,448  (12.65%)
-- TOTAL DATASET SIZE:           11,448 images (All 11,448 verified on disk)
+- Training Images (Seen):        {len(train_df):,}
+- Test Seen Images:              {len(test_seen_df):,}
+- Test Unseen Images (OOD):      {len(test_unseen_df):,}
+- TOTAL METADATA ROWS:           {len(train_df) + len(test_seen_df) + len(test_unseen_df):,}
+- Image integrity audit:         {image_status}
+- Filename overlap across official splits: none (metadata checked)
 
 2. CLASS CARDINALITY
 ----------------------------------------------------------------------
-- Unique Crop Categories:        55
-- Unique Disease Categories:     175
-- Seen Composition Categories:   323
-- Unseen Composition Categories: 10 (Strictly disjoint from seen compositions)
+- Unique Crop Categories:        {audit['num_crops']}
+- Unique Disease Categories:     {audit['num_diseases']}
+- Seen Composition Categories:   {audit['num_seen_compositions']}
+- Unseen Composition Categories: {audit['num_unseen_compositions']} (disjoint from seen)
+- Singleton training compositions: {audit['singleton_compositions']} (kept in training)
+- Seen composition IDs are non-contiguous global IDs; use explicit index mappings.
 
 3. CLASS IMBALANCE & STATISTICS (TRAIN SET)
 ----------------------------------------------------------------------
@@ -258,27 +248,45 @@ The 10 Unseen Test Compositions:
 
 5. RESOLUTION INSPECTION
 ----------------------------------------------------------------------
-- Image Dimensions Sampled:      {set(sample_sizes[:15])}
+- Decoded Image Dimensions:      {sorted(set(sample_sizes)) if images_checked else 'Not checked'}
 - Target Input Resolution:       224 x 224 (Standardized via torchvision transforms)
 - Color Channels:                RGB (3 channels)
 
 ======================================================================
-All figures have been saved to the '{OUTPUT_DIR}/' folder.
+Figures: {'regenerated in ' + OUTPUT_DIR if figures_generated else 'not regenerated; existing figures retained'}.
 ======================================================================
 """
-    with open("eda_summary.txt", "w") as f:
+    with open("eda_summary.txt", "w", encoding="utf-8") as f:
         f.write(summary_text)
 
     print("\n" + summary_text)
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--metadata-only", action="store_true",
+                        help="Regenerate statistics without claiming image verification or new figures")
+    args = parser.parse_args()
     print("Loading DPD-Small CSV files...")
     train_df, test_seen_df, test_unseen_df = load_datasets()
-
+    validate_metadata(train_df, test_seen_df, test_unseen_df)
+    if args.metadata_only:
+        generate_summary_report(train_df, test_seen_df, test_unseen_df, [])
+        return 0
+    if not os.path.isdir("DPD_Small_dataset"):
+        raise FileNotFoundError("Extract DPD_Small_dataset first, or use --metadata-only")
     corrupt, sample_sizes = verify_image_files(train_df, test_seen_df, test_unseen_df)
+    with open("eda_image_audit.json", "w", encoding="utf-8") as stream:
+        json.dump({"decoded": len(sample_sizes), "failures": corrupt}, stream, indent=2)
+    if corrupt:
+        generate_summary_report(train_df, test_seen_df, test_unseen_df, sample_sizes,
+                                corrupt, images_checked=True)
+        print("Image verification failed; see eda_image_audit.json. Figures were not regenerated.")
+        return 1
     
     print("Generating EDA figures...")
+    configure_plotting()
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
     plot_split_overview(train_df, test_seen_df, test_unseen_df)
     plot_crop_distribution(train_df)
     plot_disease_distribution(train_df)
@@ -286,9 +294,11 @@ def main():
     plot_unseen_distribution(test_unseen_df)
     plot_sample_grid(train_df)
 
-    generate_summary_report(train_df, test_seen_df, test_unseen_df, sample_sizes)
+    generate_summary_report(train_df, test_seen_df, test_unseen_df, sample_sizes,
+                            corrupt, images_checked=True, figures_generated=True)
     print("EDA pipeline successfully executed!")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

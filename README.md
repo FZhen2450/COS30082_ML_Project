@@ -1,129 +1,189 @@
-# COS30082 – Applied Machine Learning (Project AS02)
+# COS30082 Applied Machine Learning Project
+
 ## Out-of-Distribution Plant Disease Identification
-**Swinburne University of Technology**
 
----
+Swinburne University of Technology. This repository contains the DPD-Small
+metadata, PyTorch data pipeline, EDA and team execution records. Independent
+crop/disease model training, multi-task training and the proposed CLIP approach
+are still pending; no trained-model performance is claimed.
 
-## 📌 Project Overview
-This repository contains the dataset pipeline, exploratory data analysis (EDA), and project documentation for **Out-of-Distribution (OOD) and Unseen Plant Disease Identification** using the **DPD-Small** dataset.
+## Team work packages
 
-The system addresses the challenge of identifying unseen crop-disease categories that are absent during training, achieving a balance between **discriminative capability** on observed classes and **generalization robustness** on zero-shot unseen classes and real-world field conditions.
+| Work package | Co-owners | Deliverables |
+| --- | --- | --- |
+| WP1 Data + independent baseline | Andy Wei Jian CHU / Fa Zhen NG | Data, EDA, splits, augmentation; two independent classifiers |
+| WP2 Multi-task learning | Yuen Kai CHIA / Jonathan Zheng Li CHAI | Shared backbone, dual heads, loss tuning and diagnostics |
+| WP3 Zero-shot + integration | Yuen Kai CHIA / Andy Wei Jian CHU | CLIP reference, trainable improvement and inference contract |
+| WP4 UI + image retrieval | Fa Zhen NG / Frederick | GUI, inference adapter and training-image retrieval |
+| WP5 Evaluation + robustness | Jonathan Zheng Li CHAI / Frederick | Metrics, ablations and field robustness |
 
----
+WP1 division: Andy handles data/splits/EDA/augmentation checks; Fa Zhen handles
+independent models and run configurations. Both compare backbones and review
+baseline results. Contributions will be attributed from evidence.
 
-## 👥 Team & Workload Allocation (Balanced 20% Contribution)
+The [24 October framework decision and WP1 checklist](docs/WP1_Status_and_Framework_2026-10-24.md)
+supplements the historical 16 October Word plan. PyTorch is now the primary
+framework. The original Word plan is ignored by Git; the Markdown supplement
+makes the current decision available to collaborators.
 
-| Member Name | Student ID | Role | Key Focus Area | Contribution |
-| :--- | :---: | :--- | :--- | :---: |
-| **Andy Wei Jian CHU** | **104401283** | **Data Engineering & Robustness Lead (M1)** | Data pipeline, stratified splits, augmentations, field perturbation suite | **20%** |
-| **Fa Zhen NG** | **104400141** | **Multi-Task & Baseline Lead (M2)** | Git setup, Baseline 1 (Independent CNNs), Baseline 2 (Multi-Task CNN) | **20%** |
-| **Team Member 3** | *[Student ID]* | **Proposed Deep Learning Lead (M3)** | Proposed novel model, zero-shot transfer loss, unseen class evaluation | **20%** |
-| **Jonathan Zheng Li CHAI** | *104400675* | **Evaluation & Metrics Lead (M4)** | Evaluation harness (Top-1/5, Harmonic Mean $H$), confusion matrix, benchmark tables | **20%** |
-| **Team Member 5** | *[Student ID]* | **UI & Retrieval Specialist (M5)** | Interactive GUI (Streamlit/Gradio), vector similarity image retrieval, presentation video | **20%** |
+## Install and obtain images
 
----
+Use a Python 3.11-3.13 environment. Local CPU verification used Python 3.13.
+Run these commands in the repository root (Windows PowerShell):
 
-## 📥 1. Dataset Setup Instructions (For All Team Members)
-
-> [!IMPORTANT]
-> **Raw image files (`DPD_Small_dataset/`) and the 3.4 GB `.7z` archive are intentionally excluded from this Git repository** using `.gitignore` because GitHub has a strict 100 MB file limit.
-> 
-> Follow these two quick steps to set up the images locally on your machine:
-
-1. **Download `DPD_Small.7z`**: Download the archive from the link provided on Canvas.
-2. **Extract Images to Root Folder**: Extract `DPD_Small_dataset/` directly into this project root folder, so your project structure looks like this:
-   ```text
-   COS30082_ML_Project/
-   ├── DPD_Small_dataset/          <-- [EXTRACT HERE: 11,448 image files]
-   │   ├── APPD_apple_healthy_138.jpg
-   │   └── ...
-   ├── DPD_Small_train.csv         <-- [Already committed in Git: 8,000 rows]
-   ├── DPD_Small_test_seen.csv     <-- [Already committed in Git: 2,000 rows]
-   ├── DPD_Small_test_unseen.csv   <-- [Already committed in Git: 1,448 rows]
-   ├── dataset.py                  <-- [TensorFlow data pipeline]
-   ├── eda.py                      <-- [EDA analysis script]
-   ├── eda_figures/                <-- [6 generated publication charts]
-   ├── eda_summary.txt             <-- [Full dataset statistics]
-   └── README.md
-   ```
-
----
-
-## 🚀 2. How to Load Data in Your Models (Members 2, 3, 4, 5)
-
-All data ingestion, stratified train/validation splitting (80% / 20%), resizing to $224 \times 224$, and data augmentations are already handled for you in **`dataset.py`**.
-
-In your model training scripts, simply import `get_dataloaders`:
-
-```python
-from dataset import get_dataloaders
-
-# Retrieve high-performance tf.data.Dataset objects
-train_ds, val_ds, test_seen_ds, test_unseen_ds, mappings = get_dataloaders(
-    batch_size=32,          # Adjust based on your GPU/CPU memory
-    image_size=224,         # Standard input resolution
-    as_dict_targets=True,   # Returns multi-task targets as a dictionary
-    augment_train=True      # Applies RandomFlip, Rotation, Translation, Zoom
-)
-
-# -------------------------------------------------------------
-# 1. Inspect Class Cardinality
-# -------------------------------------------------------------
-print(f"Num Crops: {mappings['num_crops']}")                      # 55
-print(f"Num Diseases: {mappings['num_diseases']}")                # 175
-print(f"Num Seen Compositions: {mappings['num_seen_compositions']}") # 323
-print(f"Num Unseen (OOD): {mappings['num_unseen_compositions']}")    # 10
-
-# -------------------------------------------------------------
-# 2. Batch Format
-# -------------------------------------------------------------
-# images: Tensor of shape (batch_size, 224, 224, 3), float32 normalized
-# targets['crop']: Tensor of shape (batch_size,), integer labels (0 to 54)
-# targets['disease']: Tensor of shape (batch_size,), integer labels (0 to 174)
-# targets['composition']: Tensor of shape (batch_size,), integer labels (0 to 322)
-for images, targets in train_ds.take(1):
-    print("Batch images:", images.shape)
-    print("Batch crop IDs:", targets['crop'])
-    print("Batch disease IDs:", targets['disease'])
-    print("Batch composition IDs:", targets['composition'])
-
-# -------------------------------------------------------------
-# 3. Direct Keras Multi-Task Model Training
-# -------------------------------------------------------------
-# model.fit(
-#     train_ds,
-#     validation_data=val_ds,
-#     epochs=25
-# )
+```powershell
+py -3.13 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
 ```
 
----
+Use that environment's Python for subsequent commands (examples below use
+`python`). The pinned torch/torchvision pair was checked on CPU. For GPU use,
+install a matching build following the [official PyTorch installation selector](https://pytorch.org/get-started/locally/)
+and retain the exact installed versions with each run. CUDA training has not
+been verified in this update.
 
-## 📊 3. Exploratory Data Analysis (EDA) Highlights
+Download the Canvas DPD-Small archive and extract all images into
+`DPD_Small_dataset/` at the repository root. Raw images and model weights are
+excluded from Git.
 
-Run `python eda.py` anytime to reproduce the full statistical analysis and visualizations:
+```text
+COS30082_ML_Project/
+  DPD_Small_dataset/             # local raw images, not committed
+  DPD_Small_train.csv            # 8,000 rows
+  DPD_Small_test_seen.csv        # 2,000 rows
+  DPD_Small_test_unseen.csv      # 1,448 rows
+  dataset.py                    # PyTorch Dataset and DataLoaders
+  data_utils.py                 # metadata audit and train-only split export
+  requirements.txt
+  tests/test_data.py
+  artifacts/data/               # metadata audit and split manifests
+  eda.py
+  eda_summary.txt
+  eda_figures/                   # existing EDA figures
+  docs/WP1_Status_and_Framework_2026-10-24.md
+```
 
-- **Total Images**: **11,448** (8,000 train, 2,000 seen test, 1,448 unseen test) — **0 corrupted / missing files**.
-- **Class Cardinality**: 55 crops, 175 diseases, 323 seen compositions, and 10 unseen compositions.
-- **Severe Class Imbalance**: Training samples per composition class range from **1** to **544** (Mean: 24.8, Median: 7.0).
-- **Most Common Crops**: Tomato (1,164 images), Cassava (1,160), Apple (1,016), Corn (910), Paddy (576).
-- **The 10 Unseen Zero-Shot (OOD) Classes**:
-  1. `tomato_early_blight` (472 images)
-  2. `grape_black_rot` (271 images)
-  3. `pepper_bell_bacterial_spot` (220 images)
-  4. `cotton_bacterial_blight` (125 images)
-  5. `mango_anthracnose` (95 images)
-  6. `sugarcane_rust` (89 images)
-  7. `cherry_aphis_spp` (72 images)
-  8. `cucumber_powdery_mildew` (37 images)
-  9. `corn_brown_spot` (35 images)
-  10. `cucumber_downy_mildew` (32 images)
+## Audit and reproduce splits
 
-All high-resolution figures for the report are ready in the **`eda_figures/`** directory.
+These commands do not require images and do not train a model:
 
----
+```powershell
+python data_utils.py
+python eda.py --metadata-only
+python -m unittest discover -s tests -v
+```
 
-## 🗓️ 4. Project Roadmap (Weeks 5 – 12)
-- **Sprint 1 (Weeks 5 – 7)**: Data Pipeline, Baseline 1 (Independent CNNs), Baseline 2 (Multi-Task CNN), Baseline Benchmarking.
-- **Sprint 2 (Weeks 8 – 10)**: Proposed Novel Model (Zero-Shot / Vision-Language), Image Retrieval Engine, Interactive GUI.
-- **Review Back & Submission (Weeks 11 – 12)**: Cross-model review, 8-page academic report writing, 8-minute presentation video recording, and final Canvas submission (due Friday, 27/11/2026 at 11:59 pm).
+`data_utils.py` validates metadata and writes both split manifests plus
+`data_audit.json` to `artifacts/data/`. Manifests include filenames, class IDs,
+seed, split version and source CSV SHA-256. Image integrity is explicitly
+`not_run` unless requested. Checks cover filename overlap, ID/name consistency,
+composition/component consistency and official seen/unseen separation; they do
+not detect duplicates with different filenames.
+
+After extracting the images, run:
+
+```powershell
+python data_utils.py --check-images
+python eda.py
+python dataset.py
+```
+
+The full audit decodes every metadata-listed image and exits unsuccessfully if
+any image is missing or unreadable. Full EDA writes `eda_image_audit.json`, stops
+before figures on failure, and regenerates figures only after a successful audit.
+`--metadata-only` regenerates statistics while retaining existing figures and
+making no image-integrity claims. Real-image verification remains pending in the
+current workspace. Automated image tests use temporary synthetic fixtures.
+
+## Load data in PyTorch
+
+```python
+import torch
+from dataset import get_dataloaders
+
+if __name__ == "__main__":
+    train_loader, val_loader, seen_loader, unseen_loader, mappings = get_dataloaders(
+        batch_size=32,
+        image_size=224,
+        seed=42,
+        as_dict_targets=True,
+        augment_train=True,
+        num_workers=0,
+        split_dir="artifacts/data",
+    )
+    images, targets = next(iter(train_loader))
+    print(images.shape, images.dtype)       # [B, 3, 224, 224], torch.float32
+    print(targets["crop"].dtype)            # torch.int64, IDs 0..54
+    print(targets["disease"].dtype)         # torch.int64, IDs 0..174
+    print(targets["composition"])          # official global IDs, NOT 0..322
+
+    # In a future independent classifier training loop:
+    # logits = crop_model(images.to(device))
+    # loss = torch.nn.functional.cross_entropy(logits, targets["crop"].to(device))
+```
+
+The five returned objects retain the old order, but loaders are PyTorch
+DataLoaders: replace `.take(1)` with `next(iter(loader))` and Keras `.fit()` with
+an explicit PyTorch training loop. `as_dict_targets=False` returns targets in
+crop, disease, composition order. Labels are int64; images are normalized using
+ImageNet mean/std. Set `normalize_imagenet=False` for float images in [0, 1].
+Only the training loader shuffles and applies horizontal/vertical flips plus
+small affine rotation, translation and scale changes, before normalization.
+Validation/test transforms are deterministic. Use the chosen pretrained model's
+required preprocessing when building future training code; CLIP requires its
+own checkpoint-specific preprocessing. The default 224/ImageNet pipeline is for
+supervised baseline development.
+
+Use `num_workers=0` for Windows notebooks. Script-based multiprocessing requires
+a `if __name__ == "__main__":` guard. Workers receive seeded generators; construct
+the loader once per run. The helper seeds Python, NumPy and Torch, but does not
+guarantee deterministic CUDA kernels or identical results across library versions.
+
+## Validation and composition IDs
+
+The default classwise stratified split is made from the original 8,000 training
+images only. Each class with at least two images contributes at least one image
+to validation and retains at least one in training; all 40 singleton compositions
+stay in training. Classwise rounding gives 6,378 train / 1,622 validation images
+for seed 42. This replaces the old sklearn split: use the new manifest for every
+comparison and do not combine results from different splits.
+
+For simulated unseen validation, pass `split_mode="heldout_composition"`.
+For seed 42 and `val_split=0.2`, 65 whole training compositions (1,894 images) are
+held out, leaving 6,106 training images. Here 0.2 refers to composition classes.
+Every validation crop/disease component is still represented in training. The
+function fails if it cannot produce the requested valid holdout.
+
+There are 55 crops, 175 diseases, 323 seen compositions and 10 official unseen
+compositions. The 323 seen global composition IDs are non-contiguous within
+0-332. `targets["composition"]` always retains the official global ID.
+
+- `seen_comp_id_to_index` / `seen_comp_index_to_id`: global seen ID to/from 0..322.
+- `unseen_comp_id_to_index` / `unseen_comp_index_to_id`: global unseen ID to/from 0..9.
+- `composition_id_to_pair`: global ID to (crop ID, disease ID).
+- `composition_id_to_index` / `composition_index_to_id`: combined candidate mapping.
+
+Do not pass raw composition IDs to a 323-output head. Independent baseline losses
+use crop/disease targets; composition evaluation needs an agreed pair-scoring
+rule. Unseen metadata is exposed for evaluation mapping, not for training or
+model selection. Confirm the final candidate universe and permitted unseen-label
+use with the lecturer before freezing the shared evaluation protocol.
+
+Keep official seen and unseen tests untouched during training, prompt selection
+and model selection. Creating the loaders does not evaluate them; iterate their
+images only for frozen final evaluation.
+
+## Remaining delivery milestones
+
+- Extract and audit real images; visually inspect augmentations on leaves.
+- Implement and train independent crop and disease models with configs/logging.
+- Screen ResNet, EfficientNet, ConvNeXt and ViT under the same validation protocol;
+  record compute and validation results, then select 1-2 feasible full backbones.
+- Agree composition ranking with WP2/WP5; deliver final seen/unseen Top-1/5,
+  harmonic mean and seen confusion matrix after freezing model selection.
+- Complete multi-task and improved CLIP approaches, retrieval and GUI in their
+  assigned work packages. Full details are in the linked WP1 checklist.
+
+Submission target from the supplied brief: **27 November 2026, 11:59 PM Malaysia
+time**. Report maximum 8 pages; presentation video maximum 8 minutes. Check
+Canvas for subsequent announcements.

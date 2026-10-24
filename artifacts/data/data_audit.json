@@ -1,0 +1,30 @@
+{
+  "split_sizes": [
+    8000,
+    2000,
+    1448
+  ],
+  "num_crops": 55,
+  "num_diseases": 175,
+  "num_seen_compositions": 323,
+  "num_unseen_compositions": 10,
+  "singleton_compositions": 40,
+  "filename_overlap": false,
+  "seen_unseen_composition_overlap": false,
+  "split_version": "pytorch-v1",
+  "validation_splits": {
+    "stratified": {
+      "train": 6378,
+      "validation": 1622,
+      "manifest": "artifacts\\data\\stratified_seed42.json"
+    },
+    "heldout_composition": {
+      "train": 6106,
+      "validation": 1894,
+      "manifest": "artifacts\\data\\heldout_composition_seed42.json"
+    }
+  },
+  "image_audit": {
+    "status": "not_run"
+  }
+}

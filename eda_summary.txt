@@ -1,21 +1,25 @@
 ======================================================================
 COS30082 APPLIED MACHINE LEARNING - DPD-SMALL DATASET EDA REPORT
-Prepared by Member 1 (Data Engineering & Robustness Lead: Andy Wei Jian CHU)
+WP1 Data + independent baseline (Andy Wei Jian CHU / Fa Zhen NG)
 ======================================================================
 
 1. DATASET SPLIT CARDINALITY
 ----------------------------------------------------------------------
-- Training Images (Seen):        8,000  (69.88%)
-- Test Seen Images:              2,000  (17.47%)
-- Test Unseen Images (OOD):      1,448  (12.65%)
-- TOTAL DATASET SIZE:           11,448 images (All 11,448 verified on disk)
+- Training Images (Seen):        8,000
+- Test Seen Images:              2,000
+- Test Unseen Images (OOD):      1,448
+- TOTAL METADATA ROWS:           11,448
+- Image integrity audit:         NOT RUN (metadata-only; image integrity unverified)
+- Filename overlap across official splits: none (metadata checked)
 
 2. CLASS CARDINALITY
 ----------------------------------------------------------------------
 - Unique Crop Categories:        55
 - Unique Disease Categories:     175
 - Seen Composition Categories:   323
-- Unseen Composition Categories: 10 (Strictly disjoint from seen compositions)
+- Unseen Composition Categories: 10 (disjoint from seen)
+- Singleton training compositions: 40 (kept in training)
+- Seen composition IDs are non-contiguous global IDs; use explicit index mappings.
 
 3. CLASS IMBALANCE & STATISTICS (TRAIN SET)
 ----------------------------------------------------------------------
@@ -75,10 +79,10 @@ cucumber_downy_mildew          32
 
 5. RESOLUTION INSPECTION
 ----------------------------------------------------------------------
-- Image Dimensions Sampled:      {(500, 666), (1080, 1440), (1200, 900), (640, 480), (448, 299), (224, 224), (500, 774), (256, 256)}
+- Decoded Image Dimensions:      Not checked
 - Target Input Resolution:       224 x 224 (Standardized via torchvision transforms)
 - Color Channels:                RGB (3 channels)
 
 ======================================================================
-All figures have been saved to the 'eda_figures/' folder.
+Figures: not regenerated; existing figures retained.
 ======================================================================
