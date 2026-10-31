@@ -35,6 +35,7 @@ Desktop.ini
 # Temporary & checkpoint files
 *.log
 checkpoints/
+runs/
 *.h5
 *.keras
 *.pt

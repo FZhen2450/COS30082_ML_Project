@@ -1,0 +1,11 @@
+{
+  "schema": "wp1-development-v1",
+  "counts": [
+    4868,
+    1238,
+    1894
+  ],
+  "candidate_sha256": "8217be059e3a4a144f89081ee43b7cd042bb5a62c370197bf0e3fca1c6d28bf3",
+  "split_sha256": "edc29a67dc9de9c454e5f548389b4bffd601ebc06423e63b42385be053b7ceff",
+  "historical_reconciliation": "pending_ordered_filename_reference"
+}

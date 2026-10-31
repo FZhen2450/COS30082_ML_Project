@@ -1,0 +1,23 @@
+{
+  "status": "passed",
+  "files": {
+    "DPD_Small_train.csv": {
+      "rows": 8000,
+      "git_blob": "b3054d6f20b1e18453133519cfb856f19590af1c",
+      "working_sha256": "9f1b729ab08f120c9e8d3a5681aa1ccbdf1d9210f9aaa6143959363dcb106a7d",
+      "problems": []
+    },
+    "DPD_Small_test_seen.csv": {
+      "rows": 2000,
+      "git_blob": "037b8bf5d2481aecd6692883688cc0cc79b6046d",
+      "working_sha256": "45d31d48d2260f56cc28871b44434b5243100dc90dc95652c28c377b35b45e83",
+      "problems": []
+    },
+    "DPD_Small_test_unseen.csv": {
+      "rows": 1448,
+      "git_blob": "ef187426c48d997e3ae68c3cf39d18b91a175451",
+      "working_sha256": "757e3c1fdcc894004a69c21dbc00d6b818f563aa671db9ab8d315c4790c2490b",
+      "problems": []
+    }
+  }
+}

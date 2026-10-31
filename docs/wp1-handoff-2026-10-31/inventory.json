@@ -1,0 +1,77 @@
+{
+  "note": "Historical handoff evidence; not current-worktree test results. Logs retain original bytes under .txt names. wp1.patch applied and checked before removing transport folder.",
+  "files": [
+    {
+      "original_path": "evidence/csv_checkout.log",
+      "bytes": 768,
+      "sha256": "0d1b487732deba59860d9ac8fcc8b6db120e6d6bb9cdc73003e26ef52b7a9836",
+      "preserved_as": "evidence/csv_checkout.txt"
+    },
+    {
+      "original_path": "evidence/diff_check.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "preserved_as": "evidence/diff_check.txt"
+    },
+    {
+      "original_path": "evidence/fresh_checkout.log",
+      "bytes": 3221,
+      "sha256": "8d6df56f4946d1b3f2b7656d217931caadefec9dee83e78a9f7ed579766c9ce4",
+      "preserved_as": "evidence/fresh_checkout.txt"
+    },
+    {
+      "original_path": "evidence/patch_application.json",
+      "bytes": 198,
+      "sha256": "170f0c59398f1aa5271ceb983604b6634b4099eed3c960d650239295371e45b8",
+      "preserved_as": "evidence/patch_application.json"
+    },
+    {
+      "original_path": "evidence/protocol.log",
+      "bytes": 341,
+      "sha256": "2e22c8fadc27d248aa5f5b83a9570474215b3eb43c2046c43fae36dd6210f5c0",
+      "preserved_as": "evidence/protocol.txt"
+    },
+    {
+      "original_path": "evidence/unit_tests.log",
+      "bytes": 4492,
+      "sha256": "ce8ad5acad8eb4565fb45e74d49a28d3c32f53441a6b4b1cec6bfe3632c952f2",
+      "preserved_as": "evidence/unit_tests.txt"
+    },
+    {
+      "original_path": "evidence/verification.json",
+      "bytes": 6458,
+      "sha256": "5550780964792049265e04f792140d7725d9fa92b1525433e6a5ec1a73162907",
+      "preserved_as": "evidence/verification.json"
+    },
+    {
+      "original_path": "evidence/wp5_bridge.log",
+      "bytes": 259,
+      "sha256": "baf436288135247354fd3c3e4459296f13d3ef8d176ea23fff04c81eb624ee9c",
+      "preserved_as": "evidence/wp5_bridge.txt"
+    },
+    {
+      "original_path": "README_FIRST.md",
+      "bytes": 3774,
+      "sha256": "c50cb660641c706fee06ee6a8a5305c772c019aaedb2444a7cb9a2587ab62531",
+      "preserved_as": "README_FIRST.original.md"
+    },
+    {
+      "original_path": "wp1.patch",
+      "bytes": 469741,
+      "sha256": "7437a37ccea1d3e26ead6c3ae41c25b8109bf93a2aa1624dabec893f9fb9e64b",
+      "preserved_as": "applied to repository; reverse git apply check passed"
+    },
+    {
+      "original_path": "WP1_Shared_Contract_and_Runbook.md",
+      "bytes": 11179,
+      "sha256": "9abf75241848d41b6a42da821a19d47cd81105e6676475f6da43ee488ca3f911",
+      "preserved_as": "WP1_Shared_Contract_and_Runbook.original.md"
+    },
+    {
+      "original_path": "WP1_Status_Update.md",
+      "bytes": 2517,
+      "sha256": "32786342ae5a21b1feda1c300baf16546b9a20b41803409d4dc5a940204fe662",
+      "preserved_as": "WP1_Status_Update.original.md"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "split_sizes": [
+    8000,
+    2000,
+    1448
+  ],
+  "num_crops": 55,
+  "num_diseases": 175,
+  "num_seen_compositions": 323,
+  "num_unseen_compositions": 10,
+  "singleton_compositions": 40,
+  "filename_overlap": false,
+  "seen_unseen_composition_overlap": false,
+  "split_version": "pytorch-v1",
+  "validation_splits": {
+    "stratified": {
+      "train": 6378,
+      "validation": 1622,
+      "manifest": "runs\\wp1-image-audit\\stratified_seed42.json"
+    },
+    "heldout_composition": {
+      "train": 6106,
+      "validation": 1894,
+      "manifest": "runs\\wp1-image-audit\\heldout_composition_seed42.json"
+    }
+  },
+  "image_audit": {
+    "status": "passed",
+    "decoded": 11448,
+    "failures": []
+  },
+  "audit_date": "2026-10-31",
+  "scope": "Full decoding and metadata integrity only; no model evaluation or image duplicate search",
+  "images_sha256_manifest": "artifacts/data/DPD_Small_images.sha256",
+  "images_sha256_manifest_sha256": "349291a5d72d4dced74aff1725aa36eda36405a6a77dfd03136f5d7a83913320"
+}

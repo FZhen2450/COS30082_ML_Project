@@ -1,0 +1,4 @@
+# Preserve historical source-byte provenance in working checkouts.
+/DPD_Small_train.csv text eol=crlf
+/DPD_Small_test_seen.csv text eol=crlf
+/DPD_Small_test_unseen.csv text eol=crlf
