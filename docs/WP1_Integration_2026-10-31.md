@@ -11,12 +11,18 @@ WP4 GUI/retrieval and final evaluation policy are deferred.
   torchvision 0.24.1, pandas 2.3.3 and Pillow 12.0.0.
 - CSV checkout verification passed: all three original Git blob IDs, historical
   CRLF source hashes and existing split-manifest source hashes match.
+- Fresh Git checkouts passed under `core.autocrlf=false`, `true` and `input`.
+  The checksum list has an explicit LF rule; the historical archive disables
+  text conversion to retain its original bytes across platforms.
 - The training-only protocol validates: 4,868 fitting / 1,238 seen validation /
   1,894 internally unseen validation; 323 ascending original global candidates.
 - The synthetic WP5 bridge passed against the merged `evaluation.metrics`,
   including non-contiguous IDs, Top-1/5, H@1/H@5 and per-pair counts.
 - All 11,448 metadata-listed real images decoded successfully, with no missing
   or unreadable files. See [the audit](../artifacts/data/wp1_image_audit_2026-10-31.json).
+- EDA statistics and all six figures were regenerated locally in `runs/wp1-eda/`
+  using seaborn 0.13.2. The [summary](../artifacts/data/wp1_eda_summary_2026-10-31.txt)
+  is retained; figures, including the training-image grid, remain local.
 - A fitting-only augmentation preview was generated at
   `runs/wp1-augmentation-review/augmentation_preview.png`. An assistant visual
   inspection found visible symptoms retained in the sample; Andy/Fa Zhen's human
