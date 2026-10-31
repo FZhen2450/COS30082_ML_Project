@@ -1,0 +1,6 @@
+{
+  "patch_applies_to_audited_base": true,
+  "resulting_tree": "57ca5e3d985857dceb43fbe45c0d5ab8c211f9a6",
+  "expected_tree": "57ca5e3d985857dceb43fbe45c0d5ab8c211f9a6",
+  "trees_match": true
+}

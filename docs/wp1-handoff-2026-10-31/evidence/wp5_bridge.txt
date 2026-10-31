@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "scope": "synthetic WP5 compatibility only",
+  "seen_top1": 1.0,
+  "unseen_top1": 0.5,
+  "h1": 0.6666666666666666,
+  "h5": 1.0,
+  "noncontiguous_ids": [
+    10,
+    75,
+    332
+  ],
+  "official_test_evaluated": false
+}

@@ -1,0 +1,35 @@
+{"epoch": 1, "train": {"count": 2, "loss": 5.503593921661377, "top1": 0.0, "top5": 0.0, "wall_seconds": 0.008636399994429667}, "seen_validation": {"count": 2, "loss": 4.783392906188965, "top1": 0.0, "top5": 0.0, "wall_seconds": 0.007837599994672928}}
+{"epoch": 1, "train": {"count": 2, "loss": 6.618144512176514, "top1": 0.0, "top5": 0.0, "wall_seconds": 0.008605200004240032}, "seen_validation": {"count": 2, "loss": 5.899301528930664, "top1": 0.0, "top5": 0.0, "wall_seconds": 0.007895800001278985}}
+test_audit_checks_images_after_first_fifty (test_data.ImageTests.test_audit_checks_images_after_first_fifty) ... ok
+test_augmentation_reproducible_and_finite (test_data.ImageTests.test_augmentation_reproducible_and_finite) ... ok
+test_loader_integration_including_windows_workers (test_data.ImageTests.test_loader_integration_including_windows_workers) ... ok
+test_missing_image_has_path (test_data.ImageTests.test_missing_image_has_path) ... ok
+test_rgb_dtype_global_id_and_normalization (test_data.ImageTests.test_rgb_dtype_global_id_and_normalization) ... ok
+test_eda_summary_does_not_claim_unrun_or_failed_audit_passed (test_data.MetadataTests.test_eda_summary_does_not_claim_unrun_or_failed_audit_passed) ... ok
+test_heldout_has_no_composition_leakage_and_preserves_components (test_data.MetadataTests.test_heldout_has_no_composition_leakage_and_preserves_components) ... ok
+test_invalid_split_arguments (test_data.MetadataTests.test_invalid_split_arguments) ... ok
+test_manifest_checksum_and_partition (test_data.MetadataTests.test_manifest_checksum_and_partition) ... ok
+test_metadata_rejects_leakage_and_inconsistent_mapping (test_data.MetadataTests.test_metadata_rejects_leakage_and_inconsistent_mapping) ... ok
+test_official_splits_and_mappings (test_data.MetadataTests.test_official_splits_and_mappings) ... ok
+test_stratified_retains_singletons_and_all_classes (test_data.MetadataTests.test_stratified_retains_singletons_and_all_classes) ... ok
+test_all_backbone_builders_and_output_shapes_without_downloads (test_independent_baseline.IndependentTests.test_all_backbone_builders_and_output_shapes_without_downloads) ... ok
+test_all_weight_recipes_produce_native_rgb_resolution (test_independent_baseline.IndependentTests.test_all_weight_recipes_produce_native_rgb_resolution) ... ok
+test_real_resnet_checkpoint_reconstruction_without_download (test_independent_baseline.IndependentTests.test_real_resnet_checkpoint_reconstruction_without_download) ... ok
+test_score_ranking_equivalent_to_probability_product (test_independent_baseline.IndependentTests.test_score_ranking_equivalent_to_probability_product) ... ok
+test_separate_parameters_and_gradient_updates (test_independent_baseline.IndependentTests.test_separate_parameters_and_gradient_updates) ... ok
+test_synthetic_training_records_and_inference_adapter (test_independent_baseline.IndependentTests.test_synthetic_training_records_and_inference_adapter) ... ok
+test_unreconciled_protocol_blocks_training_before_output (test_independent_baseline.IndependentTests.test_unreconciled_protocol_blocks_training_before_output) ... ok
+test_validation_does_not_update_parameters (test_independent_baseline.IndependentTests.test_validation_does_not_update_parameters) ... ok
+test_deterministic_export_and_global_candidate_order (test_shared_protocol.ProtocolTests.test_deterministic_export_and_global_candidate_order) ... ok
+test_export_preserves_existing_different_manifest (test_shared_protocol.ProtocolTests.test_export_preserves_existing_different_manifest) ... ok
+test_hash_namespace_is_separate_from_historical_issue_hashes (test_shared_protocol.ProtocolTests.test_hash_namespace_is_separate_from_historical_issue_hashes) ... ok
+test_reference_requires_exact_ordered_filenames (test_shared_protocol.ProtocolTests.test_reference_requires_exact_ordered_filenames) ... ok
+test_rejects_candidate_reordering (test_shared_protocol.ProtocolTests.test_rejects_candidate_reordering) ... ok
+test_rejects_filename_overlap_even_with_rehashed_payload (test_shared_protocol.ProtocolTests.test_rejects_filename_overlap_even_with_rehashed_payload) ... ok
+test_rejects_source_byte_changes (test_shared_protocol.ProtocolTests.test_rejects_source_byte_changes) ... ok
+test_training_only_counts_and_component_coverage (test_shared_protocol.ProtocolTests.test_training_only_counts_and_component_coverage) ... ok
+
+----------------------------------------------------------------------
+Ran 28 tests in 40.175s
+
+OK

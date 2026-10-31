@@ -56,11 +56,11 @@ class DPDataset(Dataset):
     """Return float32 CHW RGB images and int64 crop/disease/composition targets."""
 
     def __init__(self, frame, img_dir, image_size=224, as_dict_targets=True,
-                 augment=False, normalize_imagenet=True):
+                 augment=False, normalize_imagenet=True, transform=None):
         self.frame = frame.reset_index(drop=True).copy()
         self.img_dir = Path(img_dir)
         self.as_dict_targets = as_dict_targets
-        self.transform = get_transforms(image_size, augment, normalize_imagenet)
+        self.transform = transform if transform is not None else get_transforms(image_size, augment, normalize_imagenet)
 
     def __len__(self):
         return len(self.frame)

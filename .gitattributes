@@ -1,0 +1,8 @@
+# Preserve historical source-byte provenance in working checkouts.
+/DPD_Small_train.csv text eol=crlf
+/DPD_Small_test_seen.csv text eol=crlf
+/DPD_Small_test_unseen.csv text eol=crlf
+
+# Keep the checksum-list digest and historical archive bytes reproducible.
+/artifacts/data/DPD_Small_images.sha256 text eol=lf
+/docs/wp1-handoff-2026-10-31/** -text whitespace=cr-at-eol

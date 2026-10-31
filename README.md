@@ -3,9 +3,16 @@
 ## Out-of-Distribution Plant Disease Identification
 
 Swinburne University of Technology. This repository contains the DPD-Small
-metadata, PyTorch data pipeline, EDA and team execution records. Independent
-crop/disease model training, multi-task training and the proposed CLIP approach
-are still pending; no trained-model performance is claimed.
+metadata, PyTorch data pipeline, EDA and team execution records. The WP1 handoff
+adds separate crop/disease classifier code, development-contract validation and
+scoped CRLF checkout verification. Real WP1 training and image acceptance remain
+pending. Issues #2/#3 report local WP2/WP3A experiments; those implementations are
+not yet present on main. This repository does not claim final test performance.
+
+See [WP1 shared contract and execution guide](docs/WP1_Shared_Contract_and_Runbook.md)
+for the current implementation, verification commands and remaining handoffs.
+See [31 October integration status](docs/WP1_Integration_2026-10-31.md) for the
+applied patch, current checks, image checksums and Issues #2/#3 reconciliation.
 
 ## Team work packages
 
@@ -92,8 +99,11 @@ The full audit decodes every metadata-listed image and exits unsuccessfully if
 any image is missing or unreadable. Full EDA writes `eda_image_audit.json`, stops
 before figures on failure, and regenerates figures only after a successful audit.
 `--metadata-only` regenerates statistics while retaining existing figures and
-making no image-integrity claims. Real-image verification remains pending in the
-current workspace. Automated image tests use temporary synthetic fixtures.
+making no image-integrity claims. On 31 October, all 11,448 real images decoded
+successfully; the [audit](artifacts/data/wp1_image_audit_2026-10-31.json) and
+[checksums](artifacts/data/DPD_Small_images.sha256) are retained. Images remain
+local and teammates obtain them from Canvas. Automated image tests use temporary
+synthetic fixtures.
 
 ## Load data in PyTorch
 
@@ -175,14 +185,19 @@ images only for frozen final evaluation.
 
 ## Remaining delivery milestones
 
-- Extract and audit real images; visually inspect augmentations on leaves.
-- Implement and train independent crop and disease models with configs/logging.
+- Real-image decoding audit passed; complete human acceptance of fitting-leaf
+  augmentation previews before training.
+- Reconcile the development protocol's ordered filenames with accepted WP2/WP3
+  artifacts. Matching counts alone do not establish historical identity.
+- Train the implemented independent classifiers; configs, logging, checkpoint
+  reconstruction and a WP4 prediction adapter are provided in the runbook.
 - Screen ResNet, EfficientNet, ConvNeXt and ViT under the same validation protocol;
   record compute and validation results, then select 1-2 feasible full backbones.
 - Agree composition ranking with WP2/WP5; deliver final seen/unseen Top-1/5,
   harmonic mean and seen confusion matrix after freezing model selection.
-- Complete multi-task and improved CLIP approaches, retrieval and GUI in their
-  assigned work packages. Full details are in the linked WP1 checklist.
+- Publish the locally reported WP2/WP3A implementations and complete the trainable
+  CLIP improvement, retrieval and GUI in their assigned work packages. Current
+  local experiment status is recorded in Issues #2/#3, not inferred from main.
 
 Submission target from the supplied brief: **27 November 2026, 11:59 PM Malaysia
 time**. Report maximum 8 pages; presentation video maximum 8 minutes. Check
