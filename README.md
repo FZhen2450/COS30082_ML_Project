@@ -223,3 +223,19 @@ ties are verified using canonical WP2 log scores; numerical edge cases remain
 documented rather than changing historical scoring.
 
 No staging, commits, push or PR creation occurred. Publish WP2 first after review.
+
+## WP3A integration preview — 1 November 2026
+
+The WP3A preview layers its reviewed notebook/tests over the exact WP2 dependency
+set described above. There is one shared top-level development_data.py, not a
+WP3-specific alternate. The future WP3 PR should contain only its incremental
+files on a WP2-inclusive base. See [WP3A integration evidence](docs/WP3A_Integration_2026-11-01.md)
+and [Issue #3](https://github.com/FZhen2450/COS30082_ML_Project/issues/3).
+
+Final prompt policy v2, native preprocessing/tokenization, candidate order,
+direct cosine scoring and historical hashes remain unchanged. All expensive
+notebook controls remain False. The owner-recorded frozen B/32 and L/14 results
+are documented; no full inference or training was repeated in this preparation.
+
+The GUI is published separately on the unmerged gui branch, not on main. No GUI
+or WP5 implementation is overwritten here. No source PR is created or published.
