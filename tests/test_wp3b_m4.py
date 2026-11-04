@@ -232,11 +232,40 @@ class CacheTests(unittest.TestCase):
         unsafe=summary(.2,400,260,100,600)
         self.assertFalse(self.ns['compare_pilot_summaries'](control,unsafe)['supports_exploratory_success'])
 
+    def test_one_shot_runner_declares_exactly_two_fresh_identical_budget_arms(self):
+        ns=self.ns;calls=[]
+        def baseline(split,model,adapter,preprocess,state,config):
+            result={}
+            for role,n in [('val_seen',1238),('val_unseen',1894)]:
+                result[role]={'sample_count':n,'loss':1.,'metrics':{'top1':0.,'top5':0.},
+                    'ranking':torch.tensor([[10,20]]),'control_ranking':torch.tensor([[10,20]])}
+            return result
+        def pilot(split,model,adapter,preprocess,state,config,contract,directory,provenance,record,validation,checkpoint):
+            calls.append({'cap':adapter.residual_cap,'config':dict(config),'params':[v.detach().clone() for v in adapter.parameters()]})
+            return {'best_record':record,'history':[{'epoch':i,'train_sample_count':None if i==0 else 4868} for i in range(6)]}
+        def export(directory,contract,pilot,split):
+            summary={'selected':pilot['best_record'],'history':pilot['history'],'config':contract['hyperparameters'],
+                'protocol':{'candidate_ids':contract['candidate_ids']},
+                'diagnostics':{'val_seen':{'count':1238,'correct1':0},'val_unseen':{'count':1894,'correct1':0,'diseased_correct':0,'false_healthy':0}}}
+            path=Path(directory)/'adapter_summary.json';path.write_text(json.dumps(summary));return [str(path)]
+        with reference.reference.workspace_temporary_directory() as directory:
+            cache_path=Path(directory)/'features.pt';ns['save_feature_cache'](cache_path,self.cache)
+            cfg={**self.config,'device':'cpu','output_directory':directory,
+                 'feature_cache_path':str(cache_path),'feature_cache_sha256':ns['sha256_file'](cache_path)}
+            with patch.dict(ns,{'FEATURE_CACHE':self.cache,'verify_prepared_state':lambda *a:True,
+                    'evaluate_m4_folds':baseline,'run_adapter_pilot':pilot,'export_m4_results':export,
+                    'save_adapter_checkpoint':lambda path,*a:str(path)}):
+                result=ns['run_paired_cached_pilot'](self.split,self.table,cfg)
+        self.assertEqual([c['cap'] for c in calls],[None,.2])
+        self.assertTrue(all(c['config']['epochs']==5 and c['config']['conditional_weight']==1 for c in calls))
+        self.assertTrue(all(torch.equal(a,b) for a,b in zip(calls[0]['params'],calls[1]['params'])))
+        self.assertEqual(set(result['arms']),{'control','bounded'})
+
 class StructureTests(unittest.TestCase):
     def test_json_syntax_and_default_off(self):
         b=json.loads(NOTEBOOK.read_text());self.assertEqual(len(b['cells']),len({c['id'] for c in b['cells']}))
         ns=namespace()
-        for flag in ['BUILD_FEATURE_CACHE','LOAD_FEATURE_CACHE','PREDECLARE_RUN','RUN_TRAINING','RUN_DEVELOPMENT_EVALUATION','SAVE_CHECKPOINTS','EXPORT_RESULTS','VERIFY_CHECKPOINT','RUN_RECORD_DIAGNOSTICS','RUN_COMPARISON_REPORT']:self.assertIs(ns[flag],False)
+        for flag in ['BUILD_FEATURE_CACHE','LOAD_FEATURE_CACHE','PREDECLARE_RUN','RUN_TRAINING','RUN_DEVELOPMENT_EVALUATION','SAVE_CHECKPOINTS','EXPORT_RESULTS','VERIFY_CHECKPOINT','RUN_RECORD_DIAGNOSTICS','RUN_COMPARISON_REPORT','RUN_PAIRED_PILOT']:self.assertIs(ns[flag],False)
         for c in b['cells']:
             self.assertFalse(c.get('outputs'));self.assertIsNone(c.get('execution_count'))
             if c['cell_type']=='code':compile(''.join(c['source']),c['id'],'exec')
@@ -253,5 +282,12 @@ class StructureTests(unittest.TestCase):
                 for n in ast.walk(ast.parse(''.join(c['source']))):
                     if isinstance(n,ast.ImportFrom):self.assertNotIn((n.module or '').split('.')[0],['dataset','development_data','train_multitask','evaluation'])
                     if isinstance(n,ast.Call):self.assertNotIn(ast.unparse(n.func),['exec','eval','compile','importlib.import_module'])
+
+    def test_paired_and_individual_execution_cannot_mix(self):
+        book=json.loads(NOTEBOOK.read_text());source=next(''.join(c['source']) for c in book['cells'] if c['id']=='m4-owner-paired-run')
+        ns={'RUN_PAIRED_PILOT':True,'PREDECLARE_RUN':True,'RUN_TRAINING':False,'RUN_DIRECTORY':None,'PAIRED_RESULTS':None}
+        with self.assertRaises(RuntimeError):exec(compile(source,'paired-owner-cell','exec'),ns)
+        ns.update(PREDECLARE_RUN=False,PAIRED_STARTED=True)
+        with self.assertRaises(RuntimeError):exec(compile(source,'paired-owner-cell','exec'),ns)
 
 if __name__=='__main__':unittest.main()
