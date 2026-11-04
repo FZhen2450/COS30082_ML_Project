@@ -114,11 +114,18 @@ class CacheTests(unittest.TestCase):
         with self.assertRaises(ValueError):self.ns['CachedFeatureDataset'](self.split,'test',self.cache)
     def test_cache_safe_roundtrip_and_no_overwrite(self):
         with reference.reference.workspace_temporary_directory() as directory:
-            path=Path(directory)/'features.pt';self.ns['save_feature_cache'](path,self.cache)
-            restored=self.ns['load_feature_cache'](path,self.ns['sha256_file'](path),self.split,self.table,self.config)
-            torch.testing.assert_close(restored['direct'],self.cache['direct'],rtol=0,atol=0)
-            with self.assertRaises(FileExistsError):self.ns['save_feature_cache'](path,self.cache)
-            with self.assertRaises(ValueError):self.ns['load_feature_cache'](path,'0'*64,self.split,self.table,self.config)
+            images=Path(directory)/'images';images.mkdir()
+            cache=copy.deepcopy(self.cache)
+            for name in cache['image_hashes']:
+                image=images/name;image.write_bytes(b'synthetic:'+name.encode())
+                cache['image_hashes'][name]=self.ns['sha256_file'](image)
+            cache['image_hashes_sha256']=self.ns['json_hash'](cache['image_hashes'])
+            config={**self.config,'image_directory':str(images)}
+            path=Path(directory)/'features.pt';self.ns['save_feature_cache'](path,cache)
+            restored=self.ns['load_feature_cache'](path,self.ns['sha256_file'](path),self.split,self.table,config)
+            torch.testing.assert_close(restored['direct'],cache['direct'],rtol=0,atol=0)
+            with self.assertRaises(FileExistsError):self.ns['save_feature_cache'](path,cache)
+            with self.assertRaises(ValueError):self.ns['load_feature_cache'](path,'0'*64,self.split,self.table,config)
     def test_cache_training_matches_live_synthetic_encoding(self):
         ns=self.ns;x=torch.randn(3,768);a=ns['ResidualVisualAdapter'](.2);b=ns['ResidualVisualAdapter'](.2);b.load_state_dict(a.state_dict())
         direct=ns['unit_features'](torch.randn(323,768));cfg={**self.config,'feature_cache_path':str(Path(self.config['output_directory'])/'synthetic.pt'),'feature_cache_sha256':'0'*64}
