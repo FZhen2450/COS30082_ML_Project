@@ -192,7 +192,31 @@ H@1 and stated compute limits, then predeclare full-run budgets before training.
 Keep all screening runs, including negative results. A final seen confusion
 matrix and official seen/unseen evaluation remain for the frozen final protocol.
 
-## What is needed outside this workspace
+## Release and named-output tools
+
+Use a separate environment matching the checkpoint metadata. The declared CUDA
+environment specification is `configs/wp1/requirements_cuda118.txt`; do not
+replace another member's installed packages. Always choose new output paths.
+
+```powershell
+python scripts/run_wp1_release.py --config configs/wp1/resnet50_rtx3050.json --protocol development_seed42_reconciled.json --images DPD_Small_dataset --output NEW_RELEASE_DIRECTORY --device cuda
+python scripts/export_wp1_development.py --wp5-root PATH_TO_WP5_CHECKOUT --release SELECTED_RELEASE_DIRECTORY --protocol development_seed42_reconciled.json --images DPD_Small_dataset --output NEW_EXPORT_DIRECTORY --device cuda
+python scripts/verify_wp1_development_export.py --bundle EXTRACTED_EXPORT_DIRECTORY --wp5-root BYTE_IDENTICAL_WP5_SOURCE_DIRECTORY
+```
+
+The release runner trains the declared pair; the exporter performs inference
+only. For an interrupted release, `--completed-crop` accepts only a completed,
+matching crop run and restarts disease fitting; it is not an optimizer resume.
+Use `--image-preflight` only for an unchanged same-session image directory.
+Neither option establishes human acceptance of augmentation previews.
+
+The verifier preserves exact file-byte hashes; source paths and source-content
+identities are separate checks. Private weights, run histories and received raw
+source snapshots belong outside Git. Current selected-checkpoint evidence and
+handoff updates are maintained in [Issue #2](https://github.com/FZhen2450/COS30082_ML_Project/issues/2);
+comparison acceptance is in [Issue #8](https://github.com/FZhen2450/COS30082_ML_Project/issues/8).
+
+## External coordination
 
 1. Accepted WP2/WP3 ordered filename lists and original digest serialization on
    the owner-run VS Code/WSL machine: reconcile the export before any comparison.
