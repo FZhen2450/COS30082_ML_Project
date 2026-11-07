@@ -3,8 +3,22 @@ import argparse
 import copy
 import hashlib
 import json
-from pathlib import Path
+from pathlib import Path, PurePosixPath, PureWindowsPath
 import sys
+
+
+def receipt_path(root, name):
+    """Resolve either receipt separator style within the explicit source root."""
+    if not isinstance(name, str) or not name.strip():
+        raise ValueError("Receipt path must be a nonempty relative string")
+    relative = PurePosixPath(name.replace("\\", "/"))
+    if relative.is_absolute() or PureWindowsPath(name).drive or ".." in relative.parts:
+        raise ValueError("Receipt path must stay within its declared root")
+    root = Path(root).resolve(strict=True)
+    path = root.joinpath(*relative.parts).resolve(strict=True)
+    if not path.is_relative_to(root) or not path.is_file():
+        raise ValueError("Receipt path must identify a file within its declared root")
+    return path
 
 
 def main():
@@ -26,11 +40,11 @@ def main():
     if receipt["complete"] is not True:
         raise ValueError("Incomplete export")
     for name, expected in receipt["files_sha256"].items():
-        path = (root / name).resolve(strict=True)
-        if not path.is_relative_to(root) or hashlib.sha256(path.read_bytes()).hexdigest() != expected:
+        path = receipt_path(root, name)
+        if hashlib.sha256(path.read_bytes()).hexdigest() != expected:
             raise ValueError("File checksum mismatch: " + name)
     for name, expected in receipt["wp5_source_sha256"].items():
-        if hashlib.sha256((wp5 / name).read_bytes()).hexdigest() != expected:
+        if hashlib.sha256(receipt_path(wp5, name).read_bytes()).hexdigest() != expected:
             raise ValueError("Use the pinned WP5 source bytes: " + name)
     manifest = EvaluationManifest.from_dict(read("identity_manifest.json"))
     provenance = RunProvenance(**read("provenance.json"))

@@ -179,7 +179,7 @@ def main():
     files = {str(path.relative_to(args.output)).replace("\\", "/"): digest(path)
              for path in sorted(args.output.rglob("*")) if path.is_file()}
     write_json(args.output / "receipt.json", {"complete": True, "files_sha256": files,
-               "wp5_source_sha256": {str(p.relative_to(args.wp5_root)): digest(p) for p in
+               "wp5_source_sha256": {p.relative_to(args.wp5_root).as_posix(): digest(p) for p in
                    (args.wp5_root / "evaluation/reporting.py", args.wp5_root / "evaluation/model_adapters.py")},
                "official_test_evaluated": False})
     print(json.dumps({"output": str(args.output), "rows": len(all_records),

@@ -39,6 +39,28 @@ with the independently received WP3 manifest and agree the common comparison
 budget declaration before composing the four-model outer handoff. Final-333
 approval and M6 GUI rehearsal remain separate.
 
+## Acceptance and portable verification follow-up
+
+The owner independently accepted this ZIP in Issue #2 comment 6702503751.
+Its full identity manifest is content-identical to the WP2/WP3 manifest.
+Issue #8 comment 6702596251 confirms the complete real four-model import passes
+the unchanged PR #18 implementation. The shared reporting declaration explicitly
+does not claim equal historical training/tuning budgets.
+
+The original ZIP receipt contains Windows backslashes in its WP5 source keys.
+PR #19's updated verifier accepts either path separator style, resolves entries
+within the explicit root and preserves exact byte-hash checks. Future exports
+write POSIX-style source keys. The delivered ZIP, packets and original receipt
+are unchanged; its previously published SHA-256 remains valid. Use the current
+repository verifier externally against the unchanged extracted bundle:
+
+```powershell
+python -B scripts/verify_wp1_development_export.py --bundle PATH_TO_ORIGINAL_EXTRACTION --wp5-root PATH_TO_BYTE_IDENTICAL_WP5_SOURCE
+```
+
+Separator normalization does not normalize source content or relax file hashes.
+On Linux retain the original received raw source bytes for this integrity check.
+
 ## Copyable Issue #2 / #8 update
 
 Post only after attaching or privately sharing the ZIP. Insert the actual private
