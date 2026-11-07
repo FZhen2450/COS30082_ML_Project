@@ -124,16 +124,10 @@ download fallback. Inference applies the accepted bounded 768→64→768 residua
 and canonical CPU float64 cosine arithmetic. Stored training-image embeddings
 are never used to predict a new image.
 
-All remote branch trees were checked on 6 November 2026: no model weight files
-were present. Issue #3 states that M6 remains local to its owner. The supplied
-report, demo script and roadmap contain experiment evidence, not model assets.
-On 7 November 2026, the owner's private M6 handoff was downloaded and its hash,
-embedded contract and text bank verified. The official pinned ViT-L/14 base was
-obtained separately and its full SHA-256 verified before loading. A new local
-clean-launch rehearsal passed through the normal model picker with real native
-image encoding, Top-5 display, four fitting-only references and matching JSON.
-See `docs/WP4_M6_Rehearsal_2026-11-07.md`. The earlier owner smoke and this new
-cross-machine check remain distinct; neither establishes official performance.
+Asset delivery, rehearsal results and private evidence links are maintained in
+[Issue #13](https://github.com/FZhen2450/COS30082_ML_Project/issues/13).
+The four-model development comparison and its healthy/diseased limitations are
+maintained in [Issue #8](https://github.com/FZhen2450/COS30082_ML_Project/issues/8).
 
 ## Clean-launch rehearsal
 
