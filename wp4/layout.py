@@ -87,7 +87,7 @@ def build(app):
     app.model_status.pack(fill="x", pady=(8, 10))
     app.configure_button = Button(left, "Connect a model", app.configure_model, height=36)
     app.configure_button.pack(fill="x")
-    label(left, "Development candidates only.\nWP2 / WP3 connections coming next.",
+    label(left, "323 development candidates.\nChoose WP1, frozen CLIP or M6.",
           10, MUTED, anchor="w", justify="left").pack(fill="x", pady=(10, 0))
     right = tk.Frame(content, bg=BG)
     right.grid(row=0, column=1, sticky="nsew")

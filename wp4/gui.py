@@ -11,7 +11,8 @@ from tkinter import filedialog, messagebox, ttk
 
 from PIL import ImageTk
 
-from .service import Catalog, load_independent, open_rgb, present_prediction
+from .service import Catalog, open_rgb, present_prediction
+from .model_loader import MODEL_SPECS, load_model
 from .widgets import BG, WHITE, INK, MUTED, GREEN, Card, label, rounded
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -29,6 +30,7 @@ class PlantApp:
         self.busy = False
         self.closed = False
         self.model_label = "No model loaded"
+        self.model_kind = "wp1"
         self.root.title("LeafLens | Plant disease identification")
         width = min(1240, self.root.winfo_screenwidth() - 80)
         height = min(940, self.root.winfo_screenheight() - 100)
@@ -38,8 +40,8 @@ class PlantApp:
         self.root.protocol("WM_DELETE_WINDOW", self.close)
         self._style()
         self._build()
-        self.root.after(70, self._poll)
-        self.root.after(100, self.load_catalog)
+        self._poll_after = self.root.after(70, self._poll)
+        self._catalog_after = self.root.after(100, self.load_catalog)
 
     def _style(self):
         style = ttk.Style(self.root)
@@ -135,7 +137,7 @@ class PlantApp:
                 messagebox.showerror("Unable to complete action", error, parent=self.root)
             else:
                 done(value)
-        self.root.after(70, self._poll)
+        self._poll_after = self.root.after(70, self._poll)
 
     def load_catalog(self):
         def done(catalog):
@@ -175,41 +177,19 @@ class PlantApp:
         if not self.catalog:
             messagebox.showinfo("Catalog not ready", "Start with a valid protocol and training CSV. See docs/WP4_GUI.md.")
             return
-        dialog = tk.Toplevel(self.root)
-        dialog.title("LeafLens | Connect a recognition model")
-        dialog.configure(bg=BG)
-        dialog.resizable(False, False)
-        dialog.transient(self.root)
-        dialog.grab_set()
-        frame = ttk.Frame(dialog, padding=22)
-        frame.pack(fill="both", expand=True)
-        ttk.Label(frame, text="Connect a recognition model", font=("Segoe UI", -20, "bold")).grid(row=0, column=0, columnspan=3, sticky="w")
-        ttk.Label(frame, text="Choose two trained .pt checkpoints. Model loading runs locally.").grid(row=1, column=0, columnspan=3, pady=(8, 18), sticky="w")
-        crop, disease, device = tk.StringVar(), tk.StringVar(), tk.StringVar(value="cpu")
-        for index, (label, variable) in enumerate((("Crop checkpoint", crop), ("Disease checkpoint", disease)), 2):
-            ttk.Label(frame, text=label).grid(row=index, column=0, sticky="w", padx=(0, 10), pady=8)
-            ttk.Entry(frame, textvariable=variable, width=44, font=("Segoe UI", -12)).grid(row=index, column=1)
-            def choose(var=variable):
-                name = filedialog.askopenfilename(parent=dialog, filetypes=[("PyTorch checkpoints", "*.pt *.pth")])
-                if name:
-                    var.set(name)
-            ttk.Button(frame, text="Browse...", command=choose).grid(row=index, column=2, padx=(8, 0))
-        ttk.Label(frame, text="Device").grid(row=4, column=0, sticky="w", pady=10)
-        ttk.Combobox(frame, textvariable=device, values=("cpu", "cuda"), state="readonly", width=12).grid(row=4, column=1, sticky="w")
-        def load():
-            cp, dp, dev = crop.get(), disease.get(), device.get()
-            if not Path(cp).is_file() or not Path(dp).is_file():
-                messagebox.showerror("Check checkpoint paths", "Select both existing checkpoint files.", parent=dialog)
-                return
-            dialog.destroy()
-            def done(predictor):
-                self.predictor = predictor
-                self.model_label = f"WP1 independent classifiers ({dev.upper()})"
-                self.model_status.configure(text=self.model_label)
-                self.clear_predictions()
-                self._controls()
-            self._work(lambda: load_independent(self.catalog, cp, dp, dev), done, "Loading trained checkpoints...")
-        ttk.Button(frame, text="Load model", style="Accent.TButton", command=load).grid(row=5, column=0, columnspan=3, sticky="e", pady=(16, 0))
+        from .model_picker import ModelPicker
+        self.model_dialog = ModelPicker(self.root, self.connect_model, self.model_kind)
+
+    def connect_model(self, kind, paths, device):
+        paths = dict(paths)
+        def done(predictor):
+            self.predictor = predictor
+            self.model_kind = kind
+            self.model_label = f"{MODEL_SPECS[kind]['label']} ({device.upper()})"
+            self.model_status.configure(text=self.model_label)
+            self.clear_predictions()
+            self._controls()
+        self._work(lambda: load_model(self.catalog, kind, paths, device), done, "Loading local recognition model...")
 
     def identify(self):
         if not self.predictor or self.query is None:
@@ -217,9 +197,10 @@ class PlantApp:
         def action():
             started = time.perf_counter()
             raw = self.predictor.predict([self.query], topk=5)
-            return present_prediction(raw, self.catalog), raw["score_semantics"], time.perf_counter() - started
+            return (present_prediction(raw, self.catalog), raw["score_semantics"],
+                    time.perf_counter() - started, raw.get("model_provenance", {"variant": self.model_kind}))
         def done(result):
-            predictions, semantics, elapsed = result
+            predictions, semantics, elapsed, provenance = result
             self.table.delete(*self.table.get_children())
             self.predictions = predictions
             for index, row in enumerate(predictions):
@@ -232,6 +213,7 @@ class PlantApp:
                                 "split_sha256": self.catalog.protocol["split_sha256"],
                                 "historical_reconciliation": self.catalog.protocol["historical_reconciliation"],
                                 "score_semantics": semantics, "elapsed_seconds": elapsed,
+                                "model_provenance": provenance,
                                 "predictions": predictions}
             self._controls()
             self.table.selection_set(str(predictions[0]["composition_id"]))
@@ -299,13 +281,20 @@ class PlantApp:
 
     def close(self):
         self.closed = True
+        for identifier in (self._poll_after, self._catalog_after):
+            try:
+                self.root.after_cancel(identifier)
+            except tk.TclError:
+                pass
         self.root.destroy()
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    reconciled = ROOT / "artifacts/data/development_seed42_reconciled.json"
-    parser.add_argument("--protocol", type=Path, default=reconciled if reconciled.exists() else ROOT / "artifacts/data/development_seed42_wp1_v1.json")
+    candidates = (ROOT / "artifacts/data/development_seed42_reconciled.json",
+                  ROOT / "development_seed42_reconciled.json",
+                  ROOT / "artifacts/data/development_seed42_wp1_v1.json")
+    parser.add_argument("--protocol", type=Path, default=next((p for p in candidates if p.is_file()), candidates[-1]))
     parser.add_argument("--images", type=Path, default=ROOT / "DPD_Small_dataset")
     parser.add_argument("--source", type=Path, default=ROOT / "DPD_Small_train.csv")
     args = parser.parse_args()
