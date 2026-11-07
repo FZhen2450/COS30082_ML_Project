@@ -37,6 +37,14 @@ The truth is absent from Top-5. This is a successful engineering rehearsal with
 an incorrect prediction, not evidence of classification accuracy. Raw ranking
 scores are not confidence percentages. All 323 scores are finite float64.
 
+The verified four-model development handoff in Issue #8 also records a health
+imbalance: against frozen CLIP, M6 raises internally unseen diseased-composition
+Top-1 hits only from 79 to 100 of 1,496, while healthy hits rise from 101 to 269
+of 398. False-healthy predictions on diseased images rise from 58 to 463. Keep
+these limitations in the demo explanation and report; the overall H@1 gain does
+not establish reliable disease recognition. These are development observations,
+not official-test findings or clinical claims.
+
 Four distinct references were rendered for the predicted apple/scab pair:
 `APPD_apple_scab_1359.jpg`, `CDDM_apple_scab_39832.jpg`,
 `CDDM_apple_scab_40260.jpg`, `APPD_apple_scab_1181.jpg`.
