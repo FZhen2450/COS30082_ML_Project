@@ -227,57 +227,21 @@ explicit approved files; there is no directory scan or inferred data source.
 File hashes must be confirmed through the owner handoff, not trusted merely
 because the same unverified file declares them.
 
-The following development-only recipe is prepared; no real owner files were
-available or opened. The pure import step and export sequence were exercised
-end-to-end using JSON-decoded synthetic packets in the tests above.
+The executable successor to this preparation recipe is now
+[`scripts/import_wp5_development.py`](../scripts/import_wp5_development.py).
+See [the development import guide](WP5_Development_Import_2026-11-07.md) for
+mandatory arguments, exact checks, result artifacts and verification results.
+It consumes this same schema and calls the unchanged `import_model_packets` API.
+Paths inside the bundle resolve relative to the bundle file. The raw bundle
+SHA-256 must come independently from the owner; the command never derives an
+approval from a file's own claims.
 
-```python
-import hashlib
-import json
-from pathlib import Path
-from evaluation.model_adapters import MODEL_KINDS, import_model_packets
-from evaluation.reporting import EvaluationManifest, RunProvenance, export_report
-
-def checked_json(entry):
-    raw = Path(entry["path"]).read_bytes()
-    if hashlib.sha256(raw).hexdigest() != entry["file_sha256"]:
-        raise ValueError("Owner-approved input file digest mismatch")
-    return json.loads(raw)  # Preserve JSON integers; do not pre-cast score/ID arrays.
-
-# handoff_file is an explicit {path, file_sha256} supplied by the owner.
-bundle = checked_json(handoff_file)
-if bundle.get("schema") != "wp5-owner-handoff-v1":
-    raise ValueError("Unknown owner handoff schema")
-approval = bundle.get("owner_approval_reference")
-if not isinstance(approval, str) or not approval.strip():
-    raise ValueError("Owner approval reference required")
-manifest = EvaluationManifest.from_dict(checked_json(bundle["identity_manifest"]))
-if manifest.spec.task_mode != "development" or manifest.spec.synthetic:
-    raise ValueError("This real import recipe accepts approved development-323 only")
-if manifest.sha256 != bundle["manifest_sha256"]:
-    raise ValueError("Approved semantic identity-manifest digest mismatch")
-if set(bundle["models"]) != set(MODEL_KINDS):
-    raise ValueError("Require all four frozen models")
-provenances = {kind: RunProvenance(**entry["provenance"])
-               for kind, entry in bundle["models"].items()}
-packets = {kind: [checked_json(file) for file in entry["packet_files"]]
-           for kind, entry in bundle["models"].items()}
-imported = import_model_packets(manifest, provenances, packets)
-
-# All model/coverage/paired checks succeeded before creating output files.
-output = Path(new_output_directory)  # Explicit new path; never a historical run.
-output.mkdir(parents=True, exist_ok=False)
-receipt = {"owner_approval_reference": approval,
-           "manifest_sha256": manifest.sha256,
-           "candidate_sha256": manifest.spec.candidate_sha256,
-           "handoff_file": handoff_file, "verified_inputs": bundle}
-with (output / "import_receipt.json").open("x", encoding="utf-8") as stream:
-    json.dump(receipt, stream, indent=2, allow_nan=False)
-for kind, report in imported["models"].items():
-    export_report(report, output / kind)
-for pair, report in imported["paired"].items():
-    export_report(report, output / "paired" / pair)
-```
+The CLI accepts real development-323 manifests only by default. Synthetic
+fixtures require an explicit `--allow-synthetic` flag and are visibly labeled
+throughout. It rejects final manifests before opening prediction packet files.
+All validation and plotting finish before the exclusive output directory is
+created. The receipt is written last as the completion marker and hashes every
+other generated file; incomplete directories from I/O failures are preserved.
 
 This workflow verifies declared file integrity and exact record alignment; it
 does not authenticate unsupported checkpoint claims, grant final policy approval,
