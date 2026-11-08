@@ -1,0 +1,130 @@
+{
+  "schema": "wp1-development-data-audit-v1",
+  "auditor": "Andy Wei Jian Chu (@AA-49)",
+  "source_csv": "DPD_Small_train.csv",
+  "source_sha256": "9f1b729ab08f120c9e8d3a5681aa1ccbdf1d9210f9aaa6143959363dcb106a7d",
+  "candidate_sha256": "8217be059e3a4a144f89081ee43b7cd042bb5a62c370197bf0e3fca1c6d28bf3",
+  "split_sha256": "edc29a67dc9de9c454e5f548389b4bffd601ebc06423e63b42385be053b7ceff",
+  "partition_counts": {
+    "total_development_images": 8000,
+    "fitting_images": 4868,
+    "seen_validation_images": 1238,
+    "unseen_validation_images": 1894
+  },
+  "composition_support": {
+    "fitting_compositions": 258,
+    "seen_val_compositions": 225,
+    "unseen_val_heldout_compositions": 65,
+    "singleton_compositions_in_fitting": 59,
+    "singleton_composition_ids": [
+      17,
+      22,
+      35,
+      41,
+      43,
+      50,
+      52,
+      53,
+      57,
+      58,
+      59,
+      62,
+      63,
+      64,
+      76,
+      77,
+      81,
+      82,
+      96,
+      99,
+      108,
+      111,
+      115,
+      117,
+      120,
+      121,
+      125,
+      138,
+      142,
+      152,
+      154,
+      157,
+      162,
+      163,
+      167,
+      168,
+      170,
+      171,
+      173,
+      176,
+      179,
+      180,
+      183,
+      186,
+      188,
+      222,
+      237,
+      244,
+      245,
+      248,
+      250,
+      256,
+      262,
+      265,
+      282,
+      293,
+      295,
+      310,
+      325
+    ]
+  },
+  "component_coverage": {
+    "fitting_crops": 55,
+    "fitting_diseases": 175,
+    "all_components_retained": true
+  },
+  "class_balance_breakdown": {
+    "fitting_healthy_images": 958,
+    "fitting_diseased_images": 3910,
+    "healthy_ratio_fitting": 0.1968
+  },
+  "file_duplicate_audit": {
+    "status": "not_requested"
+  },
+  "augmentation_audit": {
+    "policy": "torchvision_v2_fitting_only",
+    "transforms": [
+      "Resize((192, 192))",
+      "RandomHorizontalFlip(p=0.5)",
+      "RandomVerticalFlip(p=0.5)",
+      "RandomAffine(degrees=18, translate=(0.05, 0.05), scale=(0.95, 1.05))"
+    ],
+    "symptom_preservation_rationale": "Mild affine translations (5%) and small rotations (18 deg) avoid cutting out localized leaf lesions. Horizontal and vertical flips preserve color and lesion texture without geometric distortion.",
+    "human_review_status": "pending_human_review"
+  },
+  "proposed_robustness_evaluation": {
+    "objective": "Evaluate model resilience against real-world leaf photo corruptions (Section 3.2 research question).",
+    "perturbations": [
+      {
+        "name": "brightness_variation",
+        "severity": [
+          -0.2,
+          0.2
+        ]
+      },
+      {
+        "name": "contrast_variation",
+        "severity": [
+          0.8,
+          1.2
+        ]
+      },
+      {
+        "name": "gaussian_blur",
+        "kernel_size": 3,
+        "sigma": 0.5
+      }
+    ],
+    "evaluation_rule": "Clean-vs-perturbed paired ranking accuracy on internally unseen validation."
+  }
+}
