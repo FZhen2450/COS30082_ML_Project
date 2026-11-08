@@ -1,0 +1,202 @@
+{
+  "paired": {
+    "val_seen": {
+      "both_correct": 197,
+      "control_only": 89,
+      "M3_only": 27,
+      "both_wrong": 925
+    },
+    "val_unseen": {
+      "both_correct": 142,
+      "control_only": 36,
+      "M3_only": 91,
+      "both_wrong": 1625
+    }
+  },
+  "results": {
+    "control": {
+      "run_id": "20261104T094921Z_365ee1b25a43",
+      "selected": {
+        "epoch": 5,
+        "h1": 0.13360838162425462,
+        "h5": 0.4178186298583024,
+        "seen_top1": 0.2310177705977383,
+        "seen_top5": 0.5339256865912763,
+        "unseen_top1": 0.09398099260823653,
+        "unseen_top5": 0.34318901795142553,
+        "seen_count": 1238,
+        "unseen_count": 1894,
+        "combined_validation_loss": 3.271236158878867,
+        "selection_policy": {
+          "primary": "maximum development H@1",
+          "secondary": "minimum sample-weighted combined validation objective",
+          "tertiary": "earliest epoch",
+          "full_precision": true,
+          "epoch_zero_eligible": true
+        }
+      },
+      "selected_unseen": {
+        "count": 1894,
+        "correct1": 178,
+        "correct5": 650,
+        "top1": 0.09398099260823653,
+        "top5": 0.34318901795142553,
+        "crop_correct": 1427,
+        "disease_correct": 401,
+        "predicted_healthy": 857,
+        "healthy_count": 398,
+        "healthy_correct": 162,
+        "diseased_count": 1496,
+        "diseased_correct": 16,
+        "false_healthy": 490,
+        "predicted_fitting_composition": 1600
+      },
+      "epochs": [
+        {
+          "epoch": 0,
+          "h1": 0.08080120118260763,
+          "h5": 0.2609805306805669,
+          "unseen_top1": 0.09503695881731784,
+          "diseased_correct": 79,
+          "false_healthy": 58
+        },
+        {
+          "epoch": 1,
+          "h1": 0.1326082422559588,
+          "h5": 0.4314410940615366,
+          "unseen_top1": 0.11246040126715945,
+          "diseased_correct": 70,
+          "false_healthy": 977
+        },
+        {
+          "epoch": 2,
+          "h1": 0.12181943581036152,
+          "h5": 0.446259481007409,
+          "unseen_top1": 0.0908130939809926,
+          "diseased_correct": 56,
+          "false_healthy": 775
+        },
+        {
+          "epoch": 3,
+          "h1": 0.12315558412550767,
+          "h5": 0.44039183494352385,
+          "unseen_top1": 0.08922914466737064,
+          "diseased_correct": 31,
+          "false_healthy": 626
+        },
+        {
+          "epoch": 4,
+          "h1": 0.1270904896469646,
+          "h5": 0.423254433025485,
+          "unseen_top1": 0.0908130939809926,
+          "diseased_correct": 27,
+          "false_healthy": 586
+        },
+        {
+          "epoch": 5,
+          "h1": 0.13360838162425462,
+          "h5": 0.4178186298583024,
+          "unseen_top1": 0.09398099260823653,
+          "diseased_correct": 16,
+          "false_healthy": 490
+        }
+      ],
+      "checkpoint_sha256": "3cdddcd026e517b8a4df69449728ffbf9c9a95d7b33845b16ca1ac179b71ebf3",
+      "contract_sha256": "10654df740bac8940250768ae412a551be58b0f835b9b104ab2c6ac2e4fb9b07"
+    },
+    "conditional": {
+      "run_id": "20261104T123450Z_9cdf4e1ddf6b",
+      "selected": {
+        "epoch": 1,
+        "h1": 0.1464606922871855,
+        "h5": 0.45157781710629746,
+        "seen_top1": 0.18093699515347333,
+        "seen_top5": 0.3990306946688207,
+        "unseen_top1": 0.12302006335797254,
+        "unseen_top5": 0.5200633579725449,
+        "seen_count": 1238,
+        "unseen_count": 1894,
+        "combined_validation_loss": 3.601792830617035,
+        "selection_policy": {
+          "primary": "maximum development H@1",
+          "secondary": "minimum sample-weighted combined validation objective",
+          "tertiary": "earliest epoch",
+          "full_precision": true,
+          "epoch_zero_eligible": true
+        }
+      },
+      "selected_unseen": {
+        "count": 1894,
+        "correct1": 233,
+        "correct5": 985,
+        "top1": 0.12302006335797254,
+        "top5": 0.5200633579725449,
+        "crop_correct": 1334,
+        "disease_correct": 482,
+        "predicted_healthy": 1270,
+        "healthy_count": 398,
+        "healthy_correct": 162,
+        "diseased_count": 1496,
+        "diseased_correct": 71,
+        "false_healthy": 873,
+        "predicted_fitting_composition": 1410
+      },
+      "epochs": [
+        {
+          "epoch": 0,
+          "h1": 0.08080120118260763,
+          "h5": 0.2609805306805669,
+          "unseen_top1": 0.09503695881731784,
+          "diseased_correct": 79,
+          "false_healthy": 58
+        },
+        {
+          "epoch": 1,
+          "h1": 0.1464606922871855,
+          "h5": 0.45157781710629746,
+          "unseen_top1": 0.12302006335797254,
+          "diseased_correct": 71,
+          "false_healthy": 873
+        },
+        {
+          "epoch": 2,
+          "h1": 0.12965890687144008,
+          "h5": 0.44971027156946186,
+          "unseen_top1": 0.09239704329461457,
+          "diseased_correct": 48,
+          "false_healthy": 534
+        },
+        {
+          "epoch": 3,
+          "h1": 0.12075505081222149,
+          "h5": 0.4404582949833953,
+          "unseen_top1": 0.08236536430834214,
+          "diseased_correct": 29,
+          "false_healthy": 451
+        },
+        {
+          "epoch": 4,
+          "h1": 0.11288999950133256,
+          "h5": 0.43440680881326976,
+          "unseen_top1": 0.07444561774023231,
+          "diseased_correct": 24,
+          "false_healthy": 429
+        },
+        {
+          "epoch": 5,
+          "h1": 0.11615139836560331,
+          "h5": 0.43719162408851303,
+          "unseen_top1": 0.07497360084477296,
+          "diseased_correct": 16,
+          "false_healthy": 336
+        }
+      ],
+      "checkpoint_sha256": "30c55dedfcf6d9bf8fdb57bbc6c82f6173434fb766d276762de4fdb029789f58",
+      "contract_sha256": "dddc272a269e732421b740d938346a43c4c7e2120703dbaa2effef5357322526"
+    }
+  },
+  "control_reproduces_historical_M2_weights_bitwise": true,
+  "predeclared_M3_success_gate": false,
+  "reason": "False-healthy errors increased and frozen diseased79 reference not recovered.",
+  "official_test_evaluated": false
+}

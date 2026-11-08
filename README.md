@@ -202,3 +202,40 @@ images only for frozen final evaluation.
 Submission target from the supplied brief: **27 November 2026, 11:59 PM Malaysia
 time**. Report maximum 8 pages; presentation video maximum 8 minutes. Check
 Canvas for subsequent announcements.
+
+## WP2 integration preview — 1 November 2026
+
+This local preview adds the reviewed WP2 workflow and preserves every line of the
+merged WP1/WP5 README above. See [WP2 integration evidence](docs/WP2_Integration_2026-11-01.md)
+and [Issue #2](https://github.com/FZhen2450/COS30082_ML_Project/issues/2).
+
+Fa Zhen's formal ordered-filename reconciliation is confirmed passed and was
+independently reproduced against accepted WP2 lists: 4,868 / 1,238 / 1,894.
+The earlier reconciliation-pending text above and in the dated WP1 artifact
+records the pre-reference state; those teammate artifacts are not rewritten.
+Merged .gitattributes restores the historical CRLF hashes. No new rule is added.
+
+All WP2 notebook execution controls are False; the executed originals and
+historical results are preserved. Use Katana WSL's existing as04_yolo_katana
+environment. Do not install the different CPU-reference package pins above
+wholesale into that shared environment. WP5 metric fractions and stable column
+ties are verified using canonical WP2 log scores; numerical edge cases remain
+documented rather than changing historical scoring.
+
+No staging, commits, push or PR creation occurred. Publish WP2 first after review.
+
+## WP3A integration preview — 1 November 2026
+
+The WP3A preview layers its reviewed notebook/tests over the exact WP2 dependency
+set described above. There is one shared top-level development_data.py, not a
+WP3-specific alternate. The future WP3 PR should contain only its incremental
+files on a WP2-inclusive base. See [WP3A integration evidence](docs/WP3A_Integration_2026-11-01.md)
+and [Issue #3](https://github.com/FZhen2450/COS30082_ML_Project/issues/3).
+
+Final prompt policy v2, native preprocessing/tokenization, candidate order,
+direct cosine scoring and historical hashes remain unchanged. All expensive
+notebook controls remain False. The owner-recorded frozen B/32 and L/14 results
+are documented; no full inference or training was repeated in this preparation.
+
+The GUI is published separately on the unmerged gui branch, not on main. No GUI
+or WP5 implementation is overwritten here. No source PR is created or published.
