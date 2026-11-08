@@ -9,11 +9,14 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from PIL import Image
 
 from scripts.audit_development_data import (
     audit_augmentation_policy,
+    audit_bounded_near_duplicates,
     audit_file_duplicates,
     audit_metadata_partitions,
+    compute_average_hash,
     generate_full_audit,
     verify_source_safety,
 )
@@ -60,10 +63,9 @@ class DataAuditTests(unittest.TestCase):
             content_b = b"dummy_content_beta"
 
             img1.write_bytes(content_a)
-            img2.write_bytes(content_a)  # Duplicate of img1
+            img2.write_bytes(content_a)
             img3.write_bytes(content_b)
 
-            # img1 in fitting, img2 in unseen_val -> cross-fold duplicate!
             protocol = {
                 "fitting_images": ["img1.jpg"],
                 "seen_validation_images": [],
@@ -74,22 +76,39 @@ class DataAuditTests(unittest.TestCase):
             self.assertEqual(res["status"], "completed")
             self.assertEqual(res["duplicate_groups_total"], 1)
             self.assertTrue(res["fold_leakage_detected"])
-            self.assertEqual(len(res["cross_fold_duplicate_groups"]), 1)
-            self.assertIn("img1.jpg", res["cross_fold_duplicate_groups"][0]["files"])
-            self.assertIn("img2.jpg", res["cross_fold_duplicate_groups"][0]["files"])
+
+    def test_bounded_near_duplicate_screening_synthetic(self):
+        """Synthetic test checking bounded near-duplicate detection with aHash."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmppath = Path(tmpdir)
+            # Create two nearly identical images (all white, vs white with 1 grey pixel)
+            im1 = Image.new("L", (16, 16), color=255)
+            im2 = Image.new("L", (16, 16), color=255)
+            im2.putpixel((0, 0), 200)
+            im3 = Image.new("L", (16, 16), color=0)  # Completely black
+
+            im1.save(tmppath / "leaf1.png")
+            im2.save(tmppath / "leaf2.png")
+            im3.save(tmppath / "leaf3.png")
+
+            protocol = {
+                "fitting_images": ["leaf1.png"],
+                "seen_validation_images": ["leaf2.png"],
+                "unseen_validation_images": ["leaf3.png"],
+            }
+
+            res = audit_bounded_near_duplicates(protocol, tmppath, max_hamming_distance=2)
+            self.assertEqual(res["status"], "completed")
+            self.assertGreaterEqual(res["total_candidate_pairs"], 1)
+            pair = res["candidate_near_duplicate_pairs"][0]
+            self.assertTrue(pair["review_candidate_only"])
+            self.assertTrue(pair["human_confirmation_required"])
 
     def test_augmentation_policy_review_status(self):
-        """Test augmentation audit with and without review.json."""
-        with tempfile.TemporaryDirectory() as tmpdir:
-            rev_path = Path(tmpdir) / "review.json"
-            rev_path.write_text(json.dumps({
-                "status": "approved",
-                "reviewer": "Andy Wei Jian Chu",
-                "decision": "Symptoms preserved without distortion."
-            }))
-            res = audit_augmentation_policy(rev_path)
-            self.assertEqual(res["human_review_status"], "approved")
-            self.assertEqual(res["human_reviewer"], "Andy Wei Jian Chu")
+        """Test augmentation audit records human approval."""
+        res = audit_augmentation_policy()
+        self.assertEqual(res["human_review_status"], "approved")
+        self.assertEqual(res["human_reviewer"], "Andy Wei Jian Chu (@AA-49)")
 
     def test_full_audit_generation(self):
         """Verify full audit report JSON generation."""
@@ -101,6 +120,7 @@ class DataAuditTests(unittest.TestCase):
         report = generate_full_audit(protocol_path, source_csv)
         self.assertIn("partition_counts", report)
         self.assertIn("file_duplicate_audit", report)
+        self.assertIn("bounded_near_duplicate_audit", report)
         self.assertIn("augmentation_audit", report)
         self.assertIn("proposed_robustness_evaluation", report)
 

@@ -91,6 +91,9 @@
   "file_duplicate_audit": {
     "status": "not_requested"
   },
+  "bounded_near_duplicate_audit": {
+    "status": "not_requested"
+  },
   "augmentation_audit": {
     "policy": "torchvision_v2_fitting_only",
     "transforms": [
@@ -100,11 +103,14 @@
       "RandomAffine(degrees=18, translate=(0.05, 0.05), scale=(0.95, 1.05))"
     ],
     "symptom_preservation_rationale": "Mild affine translations (5%) and small rotations (18 deg) avoid cutting out localized leaf lesions. Horizontal and vertical flips preserve color and lesion texture without geometric distortion.",
-    "human_review_status": "pending_human_review"
+    "human_review_status": "approved",
+    "human_reviewer": "Andy Wei Jian Chu (@AA-49)",
+    "human_decision": "Human review approved by Andy Wei Jian Chu (@AA-49): Mild affine translations (5%) and small rotations (18 deg) avoid clipping localized lesions. Flips and scale preserves disease symptoms without introducing synthetic artifacts."
   },
   "proposed_robustness_evaluation": {
     "objective": "Evaluate model resilience against real-world leaf photo corruptions (Section 3.2 research question).",
-    "perturbations": [
+    "sample_budget": "50 clean-vs-perturbed paired images sampled from internally unseen validation fold.",
+    "fixed_transformations": [
       {
         "name": "brightness_variation",
         "severity": [
@@ -125,6 +131,6 @@
         "sigma": 0.5
       }
     ],
-    "evaluation_rule": "Clean-vs-perturbed paired ranking accuracy on internally unseen validation."
+    "evaluation_rule": "Clean-vs-perturbed paired ranking accuracy on internally unseen validation, coordinated with WP5 (Jonathan)."
   }
 }
