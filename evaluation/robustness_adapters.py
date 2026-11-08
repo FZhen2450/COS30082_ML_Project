@@ -16,6 +16,7 @@ This module constructs no model, downloads nothing and reads no files.
 from __future__ import annotations
 
 from types import MappingProxyType
+from numbers import Integral
 
 import numpy as np
 
@@ -69,14 +70,31 @@ def _numpy(value):
     return np.asarray(value)
 
 
+def _integer_ids(value, label):
+    """Validate original global-ID types before any integer conversion."""
+    if isinstance(value, (list, tuple)):
+        def validate(item):
+            if isinstance(item, (list, tuple)):
+                for child in item: validate(child)
+            elif isinstance(item, (bool, np.bool_)) or not isinstance(item, Integral):
+                raise ValueError(f"{label} must contain integer IDs without coercion")
+        validate(value)
+    array = _numpy(value)
+    if (array.dtype.kind not in "iu" or array.size == 0 or np.any(array < 0)
+            or np.any(array > np.iinfo(np.int64).max)):
+        raise ValueError(f"{label} must contain nonnegative int64-compatible IDs")
+    return array.astype(np.int64, copy=True)
+
+
 class PredictorAdapter:
     """Validate a frozen finalist predictor's outputs against its declared contract."""
 
     def __init__(self, predictor, *, model_kind, candidate_ids):
         if model_kind not in FINALIST_CONTRACTS:
             raise ValueError(f"unknown finalist model kind: {model_kind}")
-        ids = [int(v) for v in candidate_ids]
-        if not ids or ids != sorted(set(ids)):
+        array = _integer_ids(candidate_ids, "candidate_ids")
+        ids = array.tolist()
+        if array.ndim != 1 or ids != sorted(set(ids)):
             raise ValueError("candidate_ids must be unique and ascending global IDs")
         if not callable(getattr(predictor, "predict", None)):
             raise TypeError("predictor must expose predict(images)")
@@ -87,8 +105,8 @@ class PredictorAdapter:
         images = list(images)
         # Explicit top-k: the shared contract's default (5) is invalid for universes below 5 columns.
         output = self.predictor.predict(images, topk=min(5, int(self.ids.size)))
-        returned_ids = _numpy(output.get("candidate_ids"))
-        if returned_ids.shape != self.ids.shape or not np.array_equal(returned_ids.astype(np.int64), self.ids):
+        returned_ids = _integer_ids(output.get("candidate_ids"), "returned candidate_ids")
+        if returned_ids.shape != self.ids.shape or not np.array_equal(returned_ids, self.ids):
             raise ValueError("predictor candidate columns differ from the declared candidate universe")
         semantics = output.get("score_semantics")
         if semantics != self.contract["predictor_score_semantics"]:
@@ -103,7 +121,9 @@ class PredictorAdapter:
             raise ValueError("scores must be finite with shape [batch, candidates]")
         result = {"scores": scores.copy()}
         if "topk_composition_ids" in output:
-            topk = _numpy(output["topk_composition_ids"]).astype(np.int64)
+            topk = _integer_ids(output["topk_composition_ids"], "returned top-k IDs")
+            if topk.ndim != 2 or topk.shape[0] != len(images) or not 1 <= topk.shape[1] <= min(5, self.ids.size):
+                raise ValueError("Invalid returned top-k shape")
             expected = self.ids[np.argsort(-scores, axis=1, kind="stable")[:, :topk.shape[1]]]
             if not np.array_equal(topk, expected):
                 raise ValueError("predictor top-k disagrees with its own canonical scores (stable ties)")

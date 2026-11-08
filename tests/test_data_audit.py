@@ -124,6 +124,28 @@ class DataAuditTests(unittest.TestCase):
         self.assertIn("augmentation_audit", report)
         self.assertIn("proposed_robustness_evaluation", report)
 
+    def test_unsafe_and_redirected_image_paths_are_rejected(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder);images=root/'images';images.mkdir();outside=root/'outside.jpg';outside.write_bytes(b'private')
+            for name in ('../outside.jpg',str(outside),'a\\outside.jpg'):
+                protocol={'fitting_images':[name],'seen_validation_images':[],'unseen_validation_images':[]}
+                with self.subTest(name=name),self.assertRaises((ValueError,PermissionError)):
+                    audit_file_duplicates(protocol,images)
+            (images/'redirect.jpg').symlink_to(outside)
+            protocol={'fitting_images':['redirect.jpg'],'seen_validation_images':[],'unseen_validation_images':[]}
+            with self.assertRaises((ValueError,PermissionError)):audit_file_duplicates(protocol,images)
+    def test_near_duplicate_failures_are_reported_without_claiming_complete_decode(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder);(root/'broken.jpg').write_bytes(b'not an image')
+            protocol={'fitting_images':['broken.jpg','missing.jpg'],'seen_validation_images':[],'unseen_validation_images':[]}
+            result=audit_bounded_near_duplicates(protocol,root)
+            self.assertEqual(result.get('unreadable_files'),['broken.jpg','missing.jpg'])
+            self.assertEqual(result.get('successfully_hashed_images'),0)
+    def test_preview_approval_does_not_claim_production_transform_equivalence(self):
+        result=audit_augmentation_policy()
+        self.assertIs(result.get('production_transform_equivalence_verified'),False)
+        self.assertEqual(result.get('preview_resolution'),192)
+
 
 if __name__ == "__main__":
     unittest.main()

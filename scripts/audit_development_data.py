@@ -34,6 +34,17 @@ def verify_source_safety(source_csv: Path | str) -> None:
         raise PermissionError(f"Strict safety boundary: official-test file {name} must never be audited.")
 
 
+def approved_image_path(images_dir: Path, filename: str) -> Path:
+    """Confine an allowlisted flat filename, including resolved symlinks, to its root."""
+    if not isinstance(filename, str) or not filename or filename in (".", "..") or any(c in filename for c in "/\\:"):
+        raise ValueError("Audit image names must be flat relative filenames")
+    root = Path(images_dir).resolve()
+    path = (root / filename).resolve()
+    if path.parent != root:
+        raise ValueError("Audit image path redirects outside the approved image directory")
+    return path
+
+
 def compute_average_hash(image_path: Path, hash_size: int = 8) -> Optional[int]:
     """Compute bounded 64-bit average hash (aHash) using PIL for perceptual near-duplicate screening."""
     try:
@@ -59,7 +70,7 @@ def audit_metadata_partitions(
     fitting_df, seen_val_df, unseen_val_df = validate_protocol(protocol, source_csv)
 
     total_images = len(fitting_df) + len(seen_val_df) + len(unseen_val_df)
-    
+
     # Composition counts and singletons
     fitting_comp_counts = fitting_df["composition_id"].value_counts()
     singletons = fitting_comp_counts[fitting_comp_counts == 1].index.tolist()
@@ -128,12 +139,16 @@ def audit_file_duplicates(
     hash_to_files: Dict[str, List[str]] = {}
     unreadable_files: List[str] = []
 
-    for fname in allowlist:
-        path = img_dir / fname
+    for fname in sorted(allowlist):
+        path = approved_image_path(img_dir, fname)
         if not path.is_file():
             unreadable_files.append(fname)
             continue
-        sha = hashlib.sha256(path.read_bytes()).hexdigest()
+        try:
+            sha = hashlib.sha256(path.read_bytes()).hexdigest()
+        except OSError:
+            unreadable_files.append(fname)
+            continue
         hash_to_files.setdefault(sha, []).append(fname)
 
     duplicates = {h: files for h, files in hash_to_files.items() if len(files) > 1}
@@ -164,7 +179,7 @@ def audit_bounded_near_duplicates(
     protocol: Dict[str, Any], images_dir: Path | str, max_hamming_distance: int = 2
 ) -> Dict[str, Any]:
     """Bounded deterministic perceptual near-duplicate screening using 8x8 average hash.
-    
+
     Treats matches as review candidates requiring human confirmation; never deletes data automatically.
     """
     img_dir = Path(images_dir)
@@ -182,10 +197,13 @@ def audit_bounded_near_duplicates(
     sampled_files = allowlist[:sample_size]
 
     hashes = {}
+    unreadable_files = []
     for fname in sampled_files:
-        h = compute_average_hash(img_dir / fname)
+        h = compute_average_hash(approved_image_path(img_dir, fname))
         if h is not None:
             hashes[fname] = h
+        else:
+            unreadable_files.append(fname)
 
     candidate_pairs = []
     files_list = list(hashes.keys())
@@ -210,6 +228,8 @@ def audit_bounded_near_duplicates(
         "method": "pil_ahash_8x8",
         "predeclared_threshold_hamming": max_hamming_distance,
         "scanned_sample_budget": sample_size,
+        "successfully_hashed_images": len(hashes),
+        "unreadable_files": unreadable_files,
         "candidate_near_duplicate_pairs": candidate_pairs,
         "total_candidate_pairs": len(candidate_pairs),
         "note": "Perceptual matches are advisory candidates for inspection; no automatic deletion or resplitting allowed.",
@@ -225,6 +245,9 @@ def audit_augmentation_policy(human_decision_override: Optional[str] = None) -> 
     )
     return {
         "policy": "torchvision_v2_fitting_only",
+        "preview_resolution": 192,
+        "production_transform_equivalence_verified": False,
+        "human_review_scope": "Andy-reported 192px preview-policy approval; not exact production-transform equivalence",
         "transforms": [
             "Resize((192, 192))",
             "RandomHorizontalFlip(p=0.5)",
@@ -246,10 +269,10 @@ def generate_full_audit(
     source_csv: Path | str,
     images_dir: Optional[Path | str] = None,
 ) -> Dict[str, Any]:
-    """Produce the complete Issue #7 audit report fulfilling all checklist criteria."""
+    """Produce metadata/duplicate/preview audit evidence; visual and bias review are separate."""
     verify_source_safety(source_csv)
     protocol = json.loads(Path(protocol_path).read_text(encoding="utf-8"))
-    
+
     meta_audit = audit_metadata_partitions(protocol, source_csv)
     dup_audit = audit_file_duplicates(protocol, images_dir) if images_dir else {"status": "not_requested"}
     near_dup_audit = audit_bounded_near_duplicates(protocol, images_dir) if images_dir else {"status": "not_requested"}

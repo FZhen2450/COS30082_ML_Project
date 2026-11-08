@@ -226,5 +226,28 @@ class WP2NotebookPredictorTests(unittest.TestCase):
             eval_predictor.predict([Image.new("RGB", (6, 6))], topk=4)  # more than 3 candidates
 
 
+
+class StrictGlobalIDTests(unittest.TestCase):
+    def test_constructor_rejects_float_bool_and_string_ids_before_cast(self):
+        for ids in ([3.9,7.1,9.2],[True,7,9],['3',7,9]):
+            with self.subTest(ids=ids),self.assertRaises(ValueError):
+                PredictorAdapter(FakeCLIPPredictor(),model_kind=CLIP_FROZEN,candidate_ids=ids)
+    def test_returned_candidates_reject_float_bool_and_string_ids(self):
+        images=[Image.new('RGB',(8,8))]
+        for values in (np.array([3.9,7.1,9.2]),np.array([True,True,True]),np.array(['3','7','9'])):
+            predictor=FakeCLIPPredictor();original=predictor.predict
+            def predict(batch,topk=5):
+                out=original(batch,topk=topk);out['candidate_ids']=values;return out
+            predictor.predict=predict
+            with self.subTest(values=values),self.assertRaises(ValueError):
+                PredictorAdapter(predictor,model_kind=CLIP_FROZEN,candidate_ids=[3,7,9]).predict(images)
+    def test_returned_rank_ids_reject_fractional_values_before_cast(self):
+        predictor=FakeCLIPPredictor();original=predictor.predict
+        def predict(batch,topk=5):
+            out=original(batch,topk=topk);out['topk_composition_ids']=out['topk_composition_ids'].double()+0.1;return out
+        predictor.predict=predict
+        with self.assertRaises(ValueError):
+            PredictorAdapter(predictor,model_kind=CLIP_FROZEN,candidate_ids=[3,7,9]).predict([Image.new('RGB',(8,8))])
+
 if __name__ == "__main__":
     unittest.main()

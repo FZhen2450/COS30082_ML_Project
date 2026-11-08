@@ -47,9 +47,17 @@ def json_hash(value):
                                      allow_nan=False).encode()).hexdigest()
 
 
+def _sha256_stream(stream):
+    """Portable bounded-memory SHA-256; callers own the stream and its position."""
+    digest = hashlib.sha256()
+    for block in iter(lambda: stream.read(4 * 1024 * 1024), b""):
+        digest.update(block)
+    return digest.hexdigest()
+
+
 def file_hash(path):
     with Path(path).open("rb") as stream:
-        return hashlib.file_digest(stream, "sha256").hexdigest()
+        return _sha256_stream(stream)
 
 
 def tensor_hash(value):
@@ -156,12 +164,12 @@ def _load_m6_checkpoint(path, expected):
     """Read only the selected, hash-pinned adapter; never execute notebook/pickle code."""
     path = Path(path)
     with path.open("rb") as stream:
-        if hashlib.file_digest(stream, "sha256").hexdigest() != M6_SHA256:
+        if _sha256_stream(stream) != M6_SHA256:
             raise ValueError("Select the pinned M6 seed-45 epoch-1 checkpoint (SHA-256 mismatch)")
         stream.seek(0)
         payload = torch.load(stream, map_location="cpu", weights_only=True)
         stream.seek(0)
-        if hashlib.file_digest(stream, "sha256").hexdigest() != M6_SHA256:
+        if _sha256_stream(stream) != M6_SHA256:
             raise ValueError("Adapter file changed while loading")
     if not isinstance(payload, dict) or payload.get("schema") != "wp3b-visual-adapter-m4-v1":
         raise ValueError("Unsupported adapter envelope; obtain the selected M6 checkpoint/schema handoff")
@@ -231,12 +239,12 @@ def load_native_clip(path, device):
     from clip.model import build_model
     from clip.clip import _transform
     with Path(path).open("rb") as stream:
-        if hashlib.file_digest(stream, "sha256").hexdigest() != CLIP_SHA256:
+        if _sha256_stream(stream) != CLIP_SHA256:
             raise ValueError("Select the pinned official ViT-L/14 weights (SHA-256 mismatch)")
         stream.seek(0)
         scripted = torch.jit.load(stream, map_location="cpu").eval()
         stream.seek(0)
-        if hashlib.file_digest(stream, "sha256").hexdigest() != CLIP_SHA256:
+        if _sha256_stream(stream) != CLIP_SHA256:
             raise ValueError("CLIP file changed while loading")
     model = build_model(scripted.state_dict()).to(device)
     del scripted

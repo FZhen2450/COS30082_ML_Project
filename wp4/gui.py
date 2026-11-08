@@ -293,7 +293,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     candidates = (ROOT / "artifacts/data/development_seed42_reconciled.json",
                   ROOT / "development_seed42_reconciled.json",
-                  ROOT / "artifacts/data/development_seed42_wp1_v1.json")
+                  ROOT / "artifacts/data/development_seed42_reconciled_v1.json")
     parser.add_argument("--protocol", type=Path, default=next((p for p in candidates if p.is_file()), candidates[-1]))
     parser.add_argument("--images", type=Path, default=ROOT / "DPD_Small_dataset")
     parser.add_argument("--source", type=Path, default=ROOT / "DPD_Small_train.csv")
