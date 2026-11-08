@@ -1,4 +1,4 @@
-"""Final-333 identity manifest and blind inference order. Authorised use only.
+"""Final-333 identity manifest and label-free inference order. Authorised use only.
 
 ``final_manifest`` is the only WP5 function that reads official metadata: the two
 official test CSVs, whose raw SHA-256 values must be supplied by their owner.
@@ -7,9 +7,14 @@ official filenames or labels. Fitting identities come from the already
 validated development manifest, because every frozen model was trained on that
 4,868-image fitting fold.
 
-``inference_order`` derives a truth-free list for model owners. Owners need
-only ordered filenames and digests to export packets, so official labels are
-not distributed before inference.
+``inference_order`` derives a label-free list for model owners: ordered
+filenames and the digests packets must carry. It adds no label to the owner
+channel, but this is not a label-blind evaluation: model owners can know the
+official labels, because DPD filenames embed crop/disease names and the
+course-supplied official CSVs are tracked in Git. Opaque renamed copies would not
+help, since the original bytes re-identify each image. Integrity therefore rests
+on checkpoint identity (declared-provenance pins at import, plus owner on-machine
+file hashes), a predictor path that receives only pixels, and a replay audit.
 
 Protocol status: one shared 333-class candidate universe for both official folds
 is the team-proposed protocol recorded in Issue #8, pending explicit lecturer
@@ -107,6 +112,8 @@ def final_manifest(development, seen_csv, unseen_csv, *, candidate_payload, prom
         raise ValueError("Final prompt payload differs from Issue #8")
     seen, seen_source = official_samples(seen_csv, "seen", expected_sha256["seen"], by_id)
     unseen, unseen_source = official_samples(unseen_csv, "unseen", expected_sha256["unseen"], by_id)
+    if {s.sample_id for s in seen + unseen} & {s.sample_id for s in development.samples}:
+        raise ValueError("Official test filenames overlap the training-source development manifest")
     fitting = tuple(s for s in development.samples if s.fold == "fitting")
     samples = fitting + seen + unseen
     seen_axis = development.spec.ids
@@ -138,7 +145,7 @@ def inference_order(manifest):
             "split_hash_namespace": IDENTITY_MANIFEST, "split_sha256": manifest.sha256,
             "clip_prompt_sha256": FINAL_PROMPT_SHA256, "synthetic": manifest.spec.synthetic,
             "folds": {fold: [s.sample_id for s in manifest.samples if s.fold == fold] for fold in ("seen", "unseen")},
-            "ground_truth": "withheld; WP5 attaches truths from the manifest at import"}
+            "ground_truth": "not in this order; WP5 attaches truths from the manifest at import"}
 
 
 __all__ = ["OFFICIAL_CSV", "FINAL_PROTOCOL_ID", "FINAL_SPLIT_NAMESPACE", "INFERENCE_ORDER_SCHEMA",
