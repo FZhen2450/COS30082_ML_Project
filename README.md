@@ -14,6 +14,13 @@ for the current implementation, verification commands and remaining handoffs.
 See [31 October integration status](docs/WP1_Integration_2026-10-31.md) for the
 applied patch, current checks, image checksums and Issues #2/#3 reconciliation.
 
+## Desktop interface (WP4)
+
+Run `python gui.py` with Python 3.11-3.13 to preview a plant image and browse
+fitting-only training references. Real identification is enabled after loading
+trained WP1 crop/disease checkpoints; no predictions are simulated. See the
+[GUI guide](docs/WP4_GUI.md) for setup, current scope and WP2/WP3 integration.
+
 ## Team work packages
 
 | Work package | Co-owners | Deliverables |
