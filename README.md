@@ -1,3 +1,5 @@
+> **8 November2026 integration checkpoint:** [current protocol, verified results and remaining gates](docs/Integration_Checkpoint_2026-11-08.md). Katana users: retain the existing `as04_yolo_katana` environment; do not replace it with the different dependency pins below. All notebook training/evaluation controls remain default-off. Models, raw images and historical runs are not stored inGit.
+
 # COS30082 Applied Machine Learning Project
 
 ## Out-of-Distribution Plant Disease Identification

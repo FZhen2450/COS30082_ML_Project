@@ -6,6 +6,20 @@ training-image display in a local English Tkinter application.
 
 ## Run
 
+**Katana integration checkpoint (8 November2026):** keep the existing
+`as04_yolo_katana` Python3.10.20 / torch2.5.1+cu121 / torchvision0.20.1+cu121
+environment. Do not install the README/requirements pins over that environment.
+The portable streaming SHA helper also supports Python3.10 without weakening
+model hashes. Other machines may continue using the previously documented
+Python3.11–3.13 setup below.
+
+The default GUI catalog now uses the separately added
+`artifacts/data/development_seed42_reconciled_v1.json`: exact historical
+4,868/1,238/1,894 filenames, original323IDs and original training CSV bytes.
+The earlier pending-status manifest is retained unchanged. This is a
+323-candidate development/demo interface, not official333 evaluation.
+
+
 Install the existing `requirements.txt` in Python 3.11-3.13, including Pillow.
 Tkinter is included in the standard Windows Python installer (enable Tcl/Tk).
 From the repository root:
@@ -28,7 +42,7 @@ The app resolves default paths relative to the repository, not the current shell
 directory. Alternate inputs are supported:
 
 ```powershell
-python gui.py --images D:/DPD_Small_dataset --protocol artifacts/data/development_seed42_reconciled.json
+python gui.py --images D:/DPD_Small_dataset --protocol artifacts/data/development_seed42_reconciled_v1.json
 ```
 
 ## Available now
