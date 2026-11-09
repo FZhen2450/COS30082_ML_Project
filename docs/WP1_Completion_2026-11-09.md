@@ -10,9 +10,12 @@ Fetched GitHub and fast-forwarded the working checkout from `4397646` to main
 `bbdabfdc665c711a02b3ca94cc285eb9ed86f97a`. Existing local work was preserved in
 the named stash `codex-preserve-local-before-main-pull-20261109`, then restored.
 The GUI manifest-path conflict uses main's existing reconciled manifest.
-The WP1 follow-up is prepared on branch `fix/wp1-final-handoff-20261109`, which
-also contains the separate tested WP4 commit. Publication is distinct from
-merging into main or posting an issue reply.
+The WP1 follow-up is published on branch `fix/wp1-final-handoff-20261109` at
+[source commit 7314644](https://github.com/FZhen2450/COS30082_ML_Project/commit/73146444ace8637426042e3bfb76aa9bb3b8585c),
+which also contains the separate tested WP4 commit. GitHub's remote ref was read
+back and matched the local commit. The combined WP1/WP4 publication suite passed
+**95/95 tests with no skips**; this supplements the earlier scoped receipts.
+Publication is distinct from merging into main or posting an issue reply.
 
 - The development-audit CLI now defaults to the existing reconciled manifest,
   resolves its input defaults from the repository, and requires a new output

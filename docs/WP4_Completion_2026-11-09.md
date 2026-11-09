@@ -3,6 +3,14 @@
 Issue: [#13](https://github.com/FZhen2450/COS30082_ML_Project/issues/13).
 Base: main `bbdabfdc665c711a02b3ca94cc285eb9ed86f97a`.
 
+Publication update: the WP4 source is pushed to `fix/wp4-completion-20261109`
+at [5c9d1f9](https://github.com/FZhen2450/COS30082_ML_Project/commit/5c9d1f9b05f7de9f9c86082ecd6bf1f676048d21).
+The combined WP1/WP4 branch `fix/wp1-final-handoff-20261109` contains it at
+[7314644](https://github.com/FZhen2450/COS30082_ML_Project/commit/73146444ace8637426042e3bfb76aa9bb3b8585c).
+Both GitHub refs were read back and matched. A new combined publication regression
+passed **95/95**, no skips; the 79-test receipt below retains its original scope.
+Neither branch is merged into main, and no peer approval or issue closure is implied.
+
 The original issue checkboxes lag its comments: PR #20 is merged, its GUI is
 integrated on main, and the 8 November comment records full historical-path
 development parity. The implementation requirements below are present. This
