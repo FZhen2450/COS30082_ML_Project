@@ -1,5 +1,13 @@
 # WP4 desktop GUI
 
+**9 November 2026 follow-up:** see the [issue completion audit](WP4_Completion_2026-11-09.md)
+and [current demo/peer rehearsal runbook](WP4_Demo_Rehearsal_2026-11-09.md).
+The three real model choices have a common rehearsal command, WP1 exports bind
+actual checkpoint hashes, and Tk teardown/worker ownership has focused regression
+coverage. The applicable isolated suite passed 79/79 with no skips. The dated
+delivery and earlier verification statements below retain their historical scope;
+peer approval and the actual team recording are still separate human actions.
+
 This initial WP4 implementation assumes no existing Frederick GUI/retrieval code.
 It implements the brief's image input, crop-disease result display and relevant
 training-image display in a local English Tkinter application.

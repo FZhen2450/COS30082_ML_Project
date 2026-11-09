@@ -1,10 +1,13 @@
 """Model dispatch plus real Tk event-path tests with explicitly synthetic models."""
 import json
+import hashlib
+import inspect
 from pathlib import Path
 import tempfile
 import threading
 import time
 import unittest
+from types import SimpleNamespace
 from unittest.mock import Mock, patch
 
 from PIL import Image
@@ -15,6 +18,26 @@ from test_wp4_clip_predictor import make_catalog
 
 
 class ModelLoaderTests(unittest.TestCase):
+    def test_wp1_export_provenance_binds_files_and_rejects_a_loading_time_change(self):
+        from wp4.service import load_independent
+        with tempfile.TemporaryDirectory() as directory:
+            crop, disease = Path(directory)/'crop.pt', Path(directory)/'disease.pt'
+            crop.write_bytes(b'synthetic crop'); disease.write_bytes(b'synthetic disease')
+            catalog = SimpleNamespace(protocol_path='synthetic.json', source_csv='synthetic.csv',
+                                      protocol={key: key for key in ('candidate_sha256','split_sha256','source_sha256')})
+            predictor = SimpleNamespace(crop_transform='native crop', disease_transform='native disease')
+            with patch('independent_baseline.IndependentPredictor', return_value=predictor):
+                actual = load_independent(catalog, crop, disease)
+            self.assertEqual(actual.provenance['variant'], 'wp1')
+            self.assertEqual(actual.provenance['checkpoints']['crop']['file_sha256'],
+                             hashlib.sha256(crop.read_bytes()).hexdigest())
+            def changed(*args, **kwargs):
+                disease.write_bytes(b'changed synthetic disease')
+                return predictor
+            with patch('independent_baseline.IndependentPredictor', side_effect=changed):
+                with self.assertRaisesRegex(ValueError, 'changed while loading'):
+                    load_independent(catalog, crop, disease)
+
     def test_wp1_dispatch_is_preserved_and_frozen_clip_ignores_stale_adapter_path(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "synthetic.pt"
@@ -145,6 +168,9 @@ class ModelPickerTkTests(unittest.TestCase):
             self.assertEqual(exported, self.app.export_data)
             self.assertTrue(exported["model_provenance"]["synthetic"])
             self.assertEqual(exported["image"], self.query.name)
+            self.assertEqual(exported['input_policy']['batch_size'], 1)
+            self.assertEqual(exported['input_policy']['rgb_pixel_sha256'],
+                             hashlib.sha256(self.app.query.tobytes()).hexdigest())
             bridge = exported["model_provenance"]["protocol_bridge"]
             self.assertNotEqual(bridge["catalog_candidate"]["sha256"], bridge["model_candidate"]["sha256"])
             self.connect("frozen_clip")
@@ -179,6 +205,43 @@ class ModelPickerTkTests(unittest.TestCase):
         self.assertEqual(self.app.model_kind, "wp1")
         self.assertIn("WP1", self.app.model_status.cget("text"))
         self.errors.assert_called_once()
+
+    def test_worker_target_does_not_own_tk_callbacks_and_picker_drops_variables(self):
+        targets = []
+        real_thread = threading.Thread
+        def make_thread(*args, **kwargs):
+            targets.append(kwargs['target'])
+            return real_thread(*args, **kwargs)
+        with patch('wp4.gui.threading.Thread', side_effect=make_thread), patch(
+                'wp4.gui.load_model', side_effect=lambda catalog, kind, paths, device: SyntheticPredictor(catalog, kind)):
+            self.connect('wp1')
+            self.wait_for(lambda: self.app.predictor is not None and not self.app.busy)
+        closure = inspect.getclosurevars(targets[0]).nonlocals
+        self.assertNotIn('self', closure)
+        self.assertNotIn('done', closure)
+        self.assertNotIn('self', inspect.getclosurevars(closure['action']).nonlocals)
+        dialog = self.app.model_dialog
+        self.assertEqual(dialog.paths, {})
+        self.assertIsNone(dialog.device)
+        self.assertIsNone(dialog.on_load)
+        dialog.destroy()  # Closing an already destroyed picker is safe.
+
+    def test_close_during_background_work_discards_callback_without_tk_access(self):
+        started, finish, completed = threading.Event(), threading.Event(), threading.Event()
+        callback = Mock()
+        def action():
+            started.set()
+            finish.wait(3)
+            completed.set()
+            return 'worker-only data'
+        self.app._work(action, callback, 'Synthetic slow operation')
+        self.assertTrue(started.wait(2))
+        self.app.close()
+        finish.set()
+        self.assertTrue(completed.wait(2))
+        self.assertIsNone(self.app._on_done)
+        callback.assert_not_called()
+        self.app.close()  # Teardown must remain idempotent.
 
 
 if __name__ == "__main__":

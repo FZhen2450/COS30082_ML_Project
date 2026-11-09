@@ -1,5 +1,7 @@
 """English Tkinter desktop GUI; all image/model work runs off the UI thread."""
 import argparse
+import gc
+import hashlib
 import json
 import queue
 import sys
@@ -27,6 +29,7 @@ class PlantApp:
         self.export_data = None
         self.photos = []
         self.events = queue.Queue()
+        self._on_done = None
         self.busy = False
         self.closed = False
         self.model_label = "No model loaded"
@@ -114,21 +117,24 @@ class PlantApp:
         self.status.configure(text=description)
         self.progress.start(12)
         self._controls()
+        self._on_done = done
+        events = self.events
         def run():
             try:
-                self.events.put((done, action(), None))
+                events.put((action(), None))
             except Exception as exc:
-                self.events.put((done, None, str(exc)))
+                events.put((None, str(exc)))
         threading.Thread(target=run, daemon=True).start()
 
     def _poll(self):
         if self.closed:
             return
         try:
-            done, value, error = self.events.get_nowait()
+            value, error = self.events.get_nowait()
         except queue.Empty:
             pass
         else:
+            done, self._on_done = self._on_done, None
             self.busy = False
             self.progress.stop()
             self.status.configure(text="Ready" if not error else "Action could not be completed")
@@ -140,6 +146,7 @@ class PlantApp:
         self._poll_after = self.root.after(70, self._poll)
 
     def load_catalog(self):
+        protocol, source, images = self.protocol_path, self.source_path, self.images_path
         def done(catalog):
             self.catalog = catalog
             self.class_ids = list(catalog.candidates)
@@ -148,7 +155,7 @@ class PlantApp:
             self.class_choice.current(0)
             self.status.configure(text=f"{len(catalog.fitting):,} fitting references | {len(catalog.candidates)} candidates | Model not loaded")
             self._controls()
-        self._work(lambda: Catalog(self.protocol_path, self.source_path, self.images_path), done,
+        self._work(lambda: Catalog(protocol, source, images), done,
                    "Checking the training reference catalog...")
 
     def open_image(self):
@@ -182,6 +189,7 @@ class PlantApp:
 
     def connect_model(self, kind, paths, device):
         paths = dict(paths)
+        catalog = self.catalog
         def done(predictor):
             self.predictor = predictor
             self.model_kind = kind
@@ -189,16 +197,18 @@ class PlantApp:
             self.model_status.configure(text=self.model_label)
             self.clear_predictions()
             self._controls()
-        self._work(lambda: load_model(self.catalog, kind, paths, device), done, "Loading local recognition model...")
+        self._work(lambda: load_model(catalog, kind, paths, device), done, "Loading local recognition model...")
 
     def identify(self):
         if not self.predictor or self.query is None:
             return
+        predictor, query, catalog, model_kind = self.predictor, self.query, self.catalog, self.model_kind
         def action():
             started = time.perf_counter()
-            raw = self.predictor.predict([self.query], topk=5)
-            return (present_prediction(raw, self.catalog), raw["score_semantics"],
-                    time.perf_counter() - started, raw.get("model_provenance", {"variant": self.model_kind}))
+            raw = predictor.predict([query], topk=5)
+            return (present_prediction(raw, catalog), raw["score_semantics"],
+                    time.perf_counter() - started,
+                    raw.get("model_provenance", getattr(predictor, "provenance", {"variant": model_kind})))
         def done(result):
             predictions, semantics, elapsed, provenance = result
             self.table.delete(*self.table.get_children())
@@ -213,6 +223,9 @@ class PlantApp:
                                 "split_sha256": self.catalog.protocol["split_sha256"],
                                 "historical_reconciliation": self.catalog.protocol["historical_reconciliation"],
                                 "score_semantics": semantics, "elapsed_seconds": elapsed,
+                                "input_policy": {"decode": "PIL EXIF transpose then RGB", "batch_size": 1,
+                                                 "size": list(self.query.size),
+                                                 "rgb_pixel_sha256": hashlib.sha256(self.query.tobytes()).hexdigest()},
                                 "model_provenance": provenance,
                                 "predictions": predictions}
             self._controls()
@@ -233,6 +246,8 @@ class PlantApp:
         if composition_id in self.class_ids:
             self.class_choice.current(self.class_ids.index(composition_id))
         query = self.query if from_prediction else None
+        catalog = self.catalog
+        excluded = self.query_path if query is not None else None
         def done(result):
             for widget in self.gallery.winfo_children():
                 widget.destroy()
@@ -265,7 +280,7 @@ class PlantApp:
             if not result["items"]:
                 label(self.gallery, "No fitting references available.\nCheck the image folder or try another class.",
                       12, MUTED, justify="center").grid(row=0, column=0, columnspan=2, pady=35)
-        self._work(lambda: self.catalog.references(composition_id, query, self.query_path if query is not None else None),
+        self._work(lambda: catalog.references(composition_id, query, excluded),
                    done, "Finding related training images...")
 
     def export(self):
@@ -280,13 +295,25 @@ class PlantApp:
                     messagebox.showerror("Export failed", str(exc), parent=self.root)
 
     def close(self):
+        if self.closed:
+            return
         self.closed = True
+        self._on_done = None
         for identifier in (self._poll_after, self._catalog_after):
             try:
                 self.root.after_cancel(identifier)
             except tk.TclError:
                 pass
+        dialog = getattr(self, 'model_dialog', None)
+        if dialog is not None:
+            dialog.destroy()
+            self.model_dialog = None
+        self.photos.clear()
+        self.query_photo = None
         self.root.destroy()
+        # Destroy Tk cycles on their owning thread before later ML workers can
+        # trigger a collection. Worker actions/queues contain no UI callbacks.
+        gc.collect()
 
 
 def main():

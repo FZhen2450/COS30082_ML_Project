@@ -10,6 +10,7 @@ class ModelPicker(tk.Toplevel):
     def __init__(self, parent, on_load, initial="wp1"):
         super().__init__(parent)
         self.on_load = on_load
+        self._closed = False
         self.title("LeafLens | Connect a recognition model")
         self.configure(bg=BG)
         self.resizable(False, False)
@@ -65,5 +66,15 @@ class ModelPicker(tk.Toplevel):
         except ValueError as exc:
             messagebox.showerror("Check model files", str(exc), parent=self)
             return
+        callback = self.on_load
         self.destroy()
-        self.on_load(kind, paths, device)
+        callback(kind, paths, device)
+
+    def destroy(self):
+        if self._closed:
+            return
+        self._closed = True
+        self.on_load = None
+        self.paths.clear()
+        self.device = None
+        super().destroy()

@@ -6,6 +6,7 @@ only a visual ordering of labelled examples, never a disease predictor.
 import hashlib
 import json
 import math
+from numbers import Real
 from pathlib import Path
 
 from PIL import Image, ImageOps
@@ -87,11 +88,13 @@ def present_prediction(result, catalog):
     ids = result["candidate_ids"].tolist()
     matrix = result["scores"].tolist()
     expected = list(catalog.candidates)
-    if ids != expected or len(matrix) != 1 or len(matrix[0]) != len(ids):
+    if (any(type(cid) is not int for cid in ids) or ids != expected
+            or len(matrix) != 1 or len(matrix[0]) != len(ids)):
         raise ValueError("Model candidate columns do not match the loaded protocol")
     if result.get("candidate_sha256") != catalog.protocol["candidate_sha256"]:
         raise ValueError("Model and browser candidate fingerprints differ")
-    if not all(math.isfinite(value) for value in matrix[0]):
+    if not all(isinstance(value, Real) and not isinstance(value, bool)
+               and math.isfinite(value) for value in matrix[0]):
         raise ValueError("Model returned non-finite scores")
     ranking = sorted(zip(ids, matrix[0]), key=lambda pair: (-pair[1], pair[0]))[:5]
     return [{**catalog.candidates[cid], "score": float(score)} for cid, score in ranking]
@@ -100,5 +103,33 @@ def present_prediction(result, catalog):
 def load_independent(catalog, crop, disease, device="cpu"):
     # No automatic pretrained download; the existing loader rebuilds checkpoints.
     from independent_baseline import IndependentPredictor
-    return IndependentPredictor(crop, disease, catalog.protocol_path,
-                                catalog.source_csv, device=device)
+    import platform
+    import torch
+    import torchvision
+
+    def identities():
+        values = {}
+        for task, filename in (("crop", crop), ("disease", disease)):
+            digest = hashlib.sha256()
+            with Path(filename).open('rb') as stream:
+                for block in iter(lambda: stream.read(4 * 1024 * 1024), b''):
+                    digest.update(block)
+            values[task] = {"filename": Path(filename).name, "file_sha256": digest.hexdigest()}
+        return values
+
+    before = identities()
+    predictor = IndependentPredictor(crop, disease, catalog.protocol_path,
+                                     catalog.source_csv, device=device)
+    if identities() != before:
+        raise ValueError("WP1 checkpoint files changed while loading")
+    predictor.provenance = {
+        "variant": "wp1", "model": "independent crop / disease classifiers",
+        "checkpoints": before,
+        "runtime": {"python": platform.python_version(), "torch": str(torch.__version__),
+                    "torchvision": str(torchvision.__version__), "device": device},
+        "preprocessing": {"crop": str(predictor.crop_transform), "disease": str(predictor.disease_transform)},
+        "catalog_candidate_sha256": catalog.protocol['candidate_sha256'],
+        "split_sha256": catalog.protocol['split_sha256'],
+        "source_sha256": catalog.protocol['source_sha256'],
+    }
+    return predictor
