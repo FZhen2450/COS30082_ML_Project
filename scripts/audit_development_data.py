@@ -17,7 +17,8 @@ import pandas as pd
 from PIL import Image
 
 # Add repo root to import path
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 from shared_protocol import FOLDS, candidate_table, digest, validate_protocol
 
 
@@ -299,15 +300,19 @@ def generate_full_audit(
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--source", type=Path, default=Path("DPD_Small_train.csv"))
-    parser.add_argument("--protocol", type=Path, default=Path("artifacts/data/development_seed42_wp1_v1.json"))
+    parser.add_argument("--source", type=Path, default=ROOT / "DPD_Small_train.csv")
+    parser.add_argument("--protocol", type=Path, default=ROOT / "artifacts/data/development_seed42_reconciled_v1.json")
     parser.add_argument("--images", type=Path, default=None)
-    parser.add_argument("--output", type=Path, default=Path("artifacts/data/development_audit_report.json"))
+    parser.add_argument("--output", type=Path, required=True,
+                        help="New report file; existing audit evidence is never overwritten")
     args = parser.parse_args()
+    if args.output.exists():
+        raise FileExistsError("Preserving existing audit evidence; choose a new --output file")
 
     report = generate_full_audit(args.protocol, args.source, args.images)
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+    with args.output.open("x", encoding="utf-8") as stream:
+        stream.write(json.dumps(report, indent=2) + "\n")
     print(f"Audit report successfully written to: {args.output}")
 
 

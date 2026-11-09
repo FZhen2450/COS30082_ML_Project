@@ -8,6 +8,7 @@ DPD_Small.7z
 
 # Virtual environment & packages
 .venv/
+.venv-*/
 env/
 venv/
 ENV/
@@ -36,6 +37,7 @@ Desktop.ini
 *.log
 checkpoints/
 runs/
+tmp/
 *.h5
 *.keras
 *.pt
