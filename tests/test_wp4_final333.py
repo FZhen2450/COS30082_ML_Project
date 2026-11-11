@@ -97,17 +97,23 @@ class FinalGUI333Tests(unittest.TestCase):
             return ResidualVisualAdapter().eval().requires_grad_(False), torch.ones(323, 768), {}
         for use_adapter in (False, True):
             native = NativeFixture()
+            official_fixture = unit_features(native.text)
             with self.subTest(adapter=use_adapter), patch('wp4.final_predictor.load_native_clip',
                     return_value=(native, lambda im: torch.zeros(3, 224, 224), tokenize)), patch(
-                    'wp4.final_predictor.load_m6_checkpoint', side_effect=adapter):
+                    'wp4.final_predictor.load_m6_checkpoint', side_effect=adapter), patch(
+                    'wp4.final_predictor.load_official_text_bank',return_value=(official_fixture,
+                        {'text_bank_file_sha256':'synthetic-bank-file','direct_text_sha256':'synthetic-bank-features'})), patch.object(
+                    native,'encode_text',side_effect=AssertionError('The official bank must not be re-encoded')):
                 predictor = FinalCLIPPredictor(catalog, 'fixture', 'adapter-fixture' if use_adapter else None)
                 result = predictor.predict([Image.new('RGB', (20, 20))])
                 self.assertEqual(tuple(result['scores'].shape), (1, 333))
-                expected = unit_features(native.encode_image(torch.zeros(1, 3, 224, 224))) @ unit_features(predictor.direct).T
+                expected = unit_features(native.encode_image(torch.zeros(1, 3, 224, 224))) @ official_fixture.T
                 torch.testing.assert_close(result['scores'], expected, rtol=0, atol=0)
                 self.assertEqual(result['candidate_ids'].tolist(), list(range(333)))
                 self.assertEqual(result['candidate_sha256'], catalog.protocol['candidate_sha256'])
                 self.assertEqual(len(present_prediction(result, catalog)), 5)
+                self.assertTrue(predictor.text_bank_is_canonical)
+                torch.testing.assert_close(predictor.direct,official_fixture,rtol=0,atol=0)
                 if use_adapter:
                     self.assertEqual(predictor.provenance['adapter_training_scope'], 'historical_development_4868')
                     self.assertFalse(predictor.provenance['final_full8000_adapter_available'])

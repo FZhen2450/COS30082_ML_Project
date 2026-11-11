@@ -42,6 +42,7 @@ tmp/
 *.keras
 *.pt
 *.pth
+models/official333_clip_text_bank.npz
 
 # Assignment Briefs & Documents
 AS02 ML Project.pdf

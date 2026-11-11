@@ -1,5 +1,13 @@
 # WP4 desktop GUI
 
+**12 November update:** final-333 Frozen CLIP and historical M6 require the
+original hash-pinned official text bank. Run
+`python scripts/fetch_official_clip_text_bank.py` explicitly before loading them,
+or set `LEAFLENS_CLIP_TEXT_BANK` to the original NPZ file. Stored float64 unit
+rows are used without prompt re-encoding or renormalization. A missing/modified
+bank fails model loading; GUI startup never downloads assets. WP1 does not need
+this bank. See the [acceptance supplement](WP1_WP4_Acceptance_Supplement_2026-11-12.md).
+
 **9 November 2026 follow-up:** see the [issue completion audit](WP4_Completion_2026-11-09.md)
 and [current demo/peer rehearsal runbook](WP4_Demo_Rehearsal_2026-11-09.md).
 The three real model choices have a common rehearsal command, WP1 exports bind

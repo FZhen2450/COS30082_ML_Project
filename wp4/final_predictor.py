@@ -8,7 +8,8 @@ import torchvision
 from final_protocol import validate_final_protocol
 from .clip_predictor import (CLIPPredictor, CLIP_REVISION, CLIP_SHA256, NATIVE_PREPROCESSING,
                              catalog_contract, load_m6_checkpoint, load_native_clip,
-                             tensor_hash, unit_features)
+                             tensor_hash)
+from .text_bank import load_official_text_bank
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -19,6 +20,8 @@ class FinalCLIPPredictor(CLIPPredictor):
         self.device = torch.device(device)
         if self.device.type not in ('cpu', 'cuda') or (self.device.type == 'cuda' and not torch.cuda.is_available()):
             raise ValueError('Select an available CPU or CUDA device')
+        self.direct, bank_identity = load_official_text_bank()
+        self.text_bank_is_canonical = True
         self.expected = {'ids': [row['composition_id'] for row in catalog.protocol['candidates']]}
         self.candidate_sha256 = self.model_candidate_sha256 = catalog.protocol['candidate_sha256']
         self.adapter = None
@@ -45,15 +48,5 @@ class FinalCLIPPredictor(CLIPPredictor):
             self.provenance.update({'adapter_training_scope': 'historical_development_4868',
                                    'historical_direct_text_sha256': tensor_hash(historical_text),
                                    'final_full8000_adapter_available': False})
-        self.model, self.preprocess, tokenize = load_native_clip(clip_weights, self.device)
-        prompts = [row['prompt'] for row in catalog.protocol['prompt_payload']['rows']]
-        tokens = tokenize(prompts, context_length=77, truncate=False)
-        if tuple(tokens.shape) != (333, 77):
-            raise ValueError('Final tokenizer must return all 333 ordered candidate rows')
-        with torch.inference_mode():
-            parts = [self.model.encode_text(tokens[i:i+32].to(self.device)).cpu()
-                     for i in range(0, 333, 32)]
-        self.direct = unit_features(torch.cat(parts))
-        if tuple(self.direct.shape) != (333, 768):
-            raise ValueError('Final text bank must contain 333 native feature rows')
-        self.provenance['direct_text_sha256'] = tensor_hash(self.direct)
+        self.model, self.preprocess, _tokenize = load_native_clip(clip_weights, self.device)
+        self.provenance.update(bank_identity)

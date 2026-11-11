@@ -1,5 +1,10 @@
 # WP1 and WP4 final-333 release - 11 November 2026
 
+**12 November follow-up:** the [acceptance supplement](WP1_WP4_Acceptance_Supplement_2026-11-12.md)
+adds state identities, replaces final-mode prompt re-encoding with the original
+shared bank, and verifies synthetic added-candidate selection/fallback/export.
+The dated results below retain their original scope.
+
 This release implements the [student-reported lecturer clarification](Lecturer_Clarification_2026-11-11.md)
 without altering the historical development split, checkpoints or official results.
 Full-training execution and its new official metrics are recorded separately

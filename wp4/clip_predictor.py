@@ -302,7 +302,8 @@ class CLIPPredictor:
             raise ValueError("Expected native CLIP image features [B,768]")
         if self.adapter is not None:
             features = self.adapter(features)
-        scores = unit_features(features) @ unit_features(self.direct).T
+        bank = self.direct if getattr(self, 'text_bank_is_canonical', False) else unit_features(self.direct)
+        scores = unit_features(features) @ bank.T
         if not torch.isfinite(scores).all():
             raise ValueError("Non-finite cosine scores")
         ids = torch.tensor(self.expected["ids"], dtype=torch.int64)

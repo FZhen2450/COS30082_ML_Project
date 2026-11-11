@@ -1,0 +1,5898 @@
+{
+  "schema": "wp1-full8000-state-identity-v1",
+  "training_count": 8000,
+  "training_manifest_sha256": "7f94ac00c89b212ec30a646985b24f1a61fca19cf64b6f25757547868e3e4870",
+  "candidate_sha256": "ba17e94119e8b2b7a4b18603e25405d2f52bf4a93396973f80491800697eb62f",
+  "checkpoints": {
+    "crop": {
+      "checkpoint_file_sha256": "16c8f8ee1933e9333d49f8e8e33b88dd27c914d0b839920b35d9b3996f4cd6f5",
+      "namespace": "cos30082-state-dict-sha256-v1",
+      "definition": "SHA256(namespace UTF8 plus NUL; tensors in ascending key order; for each tensor: uint64 big-endian metadata-byte length, compact sorted UTF8 JSON {name,dtype,shape,byte_order:little}, uint64 big-endian data-byte length, detached dense contiguous CPU tensor bytes in C order and little endian). Includes parameters and persistent buffers; excludes checkpoint metadata and serialization.",
+      "state_dict_sha256": "19917af4b944c2c03c05547e749867035a06665e6a07008b7b6f2fbe08ae5d04",
+      "tensor_count": 320,
+      "state_elements": 23673900,
+      "tensors": [
+        {
+          "name": "bn1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "5b8f6a1df52320fa0c88cf5520cce44671c8510f4e07b550656298154022eb65"
+        },
+        {
+          "name": "bn1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "bn1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "f2b46c30469b798e59902f5683e4d35df5ad81e4a4b77461d0eeac94a84626aa"
+        },
+        {
+          "name": "bn1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "30fb92e4baeaaffa5c58905b189926061421ed0d6eec3db679b257cf066b0514"
+        },
+        {
+          "name": "bn1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "76ed59d31ad4aec496c76d2aa16dbe8db915e3a1e42809607deb13203b7eefd0"
+        },
+        {
+          "name": "conv1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            64,
+            3,
+            7,
+            7
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "f18d59dc056fe5f67dd384416c6dc78b5bfdf473d951473b54337ecdef4952eb"
+        },
+        {
+          "name": "fc.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            55
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "09c90d2a7096e48116800cad2f3ca96ee221246ddc01859a58755aef0e269dae"
+        },
+        {
+          "name": "fc.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            55,
+            2048
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "ec05e0c226cc8c6e893f4dfaf4c38dee051dba533a9da4bc0a40f4c30885c8fb"
+        },
+        {
+          "name": "layer1.0.bn1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b44b691dbb12b9ede33ffbc4b2505506c64749c46559cb23e83dfa750fe977aa"
+        },
+        {
+          "name": "layer1.0.bn1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer1.0.bn1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "cd4b0c90e6c1444dd5289d654b9b8ae5a907dc8c885a95f9fe52b6f7a4f56f74"
+        },
+        {
+          "name": "layer1.0.bn1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "3854001edf4ec558da594910adf9b37ec0c838df000203c85f4e501f3de7c8af"
+        },
+        {
+          "name": "layer1.0.bn1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "05138265c50c834ba03016b61a94a0eb5151fd472e0be58fa643fc01a1f0e353"
+        },
+        {
+          "name": "layer1.0.bn2.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "6717f0670c546f7848bfd3664f2e7cfd5965f62dc699a1cefe07e8415bb2ae93"
+        },
+        {
+          "name": "layer1.0.bn2.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer1.0.bn2.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "ef4ea1569bd59e5275478083194cfe4a551311d56df91322dc3fa1ae31b74ea8"
+        },
+        {
+          "name": "layer1.0.bn2.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "d5ff964bfd69748d8228f2c89659a6be6c84b545186370eb7bd3d5efad3675db"
+        },
+        {
+          "name": "layer1.0.bn2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "870cca793aa17af4099cc565972fe8531e797a2d70f2333f1311d51a3d81012a"
+        },
+        {
+          "name": "layer1.0.bn3.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "500c2c9bcd7909aaa511e552b371b31eea680265207f06c73d6beb4649f3fd14"
+        },
+        {
+          "name": "layer1.0.bn3.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer1.0.bn3.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "62dad22589731453907a993799a867566925c2de2f040dd8c7e5b858e9179989"
+        },
+        {
+          "name": "layer1.0.bn3.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "816b2f7cfac5de7d03dc2e06d62611c41537c5dd5f1f20aef00c900d92eed03f"
+        },
+        {
+          "name": "layer1.0.bn3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "c7dcb0d5b8f7986b3864579c7c41c36e43bad766ae09042936ccefaf2573d2a6"
+        },
+        {
+          "name": "layer1.0.conv1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            64,
+            64,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "f0df697bbd1807454b78f6ead01b4d968be5500798ebd0e787d7b36fc835c8ed"
+        },
+        {
+          "name": "layer1.0.conv2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            64,
+            64,
+            3,
+            3
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "4bfc0d84c1203a43ffda738c98a7932e98ce0fde0968a41eb73b3ab171082efa"
+        },
+        {
+          "name": "layer1.0.conv3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256,
+            64,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "483d434573c475954f92158eab9a1356fd432bda0e9bf080123c8b7b4f188cb1"
+        },
+        {
+          "name": "layer1.0.downsample.0.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256,
+            64,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "4f88e11572739dbe3a44b0c850fb89f5e5df858b2dd84b8d29537f6ac2784453"
+        },
+        {
+          "name": "layer1.0.downsample.1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "500c2c9bcd7909aaa511e552b371b31eea680265207f06c73d6beb4649f3fd14"
+        },
+        {
+          "name": "layer1.0.downsample.1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer1.0.downsample.1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "75b76aaafe259167c45ca468e85578cde23545dd4015683fed4a85bacca97551"
+        },
+        {
+          "name": "layer1.0.downsample.1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "53519ed14c853e7c0f4195b39b22f1f577fd54cd236bdbe9d2f589e897d26c87"
+        },
+        {
+          "name": "layer1.0.downsample.1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "5aed6434f43bd83fe164e75f99067dff2f47795a0e65b2365ec8d31da7a8ef74"
+        },
+        {
+          "name": "layer1.1.bn1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "08f9e12a88e1ad6944e73fb752e4c7fc1a6dafa78aff82fa4e869481eb504f88"
+        },
+        {
+          "name": "layer1.1.bn1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer1.1.bn1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "dff58547e5fd0c44acacc2a29eb03287fa436408569cf1137f9c5b3180e4b8de"
+        },
+        {
+          "name": "layer1.1.bn1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "db3d74d1fdb9b9d93e65a9d5f489e7758469c3477be82bd5dbb8c2cd20b5c1af"
+        },
+        {
+          "name": "layer1.1.bn1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "1c588a9e1e70dfb371a928926f6e97f841fd5861f22f52b41d6a8f040eeb1eb6"
+        },
+        {
+          "name": "layer1.1.bn2.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "14eb03d171164bf9e43dab4332f82285ab6020c2e1f6a494d21728e919e3a50d"
+        },
+        {
+          "name": "layer1.1.bn2.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer1.1.bn2.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "f1482ca7557c3c160d129f70bb12d6bb33bdd40059e0a04f6459e51b1ca6c8a9"
+        },
+        {
+          "name": "layer1.1.bn2.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "2a1de67c7559458995cc0757753ceff42d0f1b1f06429e762df566619059137a"
+        },
+        {
+          "name": "layer1.1.bn2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "8a75dd26c93a91acea41b7a7bca1782225da17609663f95a5fc757c4379607b7"
+        },
+        {
+          "name": "layer1.1.bn3.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "a92b4b0024dee762843391f1a690cdf78319b10995c200b4153e53e184944aa5"
+        },
+        {
+          "name": "layer1.1.bn3.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer1.1.bn3.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "897d9e4ad92c7334843c506278962c73cede7efd0a2db766f6e5885873c12806"
+        },
+        {
+          "name": "layer1.1.bn3.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "d89d552cd93631807721fa71fe3ab396b5e3b349d642f22afc2a78c62e769b14"
+        },
+        {
+          "name": "layer1.1.bn3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "608976852764789b0af94c0f75c78d53f54943ebd82898620a07c86a3dd22617"
+        },
+        {
+          "name": "layer1.1.conv1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            64,
+            256,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "0a97cf66e2c62df51c4231f112ab4f012ee6bd20774663f834f181138bda8410"
+        },
+        {
+          "name": "layer1.1.conv2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            64,
+            64,
+            3,
+            3
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "0c34f5c1396c007ffde60b4df8fcce6c09e72d73fdbca353e4c896b1a7a58930"
+        },
+        {
+          "name": "layer1.1.conv3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256,
+            64,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "31426a1cdba4503ff170ec5d4ecd0befb61d62abd657fe7e97483eb130c02ec7"
+        },
+        {
+          "name": "layer1.2.bn1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "58654f56cd76f0e3fbd830eeecd07b723518293aeefae6cd888b34114a45d8a0"
+        },
+        {
+          "name": "layer1.2.bn1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer1.2.bn1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "2b642e83dc693818f1f2dc4013ec39d7fcad78ae68fcfbb386a1d7b050c722c8"
+        },
+        {
+          "name": "layer1.2.bn1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "ecbb6d5a54fb107cba325f370414d21a85ec21bc43b84605f1b820ac2005e496"
+        },
+        {
+          "name": "layer1.2.bn1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "79b2881cbb658df7651a07a0000cf2e63a064df4daf44a3255c441ec3c93c51f"
+        },
+        {
+          "name": "layer1.2.bn2.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e1200c658c4fc566f33b12f4fdd15528421b8e8fe2f63a77e64d54fcae13f05f"
+        },
+        {
+          "name": "layer1.2.bn2.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer1.2.bn2.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "352c0fb1235a2c8a3a1d68122816e3f6f36a2a0b5aa7804c972d01e5bbe243ef"
+        },
+        {
+          "name": "layer1.2.bn2.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "c99c5014087acbabb22393366ec3a674cc0af96b87b0a1092e61bb7209fbe82b"
+        },
+        {
+          "name": "layer1.2.bn2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "916db105bf769bd511fb888a216f50d33d923c59959cb8b5f59b05adfe9a2f0a"
+        },
+        {
+          "name": "layer1.2.bn3.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "efe1803f5093be6b77aad25c23c43e3e90e719f36bcabf1de4d6ad17d4ccca30"
+        },
+        {
+          "name": "layer1.2.bn3.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer1.2.bn3.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "ec08da37ccdb466c8b7be274cbe02aaf0de25c758d500cdd131f15acee2b876d"
+        },
+        {
+          "name": "layer1.2.bn3.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "c2e151b46d099e349e9e62fcceb3e631be2ea001f59a35a2da4aabf5e4c8c578"
+        },
+        {
+          "name": "layer1.2.bn3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "4311c612c0addd500e9960ee3233bbd1de7737c62dfbc9a7fd4baa9cc904ce2c"
+        },
+        {
+          "name": "layer1.2.conv1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            64,
+            256,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "d15810e4b6d0f889781da1a17ea3e10e98e99abc98c503fec0a3dce347b444b4"
+        },
+        {
+          "name": "layer1.2.conv2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            64,
+            64,
+            3,
+            3
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "f8102493a217b8e3d92c33cffb95c59aecb80ec83d9a553c76947a1171355309"
+        },
+        {
+          "name": "layer1.2.conv3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256,
+            64,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "f6a3bdf692992afdec7f54d21628002bbd9faa10fdbbf1b381beb2d42314bdd0"
+        },
+        {
+          "name": "layer2.0.bn1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "0fe5079163e070321fb8d8ed909cc198b328b197802ed18d81c38fa456bb956b"
+        },
+        {
+          "name": "layer2.0.bn1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer2.0.bn1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "19bf7a68217cb1098bee8d1d5161699f79abb74c24a014231e87c14798e91b43"
+        },
+        {
+          "name": "layer2.0.bn1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "1d8ffdfac56f9250433e7bdb8b2a6d641b36cc8bcdbfdb8ede81dff3d955cc0e"
+        },
+        {
+          "name": "layer2.0.bn1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "76fa971a90e4d5d22ea38f81a486752d6ad1bf72056b68c6137d355f77db3ea8"
+        },
+        {
+          "name": "layer2.0.bn2.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "1fcc9e559645e5c9f62545110f7db8eaffabd2559c329f77b3072f4871ee7263"
+        },
+        {
+          "name": "layer2.0.bn2.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer2.0.bn2.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e48db3d36a2a071f06b0090e21b36c3a436db423735612642ba0edf2f0615d1a"
+        },
+        {
+          "name": "layer2.0.bn2.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "5b8c5313362129a9401e7539e690b18bcf6f1ae06ee66ff9614942ceb897f85c"
+        },
+        {
+          "name": "layer2.0.bn2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "1af6b9dfc245f4f38eb250151c997083a632d799d3f9db139ed03776b91fcb05"
+        },
+        {
+          "name": "layer2.0.bn3.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "1161e5ca76e40837d1e9272f073bee5d0bd67a59053d471f0c03a1796060af30"
+        },
+        {
+          "name": "layer2.0.bn3.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer2.0.bn3.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "7aa33288c92ef8ab89aff9dc7335f6d5a7c8c54dc5c6c4d1d4b95945aaefefd8"
+        },
+        {
+          "name": "layer2.0.bn3.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "397728f7b48f977c53364c7aff2ffe12980c5f4708e28da031ca4e8ba225abe4"
+        },
+        {
+          "name": "layer2.0.bn3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e30e88bf51e68df13daff0d9a764813a36c3a65710fe1cd64a48682010f8ea15"
+        },
+        {
+          "name": "layer2.0.conv1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            128,
+            256,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "3510a4298427cbd0edfab8ed490d2598c32b071aabf7587a64b027f025ef8a57"
+        },
+        {
+          "name": "layer2.0.conv2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            128,
+            128,
+            3,
+            3
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "624cb82575a4fcdc63554f65fa2da0f4d81f2d3d094d74e1ea6e3b46260ee92f"
+        },
+        {
+          "name": "layer2.0.conv3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512,
+            128,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "1ca629fb2390c04d415cb99e1c402da8f42950df4a93ba19dec42ff25964ef57"
+        },
+        {
+          "name": "layer2.0.downsample.0.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512,
+            256,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "362fcdf3118f64a42d442c3cde0319bc34f27e33bc223e7b18cbecb5af6f8385"
+        },
+        {
+          "name": "layer2.0.downsample.1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "1161e5ca76e40837d1e9272f073bee5d0bd67a59053d471f0c03a1796060af30"
+        },
+        {
+          "name": "layer2.0.downsample.1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer2.0.downsample.1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "383606892715717a04e66a01a95934a306706c094ddbf700dc4f421aad01856c"
+        },
+        {
+          "name": "layer2.0.downsample.1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "bc2265f37198adf2a387824b80034748002fa9ebc1a2c63e4df5cce10fec99d6"
+        },
+        {
+          "name": "layer2.0.downsample.1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "6d2c44340b96bbc8a40ad8dd301398f10d8ad2461da1b062e949afa4275c0f41"
+        },
+        {
+          "name": "layer2.1.bn1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "4d3bfd6bc920609b91dee314c2dff413ae48bc4c98d9dd68184d016def07b3e7"
+        },
+        {
+          "name": "layer2.1.bn1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer2.1.bn1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "7ab7eea59658ca37b498ca364e16286ddfa48fc1d3f2a652b32e4d87b2e9c87f"
+        },
+        {
+          "name": "layer2.1.bn1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "88ee39ab5440381a638e2e4f63a84883214ab7e31d7aeb4bc8797061b360a2a9"
+        },
+        {
+          "name": "layer2.1.bn1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "c9382362ef75139e26b8fe8b7544a9177cb2f2b045749e2d163e3bb55b44bab5"
+        },
+        {
+          "name": "layer2.1.bn2.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "d9b15529fae9567b08b45f52926bccfacb86d74b2e45cd5a8943a37ea1c64fa7"
+        },
+        {
+          "name": "layer2.1.bn2.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer2.1.bn2.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "0be9d69737effee068bc24439c4ee68bfc7d919efbd8532706d9779d9550b4ad"
+        },
+        {
+          "name": "layer2.1.bn2.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "1362f926f59cfcdcb7bd62e93726c2e3e77cc8db387c85bee34639235a10d91b"
+        },
+        {
+          "name": "layer2.1.bn2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "a047ad451ca0784155dfdcdf0cf2254e12293a5aa30890ed04f89af6fab6726a"
+        },
+        {
+          "name": "layer2.1.bn3.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "cba43e44c60d2de3d91709bd5db45ba0a53ebef91e39095b4af6a8d053aaffcc"
+        },
+        {
+          "name": "layer2.1.bn3.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer2.1.bn3.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "83f22fb76c61b7198d941c1274cf2a3742eff054b5ea58b95b466a5496b59a6e"
+        },
+        {
+          "name": "layer2.1.bn3.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "f53e41501b46d04761eeb1d6bb376dc83c169e95da98496844d8eeee105c0e1d"
+        },
+        {
+          "name": "layer2.1.bn3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "15ce713693694fa7054a5f5b2f4a718c2023c985336060d71e38e651e7be2a8d"
+        },
+        {
+          "name": "layer2.1.conv1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            128,
+            512,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "17525e6e874accd3a82e7bc30ad51d53b709613daef9512bf1207f3855e91769"
+        },
+        {
+          "name": "layer2.1.conv2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            128,
+            128,
+            3,
+            3
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "0061977c465b1e915ba6b1cfa9c557ef5e1573ac6b5a0f5689c80b77f7fbb3be"
+        },
+        {
+          "name": "layer2.1.conv3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512,
+            128,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "f11a1d75db8d81bd07f82df3b0202ac62595850d949cd2fb89c19e2bd5b50674"
+        },
+        {
+          "name": "layer2.2.bn1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "7a2bb5ca3d4bb29ca2ab92f4ba59b382e038729f18f08a91e3d6169c2c6ca6fb"
+        },
+        {
+          "name": "layer2.2.bn1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer2.2.bn1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e5e91b004288fd1fb7eaca6b8ccb21c4d5c4d734f69bb69b22949af0cc94f0ed"
+        },
+        {
+          "name": "layer2.2.bn1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "ac1df87482b16a53f210e2d89852621bd9f2eb416bab877b19d0a83352733f47"
+        },
+        {
+          "name": "layer2.2.bn1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "ad88252a79985f1bcdf6c73b416ac4393fe19f12b09328685bb6f35e33ee50d4"
+        },
+        {
+          "name": "layer2.2.bn2.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "841ea3fe71aba639946e24bb8265e09ce917b66ab11bcde029dd483b04a7f614"
+        },
+        {
+          "name": "layer2.2.bn2.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer2.2.bn2.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "8f9cccb639661f6dd738a4a70a1339bbe1f8f4a63b00f38e1deae0702486a71e"
+        },
+        {
+          "name": "layer2.2.bn2.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "255e90570e925fcdc34272cc6cf3c49e236b67534ef8ac04bd1b88db6c7b21e0"
+        },
+        {
+          "name": "layer2.2.bn2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "a8e5b9607de9401c857462a0a8fcb29bafb57d9252e76783560dfcd7db5ce40d"
+        },
+        {
+          "name": "layer2.2.bn3.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "8a66c7899f6e564d837ed4098d6fbdb49a4754b576c819900236442b48434846"
+        },
+        {
+          "name": "layer2.2.bn3.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer2.2.bn3.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "d77f5326375e690fa8a829244ed9a3d01b7a9bd415ea839bd940c6c9dff83afc"
+        },
+        {
+          "name": "layer2.2.bn3.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "864c1ba3b9025d749fd8a35f702ba60dcb6cf750bdde3041cb8fa1353d778783"
+        },
+        {
+          "name": "layer2.2.bn3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "fda7a49d2aa6d5910c987a6016a0df1e8fad2ba4bcc834ee4784e6795c1526ad"
+        },
+        {
+          "name": "layer2.2.conv1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            128,
+            512,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "911e47a76679f22e0de43939979a432256143dd23689f28b7dc58798bf403a9b"
+        },
+        {
+          "name": "layer2.2.conv2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            128,
+            128,
+            3,
+            3
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "88057497d957b36d24c2f53de1b538ad57095f5160aa7b97f399fb0e0bf7d60c"
+        },
+        {
+          "name": "layer2.2.conv3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512,
+            128,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b8b87567109e1aa0176312d7473ceb3d7ef6e2c204cbce05024a431e4bfb4e32"
+        },
+        {
+          "name": "layer2.3.bn1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "bbd34542a02a2ed41bf69f88e61a9e8466bb2cfe1c2db721f168e3d2966b012e"
+        },
+        {
+          "name": "layer2.3.bn1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer2.3.bn1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "8832de90b77f3fa2cf4faa9b06a4c57a4f2b5bf569db54e1a10123b5d5eba8b5"
+        },
+        {
+          "name": "layer2.3.bn1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "c68ead57403a3362362cb82025bd1876e80fd7eb1c7001524d95d4b80236ab1b"
+        },
+        {
+          "name": "layer2.3.bn1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "371655ff2201e0ca7803edbd42761c5ae50b5586ca93d5adbbb255c156f7d177"
+        },
+        {
+          "name": "layer2.3.bn2.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "4224ade78603d5167ba29e7b8d25d11cd6b4b030533f3da6627fedd673ed8889"
+        },
+        {
+          "name": "layer2.3.bn2.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer2.3.bn2.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "c1ac9f8bb47b23fca3f5846d8de187ccb2acdc67f5a3112386e8abf77ca9c358"
+        },
+        {
+          "name": "layer2.3.bn2.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "f7a6c61acdd4b3f9eb5d5b3d359297be516c794e6db6bac420be3c9d794b53bd"
+        },
+        {
+          "name": "layer2.3.bn2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "868f26a2d0452d901f3fbb989dfa1bb5145362ccc4e2cbdfa455db0b8894c338"
+        },
+        {
+          "name": "layer2.3.bn3.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "f466bb693083551b6d773032cbcb80175e7553d7089a5c1ba9663e30ffad07a5"
+        },
+        {
+          "name": "layer2.3.bn3.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer2.3.bn3.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "50ccec1a775d812106303fed40295ad2f2414fcaf2a2a21e7dc602716e37adc6"
+        },
+        {
+          "name": "layer2.3.bn3.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "2da936c4440946b773171934f2dfd8f6faff295cbf0eeccd46dfb639d1e429e6"
+        },
+        {
+          "name": "layer2.3.bn3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "95e38a5f55c13087275e6bb5354473a25187fed7c6d594fc293ff367a6ad024b"
+        },
+        {
+          "name": "layer2.3.conv1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            128,
+            512,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "c0b247df21d665bbed90d9064fb52346aac4d08b56a7188ed2b458b0cf86ae17"
+        },
+        {
+          "name": "layer2.3.conv2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            128,
+            128,
+            3,
+            3
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b0fbfd715b3460e5829578499b5ba5914cff73c6d085ec62a7a913c3191dfb6c"
+        },
+        {
+          "name": "layer2.3.conv3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512,
+            128,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "46d2933a66c79e71339f5ed83d64b28f46490820fdf30a77075a1c4eaaf82c4e"
+        },
+        {
+          "name": "layer3.0.bn1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "414234cb57768646dfce64174ced3139553aebb6752733d9d318f78bf398662d"
+        },
+        {
+          "name": "layer3.0.bn1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer3.0.bn1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "ca74bfb45b6be1c5cd8a46175e96ef9124741ac60ef093fd757ac099553440f4"
+        },
+        {
+          "name": "layer3.0.bn1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "05fe29553f1c6bd6101bd086e17a70a0ebdb1c31989d9155927987d06e7a837c"
+        },
+        {
+          "name": "layer3.0.bn1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "0def747194467235631d9231e16e625158283d624a6494987339f49c0aca8b78"
+        },
+        {
+          "name": "layer3.0.bn2.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "fdc165cbb76e0890ff9189b9c291aa28043a78b5ee4ecb24772cd239a1bafa16"
+        },
+        {
+          "name": "layer3.0.bn2.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer3.0.bn2.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "f356f7a5402007762c6534762b181e29b1588cf6e0f48817961ffdc1adb90993"
+        },
+        {
+          "name": "layer3.0.bn2.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "6f080621b3d04bf1374de48b5f1478f06e802151ab2a8c321c75c36d7e01327d"
+        },
+        {
+          "name": "layer3.0.bn2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "0da3622203dc74273d710e074b8186185b44ad97e82c46aaa9abc81939ec3ced"
+        },
+        {
+          "name": "layer3.0.bn3.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "5bd7e83c162d28866d0b5c3bc9208ecdfd128b006a14a16c34a479f1cefd9960"
+        },
+        {
+          "name": "layer3.0.bn3.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer3.0.bn3.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "1ceaa2424c84a8e5fcb3ad1d3674d110729af6f8cf24073dd935137b4d52bca6"
+        },
+        {
+          "name": "layer3.0.bn3.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "0a1dc35ecc25a2b2cb2c84e9b96598e8868e94c1c7279417df59e6f9a807add0"
+        },
+        {
+          "name": "layer3.0.bn3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "df2fa0951a9295d1a2eb034f822fa9dd99739313c30f1afb9e3d7f98c9616ce9"
+        },
+        {
+          "name": "layer3.0.conv1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256,
+            512,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "8d75198dd58731d42d08eb1971c7745a5a24fc52b007f968ade8a30fe7c71564"
+        },
+        {
+          "name": "layer3.0.conv2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256,
+            256,
+            3,
+            3
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "3070980cbdd339cfec9db1f9eab209bf94277dc04af163d73bc653e65c6082f6"
+        },
+        {
+          "name": "layer3.0.conv3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            1024,
+            256,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "3cdb8955d589d91adc1ce660cafd4f2ee3cdfb9da55a3d3eefea59ce0704f96c"
+        },
+        {
+          "name": "layer3.0.downsample.0.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            1024,
+            512,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b1f8d418cd6b371fd8e1f73d14ed10de6e1887e145657bb1d037db264744cead"
+        },
+        {
+          "name": "layer3.0.downsample.1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "31053b127503ef7fcc0a8644f06ee38614f023ad0619a4e3cd0fae5e40ab9994"
+        },
+        {
+          "name": "layer3.0.downsample.1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer3.0.downsample.1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "07e650d0eb44b61769f777f17cce1fc49c7ab1ff353dd3fd520a2cdbc84664ab"
+        },
+        {
+          "name": "layer3.0.downsample.1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "d5e012375d1fe75d87a2354685e8aed62fe9333837bff0a237839c90986d9045"
+        },
+        {
+          "name": "layer3.0.downsample.1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "2a24780ed0aa3274c40fc33175bbcbfb3e1724374e6ce28b907ae3d10602fa30"
+        },
+        {
+          "name": "layer3.1.bn1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "0ce0039a241620506150de7e9f4ee7a409ab819352dcc651139943a561a44a60"
+        },
+        {
+          "name": "layer3.1.bn1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer3.1.bn1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "8c1dff356f708290579612880623e239a9e708d1c7ab598f4c1ecf9fda608ed5"
+        },
+        {
+          "name": "layer3.1.bn1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "9497b21c7574eb1663138dd94cb9017c0a8256c0d7740154dc372e54315f12d2"
+        },
+        {
+          "name": "layer3.1.bn1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "31cc868e44513ceb6892382e89475cfca2fa5d06276ac7da267548933ca509f5"
+        },
+        {
+          "name": "layer3.1.bn2.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "f26c838bfb17e4acbc791746c315107ab6a15a4732b91b31554048fcabd4ff76"
+        },
+        {
+          "name": "layer3.1.bn2.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer3.1.bn2.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "727f69474c3204ab288ceb13c22ffe81e519912d7456742a2b49db8e2c22ea05"
+        },
+        {
+          "name": "layer3.1.bn2.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "55058ee7bf23c833c112a6a81c5bcbd14b2b8ff28a84652724e9a1ac40284830"
+        },
+        {
+          "name": "layer3.1.bn2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "1916a17dd3488124f095ecb269db772f4c70aaeca0f9b17eddfbc70425716cb8"
+        },
+        {
+          "name": "layer3.1.bn3.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "fe8839f2a77fe0a81a539bf7f46b57b6e609aedbcc4d1b7e05c4464afc38fe87"
+        },
+        {
+          "name": "layer3.1.bn3.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer3.1.bn3.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "a7f47ef3f7bd1acdff476dfe62b6dc8587fc8604e7677dc80a777ea338c13f34"
+        },
+        {
+          "name": "layer3.1.bn3.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "9004824a35fe64a652e9448f197fe858157b240a8523e6932775ebf6fbaf3372"
+        },
+        {
+          "name": "layer3.1.bn3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "100620341412818dafe0ac22bab69c9df463b013f3fc1a21e1848da50364c2b7"
+        },
+        {
+          "name": "layer3.1.conv1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256,
+            1024,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "0c2019c649c5c305e93e853931bbc1e9dfa0d241b8e6481823c6479dfcf9b93a"
+        },
+        {
+          "name": "layer3.1.conv2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256,
+            256,
+            3,
+            3
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "0be57fa130c87b59776366bdfc48fd555c1d7e3ffc2d70e5850b677d4027c396"
+        },
+        {
+          "name": "layer3.1.conv3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            1024,
+            256,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "442e20943f5b232408ea5e0dca9feee9a1ea97d8e4d3a6a33d817f6f6d6b953e"
+        },
+        {
+          "name": "layer3.2.bn1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "81978803eba421cf9f2b3527b1b65fdf0fbcc0d62674e17260cabf205970e3f3"
+        },
+        {
+          "name": "layer3.2.bn1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer3.2.bn1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "9beabf72e9267d3e1acae1411bf12aaf188ce9785e5a52da15518cc2e1df87b6"
+        },
+        {
+          "name": "layer3.2.bn1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "9f976695f608188ac7fb0ef4dd10e3710eda5187872fdc336fe2c0b859adffe1"
+        },
+        {
+          "name": "layer3.2.bn1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "f48c3b519b37c4cfcae3222e82e3290ca17051ef8f61d1aec9c58d0290e268a1"
+        },
+        {
+          "name": "layer3.2.bn2.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "04341d51fc723dbd63c192da8a555520da451b72b7c54c0efdb36dd8b7812b8f"
+        },
+        {
+          "name": "layer3.2.bn2.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer3.2.bn2.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "0c6bdc4f9f4b088125ab338bc8adae0a95f5c88211ad1c5778282a56b81b1790"
+        },
+        {
+          "name": "layer3.2.bn2.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "6cdfa0f8d4bf7937a3c906085efa9f64d6cbe7eb3186293210e7e319969abf43"
+        },
+        {
+          "name": "layer3.2.bn2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "128abed0217da36cd40d27fe338a15d89b4bdcc62e75cf31024891985081411d"
+        },
+        {
+          "name": "layer3.2.bn3.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "917043c680b0404792bed3d0de7b05d0a5cabc50ceea28fb5c996c67f19c5e02"
+        },
+        {
+          "name": "layer3.2.bn3.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer3.2.bn3.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "8f64244abd560dcfece9b92a428605c315bc6cd75a7df9e688c34d60835935ae"
+        },
+        {
+          "name": "layer3.2.bn3.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "ded3e74f62806210028493d16f52f9327133d42b07cb573db360afb5b8ec066f"
+        },
+        {
+          "name": "layer3.2.bn3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "eff7d470796942a08cf242a177548895214bcacc86a36f0be47cd9cf120341de"
+        },
+        {
+          "name": "layer3.2.conv1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256,
+            1024,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "85a0e8befda056f0ee858a9b8e5db2ba91c86e8535aaabba2da2fcb466bb068f"
+        },
+        {
+          "name": "layer3.2.conv2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256,
+            256,
+            3,
+            3
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "5eb2e7e0c787e2547b020e89d095b27fe4f673d7315341f3b4689de3e153473b"
+        },
+        {
+          "name": "layer3.2.conv3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            1024,
+            256,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "df1f1de4ad3abcda0f77745516cfda3bcb51e7b7c898d2f516520bf28b3f5949"
+        },
+        {
+          "name": "layer3.3.bn1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "914b9a3ee536499c94677d1ef05afd9848860a76e888eade0b21d10fbc19bfba"
+        },
+        {
+          "name": "layer3.3.bn1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer3.3.bn1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "f4f0a0356e7c54667b5ebad557183f45482d6128afb8d9df7fd86944239170f3"
+        },
+        {
+          "name": "layer3.3.bn1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "82c2b4c5c46535c203c860ad9eb13415317ce90494d6006ba47a9edbdfb949a8"
+        },
+        {
+          "name": "layer3.3.bn1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "a515223370704ccc95d244195bd8200d58a55a7e5ca9286d834f571a2dc5c099"
+        },
+        {
+          "name": "layer3.3.bn2.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "adbc73209c0fbf35d835d1a1d9cb6158809cbf39cdf14b1aa5a4fa3dbec67ea0"
+        },
+        {
+          "name": "layer3.3.bn2.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer3.3.bn2.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "4fa44fbe3b520b7869a2210eebb7f300cce2db23774d1e54cd2fec8340f68f22"
+        },
+        {
+          "name": "layer3.3.bn2.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "f348211d355b395da768b0e5898e57d51358d31b69e568589e68922de3062630"
+        },
+        {
+          "name": "layer3.3.bn2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "c749281eebd9b3869bde73811e8faf212c869557bbd2f7af7ffe1d25d81deaa9"
+        },
+        {
+          "name": "layer3.3.bn3.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "6f76fbc1e8ac78443526e06978078beef1bd0e07bf047ee572d0d08849863a3c"
+        },
+        {
+          "name": "layer3.3.bn3.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer3.3.bn3.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "84550faf5e44cad1e10053836a292c8481c1176cadf8ce714c96a95dcab55122"
+        },
+        {
+          "name": "layer3.3.bn3.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "5e5011115998efb18d7af7a678d3141ec27aa5d14a1377920adb6385586a91d6"
+        },
+        {
+          "name": "layer3.3.bn3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "ed68cd1f956df08894153dbce557f7ba4325873ded56da130f582eafb79708ca"
+        },
+        {
+          "name": "layer3.3.conv1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256,
+            1024,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "5337c2a4400a374c4eced33c5f8784d9efa78c3861f4bdb22be148d08e078a67"
+        },
+        {
+          "name": "layer3.3.conv2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256,
+            256,
+            3,
+            3
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "5e9bb31531ea9154e18315f626c214da79663eb8943d55bd2fa22305bf2959c7"
+        },
+        {
+          "name": "layer3.3.conv3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            1024,
+            256,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "ddc764b07767c8263f1c23ff10ef844105fdfd954eb58b8b3a0eab318c509171"
+        },
+        {
+          "name": "layer3.4.bn1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "bc62371eb5084962479aa197cb82d3928310e4c0c2c3b219d637ed04ec3d2e30"
+        },
+        {
+          "name": "layer3.4.bn1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer3.4.bn1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "cced55ab79a9348e75c3fd26b884a695d7fb460175cb8898ae7270f1287918df"
+        },
+        {
+          "name": "layer3.4.bn1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "978997cd84c665a33ac599e5d8a19cb99052e2963fdcc4c9a84d74e587711e87"
+        },
+        {
+          "name": "layer3.4.bn1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "a303faa49f80fe79f423d0d4a00bc7315832df9e907344ae5e1226a948a04ea3"
+        },
+        {
+          "name": "layer3.4.bn2.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "756f79830f0ff5b37036145be6f8a389af9e49069bc16d8fc4aa9f1650a2f111"
+        },
+        {
+          "name": "layer3.4.bn2.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer3.4.bn2.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "8dddc0cca652fb23e587bfa5094e69e7ccff448ad669865b40646bce02f26585"
+        },
+        {
+          "name": "layer3.4.bn2.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "5fe6a9ca7d8f20ba4258cace664eee888c5139debc0e911aca339a6e699caca7"
+        },
+        {
+          "name": "layer3.4.bn2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "ce474433fe23b974b45a6b9b2c9e0ef8a0e324d42130e1f0bf7761d6833fa614"
+        },
+        {
+          "name": "layer3.4.bn3.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "f9bdcb37dd50f51d6aaec34e8362d8e6264cd38c4efbbfe2336474881fa1a8f6"
+        },
+        {
+          "name": "layer3.4.bn3.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer3.4.bn3.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "3880e9efe814966b9c6a57e6b2507ac82a96c71189d2740458a399154d0280cc"
+        },
+        {
+          "name": "layer3.4.bn3.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "21065f91845f768c60edfc19d81c68ab3ebbd2964a77aa562ffe2838887d96cc"
+        },
+        {
+          "name": "layer3.4.bn3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "8b391dfdf556d2dec65b1ae1312f67933bcc600a1c3ba0926c798f60ce5d54ee"
+        },
+        {
+          "name": "layer3.4.conv1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256,
+            1024,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "eae750c7fe1b1fdae97f44107d6a082ea07dae36a996a6f2e09d672df358ea44"
+        },
+        {
+          "name": "layer3.4.conv2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256,
+            256,
+            3,
+            3
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "980df63001f222a9f8d2e1af4fac7bf73827424927dca70007d9f8c387caedcc"
+        },
+        {
+          "name": "layer3.4.conv3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            1024,
+            256,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "34efa8296c7e70f9cb8670d13f900e5e73438ec0253e251dc9726faf5b5f37fa"
+        },
+        {
+          "name": "layer3.5.bn1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "93d3c83b4ae16296e8e4b26e91cd729c03ba88a6f3c729d2696de608b9c0f3f2"
+        },
+        {
+          "name": "layer3.5.bn1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer3.5.bn1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e799b5d9de63ea8a3d9d2843bb65a97da4451e50a5b28c8a9f82dd7873d41aa2"
+        },
+        {
+          "name": "layer3.5.bn1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "9bf3f2f124a7d218f688c93a50a69ead404c9e4b427da2e8f8d33e053067781c"
+        },
+        {
+          "name": "layer3.5.bn1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "a2105afac78083c5723d5de59bfe46004518611c9bd5f83b006f231a4fbe4fd3"
+        },
+        {
+          "name": "layer3.5.bn2.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b56182988cee5b4fde5fdb0c109c410b6540de9257d90ac784822f75a1242999"
+        },
+        {
+          "name": "layer3.5.bn2.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer3.5.bn2.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "1355b5d0eb088bdc6ee9a9462ac2b57f5f4273e8ede01e3596524bc4917c1b62"
+        },
+        {
+          "name": "layer3.5.bn2.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "2a86a9c8739276ec5379941da4434e03bf0bcc1e2253a516e08ae54fa6b36cd4"
+        },
+        {
+          "name": "layer3.5.bn2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "f3016cdf78c693cc76fec5c44c621309c7080cef041e2199f6e64c76fc9cc9e2"
+        },
+        {
+          "name": "layer3.5.bn3.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "7e03e335b38c6ff5aa7bf51fcea57b00a5ecfb04d09c99a77a179e0d055fcc92"
+        },
+        {
+          "name": "layer3.5.bn3.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer3.5.bn3.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "dfa8b8c4f4755158fa85efbd7249cec9e3c1e28f3bbcee4870d06830729e5e6b"
+        },
+        {
+          "name": "layer3.5.bn3.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "ff120db5927aa6e6441acb70916dddb9869fe8311f48b4b36f64b328a8e0c9ca"
+        },
+        {
+          "name": "layer3.5.bn3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "147db392d2713be1de7e44d3896c66dc51acda0ef3f49c22a12982e92809caf7"
+        },
+        {
+          "name": "layer3.5.conv1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256,
+            1024,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "6ce21789aa351796ff94419b3541b4587c1fd6a7cad87480429ed065ed093485"
+        },
+        {
+          "name": "layer3.5.conv2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256,
+            256,
+            3,
+            3
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "768bd936771e6144be179e8b90b6defc6a3bb36fa525bfc987b8e195e98d8bd3"
+        },
+        {
+          "name": "layer3.5.conv3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            1024,
+            256,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "9cfb8475fb57ee6c737b9a1fac210a458dd6449febe9b35bbb8b4162ac9c1869"
+        },
+        {
+          "name": "layer4.0.bn1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "c0305fe286500d745ea99aa3efd0cc783614861bda7e0199637d96d784418b5c"
+        },
+        {
+          "name": "layer4.0.bn1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer4.0.bn1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "1acfa40ecab7239031e4fd0e5ccbd5897f1b5cd09184ecb46d52a991814a6392"
+        },
+        {
+          "name": "layer4.0.bn1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "1cf069e81d4e0aafce7c167cd43e35cf2f8281469b66425cbf6b85b208fa695b"
+        },
+        {
+          "name": "layer4.0.bn1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e349094c58578829e45e89e6fb914076a8d7e17e015f60658f88fefca9f8bddc"
+        },
+        {
+          "name": "layer4.0.bn2.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "730b302356e2a287c63ca9ac7687e99973e80bd3932b73a19977078d028c24c6"
+        },
+        {
+          "name": "layer4.0.bn2.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer4.0.bn2.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "8b8a75cb33b92da97752668bee0a4fdecd48c07cdfdf60cc95dcfe8ec3f63366"
+        },
+        {
+          "name": "layer4.0.bn2.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "679960856d79a8783c350ecce888a6aac994c998e90bd1eeebe4f317c26de78e"
+        },
+        {
+          "name": "layer4.0.bn2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "90d9dcac9f67aac4509a414cf4e561d2290f691a04c6da8e9bf99a2ff230d5fd"
+        },
+        {
+          "name": "layer4.0.bn3.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            2048
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "cc18ead9d5af36256ec2a7a6060b111bcb620a2c824db84d3660640de3b434a2"
+        },
+        {
+          "name": "layer4.0.bn3.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer4.0.bn3.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            2048
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "39b8593f3dd486faca31e1f45978f6c75f54aa89113f036ae34df9acc68944c5"
+        },
+        {
+          "name": "layer4.0.bn3.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            2048
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "7b5ed1f0de58fa86c0e52b67eb5d6582f5ec571a2e450db5dc4644d5e508a3e6"
+        },
+        {
+          "name": "layer4.0.bn3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            2048
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "9044f6d3fca742a20790c72e0ee7d67b89e560c612faaa3843a50b3cd8aed869"
+        },
+        {
+          "name": "layer4.0.conv1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512,
+            1024,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "87be081f72177c6fc303e8c3423eb031198ba6df560b036977801f4514d2ae03"
+        },
+        {
+          "name": "layer4.0.conv2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512,
+            512,
+            3,
+            3
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "f5fdcc532085d25b369cc805d47ad484a9525de7e49367a14b7f39901c35807b"
+        },
+        {
+          "name": "layer4.0.conv3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            2048,
+            512,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "9ae3dfd6ab67e76b3b4a485e2e88af22bf8ea15357321bcd248f43ea425fcb6a"
+        },
+        {
+          "name": "layer4.0.downsample.0.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            2048,
+            1024,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "4b9727829c958013a30c8d392c60d72648a6c49936af2e1f1018edfb7844dcd3"
+        },
+        {
+          "name": "layer4.0.downsample.1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            2048
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "5ac21ad366ea31d87fbb038f23e5a0d281a3f61379e8b9f6cc3e6960bc2b4aeb"
+        },
+        {
+          "name": "layer4.0.downsample.1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer4.0.downsample.1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            2048
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "6a46dac1857dac984140857eda8ce5e7b4f338a8432940e69d7567cf080ce681"
+        },
+        {
+          "name": "layer4.0.downsample.1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            2048
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "31958730bc5c2820d21e19abe285346b3b473854755f1c7c88f75082ff45fce4"
+        },
+        {
+          "name": "layer4.0.downsample.1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            2048
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "8bf2b7c4869b04970368f73b67fcef795f44a69aa69e10797ca225d3c6a6d58b"
+        },
+        {
+          "name": "layer4.1.bn1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "78f7b735b59d110f7dd08aaea1a5feb99841cbc7eb70ccb2c1aac061290fa48a"
+        },
+        {
+          "name": "layer4.1.bn1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer4.1.bn1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "6e37b8d0da12f1e1b13e44f7fe368479c92ebd0431d71b8a02f8443c73fa3fb6"
+        },
+        {
+          "name": "layer4.1.bn1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "f71e9d917eeebd3dd70a6d7bef6c699a52c16d5c81600c1de466ae0c0f08f9bd"
+        },
+        {
+          "name": "layer4.1.bn1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "6a1eefea05080479f2d5f6d9c83da85022676c88bf903b34d91dd07d3209543e"
+        },
+        {
+          "name": "layer4.1.bn2.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "6369e5d6a0aa992651bd0056a1d2b3bca0ded6960cbf5fd86c0aac35d2d96e85"
+        },
+        {
+          "name": "layer4.1.bn2.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer4.1.bn2.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "fa1a9e742d4c3d852b1340260864571193f6a03a1c499ffbac97ba4ff575392b"
+        },
+        {
+          "name": "layer4.1.bn2.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "18c03ff0b9f321de46563de76ebc05f1203f4539e47c53eeb96096c092610f41"
+        },
+        {
+          "name": "layer4.1.bn2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b5ffbee6299702e3c40ee33b16cbebbb0c32ed894177bf15df81f8ca16b03799"
+        },
+        {
+          "name": "layer4.1.bn3.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            2048
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "6cdda6e23ed021a8edf980f4de821f1cfcc145577f30aeebbb49b1d495d1d68a"
+        },
+        {
+          "name": "layer4.1.bn3.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer4.1.bn3.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            2048
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "0671f02219e34e748578dda6e47234006b362eb57dca5564e6d89ddc15627a60"
+        },
+        {
+          "name": "layer4.1.bn3.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            2048
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "21a851de5527e78e045af8df4ab3f4914c6385c9159779b695bb28d439241927"
+        },
+        {
+          "name": "layer4.1.bn3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            2048
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "ce32aeb49dd22040557a2d66ad298b0d1f7d3b47eb1087f822051dbb9b2d4110"
+        },
+        {
+          "name": "layer4.1.conv1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512,
+            2048,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "8fdb9167260861acaf9c40a5ebc18120f0a1162540c438f0f4ff2e9e184031d6"
+        },
+        {
+          "name": "layer4.1.conv2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512,
+            512,
+            3,
+            3
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e3e8037e7b680651163bfc89790705857fad22d13a96526e5430c686bd10e627"
+        },
+        {
+          "name": "layer4.1.conv3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            2048,
+            512,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "57c85200f2c07a20131332b7330fb40974941b1f340ea2ed991fc86340aad20e"
+        },
+        {
+          "name": "layer4.2.bn1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "82d2571e62ed929353fa8e87bdbf68d4876734ac8f64c4ab9ba8db4bca154faf"
+        },
+        {
+          "name": "layer4.2.bn1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer4.2.bn1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "d62c08dcf73882c3c613a56d5e197baf8201b9768a14be2ae81171f9850f751d"
+        },
+        {
+          "name": "layer4.2.bn1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "f69d4153c30108c1b3c76e81bce2d4b8bb1672b822afc033b81111bb98932a7d"
+        },
+        {
+          "name": "layer4.2.bn1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "ceb4359f3ace1e6abf186ce5a44bb192f78e23b2a89dc8ed029f200db95423ad"
+        },
+        {
+          "name": "layer4.2.bn2.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e3a1f2acda9093204ee046115e730750ad10691ccee3037c17b38eb2cce5eec2"
+        },
+        {
+          "name": "layer4.2.bn2.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer4.2.bn2.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "2613bca9e785a6f3e55f7fc87e5296008b6a3c67195dda7544e58877d7ae3521"
+        },
+        {
+          "name": "layer4.2.bn2.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "fe19f7cee3ab1faac04e77a084c4f32c0b55d271a88603f33b03cadb8f5bc58e"
+        },
+        {
+          "name": "layer4.2.bn2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "0c5dbb385d290134e1231882057443748c8d01df2da9578026fb669791cf2c97"
+        },
+        {
+          "name": "layer4.2.bn3.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            2048
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "db62d8f8fed81ba46e1840be5bfa59a38b1d70b27e4ea2e612211c2f86cbb0f6"
+        },
+        {
+          "name": "layer4.2.bn3.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e2a32b0b3943cac0347c5aef5866d328657655c8f49d2c7f0cf709debf94660d"
+        },
+        {
+          "name": "layer4.2.bn3.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            2048
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "d0325a340c9debb2fdcf0573ba66ab740cccd072250d6eb9bf571456a0b91182"
+        },
+        {
+          "name": "layer4.2.bn3.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            2048
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "3b2de54eaef06faf40edcd45632e59b20d86a008201b4805cb93aadc90f06035"
+        },
+        {
+          "name": "layer4.2.bn3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            2048
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "8728a6e7a570347d7b121b6f18ceb7b84dc77ad789ca425616b3b88aaee50c64"
+        },
+        {
+          "name": "layer4.2.conv1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512,
+            2048,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "5a8ff3c82d9a012de2022513adee5662f830cf2a000837ec1816b68312480428"
+        },
+        {
+          "name": "layer4.2.conv2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512,
+            512,
+            3,
+            3
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "678da06f0ada54414869cbdcdbd9027f8c6c8b656f819fd3e9a04e89fce9b331"
+        },
+        {
+          "name": "layer4.2.conv3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            2048,
+            512,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "d1363b08c36be7f15512b19b17760b9c86eef01c57e80c5e78aaf619118c39ac"
+        }
+      ]
+    },
+    "disease": {
+      "checkpoint_file_sha256": "f4c05a331794e4dab06f52877780a76a1ff35229eb5d157f9597c8c1719429e4",
+      "namespace": "cos30082-state-dict-sha256-v1",
+      "definition": "SHA256(namespace UTF8 plus NUL; tensors in ascending key order; for each tensor: uint64 big-endian metadata-byte length, compact sorted UTF8 JSON {name,dtype,shape,byte_order:little}, uint64 big-endian data-byte length, detached dense contiguous CPU tensor bytes in C order and little endian). Includes parameters and persistent buffers; excludes checkpoint metadata and serialization.",
+      "state_dict_sha256": "f9a82d429cc51c1c4f9c7bfe2c84745b7e945906ca20640bba806b5bde59c8a9",
+      "tensor_count": 320,
+      "state_elements": 23919780,
+      "tensors": [
+        {
+          "name": "bn1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "89cfb64d26df8dde669c7c4d9a09a95b347e71b614867b2bdef911118387dad2"
+        },
+        {
+          "name": "bn1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "bn1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "7b2aea02e96663d0508800c248bff29abe0313678b3d1bf69c7eb8290ab92186"
+        },
+        {
+          "name": "bn1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "c5cbdc1ac5d5c83b1319122a4b85ff9dd4d93d0c542ca21a14d2edd36e22b1d3"
+        },
+        {
+          "name": "bn1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "fedc60dcbddc111ac9b619fda8e4e8ae61a938896f5594a21487a8b24cc9a989"
+        },
+        {
+          "name": "conv1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            64,
+            3,
+            7,
+            7
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b5ed95ec0fcec442277474d1a512b7ca2b44c8239cde294f39e3484ac08c8a26"
+        },
+        {
+          "name": "fc.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            175
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "421690cd4f4a7c959acc3d79b9ea1efdfebde4b8968339c0e1f756a11d9c95e5"
+        },
+        {
+          "name": "fc.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            175,
+            2048
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e8dab7a4581b01c348dede3151c9b45c181f0027f1bbc96a6fc78e43ecb1fe3d"
+        },
+        {
+          "name": "layer1.0.bn1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "65a8aa6e24d2a6ba4550554dc6af6dfc7c3aead241a2dc2c38f0f501f205e1ca"
+        },
+        {
+          "name": "layer1.0.bn1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer1.0.bn1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "5fa78cef86e586f6fb21235995016a519d0ed68800de6a0964d407ed59d97afa"
+        },
+        {
+          "name": "layer1.0.bn1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "843016e34e102fb8a1eae855f8b48c973a954435a83a6b54242dea3201048138"
+        },
+        {
+          "name": "layer1.0.bn1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "55d749bfbadebd5ced23f3375ce358a654b0f89349e6ea806bc7c22e65217bf4"
+        },
+        {
+          "name": "layer1.0.bn2.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "1dce61fdbeba5321476e9e2294b1a558a335bb9591419aaaddb08ecd71a7c7ad"
+        },
+        {
+          "name": "layer1.0.bn2.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer1.0.bn2.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "5ffee45c6a2f9862add7faad46a49e6d24c9f57a8d9363aec5c905bcc78e0f1c"
+        },
+        {
+          "name": "layer1.0.bn2.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "4608010f8c20eb6718539262ee00179b09017f7bcb47e2a3070dd8c4f57a34e6"
+        },
+        {
+          "name": "layer1.0.bn2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "04c164328b1384d5400c05a1a64c06e8ef1f2f9aa22284485aafb69d2b5c5097"
+        },
+        {
+          "name": "layer1.0.bn3.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "7fb96bfe83c19470d28cc5d2db38a6aed554775de0bda0b64444475a584fe8cf"
+        },
+        {
+          "name": "layer1.0.bn3.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer1.0.bn3.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "185cb7687daa03c845ed448c04c62988e989a056915746795421a545522f9216"
+        },
+        {
+          "name": "layer1.0.bn3.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b6a35acd6d7435398b6ce70cf958ce09ca12a76bb5a09685384e80541411329d"
+        },
+        {
+          "name": "layer1.0.bn3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "4f20878602b9cec136cc1d0af41da649761997c3c3aff440ab4c2ccd048e4cdf"
+        },
+        {
+          "name": "layer1.0.conv1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            64,
+            64,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "a2c6e941b188565a4df8efbb20c438e3e5d43ae34e28947116f380267ed38597"
+        },
+        {
+          "name": "layer1.0.conv2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            64,
+            64,
+            3,
+            3
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "8d2209a6aff85431cdfb3bc2b94870c177e9c45e1bcdf1ae851707167540a97d"
+        },
+        {
+          "name": "layer1.0.conv3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256,
+            64,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "8ccf3de8239a938e58eeedc4f677988ffb7eccdb13c7bfe9cc7fd05502a98e19"
+        },
+        {
+          "name": "layer1.0.downsample.0.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256,
+            64,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "41d762429144ca95b44bc9f403645958e678ff50a42bea9900abe34457fc297d"
+        },
+        {
+          "name": "layer1.0.downsample.1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "7fb96bfe83c19470d28cc5d2db38a6aed554775de0bda0b64444475a584fe8cf"
+        },
+        {
+          "name": "layer1.0.downsample.1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer1.0.downsample.1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "62ba69cece60cfdf81f05fc712bd80d880ac7b265474d6ecb41310ec16bd347a"
+        },
+        {
+          "name": "layer1.0.downsample.1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b97c73ddad0d5ab647d63bdeddb393998b2fe9a6e026a05850dcaa2b57e248bd"
+        },
+        {
+          "name": "layer1.0.downsample.1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "53187d972612ca05d669d29747ef6706413946fcc3cbae31ae05f55577d503d1"
+        },
+        {
+          "name": "layer1.1.bn1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "c0d0a8b8be8107a9a1b8d7d2cab87f6153c3d58f84b11eb2e2a72d93bf91cb58"
+        },
+        {
+          "name": "layer1.1.bn1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer1.1.bn1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "4e1570ec137dd8cd7574c2c079c3dedf3056c7cafbecff5c200b034d1120d63a"
+        },
+        {
+          "name": "layer1.1.bn1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "6fca43b4558558ca69a57875e8a91a61edcbff5211936dd7065dbcd1b959a25c"
+        },
+        {
+          "name": "layer1.1.bn1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "afd2dcc1ea4ffc9d72724cecc3428b2c7953bfae82509dbbffcea7b2299b7524"
+        },
+        {
+          "name": "layer1.1.bn2.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "38a4462e15c113d04bcfeae4f17838e4f8e73852821e21bbd7b23e33682ad692"
+        },
+        {
+          "name": "layer1.1.bn2.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer1.1.bn2.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "73e8eced6bd71e6449f8ce8226227f8bd9bf6f18a90078cd3a6014b3e566f7a0"
+        },
+        {
+          "name": "layer1.1.bn2.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "8541f86b95da5d3041bce2fd3ca002c6a26448364b1b2d2436d4d55d598cf0ff"
+        },
+        {
+          "name": "layer1.1.bn2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "19779870b2f92ec8d5a4ede15a23b1e25c5c8fd030642940c56a51a7a4d0ee0c"
+        },
+        {
+          "name": "layer1.1.bn3.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "61b0acea22e7898442c328851bcdad7e9ab7641442d5a3777747e2a2e3904f75"
+        },
+        {
+          "name": "layer1.1.bn3.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer1.1.bn3.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "f0aff0e3219437a48f5594fce1b6017bf0cf2e01fc5321cb99098e3751339d6d"
+        },
+        {
+          "name": "layer1.1.bn3.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "7fd35387f6e3dfe6ce55ea4499844ec1f85e8aefc1f3e1ee432ec3a28342e11d"
+        },
+        {
+          "name": "layer1.1.bn3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b5e954c73caab54b47265e161eeb57e3ed66ec0ba27449125729f6568e9ec099"
+        },
+        {
+          "name": "layer1.1.conv1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            64,
+            256,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "ab2f3a017e4d0b45d381a24cbecdb3c29f7c521db298138828de73bd7ce57be0"
+        },
+        {
+          "name": "layer1.1.conv2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            64,
+            64,
+            3,
+            3
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "3dd2a32d51eaf65ea7d672ffd703bb036096b384f9a2fc95238c7fd66039c4f0"
+        },
+        {
+          "name": "layer1.1.conv3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256,
+            64,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "c83792f831615b8902c4767b16f49d0ac5bd003bae98f6941bf59107176f389e"
+        },
+        {
+          "name": "layer1.2.bn1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "7c759dc243734c9d780410d6cd595807116b6cc2104c751d61d1177a44e5f85e"
+        },
+        {
+          "name": "layer1.2.bn1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer1.2.bn1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "088103110e19f90d826d8da9c0e669ce4fe6007b81a97d787e9f8ed2a3bc585c"
+        },
+        {
+          "name": "layer1.2.bn1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "6e9e59a0b87f8e5d104d8450d8567ad269038e367ec9206c40ef56bd4dc73d8c"
+        },
+        {
+          "name": "layer1.2.bn1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "27438a5994fe2a9826f2c080895fbbd30a9fece2260b8e98b93db147f4698c5d"
+        },
+        {
+          "name": "layer1.2.bn2.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "137187649f9d446e0fc7de1a939a1f412689fe907c80f43dbc97357ae601d12d"
+        },
+        {
+          "name": "layer1.2.bn2.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer1.2.bn2.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "537e2932ad7fd3a179cd94415ebd1a2319590843c8dcfeec96d0a3c0671367fd"
+        },
+        {
+          "name": "layer1.2.bn2.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "4f83dd68de7891753db60bf143e2194467c760b704b629bfbf8abcf9fc91d180"
+        },
+        {
+          "name": "layer1.2.bn2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            64
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "ad294b2283bbaa3734d2af057390bc986c1dcffe07b88706928ff52f8e2754ec"
+        },
+        {
+          "name": "layer1.2.bn3.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "9399048925391434b80b3873fceba374aa0728c0c0c3c290388bb41e1ec348af"
+        },
+        {
+          "name": "layer1.2.bn3.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer1.2.bn3.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "f78b98feb146faa2d20b44ed212b346b2039dd4f15093de0f991e7a02e6ffa2e"
+        },
+        {
+          "name": "layer1.2.bn3.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "8ec63308c32de3122d59d051b146165263386d099d25b7844b0307d2314c8632"
+        },
+        {
+          "name": "layer1.2.bn3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "eb33ebb9f5137e5cdc90f7e7938dbeefed8a17b0fbc0430ace3b3695d2b0d6f1"
+        },
+        {
+          "name": "layer1.2.conv1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            64,
+            256,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "4496485c2edf69525786429a6fe333a0839335555c1f185b7e32022ebd4630e0"
+        },
+        {
+          "name": "layer1.2.conv2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            64,
+            64,
+            3,
+            3
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e1e57fac79d8b374fdb671d24351a12140f63db4b2166b5a0a12dd460dd1c7be"
+        },
+        {
+          "name": "layer1.2.conv3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256,
+            64,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "db4c7f42c67e63358f48c5474c071b0890ea82ef462780d6bf926b51353d3412"
+        },
+        {
+          "name": "layer2.0.bn1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "5fc00d79b465d4c6a6d9380d69a8225dc26fde7d52b4ef6143273457322eb44d"
+        },
+        {
+          "name": "layer2.0.bn1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer2.0.bn1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "4863124a69953b355483fe302072dcc766653bcbcf968f29c31a7b2c8f078828"
+        },
+        {
+          "name": "layer2.0.bn1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "0e1a30c229cc82cca754f8d1b3787db442692a638ae0fca3033d3ae23470851d"
+        },
+        {
+          "name": "layer2.0.bn1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "4eaa9cc6cae57a7c56676de98fe323eadfc120329276b44a9dadf2ede04e1b4b"
+        },
+        {
+          "name": "layer2.0.bn2.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "045ecc1f79bff2ffab57f7f57292ac407d59923a16ee6fdda788652f08896395"
+        },
+        {
+          "name": "layer2.0.bn2.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer2.0.bn2.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "ee6a55565335dce24273ed1f11d5231b60ab4f833e9baa1969765cb31d0a846e"
+        },
+        {
+          "name": "layer2.0.bn2.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e3da01176ec5d290d88f6c92892d2e05e03cfb2250832831b48092cf6e22bf03"
+        },
+        {
+          "name": "layer2.0.bn2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "ecf388a3e58c464362beace96c1ca4cd1d765e3cbe13d553563a5ef9f472a491"
+        },
+        {
+          "name": "layer2.0.bn3.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "cbc80c132f3262b3c6d3e4585e77c68df1c7f1750723d885b178798656ee09a1"
+        },
+        {
+          "name": "layer2.0.bn3.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer2.0.bn3.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "5f709e7b39960c1991414f52241c474116dc9b2b0777eadaea638adfd2cffcc2"
+        },
+        {
+          "name": "layer2.0.bn3.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b4e65b930768c9c4746d70bd9007f652e3f588decd7195c656b043018cc99daa"
+        },
+        {
+          "name": "layer2.0.bn3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "1e95a7a5bd617eb7e7f67ccd306e2fee0e4c03d63cff91239a1c0bcfa806afd0"
+        },
+        {
+          "name": "layer2.0.conv1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            128,
+            256,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "07f11edf752d1efe026d15ec5f0f5ce50ac8ab9d542e3df22f34d2ff1eadac12"
+        },
+        {
+          "name": "layer2.0.conv2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            128,
+            128,
+            3,
+            3
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "917741eb42741386ed82cccb0002a09319f23fd7d2abfdbb30c62e15310702a9"
+        },
+        {
+          "name": "layer2.0.conv3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512,
+            128,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e384f849874d8024c236e2afa4b0385c2248722177c7733421e7263ff9f79e19"
+        },
+        {
+          "name": "layer2.0.downsample.0.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512,
+            256,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "6e3c7fb8052cc89d000642a027b09799071e9e72e486bdb63487b2e6d83a67a8"
+        },
+        {
+          "name": "layer2.0.downsample.1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "cbc80c132f3262b3c6d3e4585e77c68df1c7f1750723d885b178798656ee09a1"
+        },
+        {
+          "name": "layer2.0.downsample.1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer2.0.downsample.1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "496eb9e85b9189c02d87ea5e3b24da54155180ba1036bcd4f80774d922e3b435"
+        },
+        {
+          "name": "layer2.0.downsample.1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "259ad1fb399d63d8c803278a193a2ba6b345c605dcea9baf7ba8965eff5acf02"
+        },
+        {
+          "name": "layer2.0.downsample.1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "91a39b67764f02ab0b233dbb1e6d497341ea7926142b083bbaf7b98198d4f4b5"
+        },
+        {
+          "name": "layer2.1.bn1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "f392274b36301a7520953a7103a85208eacd8b8ad24743109e2dcc4fed6e7551"
+        },
+        {
+          "name": "layer2.1.bn1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer2.1.bn1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b854093c50ca4182ffd647a50bf082556ecb55444676a93b8ea2867afad52c45"
+        },
+        {
+          "name": "layer2.1.bn1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "4926aef4d26910cff78cf15bacf679c0217a141b5af7e5177330f3f2943abc5a"
+        },
+        {
+          "name": "layer2.1.bn1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "9afe1740cedd14c321831bc30f646e8d785918e7aa36d3941ecce78b0ba4052a"
+        },
+        {
+          "name": "layer2.1.bn2.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "dd488197315842307eea644baa60b47999a51d4121d8fb6944570f108a49fe46"
+        },
+        {
+          "name": "layer2.1.bn2.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer2.1.bn2.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "2d20a4505f1c09fd8c6a8e525421e6a5303d0cc128f2e00c87fc9a9ee6fae1c7"
+        },
+        {
+          "name": "layer2.1.bn2.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "578fd679716a3c5c2d929160b6551006a9affa8a1c8e001202f70239e665f74e"
+        },
+        {
+          "name": "layer2.1.bn2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "56cca940b7ea468b83b39324847d7f2e988cf0773acd3ae164dacd367165007a"
+        },
+        {
+          "name": "layer2.1.bn3.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "6cb8a484c3d2136e3dbfcc2a62cd53debfe0d6e1868b860a1e8df9a68287d8aa"
+        },
+        {
+          "name": "layer2.1.bn3.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer2.1.bn3.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e8747d2803e2004bd6ff82393996adbf4da21feba3a1a8abf604f03253e0ce60"
+        },
+        {
+          "name": "layer2.1.bn3.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "05833052eae14898c37f2e551f059ee43f6a05ce9decc689a07e52b56b16426c"
+        },
+        {
+          "name": "layer2.1.bn3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "83bb1d986d08ed93de847ebebada189ab95b8683bff55d3831b6d66397cea29c"
+        },
+        {
+          "name": "layer2.1.conv1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            128,
+            512,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "4d9fe3b926c7cf4ae0d8ef95660356fda20d362700882edf903c6a2be0a5e26f"
+        },
+        {
+          "name": "layer2.1.conv2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            128,
+            128,
+            3,
+            3
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e92308f1ac4c14a41651e2c5528ac3612794c968e82fb6547bcb34e5d2e3c11d"
+        },
+        {
+          "name": "layer2.1.conv3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512,
+            128,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "3654656be0db022b9648809e463af12da5e43d4ac03d41009ed7f6ad3c370e23"
+        },
+        {
+          "name": "layer2.2.bn1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "0bffea0c50d7d376a683c2b4bf3504c355deabbe9e297fa85df9a3f510ee44f5"
+        },
+        {
+          "name": "layer2.2.bn1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer2.2.bn1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "5acb20dc86448f7ae9de28b7819026ff345f24745929e2381009c760289b1383"
+        },
+        {
+          "name": "layer2.2.bn1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "a60d21ca745a86483d9b425a0af349c53e4ce79acc2b12f85d98210c2ad55a80"
+        },
+        {
+          "name": "layer2.2.bn1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "209f882472a2918752b90d916678e7bbd08def2594172e5f1a3f67e193e2b3a1"
+        },
+        {
+          "name": "layer2.2.bn2.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "f97141e892c0d12245283eb0fa7a0fe8373bd1743ed74e631f160f2b1b1192a0"
+        },
+        {
+          "name": "layer2.2.bn2.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer2.2.bn2.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "230e437ac01e6dac192f10b16784e474489d99ad514f1926edd6f6ed5c4b8da3"
+        },
+        {
+          "name": "layer2.2.bn2.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "9cab9c2318d091e4cddf3d66477fc0ca1f842b1e4375fbdf5d59942592e51532"
+        },
+        {
+          "name": "layer2.2.bn2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "2ddd1333b1d5ef61efe6d6166e26dd6d1077f13bda46cd4b0f450fd0f62a87cc"
+        },
+        {
+          "name": "layer2.2.bn3.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "aa75274536661ab07304550e5a7c7fd27b49cc7d3eece338f174e5ae10382452"
+        },
+        {
+          "name": "layer2.2.bn3.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer2.2.bn3.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b976bc7373cb5f6385e4ae8aa9ed64a43d188f6604d88e120c0e77c1ce0abbf0"
+        },
+        {
+          "name": "layer2.2.bn3.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "de1b43dd857168d25ff0845bbdaa715a266e45e7a75d11c3aaa0c9652b92240f"
+        },
+        {
+          "name": "layer2.2.bn3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "16cd474ac71b4cffc63b68259bb70803a901b143cb6bfdde44f8a38e375bc886"
+        },
+        {
+          "name": "layer2.2.conv1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            128,
+            512,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "1bd713745b7a07791d6b8242fa399188ffb1b3d4d116c7575c164a45031b5cc4"
+        },
+        {
+          "name": "layer2.2.conv2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            128,
+            128,
+            3,
+            3
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "798ef1079bd2c1df9718ff35eb7de25d81dff5d180a3468d378bc7a7f768341e"
+        },
+        {
+          "name": "layer2.2.conv3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512,
+            128,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "35a6faa08387d9b6940478c3c1376cdb5b90d05ef5e668a1966fd5165513e0d8"
+        },
+        {
+          "name": "layer2.3.bn1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "7c1a65ddf26d6d739cce7eb80e717436fc97a7b7c0bbeec9dafe35b262178482"
+        },
+        {
+          "name": "layer2.3.bn1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer2.3.bn1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "6583d5127616983ab1281a6aab0b2c0de754389f6b53d24158bb73a8989909d0"
+        },
+        {
+          "name": "layer2.3.bn1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "aa932b49c40d022d1839b4506725e1419d64ce94c9d7eaecc169146830a80267"
+        },
+        {
+          "name": "layer2.3.bn1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "a74a2450a69b2138dd002b69806b6d8a3269d25a8ed1e81e1075fdf610218c6b"
+        },
+        {
+          "name": "layer2.3.bn2.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "a0ef29a1c771c5de4fd480448dd51d18542f513bdc196ef07a7b7f426d4b9290"
+        },
+        {
+          "name": "layer2.3.bn2.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer2.3.bn2.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "41831b3ca5ff28c754205c53e6c3a025f3f95488ad1a794908333e5dbdcb08aa"
+        },
+        {
+          "name": "layer2.3.bn2.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "41ce50fa0530719f0483266ad3c4ed9841d6e3725c43b17bf2419fa79e1a2381"
+        },
+        {
+          "name": "layer2.3.bn2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            128
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "749012946215abcdb475696f44f8f9028d218bcfce690714194c9a2b06cfbbb4"
+        },
+        {
+          "name": "layer2.3.bn3.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "7dbc7cb2e6baf182e41fd5272ef1bed8af08fe97a42469620eebce0c4258fc9f"
+        },
+        {
+          "name": "layer2.3.bn3.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer2.3.bn3.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "9abaae1182061d4c6fb3bbd0de1ab78e53c4dd8a08bbca5e38e9a8417c09a5c6"
+        },
+        {
+          "name": "layer2.3.bn3.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "799cca412260dfdce1dd02030299a4508f6c8cc51ae23626000ed62ffd0bd13d"
+        },
+        {
+          "name": "layer2.3.bn3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "dda69a0d290771144b9456aa4cff62f2b76f1a8e905656cba346f325ddc42424"
+        },
+        {
+          "name": "layer2.3.conv1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            128,
+            512,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "78d31dcdc231b512e130bdb4e5b9b57113973b64b0ee5a73d8451a48901b7252"
+        },
+        {
+          "name": "layer2.3.conv2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            128,
+            128,
+            3,
+            3
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "2739b7eea0309f1f75c69928820d72211fc2086141e9cebb47c39abb5e9cf327"
+        },
+        {
+          "name": "layer2.3.conv3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512,
+            128,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "19a3d40b1076329557cefb9c5584e8c5c8b541335b0527357d82c185e737e790"
+        },
+        {
+          "name": "layer3.0.bn1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "eacbafb15230546c96df9c33220ae3cd9a29d1f0eb631bf21b5be6e92cc33949"
+        },
+        {
+          "name": "layer3.0.bn1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer3.0.bn1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b2f128c92f3809b46019d29f2ea8414315fa4c4223d696e4e08cd15e0dad3c40"
+        },
+        {
+          "name": "layer3.0.bn1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "dc5fde9d7135ff32ebf60d09e798e1ccdf3dba06d47146feb26dc413c59a5484"
+        },
+        {
+          "name": "layer3.0.bn1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "44cdff8933bb9beb264af5e2317312659c5e6aafc99317199b06499d030e4922"
+        },
+        {
+          "name": "layer3.0.bn2.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "71927245d9666c8542227c20d93e82e92afc35530051d30eb503983c95b9b96b"
+        },
+        {
+          "name": "layer3.0.bn2.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer3.0.bn2.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "9482cb3e48d3a14c3658f77ee3c7c6c60a1d28bf2688e219e2d17b25afe00a9c"
+        },
+        {
+          "name": "layer3.0.bn2.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "bd98332c91d6fbc57785aeca3b9cfa4cf3f4eedca4aea55fbf85a2146e91129b"
+        },
+        {
+          "name": "layer3.0.bn2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "0bfb815e4fd0293e5f27aadcec57dd31f7e6662f281fa96e4519ab5061096743"
+        },
+        {
+          "name": "layer3.0.bn3.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "524e80b5296a52235ee77d048c8726a091d73bfbe14bd1a66b7c0161398e02ab"
+        },
+        {
+          "name": "layer3.0.bn3.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer3.0.bn3.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "0943f85c75eb30eb38c942ca4a7c3b1030cb246e962ad0894368dfc20c9ecf8f"
+        },
+        {
+          "name": "layer3.0.bn3.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "82bf5fba5482c7883d02d96a115749cc486ca5e9d7d8160a1be272757a781101"
+        },
+        {
+          "name": "layer3.0.bn3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "74f0cfa2396f555bbb0ed0276ce26a2ad9e117d0bb04cba6644454ddc516ca7f"
+        },
+        {
+          "name": "layer3.0.conv1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256,
+            512,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "4825c6dd645e43876451c4f37857e8f0f6de183acd7a7f28f9b87798a85a354f"
+        },
+        {
+          "name": "layer3.0.conv2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256,
+            256,
+            3,
+            3
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "6dc85bbd05647d2bef5bd58ed306a4ca0e6ba8f473712ef47d474dd7603a9956"
+        },
+        {
+          "name": "layer3.0.conv3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            1024,
+            256,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "8a934d4ef8c4dd07c63bae9f4d41363ed5b19d57e9dc906ec35571d1d78a9c51"
+        },
+        {
+          "name": "layer3.0.downsample.0.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            1024,
+            512,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "2fdc3ccbfe2d81d1c007c1eecf21ce7d18fcd7907e60c616beb54b79eba2879c"
+        },
+        {
+          "name": "layer3.0.downsample.1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "5db07efa668f73e7c51130605d333365d0843fdf040396b93d299605ac048a62"
+        },
+        {
+          "name": "layer3.0.downsample.1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer3.0.downsample.1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "d4c0ec04efc4f4d5e8083cd82ac170001e60a74dea4334d1ad2ef85048da4e17"
+        },
+        {
+          "name": "layer3.0.downsample.1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "121925fb032dfa416e999324071ece40ca6e7f3e5a929e6a86229ef4f452e69d"
+        },
+        {
+          "name": "layer3.0.downsample.1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "ddd9eaadf7fc7e01d394313d2c8fcbb7c51632f15de04b08e7524c649cd37996"
+        },
+        {
+          "name": "layer3.1.bn1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "095622b21016fb66a94bc511d4eec6612c7927ec8094ad465567abdab43d67f2"
+        },
+        {
+          "name": "layer3.1.bn1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer3.1.bn1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "1deaba35ffaccdbd0ffda019dfd052862c8cd73fbb12260b623bafbdaafdd727"
+        },
+        {
+          "name": "layer3.1.bn1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "0793deb368b687f98ed24b931acb143fed2c6ac375dc87499c912cae01ab0a0b"
+        },
+        {
+          "name": "layer3.1.bn1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "c6916a614685c44bdb0211ee5e01fa79735ed011e2411e14636d94b535fe5033"
+        },
+        {
+          "name": "layer3.1.bn2.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "f0fc74a81f67c7137b49bc3147e5f4fca55c14b332326b1c9e9b0184a5b14eb5"
+        },
+        {
+          "name": "layer3.1.bn2.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer3.1.bn2.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "654c14d221de3eac1d7aa1f5c83e9edc7fed5083bc1d57f361065c374648dced"
+        },
+        {
+          "name": "layer3.1.bn2.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "1f91657d16e0e14f7a6676d736bc6acd3ac041e554f93d2ac258f0c1ba8a810a"
+        },
+        {
+          "name": "layer3.1.bn2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "3dc17238c9258641770a9c558398a42afa7c43018bf5cc08db81c69935ec14b0"
+        },
+        {
+          "name": "layer3.1.bn3.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "5bfbc45622c0e09a92306e414bf1b6850d521a9ee2d9ffcb205e7ec29902eb21"
+        },
+        {
+          "name": "layer3.1.bn3.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer3.1.bn3.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "70e30459845ceb813d72966a1d3e42d040f3fb3d27da3333dcb83f25591463c4"
+        },
+        {
+          "name": "layer3.1.bn3.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "11b031f7a80756ecebee2dc37596cc5323dfd19f1e27af77b72c817065192048"
+        },
+        {
+          "name": "layer3.1.bn3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e6206f82e11773646ce113b1e45749d074bd2d9c8fdb893e391e37261da3ea64"
+        },
+        {
+          "name": "layer3.1.conv1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256,
+            1024,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "d6d3a643ddd59f87d8fa45e6bbf3a05fff2b3e9067494cf936b4869defbbb27c"
+        },
+        {
+          "name": "layer3.1.conv2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256,
+            256,
+            3,
+            3
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "6541c34091d71bed9a4974e67c94d815becbd93adb82abc562567b483ad2d367"
+        },
+        {
+          "name": "layer3.1.conv3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            1024,
+            256,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "a6aa619c35d972107c6038923dd896d8ea15d5af446f628aab91e9a4ca523397"
+        },
+        {
+          "name": "layer3.2.bn1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "283a60397c58c77de0a6271057e257bc8e249c9805cd0e98a9651ca1b372018b"
+        },
+        {
+          "name": "layer3.2.bn1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer3.2.bn1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "dacff4578f956cbfe0be6fb79b5922fd4ecc744dddf506cd1c878fce24d9fc20"
+        },
+        {
+          "name": "layer3.2.bn1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "101247e79fbde0dd58948c33b0109d7587d7550ee099f1d0e4a2bd10ca9ad3a1"
+        },
+        {
+          "name": "layer3.2.bn1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "47f20adf0739c029d6e88c130123a978487b00026c068334b67b8accc9a734e5"
+        },
+        {
+          "name": "layer3.2.bn2.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "10b0bfebd358d6aa8f4dc7e7ecb7eda2e9a5fbb88f6745944f223fe47eba0b94"
+        },
+        {
+          "name": "layer3.2.bn2.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer3.2.bn2.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "7c301da13f1c1cbc54ac1cb11f9bf24d3d09a0bb7497757fdd6205bfcaec1bf3"
+        },
+        {
+          "name": "layer3.2.bn2.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "952597c98e4dc1bac18e06523b3f93010ada5357adda57b42f72c5c4a017dbaa"
+        },
+        {
+          "name": "layer3.2.bn2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "cd34cfac13782217c96daa8f97fe1d3bb28c3f858fc7ccff3f49606937ea680e"
+        },
+        {
+          "name": "layer3.2.bn3.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "23ec3b7b770845b8fee3745299c173a1885c34706c70cd3f76dca3ad768121e8"
+        },
+        {
+          "name": "layer3.2.bn3.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer3.2.bn3.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e3392725730bce8603365ebf74fd408484da521ab14a63c71209199f6a4d149c"
+        },
+        {
+          "name": "layer3.2.bn3.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "122e1c19f8aae0e8ceccb00ddcdb06e3bdf25395830ca39d071038f9d01ce2d6"
+        },
+        {
+          "name": "layer3.2.bn3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "76c79fc0efd47d5bdec768540d4e10a4b5f5106c1516cfbc3dd33426e05d2a17"
+        },
+        {
+          "name": "layer3.2.conv1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256,
+            1024,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "57f5e781fe2f3329640784b83512a64619527d117c9bd290116959a76620fd9b"
+        },
+        {
+          "name": "layer3.2.conv2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256,
+            256,
+            3,
+            3
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e5472bb47d1d1f8f5148501f320941c9d728d9e236b5224bd13208839db1c2ef"
+        },
+        {
+          "name": "layer3.2.conv3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            1024,
+            256,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "22c592326310925883a7016ec5e6ca5d8cb35f7c93e7ffeb1c5b7ef23937105a"
+        },
+        {
+          "name": "layer3.3.bn1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "2392b55a9e12329c278caff5f9a2028279b8517df0b1097723bd9c6b3795b8aa"
+        },
+        {
+          "name": "layer3.3.bn1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer3.3.bn1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "d99d11868810011d8dc35e6bf637347f65dfa1f5f14c7814596fe749937702da"
+        },
+        {
+          "name": "layer3.3.bn1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "21dd52e9af5560630bfc79b0a962082b0354b018e9b038e5e2a7e9ce7ec3c17c"
+        },
+        {
+          "name": "layer3.3.bn1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "a7eca02aa5eef83f606870832cd6d2191ff677fb05cdb6683e9cc3e6092a2949"
+        },
+        {
+          "name": "layer3.3.bn2.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "77b843574c7cf7b1bc2abde872f4172f071f52e1b2077aff3977dd8a2a8244ed"
+        },
+        {
+          "name": "layer3.3.bn2.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer3.3.bn2.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "ed23d168310daafcf15a0e1ffd3b703c25a0394064fbe76a9215022ea3fd4942"
+        },
+        {
+          "name": "layer3.3.bn2.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "6031e1169444892ce206f1fa33d589ad9f903064b8057424d0aa2d634c2a076c"
+        },
+        {
+          "name": "layer3.3.bn2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "d76daa7283168fafaaa939905b1f1163bd0bd846d087b243451237191d96d6dc"
+        },
+        {
+          "name": "layer3.3.bn3.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "4f6a884c04c23c7cbdaa4ee5a623aa875162b63d4371f204b11678212119c725"
+        },
+        {
+          "name": "layer3.3.bn3.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer3.3.bn3.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "997e2a4c265c30f9bc5050c6755caa5582e4e1a1bbc90c54d27df19f5913c163"
+        },
+        {
+          "name": "layer3.3.bn3.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e6bd528c01b3e5adb73096c1d2466a409e506d546eb5f95b9e36eb324f15fea8"
+        },
+        {
+          "name": "layer3.3.bn3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "d02f522cf84697de29f3b8e2f96daa578aa1ff6d60f6b86163ac06cb9b1b3476"
+        },
+        {
+          "name": "layer3.3.conv1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256,
+            1024,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "69e6802b823d9836c563a1337bb96544f68ad3cf438914a69a7b20c0f4244da8"
+        },
+        {
+          "name": "layer3.3.conv2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256,
+            256,
+            3,
+            3
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "9e372bf74a61581679723179acf451c0d85d403fddcb82397ce91d53409c4914"
+        },
+        {
+          "name": "layer3.3.conv3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            1024,
+            256,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "09c9448cfbab5070f50fbea676f5657e5b6cea949c756f5aa531dac7b47dd2ff"
+        },
+        {
+          "name": "layer3.4.bn1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "65add38ca8326c7ecbd8204bedd6358ba5292ae5ff22ed8fe61752e299578d2f"
+        },
+        {
+          "name": "layer3.4.bn1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer3.4.bn1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "586804c9558bac57baad87099025af6fb188f01858ee5b9ac68317b1bd491fbb"
+        },
+        {
+          "name": "layer3.4.bn1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "ee9bb60c2f5de3844e602393064f7c5ca31c3fff233a8ad91ebc345ccd39f695"
+        },
+        {
+          "name": "layer3.4.bn1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "dd045a6378fd458b7e1f6751c4e56e9b22e21b62e0e1d4077e7dfc2b3fe20cca"
+        },
+        {
+          "name": "layer3.4.bn2.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "f69d1fdb6d9247a30e074de420de7422260fe3331d499c8e0ef1e1d2c9b02039"
+        },
+        {
+          "name": "layer3.4.bn2.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer3.4.bn2.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "658f4349badaa76e2a8d6778ca2b2ca4cb67c6f36230e686d505f73f07c3fab5"
+        },
+        {
+          "name": "layer3.4.bn2.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "3d92a619eeadfe0e5304e9d58d4d7c152f5b9f457bc04f15e631abb206372c0f"
+        },
+        {
+          "name": "layer3.4.bn2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "a584b3c57878976a3cdb7d75a353c1f14724fd470ef50e51c1f8a9020fa524e7"
+        },
+        {
+          "name": "layer3.4.bn3.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "4b4a9c0d09dd3ac7f0413ef865779c9fbb28b8ce181bfa6b33deb859439f2074"
+        },
+        {
+          "name": "layer3.4.bn3.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer3.4.bn3.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "a1be342f55447cef4fb20fca1b2bd4258a4122600607f561b252018f4a4a6863"
+        },
+        {
+          "name": "layer3.4.bn3.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b2aea89ab5bc1761adb7b2f66956c10aa9e5401181d3eb871086c41713c04f8e"
+        },
+        {
+          "name": "layer3.4.bn3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b6df32e2ca4cd61249b2587bb2dd07f1ce45a03d1fcb9b9837f01c8a4deecce2"
+        },
+        {
+          "name": "layer3.4.conv1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256,
+            1024,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "063a20b0dad45d6a3780ef7327a088a0243d02e4d4a204291b1d18fbf57cf9d6"
+        },
+        {
+          "name": "layer3.4.conv2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256,
+            256,
+            3,
+            3
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "39780a18aab31da8c5f65bc23714e7cd5f52cc6a30014f710da7197d0dff559a"
+        },
+        {
+          "name": "layer3.4.conv3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            1024,
+            256,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "a466a0f7a949a56b5d790c1cb99488bb6ba71ba484ee6be2322dcfb7cd1db98c"
+        },
+        {
+          "name": "layer3.5.bn1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "4e45c68823f72713446a110f191d9517979cd1e4455d74db49559950bdd9a4ea"
+        },
+        {
+          "name": "layer3.5.bn1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer3.5.bn1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "2ae844767d58fffc270726b052dea97b8e4cd1361f5b076395f3873978bf71c8"
+        },
+        {
+          "name": "layer3.5.bn1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "e7ab986bea3c9d87353eb7cb24522471b33b6758031789fd1faee4e37664d639"
+        },
+        {
+          "name": "layer3.5.bn1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "64cf98c29a1f664c31b16931b72bf25d86b5b1f9b5caa146976e9b045e588627"
+        },
+        {
+          "name": "layer3.5.bn2.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "429fecd7d1bc3eb4da2e15482b29dda5928d532b9646d8698c69e46965134c58"
+        },
+        {
+          "name": "layer3.5.bn2.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer3.5.bn2.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "c1b1b72c0cdd2a09039af02c8092b79cbb443b6f16fd0f6852a0895f24402c98"
+        },
+        {
+          "name": "layer3.5.bn2.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "21a59219c12b70e498084ac137aa2c7d6682de9a38904a4d0844f3be9f580a68"
+        },
+        {
+          "name": "layer3.5.bn2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "a6079b6cfdbd8d5a7da9b0b51163e1f2a4e2e25365a2665f725579c27f021315"
+        },
+        {
+          "name": "layer3.5.bn3.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "1618d9ddc8fc37d757b22719804908aea9aa0b0346d4a8d65574ff16dedad49c"
+        },
+        {
+          "name": "layer3.5.bn3.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer3.5.bn3.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "ff1d1cbda6bd6a1034e28ff25a52623b3618a07b3301ed688c573c0b31d915c7"
+        },
+        {
+          "name": "layer3.5.bn3.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "6a2af8ce45e2a88b7ae150ce5f8ef548ef7811ca040f92ce49b09f4323f2945e"
+        },
+        {
+          "name": "layer3.5.bn3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            1024
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "d557776f4b9af21d1d1aa71fccf66b10e55bee30159586cdf1d061603d02d9af"
+        },
+        {
+          "name": "layer3.5.conv1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256,
+            1024,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "47adeaf0c57f0bbbb5870668efae97c7ad9b3af94785759c3ce8c17055ce2965"
+        },
+        {
+          "name": "layer3.5.conv2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            256,
+            256,
+            3,
+            3
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "df0dcdbb1ed7020aec3506ae1145e27e41174060ce0d3f57bc30feb4cc502f17"
+        },
+        {
+          "name": "layer3.5.conv3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            1024,
+            256,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "ecf85632b51ae825a94af282499de45b973555b218d27d2c2e99fcfc6780bcbc"
+        },
+        {
+          "name": "layer4.0.bn1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "acfaa3991365d12a657ab4d3fafb903774bd0d7934bb1f60b7c8a61341a98eba"
+        },
+        {
+          "name": "layer4.0.bn1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer4.0.bn1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "6812239966f43a184531bebfccc9056fe5549bd3fc8ff7153c669c265c01e27b"
+        },
+        {
+          "name": "layer4.0.bn1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "afad2d0968d4ed08cb8cba289eb6a1fa1c53079db02f505586cbdeb5ef11cfe2"
+        },
+        {
+          "name": "layer4.0.bn1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "6a18a08294f81f1f0a09ba65f6cd74d1d9f6b0e5109c8670918de21e202244e9"
+        },
+        {
+          "name": "layer4.0.bn2.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "6024a580ba9d6f142bfc1705b3624db6713f95b5b992661a10d10819fa65f150"
+        },
+        {
+          "name": "layer4.0.bn2.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer4.0.bn2.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b43a54b534ed5c36ffffbaa6fc161898a4e2ceff7374c371ab7c6e2d4806cfd3"
+        },
+        {
+          "name": "layer4.0.bn2.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "085000655ebb2a405a77749e0275d5519d663680ade81368d218a3acb0c9a364"
+        },
+        {
+          "name": "layer4.0.bn2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "23ed7ee7f095694f72be57fc55ced9dd56eec989a23ec76e03638675b15fdeff"
+        },
+        {
+          "name": "layer4.0.bn3.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            2048
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "149a895f987817c5113f50be9938a42410e21347139db7be50511828701e9cb5"
+        },
+        {
+          "name": "layer4.0.bn3.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer4.0.bn3.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            2048
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "0cb1ae3d294bb2ed45c70eec26ab87ebda4a0f6a004df9e5e5ebff25ca8cf39e"
+        },
+        {
+          "name": "layer4.0.bn3.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            2048
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "2e0ffbabc4cfbb82af9de5da8ee194deb93b7b0736fe9cc7dd544c671dcb7d0b"
+        },
+        {
+          "name": "layer4.0.bn3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            2048
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "3d43102ff3ecf20af6645398f4be2f731c457129473015fc65489bc751c2bee0"
+        },
+        {
+          "name": "layer4.0.conv1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512,
+            1024,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "370e949132c24a84b46f7bfe1e6b40300c39b45822ab686436239babe9b4b89c"
+        },
+        {
+          "name": "layer4.0.conv2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512,
+            512,
+            3,
+            3
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "51d4484b22a4b556cca9b58b5f30bc0095b59bb046eb21d9fc464d504d096d39"
+        },
+        {
+          "name": "layer4.0.conv3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            2048,
+            512,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "a1ee3073e1d6956cad02bdd8a88e0acc97bbb01cf31e6a6a239b5a218b951c2b"
+        },
+        {
+          "name": "layer4.0.downsample.0.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            2048,
+            1024,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "2f9dfba3f344d161bcba085d68f78b9098a880092e6e9d7fff65d0c970b3b7ee"
+        },
+        {
+          "name": "layer4.0.downsample.1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            2048
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "cb51f933c91c04d9f539d6a2e8625d4087b8f5cc427d02dfa9ece38f5c313537"
+        },
+        {
+          "name": "layer4.0.downsample.1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer4.0.downsample.1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            2048
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "60a4fc396c1a46513e813211fd812e104b02a3a7e280dbf84e342e5d20ed35e8"
+        },
+        {
+          "name": "layer4.0.downsample.1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            2048
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "8febb21345268c6c8720a72199df6d77f925d16d5e2e4dc83bfcac798cf8b83e"
+        },
+        {
+          "name": "layer4.0.downsample.1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            2048
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "4f50331e8baed7c18b094a7b94c5437bf2763abd9eca7374e6eef38a9d1eea15"
+        },
+        {
+          "name": "layer4.1.bn1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "03f299b80a254e22e1ea16a49437b742727618884759817fc918b6321888a586"
+        },
+        {
+          "name": "layer4.1.bn1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer4.1.bn1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "3f2479fb56a865d2b3fe59149c595aeeb9c01ed4395582f46ee216ec252f0ee2"
+        },
+        {
+          "name": "layer4.1.bn1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "3d3e963a90c7a2db66e34e3d3a663606ca07d66aed0995ce5be643a40bce1e21"
+        },
+        {
+          "name": "layer4.1.bn1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "7bd69c466137dde032494e55300cb34fb5ee10405af7282b05a5ef922a99e67f"
+        },
+        {
+          "name": "layer4.1.bn2.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "1bdcdc409fbad4fc73d7a92fb136f546b726ffca1209efc2887e8ad3bc6b1257"
+        },
+        {
+          "name": "layer4.1.bn2.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer4.1.bn2.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "d3a8ebeaa38ae22091e261d7a937801bb55d17f757204b99904a9bed1c81c55c"
+        },
+        {
+          "name": "layer4.1.bn2.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "edae4020e51183f5961ad114e0048827c9a8571b02c6fd681e583888c98321f4"
+        },
+        {
+          "name": "layer4.1.bn2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "66e70aca5effa9107b12651a5a3e1d4c5d3c9cb89e48bab7d9754887bf7bca28"
+        },
+        {
+          "name": "layer4.1.bn3.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            2048
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "404240663b45510aca1dfa44960174d60a34b88072e62a21cc2ca333e83f65af"
+        },
+        {
+          "name": "layer4.1.bn3.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer4.1.bn3.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            2048
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "8acada0c8f78466b6564e91addefc933e4cd9efd1228380e58e86796ad4f45ba"
+        },
+        {
+          "name": "layer4.1.bn3.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            2048
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "eb4131a229dd915d0e0b7ec81895b8f837937701fbff2dea3064a9821013c0e7"
+        },
+        {
+          "name": "layer4.1.bn3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            2048
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "4419f0544af4e234c8f2aa5afe0f9431f4f3f226a32290f20801b8db3ff7ab5c"
+        },
+        {
+          "name": "layer4.1.conv1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512,
+            2048,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "cba0357329eb8f062ec4cd1ace2e933184ca658899c2bfdbbe418ee58c858f8b"
+        },
+        {
+          "name": "layer4.1.conv2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512,
+            512,
+            3,
+            3
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "6c9031a023297256b1675496a145fb47b642efa370bdef125a9f346d1141e4c3"
+        },
+        {
+          "name": "layer4.1.conv3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            2048,
+            512,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "ca4ecbe3ec1e928d743ed04189fa4571279b9d2661dd5cfbf914e0b7e8ba81fe"
+        },
+        {
+          "name": "layer4.2.bn1.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "c7cd07cb0b4cae437450a216c2ee45b15bb6e74ef1875835595dc65bc02ea097"
+        },
+        {
+          "name": "layer4.2.bn1.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer4.2.bn1.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "fc390c5e184d1cb9e9f922e154016b229b97c597e14834a1d442e9f7d92afcbd"
+        },
+        {
+          "name": "layer4.2.bn1.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "60b0d7cec641ec27a854392549c919696d4fe0e1ffa51ab02d5c81d47242dd91"
+        },
+        {
+          "name": "layer4.2.bn1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "7bfdbfd3c12c61fc0fcf3721f13c7cb654de3711a32c2584c20205dabf424a82"
+        },
+        {
+          "name": "layer4.2.bn2.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "7112839175616ebc8cce9f02c3640180e9279669aa0bcb924ad78c844827abcd"
+        },
+        {
+          "name": "layer4.2.bn2.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer4.2.bn2.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "8db58af4221f9f7d9e6fc665c7197ba6867598de47ade718a17bfcb55654801e"
+        },
+        {
+          "name": "layer4.2.bn2.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "fdd30eef274a35dfd49e742ec83ab73becda7973c34dde12edf0e66b90771e61"
+        },
+        {
+          "name": "layer4.2.bn2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "288cc888668ce23e7dba824f1afe2a6aeb4ceede41f67af60af7e1bed6b189a9"
+        },
+        {
+          "name": "layer4.2.bn3.bias",
+          "dtype": "torch.float32",
+          "shape": [
+            2048
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "ac1c110da8a1689b36167f6482ab79b8ad95bc550a606944a3b997fa2660a2c5"
+        },
+        {
+          "name": "layer4.2.bn3.num_batches_tracked",
+          "dtype": "torch.int64",
+          "shape": [],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b32fda66f448dff93ac72bd6e888fe57ffd8e61b25dddb5c409518b5f027893f"
+        },
+        {
+          "name": "layer4.2.bn3.running_mean",
+          "dtype": "torch.float32",
+          "shape": [
+            2048
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "03d62153900d23ac010f9faa9dfd6e5cfba361cbf3948ad23c2652127ccb6273"
+        },
+        {
+          "name": "layer4.2.bn3.running_var",
+          "dtype": "torch.float32",
+          "shape": [
+            2048
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "f394e17a156eb8a8124c7e794a329cbb4206eda62f7005963eb28f9b49d7a150"
+        },
+        {
+          "name": "layer4.2.bn3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            2048
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "5281694a2b0096d6fdd267692d3e481521d464f8ede12cdba41dde2dc2cda835"
+        },
+        {
+          "name": "layer4.2.conv1.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512,
+            2048,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "b1d50002e7499f363ea45c396248a7dbec26351e27a0a0ac9dacefcb3949aed3"
+        },
+        {
+          "name": "layer4.2.conv2.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            512,
+            512,
+            3,
+            3
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "4eb3ac4b8a92d9ddd9caad801c3fed43aa8a6fab4216312a2e7973b81da20e8d"
+        },
+        {
+          "name": "layer4.2.conv3.weight",
+          "dtype": "torch.float32",
+          "shape": [
+            2048,
+            512,
+            1,
+            1
+          ],
+          "byte_order": "little",
+          "tensor_bytes_sha256": "981387361dee0856c442010699ac0a4a553c56ce013a6251844b8bf26147eafb"
+        }
+      ]
+    }
+  },
+  "weights_modified": false,
+  "new_inference": false
+}
