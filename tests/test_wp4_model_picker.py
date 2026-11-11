@@ -107,6 +107,8 @@ class ModelPickerTkTests(unittest.TestCase):
         self.weight = self.directory / "synthetic-picker-file.pt"
         self.weight.write_bytes(b"path fixture, not model weights")
         self.errors = patch("wp4.gui.messagebox.showerror").start()
+        patch("wp4.model_picker.discover_weight_files", return_value={
+            "paths": {}, "missing": [], "warnings": [], "cancelled": False}).start()
         self.addCleanup(patch.stopall)
         from wp4.gui import PlantApp
         self.app = PlantApp(self.root, self.catalog.protocol_path, self.directory, self.catalog.source_csv)
@@ -216,15 +218,93 @@ class ModelPickerTkTests(unittest.TestCase):
                 'wp4.gui.load_model', side_effect=lambda catalog, kind, paths, device: SyntheticPredictor(catalog, kind)):
             self.connect('wp1')
             self.wait_for(lambda: self.app.predictor is not None and not self.app.busy)
-        closure = inspect.getclosurevars(targets[0]).nonlocals
+        closures = [inspect.getclosurevars(target).nonlocals for target in targets]
+        self.assertTrue(all('self' not in closure for closure in closures))
+        closure = next(closure for closure in closures if 'action' in closure)
         self.assertNotIn('self', closure)
         self.assertNotIn('done', closure)
         self.assertNotIn('self', inspect.getclosurevars(closure['action']).nonlocals)
         dialog = self.app.model_dialog
+        self.assertTrue(dialog.paths)
+        self.assertIs(dialog.winfo_toplevel(), self.root)
+        self.app.close()
         self.assertEqual(dialog.paths, {})
         self.assertIsNone(dialog.device)
         self.assertIsNone(dialog.on_load)
         dialog.destroy()  # Closing an already destroyed picker is safe.
+
+    def test_search_fills_selected_files_without_overwriting_manual_paths(self):
+        with patch("wp4.model_picker.discover_weight_files", return_value={
+                "paths": {"crop": str(self.weight), "disease": str(self.weight)},
+                "missing": [], "warnings": [], "cancelled": False}):
+            self.app.configure_model()
+            dialog = self.app.model_dialog
+            dialog.paths['crop'].set('manual-choice.pt')
+            dialog.start_search()
+            self.wait_for(lambda: dialog.paths['disease'].get() == str(self.weight))
+            self.assertEqual(dialog.paths['crop'].get(), 'manual-choice.pt')
+            self.assertIn('ready', dialog.search_status.cget('text'))
+
+    def test_stale_search_result_is_ignored_after_model_switch(self):
+        self.app.configure_model()
+        dialog = self.app.model_dialog
+        old_token = dialog._search_token
+        dialog.choice.current(dialog.kinds.index('m6'))
+        dialog.render_fields()
+        dialog._search_events.put((old_token, 'wp1', {
+            'paths': {'crop': 'stale.pt'}, 'missing': []}, None))
+        self.wait_for(lambda: dialog._search_events.empty())
+        self.assertEqual(dialog.paths['crop'].get(), '')
+
+    def test_reference_scrolling_keeps_image_and_five_rankings_visible(self):
+        self.root.deiconify()
+        self.root.geometry('1280x840')
+        self.root.update()
+        before = (self.app.open_button.winfo_rootx(), self.app.open_button.winfo_rooty())
+        preview_before = self.app.image_panel.winfo_rooty()
+        self.assertIs(self.app.model_panel.winfo_toplevel(), self.root)
+        self.assertFalse(any(child.winfo_class() == 'Toplevel' for child in self.root.winfo_children()))
+        self.app.show_references(next(iter(self.catalog.candidates)), False)
+        self.wait_for(lambda: not self.app.busy)
+        self.assertEqual(len(self.app.photos), 4)
+        for index, candidate in enumerate(list(self.catalog.candidates.values())[:5]):
+            self.app.table.insert('', 'end', iid=str(index), values=(index+1,
+                candidate['crop_name'], candidate['disease_name'], '0.1234'))
+        self.root.update()
+        self.assertTrue(self.app.gallery.winfo_ismapped())
+        image_card = self.app.image_panel.master.master
+        result_card = self.app.table.master.master
+        image_share = image_card.winfo_height() / (image_card.winfo_height()+result_card.winfo_height())
+        self.assertGreater(image_share, .57)
+        self.assertLess(image_share, .62)
+        last_row = self.app.table.rows['4']['canvas']
+        self.assertLessEqual(last_row.winfo_y()+last_row.winfo_height(), self.app.table.winfo_height())
+        body = self.app.table.master
+        self.assertLessEqual(last_row.winfo_rooty()+last_row.winfo_height(),
+                             body.winfo_rooty()+body.winfo_height()-22)
+        self.app.page_canvas.event_generate('<MouseWheel>', delta=-120)
+        self.root.update()
+        self.assertGreater(self.app.page_canvas.yview()[0], 0)
+        self.assertEqual(before, (self.app.open_button.winfo_rootx(), self.app.open_button.winfo_rooty()))
+        self.assertEqual(preview_before, self.app.image_panel.winfo_rooty())
+        self.assertTrue(self.app.export_button.winfo_ismapped())
+        self.assertLess(self.app.page_canvas.canvasy(0), self.app.page_canvas.bbox('all')[3])
+        self.assertEqual(int(self.app.page_canvas.cget('scrollregion').split()[-1]),
+                         self.app.page_canvas.bbox('all')[3])
+
+    def test_preview_fits_whole_image_without_changing_model_input(self):
+        self.root.deiconify()
+        self.root.geometry('1280x840')
+        self.root.update()
+        self.app.query = Image.new('RGB', (120, 90), (35, 130, 70))
+        original = self.app.query.tobytes()
+        self.app._draw_query()
+        self.assertLessEqual(self.app.query_photo.width(), self.app.image_panel.winfo_width())
+        self.assertLessEqual(self.app.query_photo.height(), self.app.image_panel.winfo_height())
+        self.assertAlmostEqual(self.app.query_photo.width()/self.app.query_photo.height(), 120/90, delta=.01)
+        self.assertFalse(hasattr(self.app, 'preview_mode'))
+        self.assertEqual(self.app.query.size, (120, 90))
+        self.assertEqual(self.app.query.tobytes(), original)
 
     def test_close_during_background_work_discards_callback_without_tk_access(self):
         started, finish, completed = threading.Event(), threading.Event(), threading.Event()

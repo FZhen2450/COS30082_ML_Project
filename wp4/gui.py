@@ -11,7 +11,7 @@ import tkinter as tk
 from pathlib import Path
 from tkinter import filedialog, messagebox, ttk
 
-from PIL import ImageTk
+from PIL import Image, ImageOps, ImageTk
 
 from .service import Catalog, open_rgb, present_prediction
 from .model_loader import MODEL_SPECS, load_model
@@ -35,14 +35,17 @@ class PlantApp:
         self.model_label = "No model loaded"
         self.model_kind = "wp1"
         self.root.title("LeafLens | Plant disease identification")
-        width = min(1240, self.root.winfo_screenwidth() - 80)
-        height = min(940, self.root.winfo_screenheight() - 100)
+        width = min(1680, self.root.winfo_screenwidth() - 48)
+        height = min(1080, self.root.winfo_screenheight() - 80)
         self.root.geometry(f"{width}x{height}")
-        self.root.minsize(1100, 800)
+        self.root.minsize(min(1280, self.root.winfo_screenwidth()-48),
+                          min(840, self.root.winfo_screenheight()-80))
         self.root.configure(bg=BG)
         self.root.protocol("WM_DELETE_WINDOW", self.close)
         self._style()
         self._build()
+        if sys.platform == "win32" and self.root.state() != "withdrawn":
+            self.root.state("zoomed")
         self._poll_after = self.root.after(70, self._poll)
         self._catalog_after = self.root.after(100, self.load_catalog)
 
@@ -50,23 +53,28 @@ class PlantApp:
         style = ttk.Style(self.root)
         style.theme_use("clam")
         style.configure("TFrame", background=BG)
-        style.configure("TLabel", background=BG, foreground=INK, font=("Segoe UI", -13))
+        style.configure("TLabel", background=BG, foreground=INK, font=("Segoe UI", -18))
+        style.configure("TEntry", font=("Segoe UI", -18), padding=8)
+        style.configure("TCombobox", font=("Segoe UI", -18), padding=8)
         style.configure("TButton", background=WHITE, foreground=INK, borderwidth=0,
-                        font=("Segoe UI", -13), padding=(14, 9))
+                        font=("Segoe UI", -18), padding=(18, 12))
         style.map("TButton", background=[("active", "#eaf1e7")])
+        style.configure("Small.TButton", font=("Segoe UI", -14), padding=(9, 7))
         style.configure("Accent.TButton", background=GREEN, foreground=WHITE)
         style.map("Accent.TButton", background=[("active", "#194f38")])
         style.configure("Leaf.TCombobox", fieldbackground="#f7f9f5", background="#f7f9f5",
                         foreground=INK, arrowcolor=MUTED, bordercolor="#e5eae3",
                         lightcolor="#e5eae3", darkcolor="#e5eae3", borderwidth=1,
-                        font=("Segoe UI", -12), padding=(9, 3))
+                        font=("Segoe UI", -18), padding=(12, 6))
         style.map("Leaf.TCombobox", fieldbackground=[("readonly", "#f7f9f5")],
                   selectbackground=[("readonly", "#f7f9f5")], selectforeground=[("readonly", INK)])
         style.configure("Leaf.Vertical.TScrollbar", troughcolor=WHITE, background="#dce4d8",
-                        borderwidth=0, arrowsize=10, arrowcolor=MUTED)
+                        borderwidth=0, arrowsize=18, arrowcolor=MUTED)
         style.configure("Leaf.Horizontal.TProgressbar", troughcolor="#e8ede4",
                         background="#8ca486", borderwidth=0, thickness=3)
-        self.root.option_add("*TCombobox*Listbox.font", ("Segoe UI", -12))
+        self.root.option_add("*TCombobox*Listbox.font", ("Segoe UI", -18))
+        self.root.option_add("*TCombobox.font", ("Segoe UI", -18))
+        self.root.option_add("*TEntry.font", ("Segoe UI", -18))
         self.root.option_add("*TCombobox*Listbox.background", WHITE)
         self.root.option_add("*TCombobox*Listbox.selectBackground", "#eaf3e8")
         self.root.option_add("*TCombobox*Listbox.selectForeground", INK)
@@ -81,8 +89,8 @@ class PlantApp:
         canvas.delete("all")
         rounded(canvas, (0, 0, w, h), 16, fill="#f1f4ec", outline="")
         if self.query is not None:
-            preview = self.query.copy()
-            preview.thumbnail((max(1, w-20), max(1, h-20)))
+            size = (max(1, w), max(1, h))
+            preview = ImageOps.contain(self.query, size, method=Image.Resampling.LANCZOS)
             self.query_photo = ImageTk.PhotoImage(preview)
             canvas.create_image(w/2, h/2, image=self.query_photo)
         else:
@@ -91,20 +99,34 @@ class PlantApp:
             canvas.create_polygon(cx-11, cy+14, cx-17, cy-10, cx+15, cy-16,
                                   cx+19, cy+3, cx-11, cy+14, smooth=True, fill="#a0bb94", outline="")
             canvas.create_line(cx-12, cy+14, cx+11, cy-10, fill=GREEN, width=1.5)
-            canvas.create_text(cx, cy+48, text="A leaf. A new perspective.", fill=INK, font=("Segoe UI", -12))
-            canvas.create_text(cx, cy+68, text="JPG, PNG, BMP or WEBP", fill=MUTED, font=("Segoe UI", -10))
+            canvas.create_text(cx, cy+48, text="A leaf. A new perspective.", fill=INK, font=("Segoe UI", -18))
+            canvas.create_text(cx, cy+76, text="JPG, PNG, BMP or WEBP", fill=MUTED, font=("Segoe UI", -15))
 
     def _empty_gallery(self):
         box = tk.Frame(self.gallery, bg=WHITE)
-        box.grid(row=0, column=0, columnspan=2, sticky="ew", pady=24)
+        box.grid(row=0, column=0, columnspan=self.gallery_columns, sticky="ew", pady=24)
         label(box, "Make a connection", 15, bold=True).pack()
-        label(box, "Related training images will appear here.", 12, MUTED).pack(pady=6)
+        label(box, "Related training images will appear here.", 12, MUTED,
+              wraplength=250, justify="center").pack(pady=6)
+
+    def _refresh_workspace(self):
+        previous_top = self.page_canvas.canvasy(0)
+        # A canvas window scrolled fully out of view can defer Configure events.
+        # Refresh its requested bounds explicitly before restoring the viewport.
+        self.page_canvas.update_idletasks()
+        bounds = self.page_canvas.bbox("all")
+        if bounds:
+            self.page_canvas.configure(scrollregion=bounds)
+            height = max(1, bounds[3] - bounds[1])
+            top = min(previous_top, max(0, height - self.page_canvas.winfo_height()))
+            self.page_canvas.yview_moveto(max(0, top) / height)
 
     def _controls(self):
         available = not self.busy
         self.table.enabled = available
         for widget in (self.open_button, self.configure_button):
             widget.configure(state="normal" if available else "disabled")
+        self.model_panel.set_enabled(available and self.catalog is not None)
         self.identify_button.configure(state="normal" if available and self.predictor and self.query else "disabled")
         self.browse_button.configure(state="normal" if available and self.catalog else "disabled")
         self.class_choice.configure(state="readonly" if available and self.catalog else "disabled")
@@ -167,6 +189,7 @@ class PlantApp:
                 self._draw_query()
                 self.file_label.configure(text=f"{Path(filename).name}\n{image.width} x {image.height} pixels")
                 self.clear_predictions()
+                self.page_canvas.yview_moveto(0)
                 self._controls()
             self._work(lambda: open_rgb(filename), done, "Opening image...")
 
@@ -179,13 +202,13 @@ class PlantApp:
         self.photos = []
         self.reference_note.configure(text="Choose a match above or explore a labelled class.")
         self._empty_gallery()
+        self._refresh_workspace()
 
     def configure_model(self):
         if not self.catalog:
             messagebox.showinfo("Catalog not ready", "Start with a valid protocol and training CSV. See docs/WP4_GUI.md.")
             return
-        from .model_picker import ModelPicker
-        self.model_dialog = ModelPicker(self.root, self.connect_model, self.model_kind)
+        self.model_panel.choice.focus_set()
 
     def connect_model(self, kind, paths, device):
         paths = dict(paths)
@@ -216,7 +239,8 @@ class PlantApp:
             for index, row in enumerate(predictions):
                 self.table.insert("", "end", iid=str(row["composition_id"]),
                                   values=(index + 1, row["crop_name"], row["disease_name"], f"{row['score']:.4f}"))
-            self.result_note.configure(text=f"Top {len(predictions)} crop-disease matches | {elapsed:.2f} s | {self.model_label}")
+            from .model_picker import SHORT_LABELS
+            self.result_note.configure(text=f"Top {len(predictions)} | {SHORT_LABELS[self.model_kind]} | {elapsed:.2f} s")
             self.export_data = {"image": self.query_path.name, "model": self.model_label,
                                 "scope": "development candidates; not official-test evaluation",
                                 "candidate_sha256": self.catalog.protocol["candidate_sha256"],
@@ -252,7 +276,6 @@ class PlantApp:
             for widget in self.gallery.winfo_children():
                 widget.destroy()
             self.photos = []
-            self.gallery_canvas.yview_moveto(0)
             origin = "Selected match" if from_prediction else "Class browser (not a prediction)"
             method = "Closest colours first." if result["query_ordered"] else "Filename order."
             note = f"{origin}. {result['relation']}. Fitting images only. {method}"
@@ -260,26 +283,32 @@ class PlantApp:
                 note += f" {result['unavailable']} missing or unreadable; check your image folder."
             self.reference_note.configure(text=note)
             for index, item in enumerate(result["items"]):
-                card = Card(self.gallery, height=206, padding=10, fill="#f7f9f5")
-                card.grid(row=index // 2, column=index % 2, sticky="nsew", padx=4, pady=(0, 8))
+                columns = self.gallery_columns
+                card = Card(self.gallery, padding=12, fill="#f0f5ec", auto_height=True)
+                card.grid(row=index // columns, column=index % columns, sticky="new", padx=2, pady=(0, 12))
                 preview = item["image"].copy()
-                preview.thumbnail((220, 122))
+                preview.thumbnail((245, 150))
                 photo = ImageTk.PhotoImage(preview)
                 self.photos.append(photo)
-                area = tk.Canvas(card.body, height=122, bg="#edf1e8", highlightthickness=0)
+                area = tk.Canvas(card.body, height=150, bg="#e5eee0", highlightthickness=0)
                 area.pack(fill="x")
-                photo_id = area.create_image(110, 61, image=photo)
-                area.bind("<Configure>", lambda e, a=area, i=photo_id: a.coords(i, e.width/2, 61))
-                label(card.body, item["disease"].replace("_", " ").capitalize(), 12, bold=True,
-                      anchor="w", wraplength=220).pack(fill="x", pady=(8, 2))
-                label(card.body, item["crop"].replace("_", " ").capitalize(), 11, MUTED,
+                photo_id = area.create_image(122, 75, image=photo)
+                area.bind("<Configure>", lambda e, a=area, i=photo_id: a.coords(i, e.width/2, 75))
+                disease_label = label(card.body, item["disease"].replace("_", " ").capitalize(), 14, bold=True,
+                                      anchor="w", justify="left", wraplength=340)
+                disease_label.pack(fill="x", pady=(12, 6))
+                label(card.body, item["crop"].replace("_", " ").capitalize(), 14, MUTED,
                       anchor="w").pack(fill="x")
                 name = item["filename"]
-                label(card.body, name if len(name) <= 35 else name[:32]+"...", 9, MUTED,
-                      anchor="w").pack(fill="x", pady=(3, 0))
+                filename_label = label(card.body, name, 12, MUTED, anchor="w", justify="left", wraplength=340)
+                filename_label.pack(fill="x", pady=(6, 0))
+                card.body.bind("<Configure>", lambda e, d=disease_label, f=filename_label: (
+                    d.configure(wraplength=max(180, e.width)),
+                    f.configure(wraplength=max(180, e.width))), add="+")
             if not result["items"]:
                 label(self.gallery, "No fitting references available.\nCheck the image folder or try another class.",
                       12, MUTED, justify="center").grid(row=0, column=0, columnspan=2, pady=35)
+            self._refresh_workspace()
         self._work(lambda: catalog.references(composition_id, query, excluded),
                    done, "Finding related training images...")
 
@@ -299,6 +328,7 @@ class PlantApp:
             return
         self.closed = True
         self._on_done = None
+        self.progress.stop()
         for identifier in (self._poll_after, self._catalog_after):
             try:
                 self.root.after_cancel(identifier)

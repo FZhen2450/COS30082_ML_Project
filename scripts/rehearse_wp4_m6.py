@@ -64,6 +64,7 @@ def main():
 
     def screenshot(window, name):
         if args.screenshots:
+            window = window.winfo_toplevel()
             from PIL import ImageGrab
             window.lift()
             root.update()
@@ -90,7 +91,7 @@ def main():
             scope = next((key for key, names in scopes.items() if args.query in names), None)
             if scope is None or Path(args.query).name != args.query:
                 raise ValueError("Query must be an original fitting/development filename")
-            app.configure_button.invoke()
+            app.configure_model()
             dialog = app.model_dialog
             dialog.choice.current(dialog.kinds.index(args.model))
             dialog.render_fields()
@@ -130,7 +131,8 @@ def main():
             assert json.loads(exported.read_text(encoding="utf-8")) == app.export_data
             assert "Fitting images only" in app.reference_note.cget("text")
             screenshot(root, args.model + "-result.png")
-            root.geometry("1100x800+20+20")
+            root.state("normal")
+            root.geometry("1280x840+20+20")
             root.update()
             screenshot(root, args.model + "-minimum-size.png")
             fitting_ids = {int(row['composition_id']) for row in app.catalog.fitting}

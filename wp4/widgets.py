@@ -1,12 +1,12 @@
 """Small native Tk widgets for the LeafLens visual language."""
 import tkinter as tk
 
-BG = "#f5f6f2"
-WHITE = "#ffffff"
-INK = "#21372d"
-MUTED = "#7b877f"
-GREEN = "#246348"
-LINE = "#e5eae3"
+BG = "#eaf1eb"
+WHITE = "#fcfefb"
+INK = "#173d35"
+MUTED = "#60796e"
+GREEN = "#216b55"
+LINE = "#d7e5da"
 FONT = "Segoe UI"
 
 
@@ -22,17 +22,25 @@ def rounded(canvas, box, radius=16, **kwargs):
 
 def label(parent, text, size=13, color=INK, bold=False, **kwargs):
     return tk.Label(parent, text=text, bg=parent.cget("bg"), fg=color,
-                    font=(FONT, -size, "bold" if bold else "normal"), **kwargs)
+                    font=(FONT, -max(15, size + 3), "bold" if bold else "normal"), **kwargs)
 
 
 class Card(tk.Canvas):
-    def __init__(self, parent, height=300, padding=20, fill=WHITE):
+    def __init__(self, parent, height=300, padding=20, fill=WHITE, auto_height=False):
         super().__init__(parent, bg=parent.cget("bg"), height=height, width=300,
                          highlightthickness=0, bd=0)
         self.fill, self.padding = fill, padding
+        self.auto_height = auto_height
         self.body = tk.Frame(self, bg=fill)
         self.window = self.create_window(padding, padding, window=self.body, anchor="nw")
         self.bind("<Configure>", self._resize)
+        if auto_height:
+            self.body.bind("<Configure>", self._fit_content, add="+")
+
+    def _fit_content(self, _event=None):
+        height = self.body.winfo_reqheight() + self.padding * 2
+        if int(float(self.cget("height"))) != height:
+            self.configure(height=height)
 
     def _resize(self, event):
         self.delete("surface")
@@ -40,7 +48,7 @@ class Card(tk.Canvas):
                 fill=self.fill, outline=LINE, width=1, tags="surface")
         self.tag_lower("surface")
         self.itemconfigure(self.window, width=max(1, event.width-self.padding*2),
-                           height=max(1, event.height-self.padding*2))
+                           height=0 if self.auto_height else max(1, event.height-self.padding*2))
 
 
 class Button(tk.Canvas):
@@ -100,7 +108,7 @@ class Button(tk.Canvas):
         rounded(self, (1, 1, self.winfo_width()-1, self.winfo_height()-1), 12,
                 fill=fill, outline=border, width=1.5)
         self.create_text(self.winfo_width()/2, self.winfo_height()/2,
-                         text=self.text, fill=text, font=(FONT, -13, "bold"))
+                         text=self.text, fill=text, font=(FONT, -18, "bold"))
         super().configure(cursor="arrow" if disabled else "hand2")
 
 
@@ -142,9 +150,9 @@ class RankedList(tk.Frame):
     def insert(self, _parent, _where, iid, values):
         if not self.rows:
             self.empty.destroy()
-        canvas = tk.Canvas(self, height=(44 if not self.rows else 32) if self.compact else (50 if not self.rows else 36), bg=WHITE,
+        canvas = tk.Canvas(self, height=32 if self.compact else (82 if not self.rows else 72), bg=WHITE,
                            highlightthickness=0, cursor="hand2", takefocus=True)
-        canvas.pack(fill="x", pady=(0, 3))
+        canvas.pack(fill="x", pady=(0, 1 if self.compact else 10))
         self.rows[iid] = {"canvas": canvas, "values": values}
         canvas.bind("<Configure>", lambda _e, key=iid: self._draw(key))
         canvas.bind("<Button-1>", lambda _e, key=iid: self._choose(key))
@@ -177,7 +185,7 @@ class RankedList(tk.Frame):
         self.compact = compact
         for row in self.rows.values():
             first = row["values"][0] == 1
-            row["canvas"].configure(height=(44 if first else 32) if compact else (50 if first else 36))
+            row["canvas"].configure(height=32 if compact else (82 if first else 72))
 
     def _draw(self, iid):
         row = self.rows[iid]
@@ -189,18 +197,32 @@ class RankedList(tk.Frame):
         fill = "#eaf3e8" if first else "#f7faf5" if selected else "#fafbf9"
         rounded(canvas, (1, 1, w-1, h-1), 12, fill=fill,
                 outline="#91b38e" if selected else fill, width=1)
+        if self.compact:
+            from tkinter import font as tkfont
+            canvas.create_oval(9, h/2-11, 31, h/2+11, fill=GREEN if first else "#edf0e9", outline="")
+            canvas.create_text(20, h/2, text=str(rank), fill=WHITE if first else MUTED,
+                               font=(FONT, -13, "bold"))
+            name = f"{disease.replace('_', ' ').capitalize()} / {crop.replace('_', ' ').capitalize()}"
+            name_font = tkfont.Font(family=FONT, size=-17, weight="bold" if first else "normal")
+            limit = max(40, w-160)
+            while len(name) > 1 and name_font.measure(name) > limit:
+                name = name[:-2].rstrip('…') + '…'
+            canvas.create_text(42, h/2, text=name, anchor='w', fill=INK, font=name_font)
+            canvas.create_text(w-12, h/2, text=score, anchor='e', fill=GREEN if first else INK,
+                               font=(FONT, -17, 'bold'))
+            return
         canvas.create_oval(13, h/2-13, 39, h/2+13, fill=GREEN if first else "#edf0e9", outline="")
         canvas.create_text(26, h/2, text=f"{rank:02}", fill=WHITE if first else MUTED,
-                           font=(FONT, -11, "bold"))
-        max_chars = max(12, int((w-176)/7))
+                           font=(FONT, -15, "bold"))
+        max_chars = max(10, int((w-180)/10))
         name = disease.replace("_", " ")
         if len(name) > max_chars:
             name = name[:max_chars-1] + "…"
-        canvas.create_text(52, h/2-8, text=name.capitalize(), anchor="w", fill=INK,
-                           font=(FONT, -14 if first else -13, "bold"))
-        canvas.create_text(52, h/2+11, text=crop.replace("_", " ").capitalize(),
-                           anchor="w", fill=MUTED, font=(FONT, -11))
+        canvas.create_text(52, h/2-12, text=name.capitalize(), anchor="w", fill=INK,
+                           font=(FONT, -20 if first else -18, "bold"))
+        canvas.create_text(52, h/2+16, text=crop.replace("_", " ").capitalize(),
+                           anchor="w", fill=MUTED, font=(FONT, -16))
         canvas.create_text(w-16, h/2-7, text=score, anchor="e", fill=GREEN if first else INK,
-                           font=(FONT, -13, "bold"))
+                           font=(FONT, -18, "bold"))
         canvas.create_text(w-16, h/2+10, text="RANK SCORE", anchor="e", fill=MUTED,
-                           font=(FONT, -8))
+                           font=(FONT, -12))
