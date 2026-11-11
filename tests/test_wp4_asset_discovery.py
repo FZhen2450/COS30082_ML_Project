@@ -1,5 +1,6 @@
 """Discovery checks use small byte fixtures, never real model deserialization."""
 import hashlib
+import json
 from pathlib import Path
 import tempfile
 import threading
@@ -10,6 +11,28 @@ from wp4.asset_discovery import discover_weight_files
 
 
 class AssetDiscoveryTests(unittest.TestCase):
+    def test_final_registry_selects_new_full_training_weights_and_never_legacy_defaults(self):
+        from final_protocol import SOURCE_SHA256
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            files={task:root/(task+'.pt') for task in ('crop','disease')}
+            for task,path in files.items():
+                path.write_bytes(('full-training-'+task).encode())
+            with patch('wp4.asset_discovery.ROOT',root):
+                missing=discover_weight_files('wp1',final_training_sha='fixture-full-training')
+                self.assertEqual(missing['paths'],{})
+                registry=root/'artifacts/models/wp1_full8000_release.json'
+                registry.parent.mkdir(parents=True)
+                record={'schema':'wp1-full8000-release-v1','training_count':8000,
+                        'source_sha256':SOURCE_SHA256,'training_manifest_sha256':'fixture-full-training',
+                        'checkpoints':{task:{'path':path.name,'sha256':hashlib.sha256(path.read_bytes()).hexdigest()}
+                                       for task,path in files.items()}}
+                registry.write_text(json.dumps(record))
+                found=discover_weight_files('wp1',final_training_sha='fixture-full-training')
+                self.assertEqual(found['paths'],{task:str(path.resolve()) for task,path in files.items()})
+                wrong=discover_weight_files('wp1',final_training_sha='wrong-training-release')
+                self.assertEqual(wrong['paths'],{})
+
     def test_renamed_files_are_matched_by_hash_and_wrong_named_files_are_rejected(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

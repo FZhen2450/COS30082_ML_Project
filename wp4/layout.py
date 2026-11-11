@@ -11,6 +11,8 @@ def build(app):
     background.pack(fill="both", expand=True)
     shell = tk.Frame(background, bg=BG)
     shell_window = background.create_window(18, 88, window=shell, anchor="nw")
+    app.scope_caption = 'LOCAL WORKSPACE'
+    app.update_scope_caption = lambda text: background.itemconfigure('scope-label', text=text)
     shell.rowconfigure(0, weight=1)
     shell.columnconfigure(0, minsize=280)
     shell.columnconfigure(1, weight=1, minsize=480)
@@ -31,8 +33,8 @@ def build(app):
                 fill='#d9e9df', outline='', tags='decoration')
         background.create_oval(event.width-218, 33, event.width-210, 41,
                                fill='#b18b42', outline='', tags='decoration')
-        background.create_text(event.width-115, 37, text='LOCAL WORKSPACE', fill=GREEN,
-                               font=('Segoe UI', -13, 'bold'), tags='decoration')
+        background.create_text(event.width-115, 37, text=app.scope_caption, fill=GREEN,
+                               font=('Segoe UI', -13, 'bold'), tags=('decoration', 'scope-label'))
         background.create_line(26, 71, event.width-26, 71, fill='#cddfd3', tags='decoration')
         background.itemconfigure(shell_window, width=max(1, event.width-36), height=max(1, event.height-132))
         background.tag_lower('decoration')
@@ -71,6 +73,7 @@ def build(app):
     label(controls, 'RECOGNITION MODEL', 11, GREEN, bold=True).pack(anchor='w', pady=(0, 12))
     app.model_panel = ModelPanel(controls, app.connect_model)
     app.model_panel.pack(fill='x')
+    app.model_panel.set_enabled(False)
     app.configure_button = app.model_panel.load_button
     app.model_dialog = app.model_panel
     app.model_status = label(controls, 'No model loaded', 12, MUTED, anchor='nw',

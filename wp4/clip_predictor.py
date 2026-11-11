@@ -308,6 +308,7 @@ class CLIPPredictor:
         ids = torch.tensor(self.expected["ids"], dtype=torch.int64)
         order = scores.argsort(dim=1, descending=True, stable=True)[:, :topk]
         return {"candidate_ids": ids, "scores": scores, "topk_composition_ids": ids[order],
-                "candidate_sha256": CATALOG_SHA256, "model_candidate_sha256": CANDIDATE_SHA256,
+                "candidate_sha256": getattr(self, 'candidate_sha256', CATALOG_SHA256),
+                "model_candidate_sha256": getattr(self, 'model_candidate_sha256', CANDIDATE_SHA256),
                 "score_semantics": "direct_float64_clip_cosine_similarity",
                 "model_provenance": self.provenance}

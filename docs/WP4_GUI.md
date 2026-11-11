@@ -9,6 +9,15 @@ delivery and earlier verification statements below retain their historical scope
 peer approval and the actual team recording are still separate human actions.
 
 This initial WP4 implementation assumes no existing Frederick GUI/retrieval code.
+
+Current requirement update: the [11 November lecturer call record](Lecturer_Clarification_2026-11-11.md)
+requires a final-333 GUI release with labelled training-only reference fallbacks.
+The layout is sufficient. A separate final-333 mode now implements the approved
+catalog, full-training reference pool and native CLIP text bank; WP1 final
+weights are registered only after actual full-training completion. See the
+[current WP1/WP4 release record](WP1_WP4_Final_Release_2026-11-11.md).
+Earlier approval-pending language is historical, not an unresolved candidate
+policy question after this student-reported clarification.
 It implements the brief's image input, crop-disease result display and relevant
 training-image display in a local English Tkinter application.
 
@@ -21,11 +30,14 @@ The portable streaming SHA helper also supports Python3.10 without weakening
 model hashes. Other machines may continue using the previously documented
 Python3.11–3.13 setup below.
 
-The default GUI catalog now uses the separately added
+The default GUI catalog now uses `artifacts/data/final_full8000_333_v1.json`
+when available. Its full 8,000-image training-reference pool and original 333
+candidate IDs are distinct from the preserved development protocol. To reproduce
+the historical development mode, explicitly supply
 `artifacts/data/development_seed42_reconciled_v1.json`: exact historical
-4,868/1,238/1,894 filenames, original323IDs and original training CSV bytes.
+with exact 4,868/1,238/1,894 filenames, original323IDs and original training CSV bytes.
 The earlier pending-status manifest is retained unchanged. This is a
-323-candidate development/demo interface, not official333 evaluation.
+323-candidate development/demo interface; final mode is a separate contract.
 
 
 Install the existing `requirements.txt` in Python 3.11-3.13, including Pillow.
@@ -84,16 +96,18 @@ python gui.py --images D:/DPD_Small_dataset --protocol artifacts/data/developmen
 
 No trained model checkpoints are committed. Identification remains disabled
 until valid local weights are loaded; image preview and class browsing work now.
-Historical split reconciliation remains pending unless a reconciled protocol is
-supplied. Browsing the supplied unreconciled WP1 development manifest does not
-approve it for training or establish equivalence to WP2/WP3 historical filenames.
+The historical unreconciled manifest remains preserved. Development mode uses
+the independently reconciled development protocol; final mode validates its
+separate full-8,000/333-candidate contract. Merely browsing another manifest
+does not approve its training identities or establish historical equivalence.
 
-References are restricted to `fitting_images` from the validated protocol and
-read metadata only from `DPD_Small_train.csv`. The code does not load either
+References are restricted to the validated training-reference pool: 4,868 fitting
+images in development mode or the full 8,000 training images in final mode.
+Reference metadata is read only from `DPD_Small_train.csv`. The GUI does not load either
 official-test CSV. Do not use the GUI to tune models on official-test images.
-The default 323 development candidates cannot recognise final official unseen
-classes; final candidates and permissible label metadata require a separate
-approved protocol. The UI displays this scope.
+Development-323 cannot recognize the ten final unseen compositions. Final-333
+uses the verified class-only candidate/prompt payloads and the lecturer-clarified
+policy, with an explicit scope badge and labelled training-only fallbacks.
 
 Scores are not calibrated confidence. The GUI does not compute dataset accuracy,
 infer that an arbitrary uploaded image is OOD, or claim official-test results.

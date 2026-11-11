@@ -11,6 +11,8 @@ from pathlib import Path
 
 from PIL import Image, ImageOps
 
+FINAL_WP1_REGISTRY = Path(__file__).resolve().parents[1]/'artifacts/models/wp1_full8000_release.json'
+
 
 def open_rgb(path):
     with Image.open(path) as image:
@@ -36,7 +38,12 @@ class Catalog:
         self.source_csv = Path(source_csv).resolve()
         self.images = Path(images).resolve()
         self.protocol = json.loads(self.protocol_path.read_text(encoding="utf-8"))
-        fitting, _, _ = validate_protocol(self.protocol, self.source_csv)
+        from final_protocol import SCHEMA, validate_final_protocol
+        self.is_final = self.protocol.get('schema') == SCHEMA
+        if self.is_final:
+            fitting = validate_final_protocol(self.protocol, self.source_csv)
+        else:
+            fitting, _, _ = validate_protocol(self.protocol, self.source_csv)
         self.fitting = fitting.to_dict("records")
         self.candidates = {int(c["composition_id"]): c for c in self.protocol["candidates"]}
 
@@ -57,8 +64,8 @@ class Catalog:
         query_hash = hashlib.sha256(query.tobytes()).digest() if query is not None else None
         excluded = Path(exclude_path).resolve() if exclude_path else None
         found, unavailable = [], 0
-        # Metadata order and filename ties are deterministic. No validation/test
-        # image can enter this pool, even if present in the dataset directory.
+        # The validated fitting pool is development-4868 or final full-8000.
+        # Official images cannot enter it, even if present in the same folder.
         for row in sorted(rows, key=lambda r: r["image_name"]):
             path = self.image_path(row["image_name"])
             if path == excluded:
@@ -118,8 +125,23 @@ def load_independent(catalog, crop, disease, device="cpu"):
         return values
 
     before = identities()
-    predictor = IndependentPredictor(crop, disease, catalog.protocol_path,
-                                     catalog.source_csv, device=device)
+    if getattr(catalog, 'is_final', False):
+        try:
+            release = json.loads(FINAL_WP1_REGISTRY.read_text(encoding='utf-8'))
+            if (release.get('schema') != 'wp1-full8000-release-v1'
+                    or release.get('training_manifest_sha256') != catalog.protocol['training_manifest_sha256']
+                    or release.get('candidate_sha256') != catalog.protocol['candidate_sha256']
+                    or any(before[task]['file_sha256'] != release['checkpoints'][task]['sha256']
+                           for task in ('crop', 'disease'))):
+                raise ValueError('Checkpoint files differ from the registered full-training release')
+        except (OSError, KeyError, TypeError, json.JSONDecodeError) as exc:
+            raise ValueError('Register a verified full-8,000 WP1 release before final GUI loading') from exc
+        from wp1_final import FinalIndependentPredictor
+        predictor = FinalIndependentPredictor(crop, disease, catalog.protocol_path,
+                                              catalog.source_csv, device=device)
+    else:
+        predictor = IndependentPredictor(crop, disease, catalog.protocol_path,
+                                         catalog.source_csv, device=device)
     if identities() != before:
         raise ValueError("WP1 checkpoint files changed while loading")
     predictor.provenance = {
@@ -129,7 +151,9 @@ def load_independent(catalog, crop, disease, device="cpu"):
                     "torchvision": str(torchvision.__version__), "device": device},
         "preprocessing": {"crop": str(predictor.crop_transform), "disease": str(predictor.disease_transform)},
         "catalog_candidate_sha256": catalog.protocol['candidate_sha256'],
-        "split_sha256": catalog.protocol['split_sha256'],
+        "split_sha256": catalog.protocol.get('split_sha256'),
+        "training_scope": catalog.protocol.get('training_scope', 'development_4868'),
+        "training_manifest_sha256": catalog.protocol.get('training_manifest_sha256'),
         "source_sha256": catalog.protocol['source_sha256'],
     }
     return predictor

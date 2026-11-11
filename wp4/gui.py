@@ -171,11 +171,14 @@ class PlantApp:
         protocol, source, images = self.protocol_path, self.source_path, self.images_path
         def done(catalog):
             self.catalog = catalog
+            self.model_panel.set_protocol(catalog.protocol)
+            self.scope_caption = 'FINAL / 333 CLASSES' if catalog.is_final else 'DEVELOPMENT / 323'
+            self.update_scope_caption(self.scope_caption)
             self.class_ids = list(catalog.candidates)
             self.class_choice.configure(values=[f"{c['crop_name']} / {c['disease_name']}"
                                                 for cid, c in catalog.candidates.items()])
             self.class_choice.current(0)
-            self.status.configure(text=f"{len(catalog.fitting):,} fitting references | {len(catalog.candidates)} candidates | Model not loaded")
+            self.status.configure(text=f"{len(catalog.fitting):,} training references | {len(catalog.candidates)} candidates | Model not loaded")
             self._controls()
         self._work(lambda: Catalog(protocol, source, images), done,
                    "Checking the training reference catalog...")
@@ -217,6 +220,8 @@ class PlantApp:
             self.predictor = predictor
             self.model_kind = kind
             self.model_label = f"{MODEL_SPECS[kind]['label']} ({device.upper()})"
+            if self.catalog.is_final and kind == 'm6':
+                self.model_label = f"M6 legacy-4868 / final-333 ({device.upper()})"
             self.model_status.configure(text=self.model_label)
             self.clear_predictions()
             self._controls()
@@ -242,10 +247,13 @@ class PlantApp:
             from .model_picker import SHORT_LABELS
             self.result_note.configure(text=f"Top {len(predictions)} | {SHORT_LABELS[self.model_kind]} | {elapsed:.2f} s")
             self.export_data = {"image": self.query_path.name, "model": self.model_label,
-                                "scope": "development candidates; not official-test evaluation",
+                                "scope": ("final-333 candidates; full-8,000 training references; single-image demo"
+                                          if self.catalog.is_final else "development candidates; not official-test evaluation"),
                                 "candidate_sha256": self.catalog.protocol["candidate_sha256"],
-                                "split_sha256": self.catalog.protocol["split_sha256"],
-                                "historical_reconciliation": self.catalog.protocol["historical_reconciliation"],
+                                "split_sha256": self.catalog.protocol.get("split_sha256"),
+                                "training_manifest_sha256": self.catalog.protocol.get('training_manifest_sha256'),
+                                "reference_training_scope": self.catalog.protocol.get('training_scope', 'development_4868'),
+                                "historical_reconciliation": self.catalog.protocol.get("historical_reconciliation"),
                                 "score_semantics": semantics, "elapsed_seconds": elapsed,
                                 "input_policy": {"decode": "PIL EXIF transpose then RGB", "batch_size": 1,
                                                  "size": list(self.query.size),
@@ -348,7 +356,8 @@ class PlantApp:
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    candidates = (ROOT / "artifacts/data/development_seed42_reconciled.json",
+    candidates = (ROOT / "artifacts/data/final_full8000_333_v1.json",
+                  ROOT / "artifacts/data/development_seed42_reconciled.json",
                   ROOT / "development_seed42_reconciled.json",
                   ROOT / "artifacts/data/development_seed42_reconciled_v1.json")
     parser.add_argument("--protocol", type=Path, default=next((p for p in candidates if p.is_file()), candidates[-1]))

@@ -1,5 +1,6 @@
 """Find approved local model files by content without loading any checkpoint."""
 import hashlib
+import json
 import os
 from pathlib import Path
 import threading
@@ -55,13 +56,28 @@ def _file_hash(path, stop):
     return value
 
 
-def discover_weight_files(kind, roots=None, stop=None):
+def discover_weight_files(kind, roots=None, stop=None, final_training_sha=None):
     """Return exact approved hashes; names alone never establish model identity.
 
     A custom root search has no implicit access to the project's private files.
     Loading still performs the existing runtime, schema and provenance checks.
     """
     required = FIELDS[kind]
+    assets = ASSETS
+    if kind == 'wp1' and final_training_sha is not None:
+        registry = ROOT/'artifacts/models/wp1_full8000_release.json'
+        try:
+            release = json.loads(registry.read_text(encoding='utf-8'))
+            from final_protocol import SOURCE_SHA256
+            if (release.get('schema') != 'wp1-full8000-release-v1' or release.get('training_count') != 8000
+                    or release.get('source_sha256') != SOURCE_SHA256
+                    or release.get('training_manifest_sha256') != final_training_sha):
+                raise ValueError('Final WP1 registry does not match the loaded training contract')
+            assets = {key: (release['checkpoints'][key]['sha256'], release['checkpoints'][key]['path'])
+                      for key in required}
+        except (OSError, ValueError, KeyError, TypeError):
+            return {'paths': {}, 'missing': list(required), 'warnings': ['Full-8,000 WP1 release is not registered'],
+                    'cancelled': False}
     stop = stop if stop is not None else threading.Event()
     found, visited, warnings = {}, set(), []
 
@@ -75,14 +91,14 @@ def discover_weight_files(kind, roots=None, stop=None):
             visited.add(resolved)
             value = _file_hash(resolved, stop)
             for key in required:
-                if key not in found and value == ASSETS[key][0]:
+                if key not in found and value == assets[key][0]:
                     found[key] = str(resolved)
         except OSError:
             warnings.append(f"Could not read {path.name}")
 
     if roots is None:
         for key in required:
-            inspect(ROOT / ASSETS[key][1])
+            inspect(ROOT / assets[key][1])
         roots = default_search_roots()
     for root in roots:
         root = Path(root)

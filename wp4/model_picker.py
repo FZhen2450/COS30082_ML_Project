@@ -22,6 +22,7 @@ class ModelPanel(tk.Frame):
         self._search_after = None
         self._details_open = False
         self._enabled = True
+        self.final_training_sha = None
         self.kinds = list(MODEL_SPECS)
         self.choice = ttk.Combobox(self, state="readonly", width=18,
                                   style="Leaf.TCombobox", font=("Segoe UI", -16),
@@ -57,6 +58,17 @@ class ModelPanel(tk.Frame):
     def kind(self):
         return self.kinds[self.choice.current()]
 
+    def set_protocol(self, protocol):
+        from final_protocol import SCHEMA
+        training_sha = protocol.get('training_manifest_sha256') if protocol.get('schema') == SCHEMA else None
+        if training_sha != self.final_training_sha:
+            self.final_training_sha = training_sha
+            for key in ('crop', 'disease'):
+                self.paths[key].set('')
+            self.choice.configure(values=[('M6 / historical adapter' if kind == 'm6' and training_sha else SHORT_LABELS[kind])
+                                          for kind in self.kinds])
+            self.start_search()
+
     def render_fields(self, _event=None):
         for child in self.file_frame.winfo_children():
             child.destroy()
@@ -91,12 +103,13 @@ class ModelPanel(tk.Frame):
         self._search_token += 1
         token, kind = self._search_token, self.kind
         events, stop = self._search_events, self._search_stop
+        final_training_sha = self.final_training_sha
         self.search_status.configure(text="Finding and verifying local weights...")
 
         def search():
             # Only plain data crosses the worker boundary.
             try:
-                result = discover_weight_files(kind, roots=roots, stop=stop)
+                result = discover_weight_files(kind, roots=roots, stop=stop, final_training_sha=final_training_sha)
                 events.put((token, kind, result, None))
             except Exception as exc:
                 events.put((token, kind, None, str(exc)))

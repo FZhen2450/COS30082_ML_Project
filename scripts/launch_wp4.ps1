@@ -9,7 +9,12 @@ param(
 $ErrorActionPreference = 'Stop'
 $projectRoot = Split-Path -Parent $PSScriptRoot
 $pythonPath = (Resolve-Path -LiteralPath $Python).Path
-if (-not $Protocol) { $Protocol = Join-Path $projectRoot 'artifacts/data/development_seed42_reconciled_v1.json' }
+if (-not $Protocol) {
+    $Protocol = Join-Path $projectRoot 'artifacts/data/final_full8000_333_v1.json'
+    if (-not (Test-Path -LiteralPath $Protocol)) {
+        $Protocol = Join-Path $projectRoot 'artifacts/data/development_seed42_reconciled_v1.json'
+    }
+}
 if (-not $Images) { $Images = Join-Path $projectRoot 'DPD_Small_dataset' }
 $protocolPath = (Resolve-Path -LiteralPath $Protocol).Path
 $imagePath = (Resolve-Path -LiteralPath $Images).Path
