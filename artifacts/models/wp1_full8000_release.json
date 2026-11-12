@@ -1,0 +1,39 @@
+{
+  "schema": "wp1-full8000-release-v1",
+  "training_scope": "full_8000",
+  "candidate_sha256": "ba17e94119e8b2b7a4b18603e25405d2f52bf4a93396973f80491800697eb62f",
+  "training_manifest_sha256": "7f94ac00c89b212ec30a646985b24f1a61fca19cf64b6f25757547868e3e4870",
+  "source_sha256": "9f1b729ab08f120c9e8d3a5681aa1ccbdf1d9210f9aaa6143959363dcb106a7d",
+  "training_count": 8000,
+  "checkpoints": {
+    "crop": {
+      "path": "runs/wp1-full8000-20261111/crop/final.pt",
+      "sha256": "16c8f8ee1933e9333d49f8e8e33b88dd27c914d0b839920b35d9b3996f4cd6f5"
+    },
+    "disease": {
+      "path": "runs/wp1-full8000-20261111/disease/final.pt",
+      "sha256": "f4c05a331794e4dab06f52877780a76a1ff35229eb5d157f9597c8c1719429e4"
+    }
+  },
+  "results": {
+    "crop": {
+      "task": "crop",
+      "epochs_completed": 2,
+      "training_images_per_epoch": 8000,
+      "checkpoint_sha256": "16c8f8ee1933e9333d49f8e8e33b88dd27c914d0b839920b35d9b3996f4cd6f5",
+      "official_test_evaluated": false,
+      "peak_gpu_allocated_bytes": 592143872
+    },
+    "disease": {
+      "task": "disease",
+      "epochs_completed": 3,
+      "training_images_per_epoch": 8000,
+      "checkpoint_sha256": "f4c05a331794e4dab06f52877780a76a1ff35229eb5d157f9597c8c1719429e4",
+      "official_test_evaluated": false,
+      "peak_gpu_allocated_bytes": 595098112
+    }
+  },
+  "elapsed_seconds": 1840.8309117000026,
+  "training_image_bytes_unchanged": true,
+  "official_test_evaluated": false
+}

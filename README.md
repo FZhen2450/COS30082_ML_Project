@@ -2,6 +2,14 @@
 
 # COS30082 Applied Machine Learning Project
 
+> **11 November 2026 lecturer clarification:** the student-reported Teams call
+> settles shared-333 evaluation and full-8,000 final training. Report Overall,
+> Seen and Unseen together; extend the final GUI to 333 classes with labelled
+> training-reference fallbacks. See the [call record and owner checklist](docs/Lecturer_Clarification_2026-11-11.md).
+> Current WP1/WP4 work adds the separate full-8,000 training release and final-333
+> GUI mode. See [current execution, interfaces and commands](docs/WP1_WP4_Final_Release_2026-11-11.md)
+> for actual completion receipts. Earlier status notes and frozen results remain historical.
+
 ## Out-of-Distribution Plant Disease Identification
 
 Swinburne University of Technology. This repository contains the DPD-Small

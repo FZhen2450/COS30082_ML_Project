@@ -6,6 +6,9 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
+import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -21,6 +24,8 @@ from scripts.audit_development_data import (
     verify_source_safety,
 )
 
+ROOT = Path(__file__).resolve().parents[1]
+
 
 class DataAuditTests(unittest.TestCase):
     def test_official_test_source_is_strictly_rejected(self):
@@ -31,10 +36,10 @@ class DataAuditTests(unittest.TestCase):
 
     def test_audit_metadata_partitions_real_protocol(self):
         """Audit the real checked-in training protocol against DPD_Small_train.csv."""
-        protocol_path = Path("artifacts/data/development_seed42_wp1_v1.json")
-        source_csv = Path("DPD_Small_train.csv")
-        if not protocol_path.is_file() or not source_csv.is_file():
-            self.skipTest("Checked-in protocol or train CSV missing.")
+        protocol_path = ROOT / "artifacts/data/development_seed42_reconciled_v1.json"
+        source_csv = ROOT / "DPD_Small_train.csv"
+        self.assertTrue(protocol_path.is_file())
+        self.assertTrue(source_csv.is_file())
 
         protocol = json.loads(protocol_path.read_text(encoding="utf-8"))
         summary = audit_metadata_partitions(protocol, source_csv)
@@ -50,6 +55,27 @@ class DataAuditTests(unittest.TestCase):
         self.assertEqual(comps["fitting_compositions"], 258)
         self.assertEqual(comps["unseen_val_heldout_compositions"], 65)
         self.assertTrue(summary["component_coverage"]["all_components_retained"])
+
+    def test_cli_defaults_work_from_another_directory(self):
+        with tempfile.TemporaryDirectory() as folder:
+            output = Path(folder) / 'audit.json'
+            result = subprocess.run([sys.executable, '-B', str(ROOT / 'scripts/audit_development_data.py'),
+                                     '--output', str(output)], cwd=folder, capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            report = json.loads(output.read_text(encoding='utf-8'))
+            self.assertEqual(report['partition_counts']['total_development_images'], 8000)
+            self.assertEqual(report['file_duplicate_audit']['status'], 'not_requested')
+
+    def test_cli_preserves_existing_audit_bytes(self):
+        with tempfile.TemporaryDirectory() as folder:
+            output = Path(folder) / 'audit.json'
+            original = b'original audit evidence\r\n'
+            output.write_bytes(original)
+            result = subprocess.run([sys.executable, '-B', str(ROOT / 'scripts/audit_development_data.py'),
+                                     '--output', str(output)], cwd=folder, capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn('Preserving existing audit evidence', result.stderr)
+            self.assertEqual(output.read_bytes(), original)
 
     def test_duplicate_file_detection_synthetic(self):
         """Synthetic test checking intra-fold and cross-fold duplicate detection."""
@@ -112,10 +138,8 @@ class DataAuditTests(unittest.TestCase):
 
     def test_full_audit_generation(self):
         """Verify full audit report JSON generation."""
-        protocol_path = Path("artifacts/data/development_seed42_wp1_v1.json")
-        source_csv = Path("DPD_Small_train.csv")
-        if not protocol_path.is_file() or not source_csv.is_file():
-            self.skipTest("Missing base artifacts.")
+        protocol_path = ROOT / "artifacts/data/development_seed42_reconciled_v1.json"
+        source_csv = ROOT / "DPD_Small_train.csv"
 
         report = generate_full_audit(protocol_path, source_csv)
         self.assertIn("partition_counts", report)
@@ -131,7 +155,15 @@ class DataAuditTests(unittest.TestCase):
                 protocol={'fitting_images':[name],'seen_validation_images':[],'unseen_validation_images':[]}
                 with self.subTest(name=name),self.assertRaises((ValueError,PermissionError)):
                     audit_file_duplicates(protocol,images)
-            (images/'redirect.jpg').symlink_to(outside)
+            if os.name == 'nt':
+                # A real NTFS junction exercises resolved path redirection without
+                # requiring the Windows privilege for file symlinks.
+                target = root / 'outside_directory'
+                target.mkdir()
+                subprocess.run(['cmd', '/c', 'mklink', '/J', str(images/'redirect.jpg'), str(target)],
+                               check=True, capture_output=True)
+            else:
+                (images/'redirect.jpg').symlink_to(outside)
             protocol={'fitting_images':['redirect.jpg'],'seen_validation_images':[],'unseen_validation_images':[]}
             with self.assertRaises((ValueError,PermissionError)):audit_file_duplicates(protocol,images)
     def test_near_duplicate_failures_are_reported_without_claiming_complete_decode(self):

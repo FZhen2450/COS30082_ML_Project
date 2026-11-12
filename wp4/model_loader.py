@@ -23,6 +23,10 @@ def load_model(catalog, kind, paths, device="cpu"):
     if kind == "wp1":
         from .service import load_independent
         return load_independent(catalog, paths["crop"], paths["disease"], device)
+    if getattr(catalog, 'is_final', False):
+        from .final_predictor import FinalCLIPPredictor
+        return FinalCLIPPredictor(catalog, paths['clip_weights'],
+                                 paths.get('adapter_checkpoint') if kind == 'm6' else None, device)
     from .clip_predictor import CLIPPredictor
     return CLIPPredictor(catalog, paths["clip_weights"],
                          paths.get("adapter_checkpoint") if kind == "m6" else None, device)

@@ -1,6 +1,31 @@
 # WP4 desktop GUI
 
+**12 November update:** final-333 Frozen CLIP and historical M6 require the
+original hash-pinned official text bank. Run
+`python scripts/fetch_official_clip_text_bank.py` explicitly before loading them,
+or set `LEAFLENS_CLIP_TEXT_BANK` to the original NPZ file. Stored float64 unit
+rows are used without prompt re-encoding or renormalization. A missing/modified
+bank fails model loading; GUI startup never downloads assets. WP1 does not need
+this bank. See the [acceptance supplement](WP1_WP4_Acceptance_Supplement_2026-11-12.md).
+
+**9 November 2026 follow-up:** see the [issue completion audit](WP4_Completion_2026-11-09.md)
+and [current demo/peer rehearsal runbook](WP4_Demo_Rehearsal_2026-11-09.md).
+The three real model choices have a common rehearsal command, WP1 exports bind
+actual checkpoint hashes, and Tk teardown/worker ownership has focused regression
+coverage. The applicable isolated suite passed 79/79 with no skips. The dated
+delivery and earlier verification statements below retain their historical scope;
+peer approval and the actual team recording are still separate human actions.
+
 This initial WP4 implementation assumes no existing Frederick GUI/retrieval code.
+
+Current requirement update: the [11 November lecturer call record](Lecturer_Clarification_2026-11-11.md)
+requires a final-333 GUI release with labelled training-only reference fallbacks.
+The layout is sufficient. A separate final-333 mode now implements the approved
+catalog, full-training reference pool and native CLIP text bank; WP1 final
+weights are registered only after actual full-training completion. See the
+[current WP1/WP4 release record](WP1_WP4_Final_Release_2026-11-11.md).
+Earlier approval-pending language is historical, not an unresolved candidate
+policy question after this student-reported clarification.
 It implements the brief's image input, crop-disease result display and relevant
 training-image display in a local English Tkinter application.
 
@@ -13,11 +38,14 @@ The portable streaming SHA helper also supports Python3.10 without weakening
 model hashes. Other machines may continue using the previously documented
 Python3.11–3.13 setup below.
 
-The default GUI catalog now uses the separately added
+The default GUI catalog now uses `artifacts/data/final_full8000_333_v1.json`
+when available. Its full 8,000-image training-reference pool and original 333
+candidate IDs are distinct from the preserved development protocol. To reproduce
+the historical development mode, explicitly supply
 `artifacts/data/development_seed42_reconciled_v1.json`: exact historical
-4,868/1,238/1,894 filenames, original323IDs and original training CSV bytes.
+with exact 4,868/1,238/1,894 filenames, original323IDs and original training CSV bytes.
 The earlier pending-status manifest is retained unchanged. This is a
-323-candidate development/demo interface, not official333 evaluation.
+323-candidate development/demo interface; final mode is a separate contract.
 
 
 Install the existing `requirements.txt` in Python 3.11-3.13, including Pillow.
@@ -76,16 +104,18 @@ python gui.py --images D:/DPD_Small_dataset --protocol artifacts/data/developmen
 
 No trained model checkpoints are committed. Identification remains disabled
 until valid local weights are loaded; image preview and class browsing work now.
-Historical split reconciliation remains pending unless a reconciled protocol is
-supplied. Browsing the supplied unreconciled WP1 development manifest does not
-approve it for training or establish equivalence to WP2/WP3 historical filenames.
+The historical unreconciled manifest remains preserved. Development mode uses
+the independently reconciled development protocol; final mode validates its
+separate full-8,000/333-candidate contract. Merely browsing another manifest
+does not approve its training identities or establish historical equivalence.
 
-References are restricted to `fitting_images` from the validated protocol and
-read metadata only from `DPD_Small_train.csv`. The code does not load either
+References are restricted to the validated training-reference pool: 4,868 fitting
+images in development mode or the full 8,000 training images in final mode.
+Reference metadata is read only from `DPD_Small_train.csv`. The GUI does not load either
 official-test CSV. Do not use the GUI to tune models on official-test images.
-The default 323 development candidates cannot recognise final official unseen
-classes; final candidates and permissible label metadata require a separate
-approved protocol. The UI displays this scope.
+Development-323 cannot recognize the ten final unseen compositions. Final-333
+uses the verified class-only candidate/prompt payloads and the lecturer-clarified
+policy, with an explicit scope badge and labelled training-only fallbacks.
 
 Scores are not calibrated confidence. The GUI does not compute dataset accuracy,
 infer that an arbitrary uploaded image is OOD, or claim official-test results.
@@ -109,7 +139,17 @@ Use an environment compatible with the selected checkpoints. In particular,
 the WP1 loader checks the exact torchvision version saved by each WP1 run;
 the private WP1 release here used torch 2.7.1+cu118 / torchvision 0.22.1+cu118.
 
-The connection dialog requires:
+Selecting a model automatically searches its known private handoff locations,
+project `runs`, `models`, `weights`, `checkpoints`, `assets`, `artifacts` folders,
+and the current user's `.cache/clip` folder. Discovery runs in a cancellable
+background worker and matches the four frozen release files by SHA-256, without
+deserializing them. It does not search entire drives or download files. Renamed
+copies can be found in these locations. Use **Search another folder** for an
+external location, or **Show files** to inspect and manually choose paths.
+Once all required files are ready, select **Load model**. The existing loader
+still checks model hashes, schema, protocol and runtime compatibility.
+
+The inline model panel requires:
 
 | Choice | Local files |
 | --- | --- |
@@ -195,9 +235,26 @@ rounded cards, consistent pixel-based typography and a single primary action.
 The Top-5 view uses selectable ranking cards: the first match is highlighted,
 with numbered badges and right-aligned raw ranking scores. Arrow keys, Enter
 and Space support ranking selection; buttons are keyboard accessible.
-The compact layout activates below 860 pixels in height. The minimum window is
-1100 x 800; input settings and reference galleries scroll independently while
-the Analyze and Export actions stay visible. No GUI dependencies were added.
+The layout now uses larger text, buttons, ranking cards and image previews.
+The three-column workspace keeps image selection, inline model selection,
+device choice, weight discovery, Analyze and Export on the left. Model selection
+does not open a separate window. Choose a model, wait for its verified weights,
+then select Load model. Files expands optional manual paths within the sidebar;
+Search folder uses the native folder chooser. The sidebar can scroll for these
+advanced settings while Analyze and Export remain pinned at the bottom.
+
+The center keeps the image preview and all five ranking cards visible together.
+It assigns roughly 60% of the height to the image and 40% to the compact,
+single-line Top-5 list. The preview always fits the whole image while preserving
+its aspect ratio, including when scaling up small images. It never crops or
+stretches the image. Remaining side space depends on the image proportions.
+The preview does not change the original RGB query used for inference or export.
+Training references are permanently open in the right column with their own
+scrollbar and class browser. Scrolling references does not move the input or
+predictions. The palette uses a soft sage gradient, warm white cards, forest
+green actions and a restrained gold status accent, drawn with native Tk shapes.
+Windows opens maximized; the restored window grows up to 1680 x 1080. The
+preferred minimum is 1280 x 840, bounded by screen size. No dependencies were added.
 
 Local `runs/wp4-modern-preview.png` shows real image browsing with no prediction.
 `runs/wp4-modern-ranking-synthetic.png` is explicitly a synthetic layout check,

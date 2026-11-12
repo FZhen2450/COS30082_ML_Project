@@ -1,0 +1,16 @@
+{
+  "schema": "official333-clip-text-bank-identity-v1",
+  "candidate_sha256": "ba17e94119e8b2b7a4b18603e25405d2f52bf4a93396973f80491800697eb62f",
+  "prompt_sha256": "c9dd871d61d4141b33583ddd71961c309fd679a8edab088cb28ba20eccef88f2",
+  "text_bank_source": "original_official_333_row_file",
+  "text_bank_file_sha256": "1e1183371b7ad3b1687f7a140af1fea89e1fa6744ac98f1a30ad6fdae19be22b",
+  "direct_text_sha256": "5bbb5f715620c65fa76b2f32c84b72dddf0d9ceae8d43c7e9720a2240ff999b6",
+  "text_bank_shape": [
+    333,
+    768
+  ],
+  "text_bank_dtype": "float64",
+  "text_bank_normalization": "use_stored_unit_rows_without_reencoding_or_renormalization",
+  "text_bank_source_url": "https://drive.google.com/file/d/1DKvZo__aQyvW1M2QOwu661KdKOv8CHWw/view",
+  "official_prediction_parity_claimed": false
+}

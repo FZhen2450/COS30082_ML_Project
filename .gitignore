@@ -8,6 +8,7 @@ DPD_Small.7z
 
 # Virtual environment & packages
 .venv/
+.venv-*/
 env/
 venv/
 ENV/
@@ -36,10 +37,12 @@ Desktop.ini
 *.log
 checkpoints/
 runs/
+tmp/
 *.h5
 *.keras
 *.pt
 *.pth
+models/official333_clip_text_bank.npz
 
 # Assignment Briefs & Documents
 AS02 ML Project.pdf

@@ -302,12 +302,14 @@ class CLIPPredictor:
             raise ValueError("Expected native CLIP image features [B,768]")
         if self.adapter is not None:
             features = self.adapter(features)
-        scores = unit_features(features) @ unit_features(self.direct).T
+        bank = self.direct if getattr(self, 'text_bank_is_canonical', False) else unit_features(self.direct)
+        scores = unit_features(features) @ bank.T
         if not torch.isfinite(scores).all():
             raise ValueError("Non-finite cosine scores")
         ids = torch.tensor(self.expected["ids"], dtype=torch.int64)
         order = scores.argsort(dim=1, descending=True, stable=True)[:, :topk]
         return {"candidate_ids": ids, "scores": scores, "topk_composition_ids": ids[order],
-                "candidate_sha256": CATALOG_SHA256, "model_candidate_sha256": CANDIDATE_SHA256,
+                "candidate_sha256": getattr(self, 'candidate_sha256', CATALOG_SHA256),
+                "model_candidate_sha256": getattr(self, 'model_candidate_sha256', CANDIDATE_SHA256),
                 "score_semantics": "direct_float64_clip_cosine_similarity",
                 "model_provenance": self.provenance}
