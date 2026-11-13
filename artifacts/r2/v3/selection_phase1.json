@@ -1,0 +1,175 @@
+{
+ "tree_key": "phase1_correction_replay",
+ "folds": [
+  "I1",
+  "I2",
+  "I3",
+  "I4",
+  "I5",
+  "I6"
+ ],
+ "selected": "D1_synthComp_norm",
+ "path": [
+  "B1_clipL_factorised",
+  "D1_synthComp_norm"
+ ],
+ "trace": [
+  {
+   "parent": "B1_clipL_factorised",
+   "child": "D1_synthComp_norm",
+   "child_primary": 0.6620241542612199,
+   "mean_gain_pp": 2.6233280057405883,
+   "folds_improved": 6,
+   "folds_required": 5,
+   "ausuc_delta": 0.033753069960795856,
+   "shortcut_delta_pp": -1.8438279352879567,
+   "pass": true
+  },
+  {
+   "parent": "D1_synthComp_norm",
+   "child": "D2_synthComp_norm_text",
+   "child_primary": 0.6659033629547041,
+   "mean_gain_pp": 0.38792086934842374,
+   "folds_improved": 3,
+   "folds_required": 5,
+   "ausuc_delta": 0.021692383515806712,
+   "shortcut_delta_pp": -0.4172606840963775,
+   "pass": false
+  },
+  {
+   "parent": "D1_synthComp_norm",
+   "child": "D3_synthComp_norm_erase50",
+   "child_primary": 0.6717613799103823,
+   "mean_gain_pp": 0.9737225649162462,
+   "folds_improved": 4,
+   "folds_required": 5,
+   "ausuc_delta": 0.0032748391949151134,
+   "shortcut_delta_pp": 0.11564963021273716,
+   "pass": false
+  }
+ ],
+ "primary": {
+  "B1_clipL_factorised": 0.635790874203814,
+  "D1_synthComp_norm": 0.6620241542612199,
+  "D2_synthComp_norm_text": 0.6659033629547041,
+  "D3_synthComp_norm_erase50": 0.6717613799103823,
+  "D4_synthComp_norm_text_erase50": 0.66543145091118,
+  "D8_D2_per256": 0.6631135293754773,
+  "D9_D2_tta": 0.6772482385530086
+ },
+ "ausuc": {
+  "B1_clipL_factorised": 0.5464561529788119,
+  "D1_synthComp_norm": 0.5802092229396077,
+  "D2_synthComp_norm_text": 0.6019016064554145,
+  "D3_synthComp_norm_erase50": 0.5834840621345229,
+  "D4_synthComp_norm_text_erase50": 0.6043057410621792,
+  "D8_D2_per256": 0.6072305732303235,
+  "D9_D2_tta": 0.6115594556642406
+ },
+ "pooled_gamma": {
+  "B1_clipL_factorised": 10.5,
+  "D1_synthComp_norm": 8.0,
+  "D2_synthComp_norm_text": 8.25,
+  "D3_synthComp_norm_erase50": 7.25,
+  "D4_synthComp_norm_text_erase50": 6.75,
+  "D8_D2_per256": 8.25,
+  "D9_D2_tta": 8.25
+ },
+ "nested": [
+  {
+   "held_fold": "I1",
+   "selected": "D2_synthComp_norm_text",
+   "path": [
+    "B1_clipL_factorised",
+    "D1_synthComp_norm",
+    "D2_synthComp_norm_text"
+   ],
+   "gamma": 7.5,
+   "H_bal": 0.5226766610280292,
+   "H_micro": 0.44938826405264265,
+   "control_H_bal": 0.5144235637207122,
+   "control_H_micro": 0.5519546427948546,
+   "control_gamma": 10.25
+  },
+  {
+   "held_fold": "I2",
+   "selected": "D1_synthComp_norm",
+   "path": [
+    "B1_clipL_factorised",
+    "D1_synthComp_norm"
+   ],
+   "gamma": 7.75,
+   "H_bal": 0.7270668002652415,
+   "H_micro": 0.7390790968457215,
+   "control_H_bal": 0.7099270470260243,
+   "control_H_micro": 0.7155630406491619,
+   "control_gamma": 10.5
+  },
+  {
+   "held_fold": "I3",
+   "selected": "D1_synthComp_norm",
+   "path": [
+    "B1_clipL_factorised",
+    "D1_synthComp_norm"
+   ],
+   "gamma": 8.0,
+   "H_bal": 0.643616861376994,
+   "H_micro": 0.5856542729195924,
+   "control_H_bal": 0.6307784193390943,
+   "control_H_micro": 0.5460740006229222,
+   "control_gamma": 10.5
+  },
+  {
+   "held_fold": "I4",
+   "selected": "D1_synthComp_norm",
+   "path": [
+    "B1_clipL_factorised",
+    "D1_synthComp_norm"
+   ],
+   "gamma": 8.25,
+   "H_bal": 0.6941187718472157,
+   "H_micro": 0.6877808248075097,
+   "control_H_bal": 0.6708140486000376,
+   "control_H_micro": 0.6741138352918419,
+   "control_gamma": 10.5
+  },
+  {
+   "held_fold": "I5",
+   "selected": "D1_synthComp_norm",
+   "path": [
+    "B1_clipL_factorised",
+    "D1_synthComp_norm"
+   ],
+   "gamma": 8.0,
+   "H_bal": 0.684132889828438,
+   "H_micro": 0.6644373285037067,
+   "control_H_bal": 0.6401466005865306,
+   "control_H_micro": 0.6495049836389352,
+   "control_gamma": 10.5
+  },
+  {
+   "held_fold": "I6",
+   "selected": "D1_synthComp_norm",
+   "path": [
+    "B1_clipL_factorised",
+    "D1_synthComp_norm"
+   ],
+   "gamma": 8.0,
+   "H_bal": 0.6770051574319556,
+   "H_micro": 0.5119267681659536,
+   "control_H_bal": 0.6486555659504849,
+   "control_H_micro": 0.46167011040844863,
+   "control_gamma": 10.25
+  }
+ ],
+ "nested_summary": {
+  "mean_H_bal_selected": 0.6581028569629789,
+  "mean_H_bal_control": 0.635790874203814,
+  "mean_diff_pp": 2.2311982759165034,
+  "folds_selected_better": 6,
+  "selection_counts": {
+   "D1_synthComp_norm": 5,
+   "D2_synthComp_norm_text": 1
+  }
+ }
+}

@@ -1,0 +1,46 @@
+[
+ {
+  "id": "D1_synthComp_norm",
+  "backbones": [
+   "clip_l14"
+  ],
+  "recipe": "synth_composition",
+  "cfg": {
+   "fuse": 1.0,
+   "normalise": true
+  },
+  "hypothesis": "OUTER v2: mechanically selected on inner folds | C9 with scale-normalised fusion so the predeclared gamma grid is not a binding bound"
+ },
+ {
+  "id": "D2_synthComp_norm_text",
+  "backbones": [
+   "clip_l14"
+  ],
+  "recipe": "synth_composition",
+  "cfg": {
+   "fuse": 1.0,
+   "normalise": true,
+   "factorised": {
+    "text_dis_beta": 1.0,
+    "text_crop_beta": 1.0
+   }
+  },
+  "hypothesis": "OUTER v2: v1 selection (refuted or confirmed here) | Interaction: language priors add to synthesis (both passed individually)"
+ },
+ {
+  "id": "B1_clipL_factorised",
+  "backbones": [
+   "clip_l14"
+  ],
+  "recipe": "factorised",
+  "hypothesis": "OUTER v2: reference | Re-run matched control inside this matrix (deterministic; must reproduce Stage C)"
+ },
+ {
+  "id": "B0_clipL_zeroshot_comp",
+  "backbones": [
+   "clip_l14"
+  ],
+  "recipe": "zero_shot",
+  "hypothesis": "OUTER v2: reference | Stage B control: frozen CLIP composition prompts (no fitting) \u2014 protocol sanity analogue of the Round 1 frozen-CLIP baseline"
+ }
+]

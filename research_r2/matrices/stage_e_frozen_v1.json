@@ -1,0 +1,9 @@
+[
+  {"id": "E_selected_D2", "backbones": ["clip_l14"], "recipe": "synth_composition",
+   "cfg": {"fuse": 1.0, "normalise": true, "seed": 0, "factorised": {"text_dis_beta": 1.0, "text_crop_beta": 1.0}},
+   "hypothesis": "FROZEN Stage E recipe: frozen CLIP ViT-L/14; factorised crop+disease linear heads with crop-agnostic text priors; crop-shift hallucinated composition head; normalised fusion; calibrated stacking with gamma fixed from S1-S5"},
+  {"id": "E_ref_B1_factorised", "backbones": ["clip_l14"], "recipe": "factorised",
+   "hypothesis": "Reference only (not a selection candidate): matched control"},
+  {"id": "E_ref_B0_zeroshot", "backbones": ["clip_l14"], "recipe": "zero_shot",
+   "hypothesis": "Reference only (not a selection candidate): frozen CLIP zero-shot"}
+]

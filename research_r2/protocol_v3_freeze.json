@@ -1,0 +1,97 @@
+{
+ "schema": "r2-evidence-freeze-v1",
+ "created": "2026-11-13",
+ "status": "Round 2 evidence frozen after v3 hardening. Development cross-validation only.",
+ "approved_by_owner": "WP2 approved 2026-11-13, without a git tag (a tag may be considered after the WP5 owner's review)",
+ "git_tag": null,
+ "code": {
+  "v3_evidence_commit": "2fdbe196a70b93a0ba1b7f3636ac12c7cabace6b",
+  "hardening_commit": "bf5b3c25a73591cb477df48d8e543997c1c908cb"
+ },
+ "benchmark": {
+  "path": "artifacts/r2/benchmark_v3.json",
+  "semantic_sha256": "0e85819cbd845eb6794cd8414950aac794e351636ae1f1202306b4ed8b1a7e42"
+ },
+ "protocol": {
+  "path": "research_r2/protocol_v3.json",
+  "sha256": "5e1ae3fd9e8fe45f31a23c9daa806c116ce3aedde8a2c49093703aa2cf54aee1"
+ },
+ "packet_registry": {
+  "path": "artifacts/r2/v3/packet_registry_v3.json",
+  "sha256": "94266c7fd400f826cc549ee8388ca8c8d2b5591181365fab30c85d0ba4d2bafb",
+  "retrospective": true
+ },
+ "receipts": {
+  "phase1": {
+   "original": "artifacts/r2/v3/selection_phase1.json",
+   "original_sha256": "f4b2c479166376ce095654b208d78f5d1165e6b735348bb0f7e1f15ed8cdc220",
+   "hardened": "artifacts/r2/v3/hardening/selection_phase1_hardened.json",
+   "hardened_sha256": "6dbebb609160fdcbb3a08d4036b8c208c6848468c6835bc45a712a335f0daf41",
+   "scientific_fields_identical": true,
+   "selected": "D1_synthComp_norm",
+   "path": [
+    "B1_clipL_factorised",
+    "D1_synthComp_norm"
+   ],
+   "nested_mean_diff_pp": 2.2312,
+   "nested_folds_better": 6
+  },
+  "phase2": {
+   "original": "artifacts/r2/v3/selection_phase2.json",
+   "original_sha256": "6b6664574b15c2e7d77fc87997962dac4fa7b2c7375ab3a8ebbffc3b7f803163",
+   "hardened": "artifacts/r2/v3/hardening/selection_phase2_hardened.json",
+   "hardened_sha256": "72b3136717b3ed32f18804ee563ecec1e56991ee53ca520354775a5dca7c67f6",
+   "scientific_fields_identical": true,
+   "selected": "F10_concat_convnext",
+   "path": [
+    "D1_synthComp_norm",
+    "F10_concat_convnext"
+   ],
+   "nested_mean_diff_pp": 0.8895,
+   "nested_folds_better": 4
+  },
+  "phase3": {
+   "original": "artifacts/r2/v3/selection_phase3.json",
+   "original_sha256": "97d028fe4814a5ea73015a54726374333b1856ec4d1915ed14fbcdc1ceb01088",
+   "hardened": "artifacts/r2/v3/hardening/selection_phase3_hardened.json",
+   "hardened_sha256": "e556dd89b8857a3f4cb0eaf5b49e5f74d768e5fd801105fc634697cd490b4494",
+   "scientific_fields_identical": true,
+   "selected": "F10_concat_convnext",
+   "path": [
+    "F10_concat_convnext"
+   ],
+   "nested_mean_diff_pp": 0.0,
+   "nested_folds_better": 0
+  }
+ },
+ "reproduction": {
+  "path": "artifacts/r2/v3/hardening/repro_B1_D1_F10.json",
+  "sha256": "832861b339b672293e31a53bf9e871d75aa4c69ea524f19f68538c5399ab09eb",
+  "summary": "B1, D1, F10 regenerated on all 6 inner folds from the frozen features: 18/18 packets byte-identical to the registered ones (max |score diff| 0; H_bal identical at all 65 gamma points)"
+ },
+ "packet_sweep": {
+  "path": "artifacts/r2/v3/hardening/packet_sweep.json",
+  "sha256": "96fd76493f452e0535ef7178383ea8364a748d9ac600b970ccd49cc3f6c2b6b9",
+  "summary": "725 historical packets (v1 213, v2 218, v3 294) pass the strict contract; all duplicate copies byte-identical"
+ },
+ "standing": {
+  "D1_synthComp_norm": "Provisional Round 2 research candidate. v3 Phase 1: +2.62 pp vs B1, 6/6 folds; nested +2.23 pp, 6/6. Development evidence only.",
+  "F10_concat_convnext": "Not promoted. Passes the in-sample gate (+2.12 pp vs D1, 5/6) but nested +0.89 pp, 4/6 does not meet the gate thresholds; gain concentrated in I1; less robust than D1 under source ablation.",
+  "D2_synthComp_norm_text": "Historical. v1 development winner; does not pass against D1 in v2 or v3 (v3: +0.39 pp, 3/6). Its v1 results stand as recorded.",
+  "B1_clipL_factorised": "Matched factorised control."
+ },
+ "claims_not_permitted": [
+  "No independent or blind-test claim for any Round 2 model.",
+  "The v2 outer folds are already examined; they are not fresh confirmation.",
+  "No claim that D1 outperforms the accepted submission models on the official benchmark."
+ ],
+ "official_test_use": "none in Round 2 (no fitting, selection, inference or debugging on either official test set)",
+ "post_freeze_rule": "Any further optimisation or analysis on the examined v3 inner folds is labelled 'post-freeze exploratory'. It cannot change the standing above. A change of standing needs a newly predeclared protocol, an evaluation population not used for development, and review by the WP5 owner.",
+ "submission_separation": "Round 2 changes nothing in the accepted WP1/WP2/WP3 checkpoints, WP5 evaluation, LeafLens GUI, report, slides, video or submission assets. PR #34 stays a draft.",
+ "open_limitations": [
+  "No untouched evaluation population remains inside the 8,000 training images.",
+  "The packet registry is retrospective: it pins the packets; their origin rests on the run-time summaries and the regeneration check (B1, D1, F10 only).",
+  "Source-stress results confound source novelty with training volume and candidate-universe changes.",
+  "Frozen features with linear heads only; fine-tuning and other encoders untested."
+ ]
+}

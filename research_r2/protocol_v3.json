@@ -1,0 +1,92 @@
+{
+ "schema": "r2-selection-policy-v3-candidate-universe",
+ "declared_before_any_v3_scoring": "2026-11-13",
+ "benchmark_semantic_sha256": "0e85819cbd845eb6794cd8414950aac794e351636ae1f1202306b4ed8b1a7e42",
+ "candidate_policy": "r2-candidate-policy-v1: universe = F u H; E removed (research_r2/candidates.py)",
+ "defect_corrected": "v2 inner folds penalised the 22 outer compositions as fitting candidates although they had no fitting images (artifacts/r2/audit_v2_candidates.json). v1 folds and v2 outer folds had none. v1/v2 files and results are preserved unchanged.",
+ "evidence_status": {
+  "v2_outer": "already examined (scored once under v2). Not re-scored and not used for any v3 claim or choice. Its candidate universe had no excluded compositions, so the defect did not affect it directly.",
+  "v3_inner": "development cross-validation only. No untouched confirmation population exists inside the 8,000 training images; every claim below is a development claim, and nested leave-one-fold-out estimates are reported for every selection."
+ },
+ "gate": "same as v2: >= +1.0 pp mean primary over inner folds, >= n-1 of n folds better, AUSUC not lower, healthy shortcut <= +5 pp",
+ "phase1_correction_replay": {
+  "matrices": {
+   "research_r2/matrices/stage_bc_v1.json": "23380abcf170245b5ff2a0d67283c3f4fdbda3e8f98ec196a5493fcaf52a75bf",
+   "research_r2/matrices/stage_d_v1.json": "35d171ef0e31a5f5e2a299823f9a60510ce25228061ca70d8482900c493ec2a6"
+  },
+  "start": "B1_clipL_factorised",
+  "tree": {
+   "B1_clipL_factorised": [
+    "D1_synthComp_norm"
+   ],
+   "D1_synthComp_norm": [
+    "D2_synthComp_norm_text",
+    "D3_synthComp_norm_erase50"
+   ],
+   "D2_synthComp_norm_text": [
+    "D4_synthComp_norm_text_erase50",
+    "D8_D2_per256",
+    "D9_D2_tta"
+   ],
+   "D3_synthComp_norm_erase50": [],
+   "D4_synthComp_norm_text_erase50": [],
+   "D8_D2_per256": [],
+   "D9_D2_tta": []
+  },
+  "report": "selection, nested estimate, and row-by-row comparison with the v2 inner replay"
+ },
+ "phase2_screen": {
+  "matrix": {
+   "research_r2/matrices/stage_f_v3.json": "845960b2da59c755d1792fdfd204510f48ee97828f876a3814d4aaedc3b807fe"
+  },
+  "start": "D1_synthComp_norm",
+  "tree": {
+   "D1_synthComp_norm": [
+    "F1_srcbal_heads",
+    "F2_srcbal_comphead",
+    "F3_style_aug",
+    "F4_synth_subspace",
+    "F5_synth_seen",
+    "F6_synth_noise",
+    "F7_crop_centred_disease",
+    "F8_srcbal_all",
+    "F9_fuse2",
+    "F10_concat_convnext",
+    "F11_tta"
+   ],
+   "F1_srcbal_heads": [],
+   "F2_srcbal_comphead": [],
+   "F3_style_aug": [],
+   "F4_synth_subspace": [],
+   "F5_synth_seen": [],
+   "F6_synth_noise": [],
+   "F7_crop_centred_disease": [],
+   "F8_srcbal_all": [],
+   "F9_fuse2": [],
+   "F10_concat_convnext": [],
+   "F11_tta": []
+  },
+  "secondary_source_stress": "source-ablation stress test (scripts/r2_calibration_shift.py) for D1 and every Phase 2 row that passes the gate: novel-source seen Top-1 at gamma 0 and at the row's pooled inner gamma. Reported, not a gate.",
+  "combinations": "any combination of Phase 2 passers is a separate Phase 3, declared and committed after Phase 2 results"
+ },
+ "phase3_representation": {
+  "declared_after": "Phase 2 results (only F10 passed; nested +0.89 pp, 4/6)",
+  "matrix": {
+   "research_r2/matrices/stage_g_v3.json": "4f9d9b13ec518fe080910f44450817c0c1489e657909d3f849a152f6378d31a5"
+  },
+  "start": "F10_concat_convnext",
+  "tree": {
+   "F10_concat_convnext": [
+    "G1_concat_L14_CNXT_EffB3",
+    "G2_concat_L14_CNXT_B32",
+    "G3_concat_L14_CNXT_ViTB16",
+    "G4_concat_L14_EffB3"
+   ],
+   "G1_concat_L14_CNXT_EffB3": [],
+   "G2_concat_L14_CNXT_B32": [],
+   "G3_concat_L14_CNXT_ViTB16": [],
+   "G4_concat_L14_EffB3": []
+  },
+  "standing_of_F10": "F10 passed the in-sample gate but its nested estimate does not meet the same thresholds; D1 stays the provisional reference unless a successor passes the gate AND its nested estimate also meets the gate thresholds (>= +1 pp, >= 5/6 held folds)."
+ }
+}
