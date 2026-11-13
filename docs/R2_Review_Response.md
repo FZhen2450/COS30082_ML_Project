@@ -124,3 +124,6 @@ The v2 outer population is now spent for this candidate family. Further developm
 4. **Larger steps that need coordination or authorisation:** a partial CLIP fine-tuning pilot, and DINOv2 / SigLIP / BioCLIP frozen features.
 
 Any official run of D1 would need explicit owner approval and must be labelled non-blind. It should report γ=0 and the registered γ side by side, through the WP5 importer as a separately labelled model.
+
+---
+**v3 addendum (13 Nov 2026).** See `docs/R2_v3_Candidate_Policy_and_Phase2.md`. v2 inner folds scored the 22 outer compositions as penalised fitting candidates without fitting images. The corrected benchmark v3 leaves every v2 conclusion unchanged: D1 is selected again, with a nested estimate of +2.23 pp at 6/6.

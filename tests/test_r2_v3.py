@@ -97,6 +97,22 @@ class TestCandidatePolicy(unittest.TestCase):
         self.assertNotIn(victim, f2["candidate_composition_ids"])
         self.assertTrue(all(int(self.frame.comp_id[r]) != victim for r in f2["seen_val_rows"]))
 
+    def test_truth_indices_must_be_read_through_each_folds_own_candidates(self):
+        """Regression for the v3 stress-script bug: a derived fold with a smaller universe shifts columns,
+        so its truth indices differ from the base fold's, while the global composition IDs agree."""
+        from research_r2.runner import make_fold
+        f = self.v3["folds"][0]
+        fit = self.frame.loc[f["fitting_rows"]]
+        victim = int(fit.comp_id.value_counts().index[-1])
+        f2 = derive_fold(self.frame, f, fit.index[fit.comp_id != victim])
+        feats = torch.randn(len(self.frame), 2, 8)
+        fd1, t1, _ = make_fold(self.frame, f, feats, None)
+        fd2, t2, _ = make_fold(self.frame, f2, feats, None)
+        self.assertEqual(len(fd2.extra["cand_ids"]), len(fd1.extra["cand_ids"]) - 1)
+        g1, g2 = fd1.extra["cand_ids"][t1["unseen"]], fd2.extra["cand_ids"][t2["unseen"]]
+        self.assertTrue(np.array_equal(g1, g2))           # same compositions
+        self.assertFalse(np.array_equal(t1["unseen"], t2["unseen"]))  # different column indices
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -79,14 +79,15 @@ def main():
             sm2 = (frame.source.loc[srows2].to_numpy() == src) & np.isin(frame.comp_id.loc[srows2].to_numpy(), list(fit_comps2))
             assert np.array_equal(srows[sm], srows2[sm2])  # same seen images, same order, in base and ablated folds
             entry = {"fold": fold["name"], "source": src, "n_unseen": int(um.sum()), "n_seen": int(sm.sum()),
+                     "universe_base": int(len(ids)), "universe_ablated": int(len(ids2)),
                      "removed_fitting_images": len(fold["fitting_rows"]) - len(fit2),
                      "unseen_margin_shift_mean": float(np.mean(abl.parts["unseen"]["d"][um] - base.parts["unseen"]["d"][um])),
                      "seen_margin_shift_mean": float(np.mean(abl.parts["seen"]["d"][sm2] - base.parts["seen"]["d"][sm])) if sm.any() else None}
             for g in a.gammas:
                 pb, pa = base.top1_pred("unseen", g), abl.top1_pred("unseen", g)
-                tu = base.parts["unseen"]["truth"]
+                tu, tu2 = base.parts["unseen"]["truth"], abl.parts["unseen"]["truth"]  # column indices differ when the universe shrinks
                 entry[f"unseen_top1_in_fitting_g{g:g}"] = float(np.mean(pb[um] == tu[um]))
-                entry[f"unseen_top1_source_novel_g{g:g}"] = float(np.mean(pa[um] == tu[um]))
+                entry[f"unseen_top1_source_novel_g{g:g}"] = float(np.mean(pa[um] == tu2[um]))
                 if sm.any():
                     qb, qa = base.top1_pred("seen", g), abl.top1_pred("seen", g)
                     ts, ts2 = base.parts["seen"]["truth"], abl.parts["seen"]["truth"]

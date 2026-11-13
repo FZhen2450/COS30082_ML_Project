@@ -1,0 +1,171 @@
+{
+ "tree_key": "phase3_representation",
+ "folds": [
+  "I1",
+  "I2",
+  "I3",
+  "I4",
+  "I5",
+  "I6"
+ ],
+ "selected": "F10_concat_convnext",
+ "path": [
+  "F10_concat_convnext"
+ ],
+ "trace": [
+  {
+   "parent": "F10_concat_convnext",
+   "child": "G1_concat_L14_CNXT_EffB3",
+   "child_primary": 0.6811329562528687,
+   "mean_gain_pp": -0.2064898282225669,
+   "folds_improved": 3,
+   "folds_required": 5,
+   "ausuc_delta": -0.011147840989149449,
+   "shortcut_delta_pp": 0.3201890902094969,
+   "pass": false
+  },
+  {
+   "parent": "F10_concat_convnext",
+   "child": "G2_concat_L14_CNXT_B32",
+   "child_primary": 0.675946051369028,
+   "mean_gain_pp": -0.725180316606644,
+   "folds_improved": 1,
+   "folds_required": 5,
+   "ausuc_delta": -0.001635719750420428,
+   "shortcut_delta_pp": 0.11135524863803858,
+   "pass": false
+  },
+  {
+   "parent": "F10_concat_convnext",
+   "child": "G3_concat_L14_CNXT_ViTB16",
+   "child_primary": 0.6805722350705823,
+   "mean_gain_pp": -0.2625619464512119,
+   "folds_improved": 2,
+   "folds_required": 5,
+   "ausuc_delta": -0.002330680688588216,
+   "shortcut_delta_pp": -0.27271566910426603,
+   "pass": false
+  },
+  {
+   "parent": "F10_concat_convnext",
+   "child": "G4_concat_L14_EffB3",
+   "child_primary": 0.6591550226225346,
+   "mean_gain_pp": -2.4042831912559848,
+   "folds_improved": 1,
+   "folds_required": 5,
+   "ausuc_delta": -0.03752896129576766,
+   "shortcut_delta_pp": 0.16226417500302837,
+   "pass": false
+  }
+ ],
+ "primary": {
+  "F10_concat_convnext": 0.6831978545350944,
+  "G1_concat_L14_CNXT_EffB3": 0.6811329562528687,
+  "G2_concat_L14_CNXT_B32": 0.675946051369028,
+  "G3_concat_L14_CNXT_ViTB16": 0.6805722350705823,
+  "G4_concat_L14_EffB3": 0.6591550226225346
+ },
+ "ausuc": {
+  "F10_concat_convnext": 0.6044025476663756,
+  "G1_concat_L14_CNXT_EffB3": 0.5932547066772261,
+  "G2_concat_L14_CNXT_B32": 0.6027668279159552,
+  "G3_concat_L14_CNXT_ViTB16": 0.6020718669777874,
+  "G4_concat_L14_EffB3": 0.5668735863706079
+ },
+ "pooled_gamma": {
+  "F10_concat_convnext": 8.0,
+  "G1_concat_L14_CNXT_EffB3": 8.0,
+  "G2_concat_L14_CNXT_B32": 8.25,
+  "G3_concat_L14_CNXT_ViTB16": 8.0,
+  "G4_concat_L14_EffB3": 8.0
+ },
+ "nested": [
+  {
+   "held_fold": "I1",
+   "selected": "F10_concat_convnext",
+   "path": [
+    "F10_concat_convnext"
+   ],
+   "gamma": 8.0,
+   "H_bal": 0.6198784324147943,
+   "H_micro": 0.5739154990407057,
+   "control_H_bal": 0.6198784324147943,
+   "control_H_micro": 0.5739154990407057,
+   "control_gamma": 8.0
+  },
+  {
+   "held_fold": "I2",
+   "selected": "F10_concat_convnext",
+   "path": [
+    "F10_concat_convnext"
+   ],
+   "gamma": 8.5,
+   "H_bal": 0.7474520064446911,
+   "H_micro": 0.7464967466290373,
+   "control_H_bal": 0.7474520064446911,
+   "control_H_micro": 0.7464967466290373,
+   "control_gamma": 8.5
+  },
+  {
+   "held_fold": "I3",
+   "selected": "F10_concat_convnext",
+   "path": [
+    "F10_concat_convnext"
+   ],
+   "gamma": 8.0,
+   "H_bal": 0.6604660572329043,
+   "H_micro": 0.5953917050691244,
+   "control_H_bal": 0.6604660572329043,
+   "control_H_micro": 0.5953917050691244,
+   "control_gamma": 8.0
+  },
+  {
+   "held_fold": "I4",
+   "selected": "F10_concat_convnext",
+   "path": [
+    "F10_concat_convnext"
+   ],
+   "gamma": 8.5,
+   "H_bal": 0.7107606062855816,
+   "H_micro": 0.6996667513177057,
+   "control_H_bal": 0.7107606062855816,
+   "control_H_micro": 0.6996667513177057,
+   "control_gamma": 8.5
+  },
+  {
+   "held_fold": "I5",
+   "selected": "F10_concat_convnext",
+   "path": [
+    "F10_concat_convnext"
+   ],
+   "gamma": 8.5,
+   "H_bal": 0.6870452195156798,
+   "H_micro": 0.6900268124704274,
+   "control_H_bal": 0.6870452195156798,
+   "control_H_micro": 0.6900268124704274,
+   "control_gamma": 8.5
+  },
+  {
+   "held_fold": "I6",
+   "selected": "F10_concat_convnext",
+   "path": [
+    "F10_concat_convnext"
+   ],
+   "gamma": 8.0,
+   "H_bal": 0.6735848053169157,
+   "H_micro": 0.5329948752334882,
+   "control_H_bal": 0.6735848053169157,
+   "control_H_micro": 0.5329948752334882,
+   "control_gamma": 8.0
+  }
+ ],
+ "nested_summary": {
+  "mean_H_bal_selected": 0.6831978545350944,
+  "mean_H_bal_control": 0.6831978545350944,
+  "mean_diff_pp": 0.0,
+  "folds_selected_better": 0,
+  "selection_counts": {
+   "F10_concat_convnext": 6
+  }
+ }
+}
