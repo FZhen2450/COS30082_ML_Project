@@ -63,3 +63,86 @@ Stage E recipe only, with γ fixed from S1–S5.
 Diagnostics added during Stage B, before any Stage C row was run:
 - **within-crop unseen accuracy:** only the true crop's candidates are ranked, so the held-out disease must beat that crop's fitting diseases on disease evidence alone;
 - **exact AUSUC:** the γ-free quality of the representation.
+
+## 5. Results (development only; training-source images; all numbers reproducible from `artifacts/r2/results_*.jsonl`)
+
+All rows use frozen backbones with linear heads fitted on each fold's fitting images. H_bal is a percentage, given as the mean over S1–S5 with LOFO γ. AUSUC is γ-free. wc0 is within-crop unseen accuracy at γ=0.
+
+### Stage B controls
+| Row | H_bal | H_bal γ=0 | AUSUC | wc0 | Reading |
+|---|---:|---:|---:|---:|---|
+| B0 frozen CLIP-L zero-shot | 12.6 | 8.5 | 4.6 | 28.5 | Language alone gives some crop-agnostic disease signal but very low seen accuracy (8%) |
+| B1 factorised linear heads | 63.3 | 5.6 | 51.5 | 11.3 | Uncalibrated, 94–100% of unseen images go to a fitting pair; one training-fold γ recovers balance |
+| B2 flat seen-composition head | 13.8 | 0.0 | 6.8 | 0.0 | Memorisation control: cannot transfer |
+
+### Stage C screen (control B1; gate = ≥+1 pp, ≥4/5 folds, no AUSUC loss, ≤+5 pp shortcut)
+| Row | H_bal | Δ vs B1 | folds | AUSUC | Gate |
+|---|---:|---:|---:|---:|:---:|
+| A1 CLIP B/32 | 58.2 | −5.1 | 1 | 45.6 | ✗ |
+| A2 ImageNet ViT-B/16 | 51.5 | −11.8 | 0 | 36.3 | ✗ |
+| A3 ConvNeXt-B | 57.2 | −6.1 | 0 | 42.4 | ✗ |
+| A4 EfficientNet-B3 | 54.8 | −8.5 | 0 | 40.1 | ✗ |
+| C1 composition-balanced disease head | 61.4 | −1.9 | 1 | 51.8 | ✗ |
+| C2 balanced, both heads | 61.3 | −2.1 | 1 | 51.5 | ✗ |
+| C3 LEACE crop erasure (full) | 57.0 | −6.4 | 0 | 44.8 | ✗ |
+| C4 LEACE crop erasure 50% | 64.5 | +1.2 | 4 | 53.4 | ✓ |
+| C5 LEACE source erasure | 31.9 | −31.4 | 0 | 17.0 | ✗ |
+| C6 crop-shift synthesis, disease head | 60.6 | −2.8 | 0 | 48.3 | ✗ |
+| C7 crop-agnostic text priors | 64.7 | +1.3 | 4 | 55.1 | ✓ |
+| C8 composition text prior | 63.8 | +0.4 | 3 | 53.7 | ✗ |
+| C9 hallucinated composition head | 67.6 | +4.3 | 5 | 56.2 | ✓ (γ* at grid edge) |
+| C10 MLP heads | 64.2 | +0.9 | 3 | 53.3 | ✗ |
+| C11 weight decay 5e-3 | 63.5 | +0.2 | 4 | 51.7 | ✗ |
+
+### Stage D interactions (matrix committed before execution)
+| Row | H_bal | Control | Δ | folds | AUSUC | Gate |
+|---|---:|---|---:|---:|---:|:---:|
+| D1 C9 with scale-normalised fusion | 67.3 | B1 | +4.0 | 5 | 56.2 | ✓ |
+| **D2 D1 + text priors** | **70.8** | D1 | +3.5 | 5 | **61.8** | ✓ |
+| D3 D1 + 50% erasure | 68.7 | D1 | +1.4 | 4 | 57.4 | ✓ |
+| D4 D2 + 50% erasure | 71.3 | D2 | +0.5 | 3 | 62.5 | ✗ |
+| D5 factorised + text + erasure | 66.7 | C7 | +2.1 | — | 56.9 | (no synthesis) |
+| D6 / D7 D2 with synthesis seeds 1, 2 | 71.4 / 71.0 | D1 | +4.1 / +3.7 | 5 / 5 | 62.3 / 62.2 | ✓ stable |
+| D8 D2 with 4× synthesis | 71.3 | D2 | +0.5 | 4 | 62.7 | ✗ |
+| D9 D2 with h-flip TTA | 70.6 | D2 | −0.2 | 2 | 62.2 | ✗ |
+| D10 D1 recipe on ConvNeXt-B | 60.8 | A3 | +3.6 | — | 48.2 | mechanism generalises across backbones |
+
+### Stage E selection and locked confirmation
+Selection rule: take the most complex configuration in which every added component passed
+the gate against its own ablation. That is **D2** (D1 > B1, D2 > D1; D4, D8 and D9 do not
+pass against D2). The recipe file `research_r2/matrices/stage_e_frozen_v1.json`
+(SHA-256 `51c4dd07…c883`, commit `f341991`) was frozen before L1–L3 were scored. Locked
+folds were scored exactly once, with γ = 8.0 fixed from S1–S5.
+
+| Locked fold | D2 H_bal | B1 H_bal | Zero-shot H_bal | D2 seen | D2 unseen macro | D2 H5 (micro) | D2 healthy shortcut |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| L1 | 78.8 | 76.5 | 13.0 | 75.7 | 82.2 | 98.4 | 1.4 |
+| L2 | 70.9 | 63.1 | 13.9 | 70.1 | 71.8 | 98.1 | 1.2 |
+| L3 | 69.6 | 66.2 | 12.6 | 69.6 | 69.6 | 97.1 | 0.9 |
+| **Mean** | **73.1** | 68.6 | 13.2 | | | | |
+
+D2 beats the matched control on all three locked folds (+2.3, +7.8, +3.4 pp); AUSUC is
+69.0 vs 61.4. The legacy diagnostic D0 (65 held-out pairs, 12 healthy, previously examined)
+gives H_bal 47.1 vs 33.3. It is not comparable with Round 1 numbers, because D0 is
+re-materialised under Round 2 lineage and holdout rules.
+
+### Error analysis (D2, all 8 new folds, 87 held-out compositions)
+- Unseen outcomes: 62.7% correct. Errors are 19.0% right crop but a fitting pair (the crop-dependent-disease signature), 10.8% another held-out pair of the same crop, and 7.5% wrong crop. B1 gives 59.0 / 18.2 / 11.8 / 11.0.
+- D2 beats B1 on 43 compositions, loses on 22, ties on 22.
+- Hardest diseases: spider mites (0%), alternaria leaf spot (5%), target spot (17%), frog-eye leaf spot (22%; B1 63%, a real regression). Per-disease accuracy hardly depends on how many crops a disease is seen on (Spearman 0.13).
+
+## 6. Interpretation and honesty notes
+1. **Calibration is the largest single effect, and it is a decision-rule change, not a representation change.** Every factorised model is strongly seen-biased at γ=0. Calibrated stacking is standard GZSL practice; here γ is chosen only on training-source folds and is stable across folds. It must be reported as a separate, explicit inference step, with the whole seen/unseen curve (AUSUC) shown and the γ=0 numbers alongside.
+2. **Representation gains are real but smaller.** At equal calibration, D2 raises the γ-free AUSUC from 51.5 to 61.8 and the γ=0 within-crop disease transfer from 11.3% to 16.0%. Crop-dependent disease bias remains the dominant error.
+3. **The unseen task is partly crop recognition.** In both our folds and the official set (10 unseen classes over 9 crops), once seen pairs are down-weighted the crop nearly identifies the pair. Within-crop accuracy is the stricter disease-transfer diagnostic.
+4. **Hypothesis outcomes.** Crop-entangled disease features are *supported*: full erasure hurts, partial erasure helps, and most residual errors are same-crop seen pairs. Source-style shortcut is *not* remedied by erasure, because source identity carries real crop information; the shortcut itself is not ruled out. Composition imbalance is *not supported* as a remedy target.
+5. **Transfer to the official test is not established.** Round 1 seen-val (53%) overstated the official seen accuracy (44.8%) for WP1. Distribution shift between DPD source datasets could move the best γ. Any official run of D2 must be labelled **non-blind**, because the official sets were examined in Round 1.
+
+## 7. Compute
+Feature extraction for 8,000 images on the RTX 4060 Laptop (8 GB): CLIP-L/14 171 s at 1.18 GiB peak; B/32 39 s; ViT-B/16 45 s; ConvNeXt-B 47 s; EfficientNet-B3 34 s. Stage B/C used 537 s of row time, Stage D 511 s and Stage E 122 s. A full 8,000-image refit of D2 needs under 1 minute after extraction. Official inference (3,448 images) would be about 75 s of CLIP-L encoding.
+
+## 8. Next experiments (not run)
+1. **Owner-approved full refit of the frozen D2 recipe** on all 8,000 images over Jonathan's shared 333 manifest, with γ = 8.0. Emit a label-free packet for his importer and report it as a separately labelled, non-blind fifth model. Report γ=0 and γ=8 side by side.
+2. **Partial fine-tuning pilot** (last 2–4 CLIP-L blocks or LoRA) with the D2 heads and synthesis loss, on S1–S5 only. Estimated at ≈3–4 min per epoch per fold. Coordinate first: M12 showed LoRA can trade unseen accuracy for seen accuracy.
+3. **Authorised downloads only:** DINOv2 / SigLIP / BioCLIP frozen features. The backbone axis was the largest representation effect among the families tested.
+4. **Targeted remedies** for spider-mite, alternaria and frog-eye failures, e.g. disease-description prompts with recorded provenance, following the DPD paper's taxonomy text.
