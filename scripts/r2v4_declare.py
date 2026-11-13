@@ -17,12 +17,30 @@ from research_r2.data import sha256_file  # noqa: E402
 FILES = ["research_r2_v4/protocol_v4.json", "research_r2_v4/matrices/stage_h_v4.json",
          "research_r2_v4/matrices/stage_i_v4.json", "research_r2_v4/matrices/stage_j_v4.json", "docs/R2_v4_Plan.md"]
 OUT = ROOT / "research_r2_v4/DECLARATION.json"
+AMENDMENTS = {1: ["research_r2_v4/amendment_1.json", "research_r2_v4/matrices/stage_i_v4_amendment1.json"]}
 
 
 def main():
+    global FILES, OUT
     ap = argparse.ArgumentParser()
     ap.add_argument("--verify", action="store_true")
+    ap.add_argument("--amendment", type=int, help="declare / verify amendment N (its own DECLARATION_AMENDMENT_N.json)")
     a = ap.parse_args()
+    if a.amendment:
+        FILES = AMENDMENTS[a.amendment] + [f"research_r2_v4/DECLARATION.json"]
+        OUT = ROOT / f"research_r2_v4/DECLARATION_AMENDMENT_{a.amendment}.json"
+        for f in FILES:
+            json.loads((ROOT / f).read_text())
+        digests = {f: sha256_file(ROOT / f) for f in FILES}
+        if a.verify:
+            bad = [f for f in FILES if json.loads(OUT.read_text())["sha256"].get(f) != digests[f]]
+            print("OK" if not bad else f"CHANGED: {bad}")
+            sys.exit(1 if bad else 0)
+        OUT.write_text(json.dumps({"schema": "r2v4-declaration-v1", "amendment": a.amendment, "declared": "2026-11-14",
+                                   "note": "declared before any v4 scoring; the base declaration is pinned, not edited",
+                                   "sha256": digests}, indent=1) + "\n")
+        print(json.dumps(digests, indent=1))
+        return
     for f in FILES[:4]:
         json.loads((ROOT / f).read_text())  # declared JSON must parse
     digests = {f: sha256_file(ROOT / f) for f in FILES}

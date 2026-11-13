@@ -1,0 +1,46 @@
+{
+ "schema": "r2v4-amendment-v1",
+ "declared": "2026-11-14, after the owner's execution authorisation and BEFORE any v4 scoring",
+ "base_declaration": "research_r2_v4/DECLARATION.json (commit 3660975); those files are not edited",
+ "authorised_scope": "Stage H, Stage I, J0 and a single-fold J1-J3 feasibility pilot. The full six-fold J1-J8 sweep is NOT authorised and is not run.",
+
+ "stage_H": {
+  "rows": {"B1_clipL_factorised": 10.5, "D1_synthComp_norm": 8.0, "F10_concat_convnext": 8.0},
+  "rows_note": "selected gamma = each row's pooled inner gamma from the committed v3 results; gamma 0 is reported too",
+  "pairs": "the 49 (fold, source) pairs of artifacts/r2/v4/feasibility_20261114/source_feasibility.json 'useful_pairs'; the other ablatable and every non-ablatable pair are listed as ineligible with the reason",
+  "matched_random_control": "3 draws (seeds 0, 1, 2), each removing exactly n_s fitting images from OTHER sources. Matching is greedy and stratified: for each removed image of s, draw from other-source fitting images of the same composition, else the same crop and disease, else the same crop, else the same disease, else any. A composition is never emptied, and held-out crops/diseases stay covered. The achieved match level is recorded per image, and every sampled index set is saved.",
+  "common_universe": "the source-ablated arm can empty compositions, which then leave the candidate universe. All arms are therefore compared on the ABLATED arm's universe and evaluation rows: the base and random-control score matrices are restricted to those candidate columns, re-indexed by candidate id and re-validated. A fold or pair whose universes cannot be aligned is reported as failed, never compared.",
+  "outcomes": ["seen Top-1, unseen macro and micro Top-1, H_bal, H_micro, AUSUC (common universe, all common rows)", "novel-source seen Top-1 (seen-val images of s whose composition keeps other-source fitting images)", "unseen Top-1 on images of s", "each at gamma 0 and the selected gamma", "source effect = ablated - mean(controls); size effect = mean(controls) - base", "spread: SD and min/max over the 3 controls per pair; cluster bootstrap over sources (2,000 resamples, seed 0) for pooled means"],
+  "learning_curve": "fitting fractions 0.25, 0.5, 0.75, 1.0, composition-stratified with ceil (never empties a composition, so the universe is unchanged), seeds 0-2, all six folds"
+ },
+
+ "stage_I_clarifications": {
+  "I1": "n_fit(c) = number of fitting images of composition c in the fold being scored (fitting rows only). Penalty on fitting candidates = gamma0 + gamma1 * log1p(n_fit(c)), implemented as fixed score offsets followed by the usual gamma0 sweep. (gamma0, gamma1) chosen jointly LOFO: for fold k, the argmax of mean H_bal over the other folds. gamma1 = 0 reproduces D1.",
+  "I2": "phi(k) = fraction of crop k's candidates in the fold universe that are fitting compositions (candidate names only, no image labels). Predicted crop k_hat(x) = argmax over crops of the logsumexp of x's composition scores for that crop. The penalty on fitting candidates for image x is gamma0 + gamma1 * phi(k_hat(x)). gamma1 is chosen LOFO as in I1, so the evaluation fold's labels never choose it.",
+  "I3": "comp head = cosine prototypes over exactly D1's composition-head training set (real fitting features for fitting candidates, D1's 64 mean-shift samples, seed 0, per held-out candidate). Score = log_softmax(cos / tau), fused with the unchanged factorised score as in D1 (fuse 1, normalise).",
+  "I4": "projection fitted on fitting views only. HSIC uses a linear kernel on the centred 256-d crop and disease codes. 200 Adam steps (lr 1e-3, full batch), seed 0. The D1 recipe then runs on the concatenated [crop code, disease code] (512-d), standardised by fitting statistics.",
+  "I5": "the MLP (768-1024-512, GELU) is trained on fitting views only: batch 512, Adam lr 1e-3, 30 epochs, seed 0. Positives for an anchor are fitting views with the same disease and a DIFFERENT crop; anchors without such a positive contribute no loss. The D1 recipe then runs on the 512-d projection.",
+  "I6": "in L2-normalised raw CLIP space, text direction = t_comp(c', d) - t_comp(c, d) using research_r2.features.PROMPTS_V1 composition embeddings. Held-out composition (c', d) is synthesised from fitting images of disease d on another crop c as x + 1.0 * direction, then standardised with fitting statistics. 32 text samples + 32 D1 mean-shift samples per held-out candidate (D1 total = 64).",
+  "I7": "new versioned extraction from images (training CSV rows only, local ViT-L-14.pt): CLS token after resblocks 16, 20 and 24, each through ln_post and proj, centre + h-flip views, fp16 autocast as in v3. Block 24 must agree with the v3 clip_l14 features (cosine >= 0.999 per image; reported). Records layer identity, transform, weights sha256, image-list sha256 and feature sha256.",
+  "I8": "genuine image-space views, a new versioned extraction from images: Resize(256, bicubic) + FiveCrop(224), each with and without h-flip = 10 views. Views 0-1 are copied unchanged from the v3 clip_l14 features (centre, h-flip), so evaluation (view 0) is byte-identical to D1. Only fitting rows ever use views 2-11 (research_r2.runner.make_fold reads x_seen/x_uns from view 0); this is asserted.",
+  "ablation_rows": "research_r2_v4/matrices/stage_i_v4_amendment1.json"
+ },
+
+ "per_row_reporting": {
+  "metrics": "primary H_bal (LOFO gamma) and every secondary metric of protocol_v4, at LOFO gamma and gamma 0; full calibration curve (H_bal, seen, unseen macro vs gamma) per fold saved",
+  "comparison": "per-fold delta vs D1, folds improved/regressed, the v3 gate, and a paired composition-level bootstrap of the H_bal difference",
+  "nested": "per row: nested LOFO for the selection D1 -> {row} (scripts/r2_select.py logic). For the whole stage: nested LOFO for D1 -> {all I rows and ablations}, so the multiplicity of the stage is included",
+  "false_healthy": "unseen: fraction predicted as a healthy composition (all unseen truths are diseased); seen: fraction of diseased seen-val images predicted healthy",
+  "source_behaviour": "every row: base-fold source-stratified seen Top-1 (single-source vs multi-source compositions, and for multi-source compositions the dominant fitting source vs others). The full stage H refit diagnostic runs for any I row whose mean H_bal is >= D1's",
+  "seeds": "I4 and I5 are stochastic: seed 0 screens; a pass triggers seeds 1 and 2"
+ },
+
+ "J0": "zero-epoch pipeline: the same extraction function the J rows use (model cast to fp16 exactly as clip.load does on CUDA, encode_image under fp16 autocast, batch 32, centre + h-flip). D1 on these features over I1-I6 must match the committed v3 D1 results within 1e-5.",
+ "J_pilot": {
+  "fold_rule": "the inner fold whose committed v3 D1 LOFO H_bal (artifacts/r2/v3/results_stage_f_v3.jsonl) is closest to D1's six-fold mean; ties go to the lower fold index. This uses only existing D1 evidence, never a J result.",
+  "data": "the pilot fold's fitting rows, split 90/10 into pilot-train and pilot-internal-validation. The split is lineage-group aware (artifacts/r2/lineage_groups_v1.json) and composition-stratified (compositions with >= 5 fitting images contribute about 10% of their groups), seed 0. No seen-val, unseen-val, outer or official-test row is read.",
+  "runs": "J1 (last 2 blocks), J2 (last 4) and J3 (LoRA r8 MLP), each for 2 epochs at the declared optimiser and loss",
+  "checks": "forward/backward; optimiser updates (parameter delta norms); frozen parameters byte-identical before and after; effective trainable parameter counts; finite non-zero gradients on trainable parameters and none on frozen ones; checkpoint save -> reload -> identical outputs; GPU peak memory; throughput; training loss and pilot-internal validation loss (CE crop + disease, accuracy) per epoch",
+  "not_done": "no evaluation-row features and no fold metric for J1-J3 are computed; checkpoints are deleted after the reload check"
+ }
+}

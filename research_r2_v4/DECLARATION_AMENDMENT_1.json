@@ -1,0 +1,11 @@
+{
+ "schema": "r2v4-declaration-v1",
+ "amendment": 1,
+ "declared": "2026-11-14",
+ "note": "declared before any v4 scoring; the base declaration is pinned, not edited",
+ "sha256": {
+  "research_r2_v4/amendment_1.json": "3b5533225958af17b5068fc1ca9197cac3def87f6dc9276323c5c4fd47ed9409",
+  "research_r2_v4/matrices/stage_i_v4_amendment1.json": "0dafe7542ffc11bba2554ae04384a49ea6bedafaf9441f7b5cb48190ab95b716",
+  "research_r2_v4/DECLARATION.json": "81fedb2942874fbd04d6f12eb3e9dd292a1223e706bf4f7e3319c4b7e8bdca06"
+ }
+}
