@@ -1,0 +1,75 @@
+[
+ {
+  "id": "F10_concat_convnext",
+  "backbones": [
+   "clip_l14",
+   "tv_convnext_base"
+  ],
+  "recipe": "synth_composition",
+  "cfg": {
+   "fuse": 1.0,
+   "normalise": true
+  },
+  "control": "D1_synthComp_norm",
+  "hypothesis": "Phase 3 control (re-run, deterministic)"
+ },
+ {
+  "id": "G1_concat_L14_CNXT_EffB3",
+  "backbones": [
+   "clip_l14",
+   "tv_convnext_base",
+   "tv_effnet_b3"
+  ],
+  "recipe": "synth_composition",
+  "cfg": {
+   "fuse": 1.0,
+   "normalise": true
+  },
+  "control": "F10_concat_convnext",
+  "hypothesis": "Representation diversity: add EfficientNet-B3 (CNN, different pretraining resolution)"
+ },
+ {
+  "id": "G2_concat_L14_CNXT_B32",
+  "backbones": [
+   "clip_l14",
+   "tv_convnext_base",
+   "clip_b32"
+  ],
+  "recipe": "synth_composition",
+  "cfg": {
+   "fuse": 1.0,
+   "normalise": true
+  },
+  "control": "F10_concat_convnext",
+  "hypothesis": "Representation diversity: add CLIP ViT-B/32 (second language-supervised model)"
+ },
+ {
+  "id": "G3_concat_L14_CNXT_ViTB16",
+  "backbones": [
+   "clip_l14",
+   "tv_convnext_base",
+   "tv_vit_b16"
+  ],
+  "recipe": "synth_composition",
+  "cfg": {
+   "fuse": 1.0,
+   "normalise": true
+  },
+  "control": "F10_concat_convnext",
+  "hypothesis": "Representation diversity: add supervised ImageNet ViT-B/16"
+ },
+ {
+  "id": "G4_concat_L14_EffB3",
+  "backbones": [
+   "clip_l14",
+   "tv_effnet_b3"
+  ],
+  "recipe": "synth_composition",
+  "cfg": {
+   "fuse": 1.0,
+   "normalise": true
+  },
+  "control": "F10_concat_convnext",
+  "hypothesis": "Is ConvNeXt specifically useful, or any CNN complement? (pairs with F10)"
+ }
+]
