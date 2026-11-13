@@ -1,0 +1,110 @@
+{
+ "screen": {
+  "benchmark": "artifacts/r2/benchmark_v1.json",
+  "duplicated_rows": {
+   "B1_clipL_factorised": {
+    "conflicting_folds": [],
+    "folds": 6,
+    "stages": [
+     "stage_bc_v1",
+     "stage_d_v1"
+    ]
+   }
+  },
+  "failures": [],
+  "n_valid": 213,
+  "valid_by_stage_schema_role": {
+   "stage_bc_v1:legacy:legacy_diagnostic_previously_examined": 18,
+   "stage_bc_v1:legacy:screen": 90,
+   "stage_d_v1:legacy:legacy_diagnostic_previously_examined": 13,
+   "stage_d_v1:legacy:screen": 65,
+   "stage_e_v1:legacy:legacy_diagnostic_previously_examined": 3,
+   "stage_e_v1:legacy:locked": 9,
+   "stage_e_v1:legacy:screen": 15
+  }
+ },
+ "v2": {
+  "benchmark": "artifacts/r2/benchmark_v2.json",
+  "duplicated_rows": {
+   "B0_clipL_zeroshot_comp": {
+    "conflicting_folds": [],
+    "folds": 6,
+    "stages": [
+     "inner_stage_bc_v1",
+     "outer_v2"
+    ]
+   },
+   "B1_clipL_factorised": {
+    "conflicting_folds": [],
+    "folds": 6,
+    "stages": [
+     "inner_stage_bc_v1",
+     "inner_stage_d_v1",
+     "outer_v2"
+    ]
+   },
+   "D1_synthComp_norm": {
+    "conflicting_folds": [],
+    "folds": 6,
+    "stages": [
+     "inner_stage_d_v1",
+     "outer_v2"
+    ]
+   },
+   "D2_synthComp_norm_text": {
+    "conflicting_folds": [],
+    "folds": 6,
+    "stages": [
+     "inner_stage_d_v1",
+     "outer_v2"
+    ]
+   }
+  },
+  "failures": [],
+  "n_valid": 218,
+  "valid_by_stage_schema_role": {
+   "inner_stage_bc_v1:legacy:inner": 108,
+   "inner_stage_d_v1:legacy:inner": 78,
+   "outer_v2:legacy:inner": 24,
+   "outer_v2:legacy:outer": 8
+  }
+ },
+ "v3": {
+  "benchmark": "artifacts/r2/benchmark_v3.json",
+  "duplicated_rows": {
+   "B1_clipL_factorised": {
+    "conflicting_folds": [],
+    "folds": 6,
+    "stages": [
+     "inner_stage_bc_v1",
+     "inner_stage_d_v1",
+     "inner_stage_f_v3"
+    ]
+   },
+   "D1_synthComp_norm": {
+    "conflicting_folds": [],
+    "folds": 6,
+    "stages": [
+     "inner_stage_d_v1",
+     "inner_stage_f_v3"
+    ]
+   },
+   "F10_concat_convnext": {
+    "conflicting_folds": [],
+    "folds": 6,
+    "stages": [
+     "inner_stage_f_v3",
+     "inner_stage_g_v3"
+    ]
+   }
+  },
+  "failures": [],
+  "n_valid": 294,
+  "valid_by_stage_schema_role": {
+   "inner_stage_bc_v1:v3:inner": 108,
+   "inner_stage_d_v1:v3:inner": 78,
+   "inner_stage_f_v3:v3:inner": 78,
+   "inner_stage_g_v3:v3:inner": 30
+  }
+ }
+}

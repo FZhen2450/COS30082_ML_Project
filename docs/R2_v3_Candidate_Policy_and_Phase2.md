@@ -118,3 +118,40 @@ The contradiction with v2 (55.4 → 54.8%) exposed it. The fix uses the ablated 
 2. **Source robustness needs an objective that changes the representation,** not just reweighting. Candidates: partial fine-tuning with source-adversarial or style-randomised views, with the source-ablation test as a gate.
 3. **Calibration that adapts to source novelty**, for example γ scaled by distance to the nearest fitting prototype, judged on the stress test.
 4. **Disease-transfer signals** (text priors, F7) improve uncalibrated within-crop transfer. A joint objective that keeps this under calibration is untested.
+
+## 10. Addendum: score-packet integrity hardening and evidence freeze (13 Nov 2026; implementation `bf5b3c2`)
+
+This answers the v3 review's reproducibility recommendation. No scientific code path changed, and no historical file was rewritten.
+
+**Gaps closed.**
+
+| # | Gap | Fix |
+|---|---|---|
+| G1 | `r2_select` took a row's packets from the first `--scores` dir containing it | all copies across all given dirs must be byte-identical, otherwise the run is rejected; the number of copies is recorded |
+| G2 | only the benchmark hash was checked | the protocol's matrix sha256 values are verified; every selected row must be declared in one of those matrices with one exact configuration (`backbones`, `recipe`, `cfg`, `tta_hflip`); the tree may be a subset of the matrix; the run-time `summaries.jsonl` record must name a committed matrix with the same configuration |
+| G3 | `scorer_from_scores` accepted any subset, reordering or duplicate candidate IDs | `validate_packet` requires the exact ordered candidate list of the fold contract |
+| G4 | truth indices were trusted from the packet | they are re-derived from the benchmark row lists and must match |
+| G5 | packets carried no provenance | `run_row` writes `manifest.json` (configuration hash, matrix hash, benchmark hash, feature identity, commit and dirty flag, packet hashes) next to **new** packets only |
+| G6 | receipts did not record their inputs | receipts gain an `inputs` block; every other field is computed exactly as before |
+
+**Fold contract** (`research_r2/packets.py`). It gives the column order, truth indices and fitting mask for v3 folds and for legacy v1/v2 folds, which have all 323 columns and no `cand_ids`. Legacy packets stay valid without new fields. `make_fold` checks itself against the contract, and a test derives the contract a third way from the CSV and benchmark JSON alone.
+
+**Evidence** (`artifacts/r2/v3/hardening/`; logs in the review ZIP):
+
+- **Historical packets:** all 725 (v1 213, v2 218, v3 294) pass the strict contract, checked structurally with no metrics computed. All duplicate copies are byte-identical.
+- **Packet registry** (`packet_registry_v3.json`, retrospective): 22 rows, 132 packets and 150 copies. It pins the inputs of the three committed receipts.
+- **Hardened selections:** with the registry enforced, all three receipts are byte-identical to the committed ones once the `inputs` block is removed. Reversing or extending the `--scores` order does not change any scientific field. Receipts are byte-identical under PYTHONHASHSEED 1, 2 and the default.
+- **Regeneration:** B1, D1 and F10 were regenerated on all 6 inner folds from the frozen features into `experiments/r2-compositional/v3/repro_hardening_20261113`. All 18 packets are byte-identical to the registered ones: maximum |score difference| 0 and identical metrics at all 65 γ points. The configuration and feature identity match too.
+- **Other checks:** the legacy v2 reproduction passes 18/18, and the implementation checks pass 9/9 with evidence identical to the committed copy.
+- **Tests:** 33 new tests (`tests/test_r2_hardening.py`): 25 negative, each corrupting one property and checking for its specific error, plus 8 positive and compatibility tests.
+
+**Freeze.** `research_r2/protocol_v3_freeze.json` records the standing:
+
+- D1 is the provisional candidate;
+- F10 is not promoted;
+- D2 is historical;
+- no blind-test claim is made.
+
+It also sets the post-freeze rule: further work on the v3 inner folds is labelled exploratory and cannot change the standing. It records the hashes of the protocol, the registry, the receipts and the reproduction report. No git tag was created.
+
+**What this does not establish.** The registry is retrospective. Only B1, D1 and F10 were regenerated; the other 19 registered rows rest on their run-time records and the registry hashes. None of this creates an independent evaluation population.
