@@ -51,9 +51,14 @@ def make_fold(frame, fold, feats, text, text_backbone_only=None):
     return standardise(fd), truth, healthy
 
 
-def run_row(frame, bench, feature_dir, row, folds=None, out_dir=None):
+def run_row(frame, bench, feature_dir, row, folds=None, out_dir=None, poison_rows=None):
     feats, text, files, ident = load_features(feature_dir, row["backbones"])
     assert files == frame.file.tolist()
+    if poison_rows:
+        # v2 inner stage: outer-population features become NaN, so any accidental use in fitting,
+        # statistics or scoring raises (FoldScorer rejects non-finite scores) instead of leaking
+        feats = feats.clone()
+        feats[list(poison_rows)] = float("nan")
     recipe = RECIPES[row["recipe"]]
     results = {}
     t0 = time.time()
@@ -132,6 +137,8 @@ def gate(cand: dict, ctrl: dict, screen=("S1", "S2", "S3", "S4", "S5")) -> dict:
         "ausuc_delta": cm["ausuc"] - km["ausuc"],
         "shortcut_delta_pp": 100 * (cm["healthy_shortcut_lofo"] - km["healthy_shortcut_lofo"]),
     }
-    checks["pass"] = bool(checks["mean_gain_pp"] >= 1.0 and checks["folds_improved"] >= 4
+    need = len(screen) - 1  # v1: 4 of 5 screening folds; v2: 5 of 6 inner folds (declared in protocol_v2)
+    checks["folds_required"] = need
+    checks["pass"] = bool(checks["mean_gain_pp"] >= 1.0 and checks["folds_improved"] >= need
                           and checks["ausuc_delta"] >= 0 and checks["shortcut_delta_pp"] <= 5.0)
     return checks

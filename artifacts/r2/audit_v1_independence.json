@@ -1,0 +1,50 @@
+{
+ "schema": "r2-v1-independence-audit-v1",
+ "screen_folds": [
+  "S1",
+  "S2",
+  "S3",
+  "S4",
+  "S5"
+ ],
+ "locked_folds": [
+  "L1",
+  "L2",
+  "L3"
+ ],
+ "folds": {
+  "L1": {
+   "unseen_val": 739,
+   "unseen_in_any_screen_fitting": 628,
+   "unseen_in_all_screen_fitting": 628,
+   "unseen_scored_as_screen_seen_val": 111,
+   "unseen_untouched_by_screening": 0,
+   "seen_val": 1083,
+   "seen_val_scored_in_screening": 1083,
+   "fitting_scored_as_screen_unseen_val": 1500
+  },
+  "L2": {
+   "unseen_val": 344,
+   "unseen_in_any_screen_fitting": 292,
+   "unseen_in_all_screen_fitting": 292,
+   "unseen_scored_as_screen_seen_val": 52,
+   "unseen_untouched_by_screening": 0,
+   "seen_val": 1142,
+   "seen_val_scored_in_screening": 1142,
+   "fitting_scored_as_screen_unseen_val": 1500
+  },
+  "L3": {
+   "unseen_val": 346,
+   "unseen_in_any_screen_fitting": 293,
+   "unseen_in_all_screen_fitting": 293,
+   "unseen_scored_as_screen_seen_val": 53,
+   "unseen_untouched_by_screening": 0,
+   "seen_val": 1141,
+   "seen_val_scored_in_screening": 1141,
+   "fitting_scored_as_screen_unseen_val": 1500
+  }
+ },
+ "all_rows": 8000,
+ "rows_touched_by_screening": 8000,
+ "verdict": "v1 L1-L3 are cross-validation confirmation folds, not an isolated outer evaluation: every locked validation image was fitted on or scored during screening, and the screening-stage selection (recipe, gamma) used models fitted on locked unseen compositions."
+}

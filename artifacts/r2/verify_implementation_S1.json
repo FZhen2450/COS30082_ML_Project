@@ -1,0 +1,97 @@
+{
+ "fold": "S1",
+ "results": [
+  {
+   "check": "1 transductive invariance [B1]",
+   "pass": true,
+   "evidence": {
+    "max_abs_change_untouched_unseen": 0.0,
+    "max_abs_change_untouched_seen": 0.0,
+    "perturbed_rows_changed_by": 47.60125410743058
+   }
+  },
+  {
+   "check": "1 transductive invariance [C4_erase50]",
+   "pass": true,
+   "evidence": {
+    "max_abs_change_untouched_unseen": 0.0,
+    "max_abs_change_untouched_seen": 0.0,
+    "perturbed_rows_changed_by": 140.06085097161122
+   }
+  },
+  {
+   "check": "1 transductive invariance [D2]",
+   "pass": true,
+   "evidence": {
+    "max_abs_change_untouched_unseen": 0.0,
+    "max_abs_change_untouched_seen": 0.0,
+    "perturbed_rows_changed_by": 34.948514196159756
+   }
+  },
+  {
+   "check": "2 factorised score == log(WP5 product of softmax)",
+   "pass": true,
+   "evidence": {
+    "max_abs_diff": 7.105427357601002e-15,
+    "top1_identical": true
+   }
+  },
+  {
+   "check": "3 synthesis = x - mu_src_crop + mu_target_crop (composition-balanced means)",
+   "pass": true,
+   "evidence": {
+    "crop_mean_max_err": 4.440892098500626e-16,
+    "synth_max_err": 0.0,
+    "target_composition_col": 1,
+    "source_images": 10,
+    "sources_never_target_crop": true
+   }
+  },
+  {
+   "check": "4 candidate masks",
+   "pass": true,
+   "evidence": {
+    "unseen_candidates_equal_heldout": true,
+    "n_unseen_candidates": 11,
+    "penalised_candidates_without_fitting_images_this_fold": [],
+    "per_fold_fitting_compositions_missing_images": {
+     "S1": [],
+     "S2": [],
+     "S3": [],
+     "S4": [],
+     "S5": [],
+     "L1": [],
+     "L2": [],
+     "L3": [],
+     "D0": []
+    }
+   }
+  },
+  {
+   "check": "5 normalised fusion is mean of two log-prob terms",
+   "pass": true,
+   "evidence": {
+    "max_fused_score": -2.0577696457275167,
+    "comp_head_logsumexp_max_dev_from_0": 3.219646264734921e-07,
+    "note": "factorised term includes text-prior log-probs, so it is a sum of four log-probabilities"
+   }
+  },
+  {
+   "check": "6 reproduces saved Stage E D2 scores",
+   "pass": true,
+   "evidence": {
+    "max_abs_diff_vs_saved_float32": 1.9069819501282836e-06,
+    "top1_identical": true
+   }
+  },
+  {
+   "check": "7 heads in eval mode; scoring deterministic",
+   "pass": true,
+   "evidence": {
+    "linear_training_flag": false,
+    "mlp_training_flag": false,
+    "mlp_repeat_identical": true
+   }
+  }
+ ]
+}

@@ -22,6 +22,17 @@ from .data import HEALTHY, sha256_json
 SCHEMA = "r2-compositional-benchmark-v1"
 
 
+def _gser(frame: pd.DataFrame, group) -> pd.Series:
+    """Lineage group per row label. Accepts a Series, a full-length array, or an array aligned to frame."""
+    if isinstance(group, pd.Series):
+        return group.loc[frame.index]
+    arr = np.asarray(group)
+    if len(arr) == len(frame):
+        return pd.Series(arr, index=frame.index)
+    return pd.Series(arr[frame.index.to_numpy()], index=frame.index)
+
+
+
 def eligible_compositions(frame: pd.DataFrame, min_images: int = 5) -> list[int]:
     n = frame.groupby("comp_id").size()
     crops_per_disease = frame.groupby("disease").crop.nunique()
@@ -74,7 +85,7 @@ def seen_holdout(frame: pd.DataFrame, group: np.ndarray, fraction: float, seed: 
     fewer than ``min_comp_images`` images contribute none (keeps rare concepts in fitting).
     """
     rng = np.random.default_rng(seed)
-    g = pd.Series(group, index=frame.index)
+    g = _gser(frame, group)
     comps_per_group = frame.groupby(g).comp_id.nunique()
     chosen: list[int] = []
     for comp, rows in frame.groupby("comp_id").groups.items():
@@ -82,13 +93,13 @@ def seen_holdout(frame: pd.DataFrame, group: np.ndarray, fraction: float, seed: 
         if len(rows) < min_comp_images:
             continue
         target = int(round(fraction * len(rows)))
-        groups = sorted({int(group[r]) for r in rows if comps_per_group[group[r]] == 1})
+        groups = sorted({int(g[r]) for r in rows if comps_per_group[g[r]] == 1})
         rng.shuffle(groups)
         taken = 0
         for gid in groups:
             if taken >= target:
                 break
-            members = [r for r in rows if group[r] == gid]
+            members = [r for r in rows if g[r] == gid]
             if taken + len(members) > max(target, 1) + 1 and taken > 0:
                 continue
             chosen.extend(members)
@@ -105,7 +116,7 @@ def build_benchmark(frame: pd.DataFrame, group: np.ndarray, *, seed: int = 2026,
     raw_folds = assign_folds(frame, eligible, n_folds, seed)
     role_order = list(np.random.default_rng(seed + 1).permutation(n_folds))
     G = set(seen_holdout(frame, group, seen_fraction, seed + 2))
-    gser = pd.Series(group, index=frame.index)
+    gser = _gser(frame, group)
     folds = []
     for rank, f in enumerate(role_order):
         held = set(raw_folds[f])
@@ -158,6 +169,8 @@ def validate_benchmark(frame: pd.DataFrame, group: np.ndarray, bench: dict) -> l
     """Return a list of human-readable check names that passed; raise on any violation."""
     checks = []
     n = len(frame)
+    gs = _gser(frame, group)
+    group = gs  # label-indexed; .loc below works for subsets and the full population
     all_comps = set(int(c) for c in frame.comp_id.unique())
     for fold in bench["folds"]:
         fit, sv, uv = (set(fold[k]) for k in ("fitting_rows", "seen_val_rows", "unseen_val_rows"))
@@ -165,19 +178,19 @@ def validate_benchmark(frame: pd.DataFrame, group: np.ndarray, bench: dict) -> l
         assert not (fit & sv) and not (fit & uv) and not (sv & uv), fold["name"]
         assert len(fit | sv | uv | drop | excl) == n == len(fit) + len(sv) + len(uv) + len(drop) + len(excl), fold["name"]
         held = set(fold["heldout_composition_ids"])
-        fit_comps = set(frame.comp_id[list(fit)])
+        fit_comps = set(frame.comp_id.loc[list(fit)])
         assert not (fit_comps & held), f"{fold['name']}: held-out composition in fitting"
-        assert set(frame.comp_id[list(uv)]) <= held
-        assert set(frame.comp_id[list(sv)]) <= all_comps - held
-        assert set(frame.crop[list(uv)]) <= set(frame.crop[list(fit)])
-        assert set(frame.disease[list(uv)]) <= set(frame.disease[list(fit)])
-        fit_groups = set(group[list(fit)])
-        assert not (fit_groups & set(group[list(uv)])), f"{fold['name']}: lineage leak fitting/unseen"
-        assert not (fit_groups & set(group[list(sv)])), f"{fold['name']}: lineage leak fitting/seen"
+        assert set(frame.comp_id.loc[list(uv)]) <= held
+        assert set(frame.comp_id.loc[list(sv)]) <= all_comps - held
+        assert set(frame.crop.loc[list(uv)]) <= set(frame.crop.loc[list(fit)])
+        assert set(frame.disease.loc[list(uv)]) <= set(frame.disease.loc[list(fit)])
+        fit_groups = set(group.loc[list(fit)])
+        assert not (fit_groups & set(group.loc[list(uv)])), f"{fold['name']}: lineage leak fitting/unseen"
+        assert not (fit_groups & set(group.loc[list(sv)])), f"{fold['name']}: lineage leak fitting/seen"
         if fold["role"] != "legacy_diagnostic_previously_examined":
             assert fold["heldout_healthy_compositions"] == 0
         checks.append(f"{fold['name']}: disjoint, complete, composition-disjoint, concept-covered, lineage-clean")
-    names = [f["heldout_composition_ids"] for f in bench["folds"] if f["role"] in ("screen", "locked")]
+    names = [f["heldout_composition_ids"] for f in bench["folds"] if f["role"] in ("screen", "locked", "inner", "outer")]
     flat = [c for f in names for c in f]
     assert len(flat) == len(set(flat)) == len(bench["eligible_composition_ids"]), "folds must partition eligible set"
     checks.append("new folds partition the eligible composition set exactly once")

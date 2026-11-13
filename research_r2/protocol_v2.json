@@ -1,0 +1,39 @@
+{
+  "schema": "r2-selection-policy-v2-outer-isolated",
+  "declared_before_any_v2_scoring": "2026-11-13",
+  "benchmark_semantic_sha256": "2689b00713dd34414f563ff317c2b7a8ae9200791e947b3e26a3978b0ce69a68",
+  "v1_results_status": "v1 results are preserved unchanged. v1 L1-L3 are re-described as cross-validation confirmation folds (artifacts/r2/audit_v1_independence.json); they were never an isolated outer evaluation.",
+  "isolation": {
+    "inner_stage": "inner folds I1..I6 use only the inner population (6,249 images). During inner runs the features of all 1,751 outer-exclusion images are overwritten with NaN, so any use fails loudly.",
+    "outer_stage": "O1 and O2 are protected (role 'outer'). They are scored only through a recipe registered in research_r2/frozen_recipes.json after the inner selection is committed, and exactly once.",
+    "frozen_feature_extraction": "Backbone features for all 8,000 images were extracted earlier by frozen pretrained networks (no fitting, no statistics). Extraction is per image and independent of every other image.",
+    "researcher_exposure": "NOT researcher-blind. Every outer composition was analysed in v1. The replayed candidate set (Stage D) was designed after seeing v1 Stage C results that used outer images in fitting. v2 gives data isolation for a mechanical replay, not a fresh scientific test."
+  },
+  "inner_replay": {
+    "matrices": {
+      "research_r2/matrices/stage_bc_v1.json": "23380abcf170245b5ff2a0d67283c3f4fdbda3e8f98ec196a5493fcaf52a75bf",
+      "research_r2/matrices/stage_d_v1.json": "35d171ef0e31a5f5e2a299823f9a60510ce25228061ca70d8482900c493ec2a6"
+    },
+    "unchanged_from_v1": "row configurations, methods, gamma grid 0..16 step 0.25, primary metric H_bal@1 with leave-one-fold-out gamma over the inner folds"
+  },
+  "gate": {
+    "requires_all": [
+      "mean primary improvement >= 1.0 percentage point over the six inner folds",
+      "primary improves in at least 5 of 6 inner folds (paired)",
+      "mean AUSUC does not decrease",
+      "mean calibrated healthy-shortcut rate increases by no more than 5 percentage points"
+    ]
+  },
+  "mechanical_selection": {
+    "tree": {"B1_clipL_factorised": ["D1_synthComp_norm"], "D1_synthComp_norm": ["D2_synthComp_norm_text", "D3_synthComp_norm_erase50"],
+             "D2_synthComp_norm_text": ["D4_synthComp_norm_text_erase50", "D8_D2_per256", "D9_D2_tta"],
+             "D3_synthComp_norm_erase50": [], "D4_synthComp_norm_text_erase50": [], "D8_D2_per256": [], "D9_D2_tta": []},
+    "rule": "start at B1_clipL_factorised; among its children that pass the gate against it, move to the one with the highest primary (ties: first listed); repeat; the node where no child passes is selected. Implemented in scripts/r2_select_v2.py."
+  },
+  "outer_scoring": {
+    "rows": "the selected node; B1_clipL_factorised (matched control); B0_clipL_zeroshot_comp (reference); and D2_synthComp_norm_text if it is not the selected node (so the v1 choice is always confirmed or refuted)",
+    "gamma": "for each row, its own pooled argmax of mean inner H_bal@1 over the inner folds. gamma = 8 (v1 value, which was chosen with outer images in fitting) is also reported and labelled non-isolated",
+    "report_separately": ["H_bal@1", "image-weighted H@1", "H@5", "gamma=0 metrics", "inner-gamma metrics", "gamma=8 metrics", "seen Top-1", "unseen micro and macro Top-1", "AUSUC", "within-crop unseen accuracy", "healthy-shortcut rate", "per-composition Top-1 with 95% composition-bootstrap intervals for the D2-minus-control difference"],
+    "official_test": "never read; no official inference is part of this protocol"
+  }
+}

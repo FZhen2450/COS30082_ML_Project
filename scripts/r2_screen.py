@@ -1,7 +1,8 @@
 """Run a Round 2 experiment matrix on screening folds (S1..S5) and the legacy diagnostic D0.
 
-Locked folds L1..L3 are refused unless --stage-e is given together with a frozen recipe
-file whose SHA-256 is passed explicitly (prevents accidental locked-fold peeking).
+Protected folds (role "locked" in v1, "outer" in v2) are refused unless --frozen-recipe names
+an entry in research_r2/frozen_recipes.json whose path, file hash, benchmark hash and row ids
+all match (research_r2/guards.py).
 """
 from __future__ import annotations
 
@@ -13,10 +14,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from research_r2.data import load_training_source, sha256_file  # noqa: E402
+from research_r2.guards import select_folds, verify_frozen  # noqa: E402
 from research_r2.runner import gate, run_row, summarise  # noqa: E402
-
-SCREEN = ["S1", "S2", "S3", "S4", "S5", "D0"]
-LOCKED = ["L1", "L2", "L3"]
 
 
 def main():
@@ -27,17 +26,16 @@ def main():
     ap.add_argument("--matrix", required=True)
     ap.add_argument("--out", required=True)
     ap.add_argument("--only", nargs="*")
-    ap.add_argument("--stage-e", action="store_true")
-    ap.add_argument("--frozen-recipe-sha256")
+    ap.add_argument("--frozen-recipe", help="registered name in research_r2/frozen_recipes.json; unlocks its protected folds")
+    ap.add_argument("--folds", nargs="+", help="override the default unprotected fold list (e.g. v2 inner folds)")
     ap.add_argument("--save-scores", action="store_true")
     a = ap.parse_args()
-    folds = SCREEN
-    if a.stage_e:
-        if a.frozen_recipe_sha256 != sha256_file(a.matrix):
-            raise SystemExit("Stage E requires --frozen-recipe-sha256 equal to the matrix file hash")
-        folds = SCREEN + LOCKED
     frame = load_training_source(a.csv)
     bench = json.loads(Path(a.bench).read_text())
+    folds = select_folds(bench, a.folds)  # raises if a protected (locked/outer) fold is requested directly
+    if a.frozen_recipe:
+        entry = verify_frozen(a.frozen_recipe, a.matrix, bench)  # raises on any mismatch
+        folds = folds + [f for f in entry["protected_folds"] if f not in folds]
     rows = json.loads(Path(a.matrix).read_text())
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
@@ -52,13 +50,15 @@ def main():
             continue
         if row["id"] in done:
             continue
+        poison = None if a.frozen_recipe else bench.get("outer_exclusion_rows")
         results, ident, secs = run_row(frame, bench, a.features, row, folds=folds,
-                                       out_dir=(out / "scores") if a.save_scores else None)
-        s = summarise(row, results, ident, secs)
+                                       out_dir=(out / "scores") if a.save_scores else None, poison_rows=poison)
+        sel = [f["name"] for f in bench["folds"] if f["role"] in ("screen", "inner")]
+        s = summarise(row, results, ident, secs, screen=tuple(sel))
         s["matrix_sha256"] = sha256_file(a.matrix)
         s["finished_utc"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
         if row.get("control") in done:
-            s["gate_vs_control"] = gate(s, done[row["control"]])
+            s["gate_vs_control"] = gate(s, done[row["control"]], screen=tuple(sel))
         done[row["id"]] = s
         with open(res_path, "a") as fh:
             fh.write(json.dumps(s) + "\n")

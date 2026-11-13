@@ -1,0 +1,9 @@
+fold,role,heldout_comps,fitting,seen_val,unseen_val,lineage_dropped,largest_comp_share,heldout_crops,heldout_diseases,healthy_heldout
+I1,inner,10,5042,874,333,0,0.48,8,8,0
+I2,inner,10,5057,879,309,1,0.398,8,8,0
+I3,inner,11,5057,878,314,0,0.334,9,10,0
+I4,inner,11,5057,878,314,0,0.322,10,9,0
+I5,inner,11,5058,877,314,0,0.283,10,10,0
+I6,inner,10,5062,878,309,0,0.269,8,8,0
+O1,outer,11,6569,669,762,0,0.714,10,10,0
+O2,outer,11,7011,669,320,0,0.231,8,9,0

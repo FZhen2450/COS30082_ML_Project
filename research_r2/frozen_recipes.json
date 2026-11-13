@@ -1,0 +1,14 @@
+{
+  "schema": "r2-frozen-recipe-registry-v1",
+  "note": "Entries are added only by a reviewed commit, before the protected folds they unlock are scored. stage_e_frozen_v1 was frozen in commit f341991 and registered retrospectively on 2026-11-13 after review; its locked-fold run already happened under the older self-hash guard.",
+  "recipes": {
+    "stage_e_frozen_v1": {
+      "matrix": "research_r2/matrices/stage_e_frozen_v1.json",
+      "matrix_sha256": "51c4dd07db4b3145a484de27d818643d2a092fb1e72a6b69d1d76fdb7904c883",
+      "benchmark_semantic_sha256": "b6db7509ac88b2080222d2d0da5424487226d7e557c10e108c968a8987d54c59",
+      "row_ids": ["E_selected_D2", "E_ref_B1_factorised", "E_ref_B0_zeroshot"],
+      "protected_folds": ["L1", "L2", "L3"],
+      "frozen_commit": "f341991"
+    }
+  }
+}
