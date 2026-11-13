@@ -1,0 +1,77 @@
+"""Run a Round 2 experiment matrix on screening folds (S1..S5) and the legacy diagnostic D0.
+
+Locked folds L1..L3 are refused unless --stage-e is given together with a frozen recipe
+file whose SHA-256 is passed explicitly (prevents accidental locked-fold peeking).
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+import time
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from research_r2.data import load_training_source, sha256_file  # noqa: E402
+from research_r2.runner import gate, run_row, summarise  # noqa: E402
+
+SCREEN = ["S1", "S2", "S3", "S4", "S5", "D0"]
+LOCKED = ["L1", "L2", "L3"]
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--csv", default="DPD_Small_train.csv")
+    ap.add_argument("--bench", required=True)
+    ap.add_argument("--features", required=True)
+    ap.add_argument("--matrix", required=True)
+    ap.add_argument("--out", required=True)
+    ap.add_argument("--only", nargs="*")
+    ap.add_argument("--stage-e", action="store_true")
+    ap.add_argument("--frozen-recipe-sha256")
+    ap.add_argument("--save-scores", action="store_true")
+    a = ap.parse_args()
+    folds = SCREEN
+    if a.stage_e:
+        if a.frozen_recipe_sha256 != sha256_file(a.matrix):
+            raise SystemExit("Stage E requires --frozen-recipe-sha256 equal to the matrix file hash")
+        folds = SCREEN + LOCKED
+    frame = load_training_source(a.csv)
+    bench = json.loads(Path(a.bench).read_text())
+    rows = json.loads(Path(a.matrix).read_text())
+    out = Path(a.out)
+    out.mkdir(parents=True, exist_ok=True)
+    done = {}
+    res_path = out / "summaries.jsonl"
+    if res_path.exists():
+        for line in res_path.read_text().splitlines():
+            s = json.loads(line)
+            done[s["id"]] = s
+    for row in rows:
+        if a.only and row["id"] not in a.only:
+            continue
+        if row["id"] in done:
+            continue
+        results, ident, secs = run_row(frame, bench, a.features, row, folds=folds,
+                                       out_dir=(out / "scores") if a.save_scores else None)
+        s = summarise(row, results, ident, secs)
+        s["matrix_sha256"] = sha256_file(a.matrix)
+        s["finished_utc"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+        if row.get("control") in done:
+            s["gate_vs_control"] = gate(s, done[row["control"]])
+        done[row["id"]] = s
+        with open(res_path, "a") as fh:
+            fh.write(json.dumps(s) + "\n")
+        m = s["screen_mean"]
+        g = s.get("gate_vs_control", {})
+        d0 = s["per_fold"].get("D0", {}).get("pooled_gamma", {})
+        print(f"{row['id']:<28} Hbal_lofo={100*m['primary_H_bal_lofo']:6.2f} Hbal_g0={100*m['H_bal_gamma0']:6.2f} "
+              f"seen={100*m['seen_top1_lofo']:5.1f} unM={100*m['unseen_macro_lofo']:5.1f} "
+              f"unDis={100*m['unseen_disease_lofo']:5.1f} wc0={100*m['unseen_withincrop_gamma0']:5.1f} AUSUC={100*m['ausuc']:5.2f} hs={100*m['healthy_shortcut_lofo']:4.1f} "
+              f"g*={m['pooled_gamma']:.2f} | D0 Hmicro={100*d0.get('H_micro', float('nan')):5.2f} "
+              f"| gate={g.get('pass', '-')} ({g.get('folds_improved', '-')}/5, {g.get('mean_gain_pp', float('nan')):+.2f}pp) "
+              f"[{secs:.0f}s]", flush=True)
+
+
+if __name__ == "__main__":
+    main()
