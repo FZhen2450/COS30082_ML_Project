@@ -1,0 +1,49 @@
+{
+ "row": "I3_cosine_prototype_head",
+ "label": "post-freeze exploratory (v4); development cross-validation on v3 inner folds; not blind",
+ "spec": {
+  "kind": "fresh",
+  "feat": "clip_l14",
+  "fn": "synth_v4",
+  "cfg": {
+   "head": "cosine",
+   "tau": 0.05
+  }
+ },
+ "started": "2026-11-13T16:44:50Z",
+ "folds": {
+  "I1": {
+   "packet_sha256": "9faa3cb6f21cd438bf6551d8163fc2bfca8384b716c4c5779f79a4be934c0617",
+   "contract_sha256": "50fc05ebba923e311d294f7f709a4d36a2119b14789279cc12110de2b4905d66"
+  },
+  "I2": {
+   "packet_sha256": "5f00ffda31dfc43be1a4b0c053bafb4f4f6422801db58d55219db2a66267c369",
+   "contract_sha256": "76b55d6c02d6d9c4c71e2f2a572dff172cae08ee928d0021fa27fed1d09f465c"
+  },
+  "I3": {
+   "packet_sha256": "81903a54d8038d1e16fe181c288ff80f6afcb2c16af21269f91f309b88423836",
+   "contract_sha256": "23396b8ea981cb164facfd70b0d034fb675e23323d7abf634e62d935aa2e0109"
+  },
+  "I4": {
+   "packet_sha256": "6ae722281343afc8946cdc036a0c7fef719f242c27bf882758ea5d91982348bf",
+   "contract_sha256": "eed6ae546c684bee55c0ead27f3f7a3fdde4c6b1b840634048e2463cae79c6ba"
+  },
+  "I5": {
+   "packet_sha256": "eedde4de84e43c13a17b4934d7dfa9c6e29ab3bd2663f6ee46e5d24e5e8771e4",
+   "contract_sha256": "a965325d8d5872f22f743a68d0a5f56c3a90052d4857357dd1f6433f2013b472"
+  },
+  "I6": {
+   "packet_sha256": "d2580ae4dff1c48850f2171343637741b24a972096229d43d594d53e87d682dc",
+   "contract_sha256": "a36660129120ede7ab9717fd0e5857d7be27048840368f17765ccd639e939f72"
+  }
+ },
+ "feature_identity": {
+  "clip_l14": {
+   "weights_sha256": "b8cca3fd41ae0c99ba7e8951adf17d267cdb84cd88be6f7c2e0eca1737a03836",
+   "image_sha256_list_sha256": "5fdbecaaa04f1c7fc23174554926bdf1570b7a1cb97250d694de1e4654eefc2f"
+  }
+ },
+ "config_sha256": "23ecf0108dad7f793f6cf1f7cff7aee1653c92f07d48c45c0f32bda2f6635089",
+ "seconds": 26.507196187973022,
+ "finished": "2026-11-13T16:45:16Z"
+}

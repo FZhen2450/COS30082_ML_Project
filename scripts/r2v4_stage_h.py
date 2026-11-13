@@ -110,6 +110,7 @@ def main():
     ap.add_argument("--pairs", default="artifacts/r2/v4/feasibility_20261114/source_feasibility.json")
     ap.add_argument("--out", required=True)
     ap.add_argument("--skip-curve", action="store_true")
+    ap.add_argument("--shard", default="0/1", help="k/n: this process scores pairs with index %% n == k (parallel runs); only k=0 runs the learning curve")
     ap.add_argument("--stage-i-dir", default=str(ROOT.parents[1] / "experiments/r2-compositional/v4/stage_i_20261114"))
     a = ap.parse_args()
     frame, bench, F = env()
@@ -133,7 +134,10 @@ def main():
         rdir = out / rid
         done = {(d["fold"], d["source"]) for d in read_jsonl(rdir / "pairs.jsonl")}
         base_cache = {}
-        for fn, s in pairs:
+        k_sh, n_sh = (int(v) for v in a.shard.split("/"))
+        for i_pair, (fn, s) in enumerate(pairs):
+            if i_pair % n_sh != k_sh:
+                continue
             if (fn, s) in done:
                 continue
             t0 = time.time()
@@ -177,7 +181,7 @@ def main():
             g = rec.get("ablated", {}).get(f"g{g_sel:g}", {})
             print(f"{rid} {fn} {s:5s} {rec['status']} H_bal abl={g.get('H_bal', float('nan')):.4f} [{rec['seconds']:.0f}s]", flush=True)
 
-        if a.skip_curve or (rdir / "learning_curve.json").exists():
+        if a.skip_curve or k_sh != 0 or (rdir / "learning_curve.json").exists():
             continue
         t0 = time.time()
         curve = {"label": LABEL, "fractions": {}}

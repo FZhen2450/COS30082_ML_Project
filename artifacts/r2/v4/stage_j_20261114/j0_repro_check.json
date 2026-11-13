@@ -1,0 +1,13 @@
+{
+ "tolerance": 1e-05,
+ "rows": {
+  "D1_synthComp_norm": {
+   "leaves_compared": 318,
+   "max_abs_diff": 0.0,
+   "mismatches": [],
+   "key_set_differences": [],
+   "pass": true
+  }
+ },
+ "pass": true
+}

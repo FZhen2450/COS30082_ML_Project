@@ -82,10 +82,17 @@ def scorer(frame, arm):
 
 
 def append_jsonl(path, obj):
+    """One O_APPEND write per record, so parallel shard processes never interleave lines."""
+    import os
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    with open(path, "a") as fh:
-        fh.write(json.dumps(obj, default=float) + "\n")
+    data = (json.dumps(obj, default=float) + "\n").encode()
+    fd = os.open(path, os.O_WRONLY | os.O_APPEND | os.O_CREAT, 0o644)
+    try:
+        n = os.write(fd, data)
+        assert n == len(data), "short write"
+    finally:
+        os.close(fd)
 
 
 def read_jsonl(path):
