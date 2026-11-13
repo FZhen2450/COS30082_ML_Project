@@ -15,7 +15,7 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from research_r2.data import HEALTHY, candidate_table, load_training_source  # noqa: E402
 from research_r2.metrics import FoldScorer  # noqa: E402
-from research_r2.runner import gate, summarise  # noqa: E402
+from research_r2.runner import gate, scorer_from_scores, summarise  # noqa: E402
 
 FOLDS = ["S1", "S2", "S3", "S4", "S5", "D0"]
 
@@ -45,9 +45,9 @@ def main():
             assert np.array_equal(z["seen_truth"], zs[0]["seen_truth"]) and np.array_equal(z["unseen_truth"], zs[0]["unseen_truth"])
         seen = np.mean([z["seen"].astype(np.float64) for z in zs], 0)
         uns = np.mean([z["unseen"].astype(np.float64) for z in zs], 0)
-        held = set(fold["heldout_composition_ids"])
-        fm = np.array([int(c) not in held for c in cands.comp_id])
-        sc = FoldScorer(seen, zs[0]["seen_truth"], uns, zs[0]["unseen_truth"], fm, cc, cd, healthy)
+        ids = [z["cand_ids"] if "cand_ids" in z.files else None for z in zs]
+        assert all((a is None and b is None) or np.array_equal(a, b) for a, b in zip(ids, ids[1:])), "members differ in candidates"
+        sc = scorer_from_scores(frame, fold, seen, zs[0]["seen_truth"], uns, zs[0]["unseen_truth"], ids[0])
         results[fold["name"]] = {"curve": sc.curve(), "ausuc": sc.ausuc(), "gamma0": sc.at(0.0, top5=True), "_scorer": sc}
     row = {"id": a.id, "backbones": [], "recipe": "score_ensemble", "cfg": {"members": a.members},
            "hypothesis": a.hypothesis, "control": a.control}

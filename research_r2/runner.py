@@ -9,6 +9,7 @@ import numpy as np
 import pandas as pd
 import torch
 
+from .candidates import candidate_universe
 from .data import HEALTHY, candidate_table, sha256_json
 from .methods import RECIPES, FoldData, standardise
 from .metrics import GAMMA_GRID, FoldScorer, lofo_calibrated, pooled_gamma
@@ -27,7 +28,21 @@ def load_features(feature_dir, backbones):
 
 
 def make_fold(frame, fold, feats, text, text_backbone_only=None):
+    """Build fold tensors. Candidate universe:
+    - benchmark v3+ (fold carries "candidate_policy"): explicit F u H from research_r2.candidates; excluded
+      compositions E are not scored; fit_mask marks F; the stored universe is re-derived and must match.
+    - v1/v2 (legacy, kept for reproducing historical results): all compositions; fit_mask = not held-out.
+    """
     cands = candidate_table(frame)
+    if "candidate_policy" in fold:
+        cu = candidate_universe(frame, fold)
+        if cu["universe"] != fold["candidate_composition_ids"] or cu["policy"] != fold["candidate_policy"]:
+            raise ValueError(f"{fold['name']}: stored candidate universe does not match the policy")
+        keep = cands.comp_id.isin(cu["universe"]).to_numpy()
+        text_rows = np.nonzero(keep)[0]
+        cands = cands[keep].reset_index(drop=True)
+    else:
+        text_rows = None
     col_of = {int(c): i for i, c in enumerate(cands.comp_id)}
     crops = sorted(frame.crop_id.unique()); dis = sorted(frame.disease_id.unique())
     ci = {c: i for i, c in enumerate(crops)}; di = {d: i for i, d in enumerate(dis)}
@@ -43,8 +58,15 @@ def make_fold(frame, fold, feats, text, text_backbone_only=None):
         n_crop=len(crops), n_dis=len(dis), n_source=len(srcs))
     if text is not None:
         # text banks are ordered by ascending crop / disease / composition IDs, matching ci / di / col_of
-        assert text["crop_ids"] == crops and text["disease_ids"] == dis and text["comp_ids"] == cands.comp_id.tolist()
-        fd.text = text
+        if text_rows is None:
+            assert text["crop_ids"] == crops and text["disease_ids"] == dis and text["comp_ids"] == cands.comp_id.tolist()
+            fd.text = text
+        else:
+            assert text["crop_ids"] == crops and text["disease_ids"] == dis
+            sub = dict(text, comp=text["comp"][text_rows], comp_ids=[text["comp_ids"][i] for i in text_rows])
+            assert sub["comp_ids"] == cands.comp_id.tolist()
+            fd.text = sub
+    fd.extra["cand_ids"] = cands.comp_id.to_numpy()
     truth = {"seen": np.array([col_of[c] for c in frame.comp_id[fold["seen_val_rows"]]]),
              "unseen": np.array([col_of[c] for c in frame.comp_id[fold["unseen_val_rows"]]])}
     healthy = cands.disease.eq(HEALTHY).to_numpy()
@@ -83,7 +105,7 @@ def run_row(frame, bench, feature_dir, row, folds=None, out_dir=None, poison_row
         if out_dir is not None:
             p = Path(out_dir) / row["id"]
             p.mkdir(parents=True, exist_ok=True)
-            np.savez_compressed(p / f"{fold['name']}_scores.npz", seen=s_seen.numpy().astype(np.float32),
+            np.savez_compressed(p / f"{fold['name']}_scores.npz", cand_ids=fd.extra["cand_ids"], seen=s_seen.numpy().astype(np.float32),
                                 unseen=s_uns.numpy().astype(np.float32), seen_truth=truth["seen"], unseen_truth=truth["unseen"])
     return results, ident, time.time() - t0
 
@@ -142,3 +164,28 @@ def gate(cand: dict, ctrl: dict, screen=("S1", "S2", "S3", "S4", "S5")) -> dict:
     checks["pass"] = bool(checks["mean_gain_pp"] >= 1.0 and checks["folds_improved"] >= need
                           and checks["ausuc_delta"] >= 0 and checks["shortcut_delta_pp"] <= 5.0)
     return checks
+
+
+def scorer_from_scores(frame, fold, seen, seen_truth, unseen, unseen_truth, cand_ids=None):
+    """FoldScorer for saved or fresh scores. ``cand_ids`` (global IDs of the score columns) is required
+    for v3+ folds; for legacy v1/v2 scores it defaults to all compositions in ascending order."""
+    cands = candidate_table(frame)
+    if cand_ids is not None:
+        cands = cands.set_index("comp_id").loc[list(np.asarray(cand_ids).tolist())].reset_index()
+    elif "candidate_policy" in fold:
+        raise ValueError("v3 fold scores need their candidate ids")
+    crops = {c: i for i, c in enumerate(sorted(frame.crop_id.unique()))}
+    dis = {d: i for i, d in enumerate(sorted(frame.disease_id.unique()))}
+    if "candidate_policy" in fold:
+        fm = cands.comp_id.isin(candidate_universe(frame, fold)["fitting"]).to_numpy()
+    else:
+        held = set(fold["heldout_composition_ids"])
+        fm = np.array([int(c) not in held for c in cands.comp_id])
+    return FoldScorer(np.asarray(seen, np.float64), seen_truth, np.asarray(unseen, np.float64), unseen_truth, fm,
+                      np.array([crops[c] for c in cands.crop_id]), np.array([dis[d] for d in cands.disease_id]),
+                      cands.disease.eq(HEALTHY).to_numpy())
+
+
+def scorer_from_npz(frame, fold, z):
+    return scorer_from_scores(frame, fold, z["seen"], z["seen_truth"], z["unseen"], z["unseen_truth"],
+                              z["cand_ids"] if "cand_ids" in z.files else None)

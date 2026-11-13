@@ -27,7 +27,7 @@ def load(frame, cands, fold, path, keep_cols=None, keep_unseen_comps=None):
     crops = {c: i for i, c in enumerate(sorted(frame.crop_id.unique()))}
     dis = {d: i for i, d in enumerate(sorted(frame.disease_id.unique()))}
     held = set(fold["heldout_composition_ids"])
-    cid = cands.comp_id.to_numpy()
+    cid = z["cand_ids"] if "cand_ids" in z.files else cands.comp_id.to_numpy()  # v3: explicit universe
     s, u, ts, tu = z["seen"].astype(np.float64), z["unseen"].astype(np.float64), z["seen_truth"], z["unseen_truth"]
     urows = np.array(fold["unseen_val_rows"])
     if keep_unseen_comps is not None:

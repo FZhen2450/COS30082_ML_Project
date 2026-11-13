@@ -15,16 +15,12 @@ import pandas as pd
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from research_r2.data import HEALTHY, candidate_table, load_training_source  # noqa: E402
 from research_r2.metrics import FoldScorer, harmonic  # noqa: E402
+from research_r2.runner import scorer_from_npz  # noqa: E402
 
 
 def scorer_for(frame, cands, fold, z):
-    crops = {c: i for i, c in enumerate(sorted(frame.crop_id.unique()))}
-    dis = {d: i for i, d in enumerate(sorted(frame.disease_id.unique()))}
-    held = set(fold["heldout_composition_ids"])
-    fm = np.array([int(c) not in held for c in cands.comp_id])
-    return FoldScorer(z["seen"].astype(np.float64), z["seen_truth"], z["unseen"].astype(np.float64), z["unseen_truth"], fm,
-                      np.array([crops[c] for c in cands.crop_id]), np.array([dis[d] for d in cands.disease_id]),
-                      cands.disease.eq(HEALTHY).to_numpy())
+    """Shared helper: handles legacy (all-323) and v3 (explicit universe) score files."""
+    return scorer_from_npz(frame, fold, z)
 
 
 def main():
@@ -54,10 +50,13 @@ def main():
                     "unseen_crop_top1", "unseen_disease_top1", "unseen_healthy_shortcut", "unseen_pred_fitting_comp")}
                 pu = sc.top1_pred("unseen", g)
                 t = z["unseen_truth"]
+                ids = z["cand_ids"] if "cand_ids" in z.files else cands.comp_id.to_numpy()
+                byid = cands.set_index("comp_id")
                 for col in np.unique(t):
                     m = t == col
-                    comp_rows.append({"row": rid, "fold": fn, "gamma": g, "comp": cands.comp[col], "crop": cands.crop[col],
-                                      "disease": cands.disease[col], "n": int(m.sum()), "top1": float(np.mean(pu[m] == col))})
+                    r_ = byid.loc[int(ids[col])]
+                    comp_rows.append({"row": rid, "fold": fn, "gamma": g, "comp": r_.comp, "crop": r_.crop,
+                                      "disease": r_.disease, "n": int(m.sum()), "top1": float(np.mean(pu[m] == col))})
             rep[rid][fn] = entry
         means = {}
         for g in a.gammas:

@@ -165,6 +165,44 @@ def zero_shot_logprobs(fd: FoldData, part: str, kind: str):
     return F.log_softmax(logits, 1)
 
 
+# ----------------------------------------------------------------------------- Phase 2 helpers (v3)
+def within_concept_source_weight(concept, src):
+    """Reweight so every source contributes equally *within* each concept (crop or disease), keeping each
+    concept's total weight equal to its image count: w = n_concept / (n_sources(concept) * n(concept, source))."""
+    key = concept.long() * 100003 + src.long()
+    _, inv_k, cnt_k = torch.unique(key, return_inverse=True, return_counts=True)
+    _, inv_c, cnt_c = torch.unique(concept, return_inverse=True, return_counts=True)
+    w = torch.zeros(len(concept), dtype=torch.float64)
+    for c in torch.unique(inv_c):
+        m = inv_c == c
+        n_src = len(torch.unique(key[m]))
+        w[m] = cnt_c[c].double() / (n_src * cnt_k[inv_k[m]].double())
+    return w
+
+
+def style_bank(x, comp_col, src, min_images=2):
+    """Composition-controlled source offsets: delta = mean(x | comp, source) - mean over sources of that
+    composition, for compositions observed in >= 2 sources (each with >= min_images fitting views)."""
+    deltas = []
+    for k in torch.unique(comp_col):
+        m = comp_col == k
+        srcs = [s for s in torch.unique(src[m]) if int((m & (src == s)).sum()) >= min_images]
+        if len(srcs) < 2:
+            continue
+        means = torch.stack([x[m & (src == s)].mean(0) for s in srcs])
+        deltas.append(means - means.mean(0))
+    return torch.cat(deltas) if deltas else torch.zeros(0, x.shape[1], dtype=x.dtype)
+
+
+def style_augment(x, ys, bank, k=1, seed=0):
+    """Add ``k`` copies of x shifted by random style offsets; labels in ``ys`` are repeated unchanged."""
+    if len(bank) == 0:
+        return x, ys, 0
+    g = torch.Generator().manual_seed(seed)
+    xs = [x + bank[torch.randint(0, len(bank), (len(x),), generator=g)].to(x.dtype) for _ in range(k)]
+    return torch.cat([x] + xs), [torch.cat([y] + [y] * k) for y in ys], len(x) * k
+
+
 # ----------------------------------------------------------------------------- recipes
 def score_factorised(fd: FoldData, cfg: dict) -> tuple[torch.Tensor, torch.Tensor]:
     """Independent crop and disease heads; composition score = log p(c|x) + log p(d|x) (+ extras)."""
@@ -182,6 +220,26 @@ def score_factorised(fd: FoldData, cfg: dict) -> tuple[torch.Tensor, torch.Tenso
         x_d, seen_d, uns_d = (er(t.to(DEV)).cpu() for t in (x_d, seen_d, uns_d))
     w_d = comp_balanced_weight(comp_col) if cfg.get("balance_disease") else None
     w_c = comp_balanced_weight(comp_col) if cfg.get("balance_crop") else None
+    if cfg.get("source_balance"):
+        w_c = within_concept_source_weight(crop, src)
+        w_d = within_concept_source_weight(dis, src)
+    if cfg.get("style_aug"):
+        if cfg.get("erase_source") or cfg.get("erase_crop_from_disease"):
+            raise ValueError("style_aug is not defined together with erasure")
+        sa = cfg["style_aug"]
+        n0, k = len(x), int(sa.get("k", 1))
+        x_aug, (crop, dis, comp_col, src), n_aug = style_augment(x, (crop, dis, comp_col, src), style_bank(x, comp_col, src), k, sa.get("seed", 0))
+        x_c = x_d = x_aug
+        if n_aug:
+            sw = float(sa.get("w", 0.5))
+            def _ext(w):
+                base = torch.ones(n0, dtype=torch.float64) if w is None else w / w.mean()
+                return torch.cat([base] + [base * sw] * k)
+            w_c, w_d = _ext(w_c), _ext(w_d)
+    ccd = cfg.get("crop_centred_disease")
+    if ccd:
+        mus_cc = crop_means(x_d.double(), crop, comp_col, fd.n_crop).to(x_d.dtype)
+        x_d = x_d - mus_cc[crop]
     xd_train, yd_train, wd_train = x_d, dis, w_d
     xc_train, yc_train, wc_train = x_c, crop, w_c
     if cfg.get("synth"):
@@ -198,7 +256,10 @@ def score_factorised(fd: FoldData, cfg: dict) -> tuple[torch.Tensor, torch.Tenso
     hd = fit_softmax(xd_train, yd_train, fd.n_dis, wd_train, wd=wd, hidden=hid)
     out = []
     for part, (xc_, xd_) in (("seen", (seen_c, seen_d)), ("unseen", (uns_c, uns_d))):
-        lc, ld = log_probs(hc, xc_), log_probs(hd, xd_)
+        lc = log_probs(hc, xc_)
+        if ccd:  # test-time crop unknown: centre on the crop-probability-weighted crop mean
+            xd_ = xd_ - (lc.exp().to(xd_.dtype) @ mus_cc)
+        ld = log_probs(hd, xd_)
         if cfg.get("text_crop_beta"):
             lc = lc + cfg["text_crop_beta"] * zero_shot_logprobs(fd, part, "crop")
         if cfg.get("text_dis_beta"):
@@ -225,21 +286,56 @@ def score_synth_composition(fd: FoldData, cfg: dict):
     """Generative-style composition head: real fitting features for fitting compositions plus
     crop-shifted hallucinations for held-out candidate compositions (names only), fused with
     the factorised score."""
-    x, crop, dis, comp_col, _ = _views(fd)
+    x, crop, dis, comp_col, source = _views(fd)
     mus = crop_means(x, crop, comp_col, fd.n_crop)
-    xs, ys = [x], [comp_col]
+    mode = cfg.get("synth_mode", "mean")
+    if mode == "subspace":  # shift only along the crop-discriminative (LEACE) subspace
+        proj = LeaceEraser(x.to(DEV), F.one_hot(crop, fd.n_crop).to(DEV)).proj.cpu().to(x.dtype)
+    noise_sd = None
+    if cfg.get("synth_noise"):  # diagonal within-composition spread, estimated on fitting rows
+        n_cols = int(comp_col.max()) + 1
+        sums = torch.zeros(n_cols, x.shape[1], dtype=torch.float64).index_add_(0, comp_col, x.double())
+        cnt = torch.bincount(comp_col, minlength=n_cols).clamp_min(1).double()[:, None]
+        noise_sd = (cfg["synth_noise"] * (x.double() - (sums / cnt)[comp_col]).std(0)).to(x.dtype)
+    xs, ys, ws = [x], [comp_col], [None]
     g = torch.Generator().manual_seed(int(cfg.get("seed", 0)))
     per = cfg.get("per_comp", 64)
+
+    def hallucinate(c, d, n):
+        srcs = torch.nonzero((dis == d) & (crop != c)).flatten()
+        if len(srcs) == 0:
+            return None
+        pick = srcs[torch.randint(0, len(srcs), (n,), generator=g)]
+        if mode == "subspace":
+            out = x[pick] + (mus[c] - mus[crop[pick]]) @ proj
+        else:  # v1/v2 arithmetic order kept exactly, so historical D1/D2 scores reproduce bit-for-bit
+            out = x[pick] - mus[crop[pick]] + mus[c]
+        if noise_sd is not None:
+            out = out + torch.randn(out.shape, generator=g).to(out.dtype) * noise_sd
+        return out
+
     for col in np.nonzero(~fd.fit_mask)[0]:
-        c, d = int(fd.cand_crop[col]), int(fd.cand_dis[col])
-        src = torch.nonzero((dis == d) & (crop != c)).flatten()
-        if len(src) == 0:
-            continue
-        pick = src[torch.randint(0, len(src), (per,), generator=g)]
-        xs.append(x[pick] - mus[crop[pick]] + mus[c])
-        ys.append(torch.full((per,), int(col)))
+        hx = hallucinate(int(fd.cand_crop[col]), int(fd.cand_dis[col]), per)
+        if hx is not None:
+            xs.append(hx); ys.append(torch.full((per,), int(col))); ws.append(None)
+    seen_w = cfg.get("synth_seen", 0.0)
+    if seen_w:  # same hallucination for fitting pairs, so real/synthetic is not a seen/unseen cue
+        per_s = cfg.get("per_seen", 16)
+        for col in np.nonzero(fd.fit_mask)[0]:
+            hx = hallucinate(int(fd.cand_crop[col]), int(fd.cand_dis[col]), per_s)
+            if hx is not None:
+                xs.append(hx); ys.append(torch.full((per_s,), int(col))); ws.append(seen_w)
     X, Y = torch.cat(xs), torch.cat(ys)
-    w = comp_balanced_weight(Y)
+    if seen_w:
+        # each group (real/unseen-synthetic per column, seen-synthetic per column) totals 1; seen-synthetic x seen_w
+        is_seen_syn = torch.cat([torch.full((len(t),), ww is not None) for t, ww in zip(xs, ws)])
+        w = comp_balanced_weight(torch.where(is_seen_syn, Y + len(fd.cand_crop), Y))
+        w = torch.where(is_seen_syn, w * float(seen_w), w)
+    else:
+        w = comp_balanced_weight(Y)
+    if cfg.get("source_balance_comp"):  # within each fitting composition, every source gets an equal share
+        w = w.clone()
+        w[:len(x)] = w[:len(x)] * within_concept_source_weight(comp_col, source)
     h = fit_softmax(X, Y, len(fd.cand_crop), w, wd=cfg.get("wd", 5e-4))
     fs, fu = score_factorised(fd, cfg.get("factorised", {}))
     a = cfg.get("fuse", 1.0)
