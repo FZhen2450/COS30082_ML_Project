@@ -1,0 +1,49 @@
+{
+ "schema": "r2-protocol-v4-ood-exploration",
+ "declared_before_any_v4_scoring": "2026-11-14",
+ "branch": "research/r2-v4-ood-exploration (from 5bca217; PR #34 and the v3 freeze are untouched)",
+ "status_of_evidence": "post-freeze EXPLORATORY development cross-validation on the v3 inner folds. The inner folds have already informed v1-v3 selections, so no v4 number is blind, independent or confirmatory. Any v4 claim is a development claim with a nested leave-one-fold-out estimate.",
+ "frozen_inputs": {
+  "benchmark": "artifacts/r2/benchmark_v3.json (semantic 0e85819cbd845eb6794cd8414950aac794e351636ae1f1202306b4ed8b1a7e42)",
+  "v3_freeze": "research_r2/protocol_v3_freeze.json (sha256 736ead06051799278c664cdb3e5ec32051c5d8e892ad5641669887385d541a24)",
+  "v3_registry": "artifacts/r2/v3/packet_registry_v3.json (sha256 94266c7fd400f826cc549ee8388ca8c8d2b5591181365fab30c85d0ba4d2bafb)",
+  "candidate_policy": "r2-candidate-policy-v1: universe = F u H; E removed",
+  "train_csv_sha256": "9f1b729ab08f120c9e8d3a5681aa1ccbdf1d9210f9aaa6143959363dcb106a7d"
+ },
+ "data_rules": [
+  "DPD-Small training images only, addressed through the training CSV (research_r2.data.load_training_source); the image folder also holds official-test files, which are never listed, opened or hashed",
+  "no official-test inference, metadata or labels; no external labelled datasets; pretrained weights only from the existing local pretrained_weights folder",
+  "v1 locked folds, v2 outer folds (O1, O2) and the outer-exclusion rows are not used: outer-exclusion features stay NaN-poisoned in every frozen-feature run, and fine-tuning reads only fold fitting_rows",
+  "no First Run worktree, experiment output, checkpoint or receipt is read or written; v4 outputs go to workspace/experiments/r2-compositional/v4/ only"
+ ],
+ "folds": ["I1", "I2", "I3", "I4", "I5", "I6"],
+ "primary_metric": "mean over the 6 inner folds of H_bal (harmonic mean of seen Top-1 and unseen composition-macro Top-1) at leave-one-fold-out gamma (grid 0..16 step 0.25), exactly as v3",
+ "secondary_metrics": ["AUSUC", "seen Top-1", "unseen macro and micro Top-1", "unseen disease and crop Top-1", "within-crop disease transfer", "healthy shortcut", "H5", "size-controlled source effect (stage H)"],
+ "control": "D1_synthComp_norm (reproduced; v3 values must match within 1e-5 before any v4 row is scored)",
+ "gate": {
+  "in_sample": "same as v3: >= +1.0 pp mean primary over the 6 folds, >= 5 of 6 folds better, AUSUC not lower, healthy shortcut <= +5 pp",
+  "nested": "the nested leave-one-fold-out estimate (scripts/r2_select.py logic, rerunning every mechanical choice inside the 5 remaining folds, including 'best of J1-J3' parents) must also reach >= +1.0 pp and >= 5 of 6 held folds",
+  "stochastic_rows": "rows with training randomness (stage J, I4, I5) are screened at seed 0; a seed-0 pass triggers seeds 1 and 2, and the gate is re-applied to the 3-seed mean; every seed's result is reported",
+  "uncertainty": "paired composition-level bootstrap of the H_bal difference to D1 (resampling held-out compositions within folds, 2,000 resamples, seed 0), reported with every gate row"
+ },
+ "stages": {
+  "H_source_shift": "research_r2_v4/matrices/stage_h_v4.json (diagnostic, not a gate)",
+  "I_frozen_feature": "research_r2_v4/matrices/stage_i_v4.json",
+  "J_partial_finetune": "research_r2_v4/matrices/stage_j_v4.json",
+  "K_new_backbones": "NOT declared: requires downloads and package installs, which need the owner's authorisation (see docs/R2_v4_Plan.md section 5)"
+ },
+ "multiplicity": "about 20 declared rows; at the v3 noise level (seed spread of D2 about +/-0.4 pp) a single +1 pp pass in 20 tries is plausible by chance, hence the nested and 3-seed requirements. Report every row, including failures and aborted runs.",
+ "integrity": {
+  "tolerance": "1e-5 for every reproduction check (fixed; never widened)",
+  "packets": "every saved score packet is validated against research_r2.packets.fold_contract and pinned in a new v4 registry; v1-v3 packets are never modified",
+  "receipts": "selection receipts via scripts/r2_select.py with --registry (v4 registry); --allow-unregistered only for runs labelled exploratory",
+  "failures": "a failed or aborted run is recorded in its stage's summaries.jsonl with status, error and wall time, never deleted"
+ },
+ "resource_limits": {
+  "gpu": "one GPU job at a time on the RTX 4060 Laptop (8 GiB, about 5.8 GiB free with the display); peak allocation <= 6.0 GiB",
+  "cpu": "DataLoader workers <= 8",
+  "disk": "<= 60 GiB for all v4 outputs; no model checkpoints kept after features are extracted (unless a row passes its gate)",
+  "wall": "a stage J row is aborted and recorded if it exceeds 2x its estimate"
+ },
+ "matrix_sha256": "filled by the declaring commit (see research_r2_v4/DECLARATION.json)"
+}

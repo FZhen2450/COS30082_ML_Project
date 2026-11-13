@@ -1,0 +1,12 @@
+{
+ "schema": "r2v4-declaration-v1",
+ "declared": "2026-11-14",
+ "note": "declared before any v4 scoring; v1-v3 evidence unchanged",
+ "sha256": {
+  "research_r2_v4/protocol_v4.json": "fd9f0865f96643b42609113eed209ed0d9a041f702b7a36eaf5e94768bbfb483",
+  "research_r2_v4/matrices/stage_h_v4.json": "c83e17da5c6a54c127a017cdbb64328aec88cb164ef213ecfec1e81d02d70b72",
+  "research_r2_v4/matrices/stage_i_v4.json": "45a8d5f16771b0ad109c7a798d38db2049a0edceaeb8596ca95d72b083feecf5",
+  "research_r2_v4/matrices/stage_j_v4.json": "7fe19346b045fbd90d2abab5eeb6bf630d462da775174d81b232b28be94dc421",
+  "docs/R2_v4_Plan.md": "928ae784893524ba96f565581a33ee9c984d46bae8caf2c4297303308bf73245"
+ }
+}

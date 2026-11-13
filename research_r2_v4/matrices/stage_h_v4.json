@@ -1,0 +1,22 @@
+{
+ "schema": "r2v4-source-shift-protocol-v1",
+ "purpose": "measure how much of the compositional error is source shift, with training-set size controlled, for the controls and for every v4 row that passes its gate",
+ "rows_measured": ["B1_clipL_factorised", "D1_synthComp_norm", "F10_concat_convnext", "every v4 gate passer"],
+ "folds": ["I1", "I2", "I3", "I4", "I5", "I6"],
+ "pairs": "every (inner fold, source s) pair that is ablatable (held-out crops and diseases stay covered) and has >= 10 evaluation images (novel-source seen-val images of s, or unseen-val images of s); 49 pairs on benchmark_v3 (artifacts: v4/feasibility_20261114/source_feasibility.json)",
+ "arms": {
+  "base": "the standard fold",
+  "source_ablated": "all fitting images of s removed (research_r2.candidates.derive_fold keeps the v3 candidate policy)",
+  "size_matched_random": "3 draws; the same NUMBER of fitting images removed from other sources, composition-stratified in proportion to each composition's other-source count, never emptying a composition; seeds 0, 1, 2"
+ },
+ "outcomes": {
+  "novel_source_seen_top1": "seen-val images of s whose composition keeps fitting images from another source, at gamma 0 and at the row's pooled inner gamma",
+  "unseen_top1_source_s": "unseen-val images of s",
+  "margin_shift": "mean change of d = best_fitting - best_heldout score",
+  "source_effect": "source_ablated minus mean(size_matched_random); this is the size-controlled source effect",
+  "size_effect": "size_matched_random minus base"
+ },
+ "learning_curve": "composition-stratified fitting fractions 0.25, 0.5, 0.75, 1.0 (3 draws each, seeds 0-2): H_bal at LOFO gamma and pooled-oracle gamma, to separate size from source",
+ "inference": "pairs are clustered: the shared global seen holdout makes the same images recur across folds. Report unique images/compositions/sources, and a cluster bootstrap over sources (2,000 resamples, seed 0) for the mean source_effect. Not a gate.",
+ "status": "diagnostic, reported for every measured row; no selection uses it"
+}

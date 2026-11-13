@@ -1,0 +1,96 @@
+{
+ "schema": "r2v4-gpu-probe-v1",
+ "device": "NVIDIA GeForce RTX 4060 Laptop GPU",
+ "torch": "2.5.1+cu121",
+ "batch": 32,
+ "steps": 8,
+ "free_total_bytes_at_start": [
+  7440695296,
+  8585216000
+ ],
+ "note": "resource probe only: random heads, a few steps, nothing saved",
+ "probes": [
+  {
+   "name": "decode_workers0",
+   "images": 512,
+   "images_per_s": 62.1,
+   "peak_gib": 0.0
+  },
+  {
+   "name": "decode_workers4",
+   "images": 512,
+   "images_per_s": 160.9,
+   "peak_gib": 0.0
+  },
+  {
+   "name": "decode_workers8",
+   "images": 512,
+   "images_per_s": 206.1,
+   "peak_gib": 0.0
+  },
+  {
+   "name": "clip_l14_frozen_infer_bs64",
+   "step_s": 0.6313,
+   "images_per_s": 101.4,
+   "peak_gib": 1.46
+  },
+  {
+   "name": "clip_l14_last2",
+   "step_s": 0.3942,
+   "images_per_s": 81.2,
+   "trainable_params": 26157798,
+   "peak_gib": 2.734
+  },
+  {
+   "name": "clip_l14_last4",
+   "step_s": 0.4625,
+   "images_per_s": 69.2,
+   "trainable_params": 51350246,
+   "peak_gib": 3.658
+  },
+  {
+   "name": "clip_l14_last8",
+   "step_s": 0.5962,
+   "images_per_s": 53.7,
+   "trainable_params": 101735142,
+   "peak_gib": 5.509
+  },
+  {
+   "name": "clip_l14_last8_ckpt",
+   "step_s": 0.6802,
+   "images_per_s": 47.0,
+   "trainable_params": 101735142,
+   "peak_gib": 3.271
+  },
+  {
+   "name": "clip_l14_lora8_mlp_all_ckpt",
+   "step_s": 1.2488,
+   "images_per_s": 25.6,
+   "trainable_params": 2142950,
+   "peak_gib": 2.532
+  },
+  {
+   "name": "clip_l14_full_ckpt",
+   "step_s": 1.3897,
+   "images_per_s": 23.0,
+   "trainable_params": 304143078,
+   "peak_gib": 6.183
+  },
+  {
+   "name": "convnext_b_stage4",
+   "step_s": 0.0993,
+   "images_per_s": 322.4,
+   "trainable_params": 25581798,
+   "peak_gib": 0.841
+  },
+  {
+   "name": "convnext_b_full",
+   "step_s": 0.2715,
+   "images_per_s": 117.9,
+   "trainable_params": 87802214,
+   "peak_gib": 5.045
+  }
+ ],
+ "token_cache_bytes_per_image_view_fp16": 526336,
+ "token_cache_gib_8000x2views": 7.84
+}
