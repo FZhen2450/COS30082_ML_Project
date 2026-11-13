@@ -15,7 +15,7 @@ import numpy as np
 from evaluation.final_manifest import load_full8000_manifest, full8000_inference_order
 from evaluation.model_adapters import ModelOutputAdapter, WP2_CONVNEXT
 from evaluation.packet_io import (child, decode_json, inspect_zip, json_bytes, packet_directory,
-                                  read_json, sha256_bytes, write_new_directory, MAX_PACKET_BYTES, MAX_FILE_BYTES)
+                                  read_json, require_sha, sha256_bytes, write_new_directory, MAX_PACKET_BYTES, MAX_FILE_BYTES)
 from evaluation.reporting import (FULL8000_FINAL_PROTOCOL, RunProvenance, build_report,
                                   canonical_json, fingerprint)
 from evaluation.wp2_handoff import BaseOwnerHandoff
@@ -106,7 +106,9 @@ def import_full8000_wp2(handoff_path, handoff_sha256, output_path, *, registry_p
     if registry.is_symlink() or (registry.exists() and not registry.is_dir()):
         raise ValueError('Registry must be an ordinary directory')
     handoff = Path(handoff_path)
-    bundle = read_json(handoff, handoff_sha256)
+    # Authentication pins are mandatory here; the generic JSON reader also
+    # supports deliberately unpinned internal callers. Never inherit that opt-out.
+    bundle = read_json(handoff, require_sha(handoff_sha256))
     fields = {'schema', 'protocol_id', 'protocol_version', 'identity_manifest', 'manifest_sha256',
               'inference_order_sha256', 'owner_packet', 'provenance', 'reviewed_owner_metadata', *REFERENCES}
     if (not isinstance(bundle, dict) or set(bundle) != fields or
@@ -120,8 +122,9 @@ def import_full8000_wp2(handoff_path, handoff_sha256, output_path, *, registry_p
     entry = bundle['identity_manifest']
     if not isinstance(entry, dict) or set(entry) != {'path', 'file_sha256'}:
         raise ValueError('Manifest requires path and raw file hash')
+    manifest_pin = require_sha(entry['file_sha256'])
     manifest_path = child(handoff.parent, entry['path'])
-    manifest = load_full8000_manifest(read_json(manifest_path, entry['file_sha256']),
+    manifest = load_full8000_manifest(read_json(manifest_path, manifest_pin),
                                      expected_semantic_sha256=bundle['manifest_sha256'], allow_synthetic=allow_synthetic)
     order = full8000_inference_order(manifest)
     if fingerprint(order) != bundle['inference_order_sha256']:
