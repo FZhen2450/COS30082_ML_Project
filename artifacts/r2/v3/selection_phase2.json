@@ -269,8 +269,8 @@
   "mean_diff_pp": 0.8894702340987936,
   "folds_selected_better": 4,
   "selection_counts": {
-   "F10_concat_convnext": 5,
-   "D1_synthComp_norm": 1
+   "D1_synthComp_norm": 1,
+   "F10_concat_convnext": 5
   }
  }
 }

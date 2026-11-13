@@ -111,7 +111,7 @@ def main():
            "nested_summary": {"mean_H_bal_selected": float(np.mean([n["H_bal"] for n in nested])),
                               "mean_H_bal_control": float(np.mean([n["control_H_bal"] for n in nested])),
                               "mean_diff_pp": float(np.mean(d)), "folds_selected_better": int(sum(x > 0 for x in d)),
-                              "selection_counts": {r: sum(n["selected"] == r for n in nested) for r in set(n["selected"] for n in nested)}}}
+                              "selection_counts": {r: sum(n["selected"] == r for n in nested) for r in sorted(set(n["selected"] for n in nested))}}}
     Path(a.out).write_text(json.dumps(rep, indent=1))
     print(f"selected: {sel}  path: {' -> '.join(path)}")
     for t in trace:
