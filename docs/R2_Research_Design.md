@@ -146,3 +146,6 @@ Feature extraction for 8,000 images on the RTX 4060 Laptop (8 GB): CLIP-L/14 171
 2. **Partial fine-tuning pilot** (last 2–4 CLIP-L blocks or LoRA) with the D2 heads and synthesis loss, on S1–S5 only. Estimated at ≈3–4 min per epoch per fold. Coordinate first: M12 showed LoRA can trade unseen accuracy for seen accuracy.
 3. **Authorised downloads only:** DINOv2 / SigLIP / BioCLIP frozen features. The backbone axis was the largest representation effect among the families tested.
 4. **Targeted remedies** for spider-mite, alternaria and frog-eye failures, e.g. disease-description prompts with recorded provenance, following the DPD paper's taxonomy text.
+
+---
+**Review addendum (13 Nov 2026).** See `docs/R2_Review_Response.md`. v1 L1–L3 are cross-validation confirmation folds, not an isolated outer evaluation. The v1 text above is preserved as written. In the outer-isolated v2 replay, D1 (the hallucinated composition head) is the mechanically selected recipe; D2's text-prior step did not replicate.
