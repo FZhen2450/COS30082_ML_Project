@@ -19,6 +19,9 @@ from evaluation.metrics import harmonic_mean
 
 WP1_NAMESPACE = "wp1-canonical-json-candidate-records-v1"
 FINAL_NAMESPACE = "cos30082-final-candidates-v1"
+FULL8000_FINAL_PROTOCOL = ("cos30082-official-shared333", "full8000-20261112-v1")
+FULL8000_FITTING_NAMESPACE = "full8000-original-ordered-filenames-json-sha256-v1"
+FULL8000_MANIFEST_SHA256 = "41e4b1d499e1c45097fd8b74d917f06e0efc324772d9459e811259746f0f3a6c"
 FINAL_CANDIDATE_SHA256 = "ba17e94119e8b2b7a4b18603e25405d2f52bf4a93396973f80491800697eb62f"
 FINAL_PROMPT_SHA256 = "c9dd871d61d4141b33583ddd71961c309fd679a8edab088cb28ba20eccef88f2"
 FINAL_UNSEEN_IDS = (39, 84, 107, 124, 133, 136, 144, 166, 276, 303)
@@ -251,11 +254,30 @@ class EvaluationManifest:
         fitting_ids = {s.truth_id for s in self.samples if s.fold == "fitting"}
         if self.spec.task_mode == "development" and fitting_ids != axes[0]:
             raise ValueError("Development seen membership must equal fitting compositions")
+        protocol = (self.spec.protocol_id, self.spec.protocol_version)
+        if self.spec.protocol_id == FULL8000_FINAL_PROTOCOL[0] and protocol != FULL8000_FINAL_PROTOCOL:
+            raise ValueError("Unsupported full-8000 protocol version")
+        if protocol == FULL8000_FINAL_PROTOCOL:
+            # Versioned contract applies to synthetic fixtures too. Never relax
+            # counts/order simply to make an interface fixture pass.
+            if (self.spec.task_mode != "final" or self.spec.split_hash_namespace != FULL8000_FITTING_NAMESPACE
+                    or self.spec.ids != tuple(range(333))):
+                raise ValueError("Full-data fitting requires explicit final protocol, shared333 and filename hash namespace")
+            if counts["fitting"] != 8000 or fitting_ids != axes[0]:
+                raise ValueError("Full-data final evaluation requires 8,000 fitting identities covering the seen compositions")
+            if ((self.expected_seen, self.expected_unseen) != (2000, 1448)
+                    or (len(axes[0]), len(axes[1])) != (323, 10)):
+                raise ValueError("Full-data final evaluation requires 2,000 Seen / 1,448 Unseen and 323/10 truth axes")
+            fitting_names = [s.sample_id for s in self.samples if s.fold == "fitting"]
+            if fingerprint(fitting_names) != self.spec.split_sha256:
+                raise ValueError("Full-data ordered fitting filename fingerprint mismatch")
+            if not self.spec.synthetic and self.sha256 != FULL8000_MANIFEST_SHA256:
+                raise ValueError("Full-data semantic manifest identity differs from independently pinned common contract")
         if not self.spec.synthetic:
             expected = (1238, 1894) if self.spec.task_mode == "development" else (2000, 1448)
             if (self.expected_seen, self.expected_unseen) != expected:
                 raise ValueError("Real protocol denominators differ from frozen task")
-            if counts["fitting"] != 4868:
+            if protocol != FULL8000_FINAL_PROTOCOL and counts["fitting"] != 4868:
                 raise ValueError("Require the original 4,868 fitting identities")
             if self.spec.task_mode == "final" and (len(axes[0]), len(axes[1])) != (323, 10):
                 raise ValueError("Final official truth axes require 323 seen / 10 unseen classes")

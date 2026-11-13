@@ -28,12 +28,14 @@ import codecs
 import csv
 import hashlib
 import io
+import json
 import re
 from collections.abc import Mapping
 from pathlib import Path
 
 from evaluation.reporting import (Candidate, CandidateSpec, EvaluationManifest, FINAL_NAMESPACE,
-                                  FINAL_PROMPT_SHA256, Sample, candidate_digest, canonical_json, fingerprint)
+                                  FINAL_PROMPT_SHA256, Sample, candidate_digest, canonical_json, fingerprint,
+                                  FULL8000_FINAL_PROTOCOL, FULL8000_MANIFEST_SHA256)
 
 OFFICIAL_CSV = {"seen": "DPD_Small_test_seen.csv", "unseen": "DPD_Small_test_unseen.csv"}
 FINAL_PROTOCOL_ID = "cos30082-final-333-shared-candidates"
@@ -148,5 +150,51 @@ def inference_order(manifest):
             "ground_truth": "not in this order; WP5 attaches truths from the manifest at import"}
 
 
+def load_full8000_manifest(payload, *, expected_semantic_sha256, allow_synthetic=False):
+    """Load the supplied original/reconstructed payload; never rebuild it.
+
+    Uses EvaluationManifest's existing dataclass fingerprint namespace. A raw
+    JSON file hash is checked separately by the caller before decoding.
+    """
+    _sha(expected_semantic_sha256, "semantic manifest pin")
+    if type(allow_synthetic) is not bool:
+        raise ValueError("allow_synthetic must be an explicit boolean")
+    manifest = EvaluationManifest.from_dict(payload)
+    if (manifest.spec.protocol_id, manifest.spec.protocol_version) != FULL8000_FINAL_PROTOCOL:
+        raise ValueError("Explicit full-8000 protocol version required")
+    if manifest.spec.synthetic and not allow_synthetic:
+        raise ValueError("synthetic fixtures require explicit opt-in")
+    if not manifest.spec.synthetic and expected_semantic_sha256 != FULL8000_MANIFEST_SHA256:
+        raise ValueError("Real imports require the independently pinned semantic manifest")
+    if manifest.sha256 != expected_semantic_sha256:
+        raise ValueError("Full-data semantic manifest fingerprint mismatch")
+    return manifest
+
+
+def full8000_inference_order(manifest):
+    """Owner channel: vocab and filenames, no per-image evaluation truths.
+
+    Vocabulary semantics are permitted by the compositional protocol. Filenames
+    may themselves reveal labels; this is not a label-blind evaluation.
+    """
+    if (type(manifest) is not EvaluationManifest or
+            (manifest.spec.protocol_id, manifest.spec.protocol_version) != FULL8000_FINAL_PROTOCOL):
+        raise ValueError("Explicit full-8000 manifest required")
+    order = inference_order(manifest)
+    order.pop("ground_truth")
+    order.update(schema="wp5-full8000-inference-order-v1", protocol_id=manifest.spec.protocol_id,
+                 protocol_version=manifest.spec.protocol_version,
+                 candidate_rows=[dict(composition_id=c.composition_id, crop_id=c.crop_id,
+                                      disease_id=c.disease_id, crop_name=c.crop_name,
+                                      disease_name=c.disease_name, composition_name=c.composition_name)
+                                 for c in manifest.spec.candidates],
+                 training=dict(training_scope="full_8000", training_count=8000,
+                               training_source_sha256=manifest.spec.source_sha256,
+                               ordered_fitting_names_sha256=manifest.spec.split_sha256),
+                 clip_prompt_sha256=fingerprint(json.loads(manifest.spec.final_prompt_json)))
+    return order
+
+
 __all__ = ["OFFICIAL_CSV", "FINAL_PROTOCOL_ID", "FINAL_SPLIT_NAMESPACE", "INFERENCE_ORDER_SCHEMA",
-           "official_samples", "final_manifest", "inference_order"]
+           "official_samples", "final_manifest", "inference_order", "load_full8000_manifest",
+           "full8000_inference_order"]
