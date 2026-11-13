@@ -12,6 +12,7 @@ import torch
 from .candidates import candidate_universe
 from .data import HEALTHY, candidate_table, sha256_json
 from .methods import RECIPES, FoldData, standardise
+from .packets import PacketError, file_sha256, fold_contract, validate_packet, write_manifest
 from .metrics import GAMMA_GRID, FoldScorer, lofo_calibrated, pooled_gamma
 
 
@@ -70,10 +71,17 @@ def make_fold(frame, fold, feats, text, text_backbone_only=None):
     truth = {"seen": np.array([col_of[c] for c in frame.comp_id[fold["seen_val_rows"]]]),
              "unseen": np.array([col_of[c] for c in frame.comp_id[fold["unseen_val_rows"]]])}
     healthy = cands.disease.eq(HEALTHY).to_numpy()
+    # second, independent derivation of columns / truth / fitting mask (research_r2.packets): the two must agree
+    con = fold_contract(frame, fold)
+    if not (np.array_equal(fd.extra["cand_ids"], con["cand_ids"]) and np.array_equal(truth["seen"], con["seen_truth"])
+            and np.array_equal(truth["unseen"], con["unseen_truth"]) and np.array_equal(fd.fit_mask, con["fit_mask"])):
+        raise PacketError(f"{fold['name']}: make_fold disagrees with the fold contract")
     return standardise(fd), truth, healthy
 
 
-def run_row(frame, bench, feature_dir, row, folds=None, out_dir=None, poison_rows=None):
+def run_row(frame, bench, feature_dir, row, folds=None, out_dir=None, poison_rows=None, provenance=None):
+    """``provenance`` (dict, optional): when scores are saved, a manifest.json with it, the row's configuration
+    identity, feature identity and per-packet hashes is written next to the packets (new packets only)."""
     feats, text, files, ident = load_features(feature_dir, row["backbones"])
     assert files == frame.file.tolist()
     if poison_rows:
@@ -82,7 +90,7 @@ def run_row(frame, bench, feature_dir, row, folds=None, out_dir=None, poison_row
         feats = feats.clone()
         feats[list(poison_rows)] = float("nan")
     recipe = RECIPES[row["recipe"]]
-    results = {}
+    results, packets = {}, {}
     t0 = time.time()
     for fold in bench["folds"]:
         if folds is not None and fold["name"] not in folds:
@@ -105,8 +113,13 @@ def run_row(frame, bench, feature_dir, row, folds=None, out_dir=None, poison_row
         if out_dir is not None:
             p = Path(out_dir) / row["id"]
             p.mkdir(parents=True, exist_ok=True)
-            np.savez_compressed(p / f"{fold['name']}_scores.npz", cand_ids=fd.extra["cand_ids"], seen=s_seen.numpy().astype(np.float32),
+            pk = p / f"{fold['name']}_scores.npz"
+            np.savez_compressed(pk, cand_ids=fd.extra["cand_ids"], seen=s_seen.numpy().astype(np.float32),
                                 unseen=s_uns.numpy().astype(np.float32), seen_truth=truth["seen"], unseen_truth=truth["unseen"])
+            packets[fold["name"]] = {"file": pk.name, "sha256": file_sha256(pk),
+                                     "contract_sha256": fold_contract(frame, fold)["sha256"]}
+    if out_dir is not None and provenance is not None:
+        write_manifest(Path(out_dir) / row["id"], row, provenance, ident, packets)
     return results, ident, time.time() - t0
 
 
@@ -169,11 +182,16 @@ def gate(cand: dict, ctrl: dict, screen=("S1", "S2", "S3", "S4", "S5")) -> dict:
 def scorer_from_scores(frame, fold, seen, seen_truth, unseen, unseen_truth, cand_ids=None):
     """FoldScorer for saved or fresh scores. ``cand_ids`` (global IDs of the score columns) is required
     for v3+ folds; for legacy v1/v2 scores it defaults to all compositions in ascending order."""
+    con = fold_contract(frame, fold)
+    pk = {"seen": seen, "unseen": unseen, "seen_truth": seen_truth, "unseen_truth": unseen_truth}
+    if cand_ids is not None:
+        pk["cand_ids"] = cand_ids
+    elif "candidate_policy" in fold:
+        raise PacketError("v3 fold scores need their candidate ids")
+    validate_packet(pk, con)  # exact ordered ids, shapes, finite scores, truth == benchmark row lists
     cands = candidate_table(frame)
     if cand_ids is not None:
         cands = cands.set_index("comp_id").loc[list(np.asarray(cand_ids).tolist())].reset_index()
-    elif "candidate_policy" in fold:
-        raise ValueError("v3 fold scores need their candidate ids")
     crops = {c: i for i, c in enumerate(sorted(frame.crop_id.unique()))}
     dis = {d: i for i, d in enumerate(sorted(frame.disease_id.unique()))}
     if "candidate_policy" in fold:
@@ -181,11 +199,14 @@ def scorer_from_scores(frame, fold, seen, seen_truth, unseen, unseen_truth, cand
     else:
         held = set(fold["heldout_composition_ids"])
         fm = np.array([int(c) not in held for c in cands.comp_id])
+    assert np.array_equal(fm, con["fit_mask"])
     return FoldScorer(np.asarray(seen, np.float64), seen_truth, np.asarray(unseen, np.float64), unseen_truth, fm,
                       np.array([crops[c] for c in cands.crop_id]), np.array([dis[d] for d in cands.disease_id]),
                       cands.disease.eq(HEALTHY).to_numpy())
 
 
 def scorer_from_npz(frame, fold, z):
+    """Saved packet -> FoldScorer, after strict validation against the fold contract (both schemas)."""
+    validate_packet(z, fold_contract(frame, fold))
     return scorer_from_scores(frame, fold, z["seen"], z["seen_truth"], z["unseen"], z["unseen_truth"],
                               z["cand_ids"] if "cand_ids" in z.files else None)

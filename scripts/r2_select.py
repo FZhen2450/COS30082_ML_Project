@@ -8,7 +8,16 @@ Nested estimate: for each development fold k, rerun the whole selection on the o
 at the gamma pooled over the other folds. The mean over k estimates the selection procedure's output
 without using fold k for any choice.
 
-  python scripts/r2_select.py --bench B --protocol P --tree-key K --scores DIR1 [DIR2 ...] --out OUT.json
+Input integrity (v3 hardening): every selected row must be declared, with its exact configuration, in a
+protocol matrix whose sha256 the protocol fixes; its run-time record (summaries.jsonl) must name a committed
+matrix with that configuration; every packet copy found in any --scores dir must be byte-identical (conflicts
+are rejected, not shadowed by argument order); every packet must match the packet registry and pass strict
+validation against the fold contract (ordered candidate ids, shapes, finite scores, truth = benchmark rows).
+All scientific fields of the receipt are computed exactly as before; provenance is added under "inputs".
+
+  python scripts/r2_select.py --bench B --protocol P --tree-key K --scores DIR1 [DIR2 ...] \
+      --registry artifacts/r2/v3/packet_registry_v3.json --out OUT.json
+  (--allow-unregistered: exploratory only; the receipt is stamped "provenance": "unregistered")
 """
 from __future__ import annotations
 
@@ -23,17 +32,64 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from research_r2.data import load_training_source  # noqa: E402
 from research_r2.metrics import GAMMA_GRID  # noqa: E402
+from research_r2.packets import (PacketError, declared_rows, committed_matrix_index, file_sha256,  # noqa: E402
+                                 fold_contract, git_state, resolve_packets, runtime_summary, tree_rows,
+                                 validate_packet)
 from research_r2.runner import scorer_from_npz  # noqa: E402
 
 
-def fold_stats(frame, bench, dirs, rows, folds):
+def check_inputs(frame, bench, proto, tree_key, dirs, folds, registry):
+    """Verify configuration identity and packet provenance of every selected row. Returns (paths, inputs)."""
+    entry = proto[tree_key]
+    rows = tree_rows(entry["tree"], entry["start"])
+    decl = declared_rows(entry, rows)
+    mindex = committed_matrix_index()
+    F = {f["name"]: f for f in bench["folds"]}
+    contracts = {fn: fold_contract(frame, F[fn]) for fn in folds}
+    if registry is not None:
+        if registry["benchmark_semantic_sha256"] != bench["semantic_sha256"]:
+            raise PacketError("registry was made for a different benchmark")
+        if registry["protocol_sha256"] != proto["_sha256"]:
+            raise PacketError("registry was made for a different protocol file")
+    paths, rec = {}, {}
+    for rid in rows:
+        res = resolve_packets(rid, folds, dirs)
+        stages = sorted({str(Path(c).parent.parent.parent) for f in res.values() for c in f["copies"]})
+        runtime = [runtime_summary(Path(sd), rid, decl[rid], mindex) for sd in stages]
+        reg = None
+        if registry is not None:
+            reg = registry["rows"].get(rid)
+            if reg is None:
+                raise PacketError(f"row {rid!r} is not in the packet registry")
+            if reg["config_sha256"] != decl[rid]["config_sha256"]:
+                raise PacketError(f"row {rid!r}: registered configuration differs from the declared one")
+        for fn in folds:
+            validate_packet(np.load(res[fn]["path"]), contracts[fn])
+            if reg is not None:
+                rf = reg["folds"].get(fn)
+                if rf is None or rf["sha256"] != res[fn]["sha256"]:
+                    raise PacketError(f"{rid}/{fn}: packet sha256 {res[fn]['sha256']} is not the registered one")
+                if rf["contract_sha256"] != contracts[fn]["sha256"]:
+                    raise PacketError(f"{rid}/{fn}: fold contract changed since registration")
+        paths[rid] = {fn: res[fn]["path"] for fn in folds}
+        rec[rid] = {"config_sha256": decl[rid]["config_sha256"], "declared_in": decl[rid]["declared_in"],
+                    "runtime_matrix_sha256": sorted({r["matrix_sha256"] for r in runtime}),
+                    "packets": {fn: {"sha256": res[fn]["sha256"], "n_identical_copies": len(res[fn]["copies"])} for fn in folds}}
+    inputs = {"provenance": "registered" if registry is not None else "unregistered",
+              "benchmark_semantic_sha256": bench["semantic_sha256"], "protocol_sha256": proto["_sha256"],
+              "matrices": {k: v for k, v in (entry.get("matrices") or entry.get("matrix")).items()},
+              "registry_sha256": registry["_sha256"] if registry is not None else None,
+              "contracts": {fn: contracts[fn]["sha256"] for fn in folds}, "rows": rec, "code": git_state(ROOT)}
+    return paths, inputs
+
+
+def fold_stats(frame, bench, paths, rows, folds):
     F = {f["name"]: f for f in bench["folds"]}
     st = {}
     for r in rows:
-        d = next(Path(x) / r for x in dirs if (Path(x) / r).exists())
         st[r] = {}
         for fn in folds:
-            sc = scorer_from_npz(frame, F[fn], np.load(d / f"{fn}_scores.npz"))
+            sc = scorer_from_npz(frame, F[fn], np.load(paths[r][fn]))
             cur = [sc.at(g) for g in GAMMA_GRID]
             st[r][fn] = {"H": np.array([c["H_bal"] for c in cur]), "hs": np.array([c["unseen_healthy_shortcut"] for c in cur]),
                          "Hmic": np.array([c["H_micro"] for c in cur]), "ausuc": sc.ausuc()}
@@ -84,14 +140,24 @@ def main():
     ap.add_argument("--tree-key", required=True)
     ap.add_argument("--scores", nargs="+", required=True)
     ap.add_argument("--out", required=True)
+    ap.add_argument("--registry", help="packet registry JSON (required unless --allow-unregistered)")
+    ap.add_argument("--allow-unregistered", action="store_true", help="exploratory runs only; never cited as evidence")
     a = ap.parse_args()
+    if not a.registry and not a.allow_unregistered:
+        ap.error("--registry is required (or --allow-unregistered for exploratory runs)")
     frame = load_training_source(ROOT / "DPD_Small_train.csv")
     bench = json.loads(Path(a.bench).read_text())
     proto = json.loads(Path(a.protocol).read_text())
-    assert bench["semantic_sha256"] == proto["benchmark_semantic_sha256"]
+    proto["_sha256"] = file_sha256(a.protocol)
+    if bench["semantic_sha256"] != proto["benchmark_semantic_sha256"]:
+        raise PacketError("benchmark semantic hash differs from the protocol")
+    registry = None
+    if a.registry:
+        registry = json.loads(Path(a.registry).read_text()); registry["_sha256"] = file_sha256(a.registry)
     tree = proto[a.tree_key]["tree"]; start = proto[a.tree_key]["start"]
     folds = [f["name"] for f in bench["folds"] if f["role"] == "inner"]
-    st = fold_stats(frame, bench, a.scores, list(tree), folds)
+    paths, inputs = check_inputs(frame, bench, proto, a.tree_key, a.scores, folds, registry)
+    st = fold_stats(frame, bench, paths, list(tree), folds)
     sel, path, trace, S = select(st, tree, start, folds)
     nested = []
     for k in folds:
@@ -112,6 +178,7 @@ def main():
                               "mean_H_bal_control": float(np.mean([n["control_H_bal"] for n in nested])),
                               "mean_diff_pp": float(np.mean(d)), "folds_selected_better": int(sum(x > 0 for x in d)),
                               "selection_counts": {r: sum(n["selected"] == r for n in nested) for r in sorted(set(n["selected"] for n in nested))}}}
+    rep["inputs"] = inputs  # provenance only; every other field is the unchanged scientific receipt
     Path(a.out).write_text(json.dumps(rep, indent=1))
     print(f"selected: {sel}  path: {' -> '.join(path)}")
     for t in trace:

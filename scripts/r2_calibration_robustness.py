@@ -20,10 +20,12 @@ import pandas as pd
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from research_r2.data import HEALTHY, candidate_table, load_training_source  # noqa: E402
 from research_r2.metrics import GAMMA_GRID, FoldScorer, harmonic  # noqa: E402
+from research_r2.packets import fold_contract, validate_packet  # noqa: E402
 
 
 def load(frame, cands, fold, path, keep_cols=None, keep_unseen_comps=None):
     z = np.load(path)
+    validate_packet(z, fold_contract(frame, fold))  # strict contract before any column / row subsetting
     crops = {c: i for i, c in enumerate(sorted(frame.crop_id.unique()))}
     dis = {d: i for i, d in enumerate(sorted(frame.disease_id.unique()))}
     held = set(fold["heldout_composition_ids"])

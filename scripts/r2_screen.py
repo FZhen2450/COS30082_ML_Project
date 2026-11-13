@@ -15,6 +15,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from research_r2.data import load_training_source, sha256_file  # noqa: E402
 from research_r2.guards import select_folds, verify_frozen  # noqa: E402
+from research_r2.packets import git_state  # noqa: E402
 from research_r2.runner import gate, run_row, summarise  # noqa: E402
 
 
@@ -37,6 +38,11 @@ def main():
         entry = verify_frozen(a.frozen_recipe, a.matrix, bench)  # raises on any mismatch
         folds = folds + [f for f in entry["protected_folds"] if f not in folds]
     rows = json.loads(Path(a.matrix).read_text())
+    # provenance for manifest.json written next to NEW score packets (historical packets are never touched)
+    prov = {"matrix": a.matrix, "matrix_sha256": sha256_file(a.matrix), "benchmark": a.bench,
+            "benchmark_semantic_sha256": bench["semantic_sha256"], "frozen_recipe": a.frozen_recipe,
+            "folds": folds, "code": git_state(Path(__file__).resolve().parents[1]),
+            "started_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
     done = {}
@@ -52,7 +58,8 @@ def main():
             continue
         poison = None if a.frozen_recipe else bench.get("outer_exclusion_rows")
         results, ident, secs = run_row(frame, bench, a.features, row, folds=folds,
-                                       out_dir=(out / "scores") if a.save_scores else None, poison_rows=poison)
+                                       out_dir=(out / "scores") if a.save_scores else None, poison_rows=poison,
+                                       provenance=prov)
         sel = [f["name"] for f in bench["folds"] if f["role"] in ("screen", "inner")]
         s = summarise(row, results, ident, secs, screen=tuple(sel))
         s["matrix_sha256"] = sha256_file(a.matrix)
