@@ -219,21 +219,47 @@ def import_final(handoff_path, handoff_sha256, output_path, *, seen_csv, unseen_
     return receipt
 
 
+def import_full8000_wp2(handoff_path, handoff_sha256, output_path, *, registry_path,
+                        allow_synthetic=False, checkpoint_file=None):
+    """Versioned WP2-only intake; historical four-model pins remain unchanged."""
+    from evaluation.full8000_packets import import_full8000_wp2 as implementation
+    return implementation(handoff_path, handoff_sha256, output_path, registry_path=registry_path,
+                          allow_synthetic=allow_synthetic, checkpoint_file=checkpoint_file)
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--handoff", type=Path, required=True)
     parser.add_argument("--handoff-sha256", required=True)
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--official-seen", type=Path, required=True)
-    parser.add_argument("--official-unseen", type=Path, required=True)
+    parser.add_argument("--protocol", choices=("historical-final333-v1", "full8000-20261112-v1"),
+                        default="historical-final333-v1", help="Explicit new protocol; historical default preserved")
+    parser.add_argument("--official-seen", type=Path)
+    parser.add_argument("--official-unseen", type=Path)
+    parser.add_argument("--registry", type=Path, help="Required for full-8000 duplicate-import protection")
+    parser.add_argument("--checkpoint-file", type=Path, help="Optional explicit checkpoint byte hashing; never loaded")
     parser.add_argument("--allow-synthetic", action="store_true", help="Explicitly labeled test fixtures only")
     args = parser.parse_args(argv)
     try:
-        receipt = import_final(args.handoff, args.handoff_sha256, args.output, seen_csv=args.official_seen,
-                               unseen_csv=args.official_unseen, allow_synthetic=args.allow_synthetic)
+        if args.protocol == "full8000-20261112-v1":
+            if args.registry is None:
+                parser.error("--registry is required for full-8000 intake")
+            if args.official_seen is not None or args.official_unseen is not None:
+                parser.error("Full-8000 intake uses the authenticated common manifest, not historical CSV rebuilding")
+            receipt = import_full8000_wp2(args.handoff, args.handoff_sha256, args.output, registry_path=args.registry,
+                                          allow_synthetic=args.allow_synthetic, checkpoint_file=args.checkpoint_file)
+        else:
+            if args.official_seen is None or args.official_unseen is None or args.checkpoint_file is not None:
+                parser.error("Historical intake requires both official CSV paths; optional byte hashing is full-8000 only")
+            receipt = import_final(args.handoff, args.handoff_sha256, args.output, seen_csv=args.official_seen,
+                                   unseen_csv=args.official_unseen, allow_synthetic=args.allow_synthetic)
     except (OSError, ValueError, TypeError, KeyError, subprocess.SubprocessError) as error:
         parser.exit(1, f"WP5 final import failed: {error}\n")
-    print(f"WP5 final import complete; synthetic={receipt['synthetic']}; receipt={args.output / 'receipt.json'}")
+    if args.protocol == "full8000-20261112-v1":
+        print(f"WP2 saved-score intake validated; four-model acceptance pending; "
+              f"synthetic={receipt['synthetic']}; receipt={args.output / 'receipt.json'}")
+    else:
+        print(f"WP5 final import complete; synthetic={receipt['synthetic']}; receipt={args.output / 'receipt.json'}")
     return 0
 
 
