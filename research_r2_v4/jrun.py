@@ -446,7 +446,11 @@ def run_fold(cfg: JConfig, seed: int, fold: dict, fold_index: int, frame, bench,
     start = [p.detach().clone() for _, p in named]
     rec = {"row": cfg.row, "seed": seed, "fold": fold["name"], "config": asdict(cfg), "config_sha256": cfg.sha(),
            "torch_seed": rs, "weights_file": wfile, "trainable_backbone_params": int(sum(p.numel() for _, p in named)),
-           "frozen_params": int(sum(p.numel() for p in frozen)), "n_fitting": len(fit), "started": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
+           "frozen_params": int(sum(p.numel() for p in frozen)), "n_fitting": len(fit), "started": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+           "frozen_digest_before": frozen_before, "code": code_identity()}
+    if device == "cuda":
+        torch.cuda.reset_peak_memory_stats()
+    epoch_log = []
     steps = skipped = 0
     if cfg.epochs > 0:
         if not named:
@@ -480,6 +484,7 @@ def run_fold(cfg: JConfig, seed: int, fold: dict, fold_index: int, frame, bench,
         model.train(); heads.train()
         done = False
         for ep in range(cfg.epochs):
+            te, n0, sk0 = time.time(), len(losses), skipped
             for x, c, d, ix in dl:
                 x, c, d = x.to(device, non_blocking=True), c.to(device), d.to(device)
                 with torch.autocast("cuda", dtype=torch.float16, enabled=use_amp):
@@ -507,18 +512,29 @@ def run_fold(cfg: JConfig, seed: int, fold: dict, fold_index: int, frame, bench,
                 if cfg.max_steps and steps >= cfg.max_steps:
                     done = True
                     break
+            ep_losses = losses[n0:]
+            epoch_log.append({"epoch": ep + 1, "steps": len(ep_losses), "train_loss_mean": float(np.mean(ep_losses)) if ep_losses else None,
+                              "train_loss_last50": float(np.mean(ep_losses[-50:])) if ep_losses else None,
+                              "amp_skipped_steps": skipped - sk0, "seconds": time.time() - te,
+                              "images_per_s": len(ep_losses) * cfg.batch / max(1e-9, time.time() - te), "lr_end": sched.get_last_lr()})
             if done:
                 break
+        rec["epochs"] = epoch_log
+        rec["validation_curve"] = "none by design: all fitting rows train (declared); no evaluation row is read during training"
         rec["grad_checks"] = mon.finish(skipped, steps)
         rec["train_loss"] = {"first50": float(np.mean(losses[:50])), "last50": float(np.mean(losses[-50:])), "steps": steps}
         if not all(math.isfinite(v) for v in losses[-50:]):
             raise JCheckError("non-finite training loss in the last 50 steps")
-    if param_digest(frozen) != frozen_before:
+    rec["frozen_digest_after"] = param_digest(frozen)
+    if rec["frozen_digest_after"] != frozen_before:
         raise JCheckError("frozen parameters changed during training")
-    changed = [float((p.detach() - s).norm()) > 0 for (_, p), s in zip(named, start)]
+    norms = [float((p.detach() - s).norm()) for (_, p), s in zip(named, start)]
+    changed = [v > 0 for v in norms]
     if cfg.epochs > 0 and not all(changed):
         raise JCheckError(f"{changed.count(False)} trainable tensors did not change")
     rec["trainable_tensors_changed"] = f"{sum(changed)}/{len(changed)}"
+    rec["trainable_update_norm"] = {"total": float(np.linalg.norm(norms)) if norms else 0.0, "min_tensor": float(min(norms)) if norms else 0.0}
+    rec["peak_gpu_gib_training"] = torch.cuda.max_memory_allocated() / 2**30 if device == "cuda" else None
     # --- checkpoint, reload, verify
     access.allow("probe", fit[:8])
     probe_tf = tf
@@ -542,6 +558,9 @@ def run_fold(cfg: JConfig, seed: int, fold: dict, fold_index: int, frame, bench,
     cache = out_dir / "features.pt"
     torch.save({"meta": cache_meta, "rows": rows, "features": feats}, cache)
     rec["features_sha256"] = sha256_file(cache)
+    rec["feature_cache_meta"] = cache_meta
+    rec["checkpoint_keys"] = len(checkpoint_keys(model, heads)[0])
+    rec["peak_gpu_gib_total"] = torch.cuda.max_memory_allocated() / 2**30 if device == "cuda" else None
     feats_loaded, rows_loaded = load_feature_cache(cache, cache_meta)
     # --- downstream D1 on this fold only
     full = torch.full((len(frame), 2, feats_loaded.shape[-1]), float("nan"))
@@ -565,6 +584,14 @@ def run_fold(cfg: JConfig, seed: int, fold: dict, fold_index: int, frame, bench,
                 "seconds": time.time() - t0, "status": "ok", "finished": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())})
     save_atomic_json(out_dir / "receipt.json", rec)
     return rec
+
+
+def code_identity():
+    import subprocess
+    here = Path(__file__).resolve()
+    head = subprocess.run(["git", "rev-parse", "HEAD"], cwd=here.parents[1], capture_output=True, text=True).stdout.strip()
+    dirty = subprocess.run(["git", "status", "--porcelain"], cwd=here.parents[1], capture_output=True, text=True).stdout.strip()
+    return {"git_head": head, "worktree_clean": dirty == "", "jrun_sha256": sha256_file(here)}
 
 
 def load_feature_cache(path, expected_meta):

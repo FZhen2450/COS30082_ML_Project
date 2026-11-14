@@ -135,9 +135,23 @@ def cmd_evaluate(a, d1_table=None):
     for r, by_seed in seeds.items():
         T[r] = by_seed[min(by_seed)]  # seed 0 table drives screening and nested (declared)
         S0 = T[r].summary(INNER); Sd = T[D1].summary(INNER)
-        e = {"seeds": sorted(by_seed), "seed0": {"primary": S0["primary"], "ausuc": S0["ausuc"], "gate_vs_D1": ev.gate(S0, Sd, INNER),
-                                                  "bootstrap_vs_D1": ev.paired_bootstrap(T[r], T[D1], INNER),
-                                                  "false_healthy": ev.false_healthy(T[r], INNER)}}
+        g0 = {k: {key: T[r].sc[k][0].at(0.0)[key] for key in ev.KEYS} for k in INNER}
+        e = {"seeds": sorted(by_seed), "seed0": {
+            "primary": S0["primary"], "ausuc": S0["ausuc"],
+            "summary_lofo": {key: float(np.mean([S0["per"][f][key] for f in INNER])) for key in ev.KEYS},
+            "summary_gamma0": {key: float(np.mean([g0[f][key] for f in INNER])) for key in ev.KEYS},
+            "per_fold": S0["per"], "gamma0_per_fold": g0,
+            "gate_vs_D1": ev.gate(S0, Sd, INNER),
+            "nested_vs_D1": nested_with_parent_rule({D1: T[D1], r: T[r]}, D1, [r], INNER, {}),
+            "bootstrap_vs_D1": ev.paired_bootstrap(T[r], T[D1], INNER),
+            "false_healthy": ev.false_healthy(T[r], INNER),
+            "source_strata_seen": ev.source_strata(T[r], frame, F, INNER),
+            "receipts": {fn: {k: rec.get(k) for k in ("seconds", "peak_gpu_gib_training", "peak_gpu_gib_total", "checkpoint_sha256",
+                                                     "features_sha256", "packet_sha256", "trainable_tensors_changed", "reload_max_abs_diff")}
+                         | {"amp_skipped": (rec.get("grad_checks") or {}).get("skipped_steps"), "steps": (rec.get("grad_checks") or {}).get("steps")}
+                         for fn, (_, rec) in jrun.row_packets(base, r, min(by_seed), INNER).items()}}}
+        (base / "curves").mkdir(exist_ok=True)
+        (base / "curves" / f"{r}__seed{min(by_seed)}.json").write_text(json.dumps(ev.curves(T[r])))
         if len(by_seed) >= 3:
             Sm = mean_summary([t.summary(INNER) for t in by_seed.values()])
             e["three_seed"] = {"primary": Sm["primary"], "gate_vs_D1": ev.gate(Sm, Sd, INNER),
@@ -151,6 +165,11 @@ def cmd_evaluate(a, d1_table=None):
         par = [p for p in PARENTS if p in seeds]
         if par:
             res["parent_by_rule"] = max(par, key=lambda r: (T[r].summary(INNER)["primary"], -PARENTS.index(r)))
+            res["parent_rule_complete"] = sorted(par) == sorted(PARENTS)
+            # held-fold-free parent: for each held fold k, the parent chosen on the other five folds only
+            res["parent_selection_audit"] = [{"held_fold": n["held_fold"], "inner_parent": n["inner_parent"],
+                                              "equals_global_parent": n["inner_parent"] == res["parent_by_rule"]}
+                                             for n in res["stage_nested"]["held"]]
     (base / "evaluation.json").write_text(json.dumps(res, indent=1, default=float))
     for r, e in res["rows"].items():
         g = e["seed0"]["gate_vs_D1"]

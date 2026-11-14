@@ -221,6 +221,40 @@ class TestPacketsAndReceipts(unittest.TestCase):
             validate_packet(pk, con)
 
 
+class TestNestedParentRule(unittest.TestCase):
+    """The J4a-J7 parent used in a held fold is chosen on the other five folds only."""
+
+    def tables(self, perfect=None):
+        from research_r2_v4 import evaluate as ev
+        from research_r2_v4.common import scorer
+        frame, _, F = E()
+
+        def arm(fn, seed, good=False):
+            con = fold_contract(frame, F[fn]); rng = np.random.default_rng(seed); k = len(con["cand_ids"])
+            s = rng.normal(size=(len(con["seen_truth"]), k)); u = rng.normal(size=(len(con["unseen_truth"]), k))
+            if good:
+                s[np.arange(len(s)), con["seen_truth"]] += 50; u[np.arange(len(u)), con["unseen_truth"]] += 50
+            return scorer(frame, {"seen": s, "unseen": u, "seen_truth": con["seen_truth"], "unseen_truth": con["unseen_truth"],
+                                  "cand_ids": con["cand_ids"], "fold": F[fn]})
+        T = {}
+        for i, r in enumerate(["D1_synthComp_norm", "J1_clipL_last2", "J2_clipL_last4", "J3_clipL_lora8_mlp", "J5_best_source_balanced"]):
+            T[r] = ev.RowTable(r, {fn: [arm(fn, 100 * i + j, good=(perfect == (r, fn)))] for j, fn in enumerate(INNER)}, ["single"])
+        return T
+
+    def test_held_fold_does_not_choose_its_parent(self):
+        sys.path.insert(0, str(ROOT / "scripts"))
+        import r2v4_stage_j as sj
+        cands = ["J1_clipL_last2", "J2_clipL_last4", "J3_clipL_lora8_mlp", "J5_best_source_balanced"]
+        base = sj.nested_with_parent_rule(self.tables(), "D1_synthComp_norm", cands, INNER, {"J5_best_source_balanced": "J1_clipL_last2"})
+        for k in INNER:  # make J1 perfect ONLY on the held fold k: k's own inner parent must not change
+            alt = sj.nested_with_parent_rule(self.tables(perfect=("J1_clipL_last2", k)), "D1_synthComp_norm", cands, INNER,
+                                             {"J5_best_source_balanced": "J1_clipL_last2"})
+            hb = next(h for h in base["held"] if h["held_fold"] == k); ha = next(h for h in alt["held"] if h["held_fold"] == k)
+            self.assertEqual(hb["inner_parent"], ha["inner_parent"], k)
+        for h in base["held"]:  # children of J1 are selectable only where the inner parent is J1
+            self.assertEqual("J5_best_source_balanced" in h["excluded_children"], h["inner_parent"] != "J1_clipL_last2")
+
+
 class TestSyntheticSixFoldDryRun(unittest.TestCase):
     """End to end on CPU: run (2 synthetic rows x 6 folds) -> receipts -> evaluate -> H_RF (2 pairs), recording every
     file the process opens; then negative checks on missing / tampered packets."""
