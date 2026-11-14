@@ -18,6 +18,8 @@ from torch import nn
 CLIP_REVISION = "d05afc436d78f1c48dc0dbf8e5980a9d471f35f6"
 CLIP_SHA256 = "b8cca3fd41ae0c99ba7e8951adf17d267cdb84cd88be6f7c2e0eca1737a03836"
 M6_SHA256 = "8835a18b9eb933ae224bd17866f18bc56406e24d8612743f4e7c88848a8135cc"
+FULL8000_M6_SHA256 = "a6bd8980bd091df53e567f9e67601d94d1738c998cfd137fd1270cbec9dc07f0"
+FULL8000_TRAINING_SHA256 = "7f94ac00c89b212ec30a646985b24f1a61fca19cf64b6f25757547868e3e4870"
 SOURCE_SHA256 = "9f1b729ab08f120c9e8d3a5681aa1ccbdf1d9210f9aaa6143959363dcb106a7d"
 CATALOG_SHA256 = "8217be059e3a4a144f89081ee43b7cd042bb5a62c370197bf0e3fca1c6d28bf3"
 CANDIDATE_SHA256 = "4cb0a24a96cf647f32311817fa7b082a46d3cf00c20ae61f4287e83cc898dfaf"
@@ -160,20 +162,32 @@ class ResidualVisualAdapter(nn.Module):
         return output
 
 
-def _load_m6_checkpoint(path, expected):
+def _load_m6_checkpoint(path, expected, full_training_sha=None):
     """Read only the selected, hash-pinned adapter; never execute notebook/pickle code."""
     path = Path(path)
+    selected_sha = M6_SHA256 if full_training_sha is None else FULL8000_M6_SHA256
+    if full_training_sha is not None and full_training_sha != FULL8000_TRAINING_SHA256:
+        raise ValueError("Full-8,000 adapter training identity mismatch")
     with path.open("rb") as stream:
-        if _sha256_stream(stream) != M6_SHA256:
+        if _sha256_stream(stream) != selected_sha:
             raise ValueError("Select the pinned M6 seed-45 epoch-1 checkpoint (SHA-256 mismatch)")
         stream.seek(0)
         payload = torch.load(stream, map_location="cpu", weights_only=True)
         stream.seek(0)
-        if _sha256_stream(stream) != M6_SHA256:
+        if _sha256_stream(stream) != selected_sha:
             raise ValueError("Adapter file changed while loading")
     if not isinstance(payload, dict) or payload.get("schema") != "wp3b-visual-adapter-m4-v1":
         raise ValueError("Unsupported adapter envelope; obtain the selected M6 checkpoint/schema handoff")
     contract = payload["contract"]
+    if full_training_sha is not None:
+        if (contract.get('schema') != 'wp3b-final-refit-contract-v1'
+                or contract.get('recipe') != 'm6'
+                or contract.get('training') != {'rows': 8000, 'ordered_filename_sha256': full_training_sha,
+                                                'scope': 'full_original_training'}
+                or contract.get('fitting_composition_ids') != expected['ids']
+                or payload.get('selection') != {'epoch': 1, 'selection_policy': {
+                    'primary': 'fixed_terminal_epoch', 'epoch': 1}}):
+            raise ValueError("Full-8,000 M6 refit provenance mismatch")
     checksum = json_hash(contract)
     if payload.get("contract_sha256") != checksum or payload.get("adapter_spec") != ADAPTER_SPEC:
         raise ValueError("Adapter contract hash or architecture mismatch")
@@ -214,14 +228,14 @@ def _load_m6_checkpoint(path, expected):
         raise ValueError("Adapter state must contain finite float32 tensors")
     adapter.load_state_dict(state_dict, strict=True)
     adapter.eval().requires_grad_(False)
-    return adapter, direct.detach().cpu().clone(), {"adapter_sha256": M6_SHA256,
+    return adapter, direct.detach().cpu().clone(), {"adapter_sha256": selected_sha,
         "adapter_contract_sha256": checksum, "adapter_seed": 45, "adapter_epoch": 1,
         "residual_cap": .2, "direct_text_sha256": tensor_hash(direct)}
 
 
-def load_m6_checkpoint(path, expected):
+def load_m6_checkpoint(path, expected, full_training_sha=None):
     try:
-        return _load_m6_checkpoint(path, expected)
+        return _load_m6_checkpoint(path, expected, full_training_sha)
     except (KeyError, TypeError, AttributeError, RuntimeError) as exc:
         raise ValueError("Invalid M6 checkpoint interface, state shape or metadata") from exc
 

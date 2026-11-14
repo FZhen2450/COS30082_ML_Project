@@ -1,0 +1,158 @@
+{
+  "schema": "leaflens-full8000-m6-verification-v1",
+  "date_myt": "2026-11-12",
+  "verification_kind": "Codex-assisted local owner-side rehearsal; independent human acceptance pending",
+  "handoff_zip_sha256": "1f79d37bfadb4c96aeef5590f66791532a31f01f49dedd45d42a7b9eae7da798",
+  "evidence_directory": "runs/wp4-full8000-m6-final-20261112",
+  "files": {
+    "canonical_scores.json": "994b0cdcc264820d226f91e34d3d8205424d34cfe5a090f01013d8c45ea57f3c",
+    "final333-m6.png": "953dbc74d8c4273001ba5f948ecca85ef25b8fada215def72dad2c2662a4d260",
+    "minimum-final333-m6.png": "21b1abd825cb30d38830bc7faee09caff6f9ee9133043b3ee80de8cd56bd4917",
+    "prediction.json": "a2263d3646e2807fe51cba66b27b89a9d6ea99b456e9f09501c3f59f90420f60",
+    "receipt.json": "61cbdb695313ab45f50f57587c00ce13c78ca454b65c0d97d831cd2288ef3703",
+    "unseen-labelled-fallback.png": "e62a3986946f3581a0f9fcacc4bfa0db8a47c434fa7df845881e2ff8f2cf4de7"
+  },
+  "receipt": {
+    "schema": "wp4-final333-rehearsal-v1",
+    "model": "m6",
+    "query": "PWV2_peach_leaf_curl_6128.jpg",
+    "candidate_count": 333,
+    "reference_training_count": 8000,
+    "native_image_inference": true,
+    "canonical_outputs_match": true,
+    "export_matches": true,
+    "model_panel_inline": true,
+    "model_label": "M6 full-8000 / final-333 (CPU)",
+    "score_shape": [
+      1,
+      333
+    ],
+    "score_dtype": "torch.float64",
+    "stable_top5_verified": true,
+    "reference_names": [
+      "CDDM_apple_leaf_rust_28998.jpg",
+      "CDDM_apple_leaf_rust_28294.jpg",
+      "CDDM_apple_leaf_rust_27606.jpg",
+      "CDDM_apple_leaf_rust_28558.jpg"
+    ],
+    "query_sha256": "c7eb7c3100a65afd9b61c50c20b470e89f9401048b25f7c20ea5faedde48a9cc",
+    "source_sha256": {
+      "wp4/__init__.py": "05a6d1f4c8668ace82423cb7f138c36a6f8de9f826309713d55f81feb912ffc8",
+      "wp4/asset_discovery.py": "cf2cacc68a906b568bdbb5780236ff20cfcb89efebb5ec9f7fd7f73aa6cba768",
+      "wp4/clip_predictor.py": "2183fa6d0dd82cef7db1d6cffb514bce8b9685a737ff57f3d58d805a1e933fc2",
+      "wp4/final_predictor.py": "b95cbbf124220b5aa48afbc2e83bceb6b36a8827dcd940b354125c373c84d26c",
+      "wp4/gui.py": "ea43b8bfb2428cd6c489a61dbedec8ae572dcf7e43bf5e5f199d9d8ad09e8b50",
+      "wp4/layout.py": "05aad7acfeb6299bfe68c569237ce290b858a6690357521ef32ee6cbc3e4be83",
+      "wp4/model_loader.py": "804ec8cb7c5afa5b26d280adeb97224bd8fd5e0449b32085f1fb354d48b95eb7",
+      "wp4/model_picker.py": "c476ee0e0dd5c390ce93230b402e99e251f65953dcfe8d855722cdb82f365a8b",
+      "wp4/service.py": "b3c5f70297c2acc9dfcf15c1c6bcf136f5bb61be81aa7f61e60191783217a24a",
+      "wp4/text_bank.py": "d1eda60f8ee3a875817cbb6fd55330fbddeccc782ffc80fe1188af2f9b1d44ee",
+      "wp4/widgets.py": "da6b98d42f332456cb62bf861380054596e9df23f36696ad2cd22fea217fc63d",
+      "scripts/rehearse_wp4_final333.py": "2004ad0b3ceb1b7509443a473c762bc48cb451ee18f2b497d9f3688ee4568a58"
+    },
+    "official_test_images_read": false,
+    "model_provenance": {
+      "variant": "m6",
+      "model": "CLIP ViT-L/14",
+      "clip_revision": "d05afc436d78f1c48dc0dbf8e5980a9d471f35f6",
+      "clip_sha256": "b8cca3fd41ae0c99ba7e8951adf17d267cdb84cd88be6f7c2e0eca1737a03836",
+      "preprocessing": {
+        "resize_shorter_edge": 224,
+        "interpolation": "bicubic",
+        "center_crop": 224,
+        "convert": "RGB",
+        "mean": [
+          0.48145466,
+          0.4578275,
+          0.40821073
+        ],
+        "std": [
+          0.26862954,
+          0.26130258,
+          0.27577711
+        ],
+        "augmentation": null
+      },
+      "candidate_count": 333,
+      "catalog_candidate_sha256": "ba17e94119e8b2b7a4b18603e25405d2f52bf4a93396973f80491800697eb62f",
+      "prompt_sha256": "c9dd871d61d4141b33583ddd71961c309fd679a8edab088cb28ba20eccef88f2",
+      "reference_training_scope": "full_8000",
+      "adapter_training_scope": "full_original_training_8000",
+      "runtime": {
+        "python": "3.13.13",
+        "torch": "2.7.1+cu118",
+        "torchvision": "0.22.1+cu118",
+        "device": "cpu"
+      },
+      "adapter_sha256": "a6bd8980bd091df53e567f9e67601d94d1738c998cfd137fd1270cbec9dc07f0",
+      "adapter_contract_sha256": "46e3373dd15f9ff59209ed9029f607293f2e95302dc9495325a88a7a098efe99",
+      "adapter_seed": 45,
+      "adapter_epoch": 1,
+      "residual_cap": 0.2,
+      "direct_text_sha256": "5bbb5f715620c65fa76b2f32c84b72dddf0d9ceae8d43c7e9720a2240ff999b6",
+      "training_direct_text_sha256": "7f402c8dbebe821b1e1f2d799c9a0ce0e0d56a10a54aad563c6cd79d510df732",
+      "final_full8000_adapter_available": true,
+      "adapter_training_count": 8000,
+      "adapter_training_manifest_sha256": "7f94ac00c89b212ec30a646985b24f1a61fca19cf64b6f25757547868e3e4870",
+      "text_bank_source": "original_official_333_row_file",
+      "text_bank_file_sha256": "1e1183371b7ad3b1687f7a140af1fea89e1fa6744ac98f1a30ad6fdae19be22b",
+      "text_bank_shape": [
+        333,
+        768
+      ],
+      "text_bank_dtype": "float64",
+      "text_bank_normalization": "use_stored_unit_rows_without_reencoding_or_renormalization",
+      "text_bank_source_url": "https://drive.google.com/file/d/1DKvZo__aQyvW1M2QOwu661KdKOv8CHWw/view"
+    },
+    "fallback_candidate": 39,
+    "fallback_note": "Class browser (not a prediction). Same disease; different crop. Fitting images only. Filename order.",
+    "predictions": [
+      {
+        "composition_id": 10,
+        "crop_id": 0,
+        "disease_id": 10,
+        "crop_name": "apple",
+        "disease_name": "rust",
+        "composition_name": "apple_rust",
+        "score": 0.3052368953991595
+      },
+      {
+        "composition_id": 15,
+        "crop_id": 0,
+        "disease_id": 15,
+        "crop_name": "apple",
+        "disease_name": "scab",
+        "composition_name": "apple_scab",
+        "score": 0.2974595987349973
+      },
+      {
+        "composition_id": 4,
+        "crop_id": 0,
+        "disease_id": 4,
+        "crop_name": "apple",
+        "disease_name": "brown_spot",
+        "composition_name": "apple_brown_spot",
+        "score": 0.28909786980415364
+      },
+      {
+        "composition_id": 292,
+        "crop_id": 49,
+        "disease_id": 157,
+        "crop_name": "tea",
+        "disease_name": "red_leaf_spot",
+        "composition_name": "tea_red_leaf_spot",
+        "score": 0.28858730997137605
+      },
+      {
+        "composition_id": 7,
+        "crop_id": 0,
+        "disease_id": 7,
+        "crop_name": "apple",
+        "disease_name": "frog_eye_leaf_spot",
+        "composition_name": "apple_frog_eye_leaf_spot",
+        "score": 0.28837828751940664
+      }
+    ],
+    "errors": []
+  }
+}
