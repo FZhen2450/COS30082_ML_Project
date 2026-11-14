@@ -1,0 +1,38 @@
+{
+ "schema": "r2v4-finetune-matrix-v1",
+ "common": {
+  "per_fold": "one model per inner fold, trained on that fold's fitting_rows ONLY (never seen-val, unseen-val or outer-exclusion rows); features for that fold's evaluation rows are extracted from that fold's model",
+  "downstream": "the unchanged D1 recipe (synth_composition, fuse 1.0, normalise) on the fold's fine-tuned features, so only the representation changes",
+  "loss": "CE(crop) + CE(disease) on linear heads over the CLIP image embedding, composition-balanced sampling",
+  "optimiser": "AdamW, lr 1e-5 backbone / 1e-3 heads, weight decay 0.05, cosine schedule, 1 warm-up epoch, AMP fp16, batch 32",
+  "epochs": 5,
+  "no_early_stopping": "fixed epochs; no validation-based stopping or checkpoint choice",
+  "eval_views": "centre + h-flip of the deterministic CLIP transform, identical to the frozen features",
+  "seeds": {"screen": [0], "confirmation_if_gate_passes": [0, 1, 2]},
+  "weights": "local ViT-L-14.pt / convnext_base-6075fbad.pth only; nothing downloaded"
+ },
+ "rows": [
+  {"id": "J0_pipeline_zero_epochs", "family": "control", "backbone": "clip_l14", "trainable": "none", "epochs": 0,
+   "hypothesis": "pipeline sanity: with zero epochs the fine-tuning pipeline must reproduce D1 within 1e-5 (otherwise the pipeline is wrong and stage J stops)"},
+  {"id": "J1_clipL_last2", "family": "partial-finetune", "backbone": "clip_l14", "trainable": "last 2 resblocks + ln_post + proj", "augment": "none (random h-flip only)",
+   "hypothesis": "adapting only the top blocks to plant pathology improves disease features without destroying CLIP's compositional prior"},
+  {"id": "J2_clipL_last4", "family": "partial-finetune", "backbone": "clip_l14", "trainable": "last 4 resblocks + ln_post + proj", "augment": "none (random h-flip only)",
+   "hypothesis": "depth ablation of J1"},
+  {"id": "J3_clipL_lora8_mlp", "family": "partial-finetune", "backbone": "clip_l14", "trainable": "LoRA rank 8 (alpha 16) on every block's MLP c_fc and c_proj", "augment": "none (random h-flip only)", "grad_checkpointing": true,
+   "hypothesis": "low-rank adaptation of every block keeps the backbone close to CLIP while adapting low-level texture features"},
+  {"id": "J4a_best_geometric_aug", "family": "controlled-augmentation", "parent": "best of J1-J3 by screen H_bal", "augment": "RandomResizedCrop(224, scale 0.6-1.0) + h-flip",
+   "hypothesis": "geometric augmentation alone (one family at a time)"},
+  {"id": "J4b_best_photometric_aug", "family": "controlled-augmentation", "parent": "best of J1-J3 by screen H_bal", "augment": "ColorJitter(0.3, 0.3, 0.3, 0.05) + RandomGrayscale(0.1) + GaussianBlur(p 0.2)",
+   "hypothesis": "photometric augmentation alone targets source style (camera, lighting, background colour)"},
+  {"id": "J5_best_source_balanced", "family": "source-robust", "parent": "best of J1-J3 by screen H_bal", "sampling": "within-concept source-balanced (research_r2.methods.within_concept_source_weight) for both heads",
+   "hypothesis": "source-balanced sampling stops the backbone from encoding source as a shortcut for crop"},
+  {"id": "J6_best_crosscrop_supcon", "family": "contrastive-disentanglement", "parent": "best of J1-J3 by screen H_bal", "extra_loss": "0.5 x supervised contrastive on disease with positives from DIFFERENT crops only, tau 0.1",
+   "hypothesis": "cross-crop disease invariance in the backbone transfers to unseen crop-disease pairs"},
+  {"id": "J7_best_crop_adversary", "family": "disentanglement", "parent": "best of J1-J3 by screen H_bal", "extra_loss": "gradient-reversal crop classifier (lambda 0.1) on a separate disease projection",
+   "hypothesis": "removing crop information from the disease representation (adversarially) improves disease transfer"},
+  {"id": "J8_convnext_stage4_concat", "family": "partial-finetune", "backbone": "clip_l14 (frozen) + tv_convnext_base stage 4 fine-tuned", "downstream": "D1 recipe on concatenated L2-normalised features (as F10)",
+   "hypothesis": "F10's complementary CNN features improve once the CNN is adapted per fold"}
+ ],
+ "order": "J0 first (must pass), then J1-J3 (screen, seed 0), then J4a-J7 on the best of J1-J3 (declared now, parent chosen mechanically by screen H_bal), J8 independent",
+ "combinations": "any combination of J passers, or of J and stage I passers, is a separate stage declared and committed after these results"
+}

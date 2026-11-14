@@ -1,0 +1,1017 @@
+[
+ {
+  "fold": "I1",
+  "source": "APPD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I1",
+  "source": "BDPL",
+  "reason": "not ablatable: held-out crop/disease coverage lost"
+ },
+ {
+  "fold": "I1",
+  "source": "BLD2",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I1",
+  "source": "BLDI",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I1",
+  "source": "BLSD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I1",
+  "source": "BPLD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I1",
+  "source": "CC",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I1",
+  "source": "CD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I1",
+  "source": "CDDM",
+  "reason": "not ablatable: held-out crop/disease coverage lost"
+ },
+ {
+  "fold": "I1",
+  "source": "CDRD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I1",
+  "source": "COF",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I1",
+  "source": "COF2",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I1",
+  "source": "COPD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I1",
+  "source": "DMOS",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I1",
+  "source": "DPD",
+  "reason": "not ablatable: held-out crop/disease coverage lost"
+ },
+ {
+  "fold": "I1",
+  "source": "ESCA",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I1",
+  "source": "FN",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I1",
+  "source": "FP",
+  "reason": "not ablatable: held-out crop/disease coverage lost"
+ },
+ {
+  "fold": "I1",
+  "source": "GD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I1",
+  "source": "GLD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I1",
+  "source": "LSAN",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I1",
+  "source": "MLBD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I1",
+  "source": "MPC",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I1",
+  "source": "OD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I1",
+  "source": "OSF",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I1",
+  "source": "PD",
+  "reason": "not ablatable: held-out crop/disease coverage lost"
+ },
+ {
+  "fold": "I1",
+  "source": "PDN",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I1",
+  "source": "PWV2",
+  "reason": "not ablatable: held-out crop/disease coverage lost"
+ },
+ {
+  "fold": "I1",
+  "source": "RDD1",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I1",
+  "source": "RDD2",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I1",
+  "source": "SBL",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I1",
+  "source": "SCLD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I1",
+  "source": "SFLD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I1",
+  "source": "SLDD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I1",
+  "source": "TSD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I1",
+  "source": "VN",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I2",
+  "source": "BDPL",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I2",
+  "source": "BLD2",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I2",
+  "source": "BLDI",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I2",
+  "source": "BLSD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I2",
+  "source": "BPLD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I2",
+  "source": "CDDM",
+  "reason": "not ablatable: held-out crop/disease coverage lost"
+ },
+ {
+  "fold": "I2",
+  "source": "CDRD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I2",
+  "source": "COF",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I2",
+  "source": "COF2",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I2",
+  "source": "COPD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I2",
+  "source": "DMOS",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I2",
+  "source": "DPD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I2",
+  "source": "ESCA",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I2",
+  "source": "FN",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I2",
+  "source": "GD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I2",
+  "source": "GLD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I2",
+  "source": "LSAN",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I2",
+  "source": "MLBD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I2",
+  "source": "MPC",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I2",
+  "source": "OD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I2",
+  "source": "OSF",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I2",
+  "source": "PDN",
+  "reason": "not ablatable: held-out crop/disease coverage lost"
+ },
+ {
+  "fold": "I2",
+  "source": "PWV2",
+  "reason": "not ablatable: held-out crop/disease coverage lost"
+ },
+ {
+  "fold": "I2",
+  "source": "RDD1",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I2",
+  "source": "RDD2",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I2",
+  "source": "SBL",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I2",
+  "source": "SCLD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I2",
+  "source": "SFLD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I2",
+  "source": "SLDD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I2",
+  "source": "TSD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I2",
+  "source": "VN",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I3",
+  "source": "APPD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I3",
+  "source": "BDPL",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I3",
+  "source": "BLD2",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I3",
+  "source": "BLDI",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I3",
+  "source": "BLSD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I3",
+  "source": "BPLD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I3",
+  "source": "CC",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I3",
+  "source": "CD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I3",
+  "source": "CDDM",
+  "reason": "not ablatable: held-out crop/disease coverage lost"
+ },
+ {
+  "fold": "I3",
+  "source": "CDRD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I3",
+  "source": "COF",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I3",
+  "source": "COF2",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I3",
+  "source": "DMOS",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I3",
+  "source": "DPD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I3",
+  "source": "ESCA",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I3",
+  "source": "FN",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I3",
+  "source": "FP",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I3",
+  "source": "GD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I3",
+  "source": "GLD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I3",
+  "source": "LSAN",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I3",
+  "source": "MLBD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I3",
+  "source": "MPC",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I3",
+  "source": "OD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I3",
+  "source": "OSF",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I3",
+  "source": "PDN",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I3",
+  "source": "PWV2",
+  "reason": "not ablatable: held-out crop/disease coverage lost"
+ },
+ {
+  "fold": "I3",
+  "source": "RDD1",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I3",
+  "source": "RDD2",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I3",
+  "source": "SBL",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I3",
+  "source": "SCLD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I3",
+  "source": "SFLD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I3",
+  "source": "SLDD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I3",
+  "source": "TSD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I3",
+  "source": "VN",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I4",
+  "source": "APPD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I4",
+  "source": "BDPL",
+  "reason": "not ablatable: held-out crop/disease coverage lost"
+ },
+ {
+  "fold": "I4",
+  "source": "BLD2",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I4",
+  "source": "BLDI",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I4",
+  "source": "BLSD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I4",
+  "source": "BPLD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I4",
+  "source": "CC",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I4",
+  "source": "CD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I4",
+  "source": "CDDM",
+  "reason": "not ablatable: held-out crop/disease coverage lost"
+ },
+ {
+  "fold": "I4",
+  "source": "CDRD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I4",
+  "source": "COF",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I4",
+  "source": "COF2",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I4",
+  "source": "COPD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I4",
+  "source": "CUPD",
+  "reason": "not ablatable: held-out crop/disease coverage lost"
+ },
+ {
+  "fold": "I4",
+  "source": "DMOS",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I4",
+  "source": "DPD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I4",
+  "source": "ESCA",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I4",
+  "source": "FN",
+  "reason": "not ablatable: held-out crop/disease coverage lost"
+ },
+ {
+  "fold": "I4",
+  "source": "FP",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I4",
+  "source": "GD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I4",
+  "source": "GLD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I4",
+  "source": "LSAN",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I4",
+  "source": "MLBD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I4",
+  "source": "MPC",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I4",
+  "source": "OD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I4",
+  "source": "OSF",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I4",
+  "source": "PDN",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I4",
+  "source": "RDD1",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I4",
+  "source": "RDD2",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I4",
+  "source": "SBL",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I4",
+  "source": "SFLD",
+  "reason": "not ablatable: held-out crop/disease coverage lost"
+ },
+ {
+  "fold": "I4",
+  "source": "SLDD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I4",
+  "source": "TSD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I4",
+  "source": "VN",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I5",
+  "source": "APPD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I5",
+  "source": "BDPL",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I5",
+  "source": "BLD2",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I5",
+  "source": "BLDI",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I5",
+  "source": "BLSD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I5",
+  "source": "BPLD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I5",
+  "source": "CC",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I5",
+  "source": "CD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I5",
+  "source": "CDRD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I5",
+  "source": "COF",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I5",
+  "source": "COF2",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I5",
+  "source": "COPD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I5",
+  "source": "CUPD",
+  "reason": "not ablatable: held-out crop/disease coverage lost"
+ },
+ {
+  "fold": "I5",
+  "source": "DMOS",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I5",
+  "source": "DPD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I5",
+  "source": "ESCA",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I5",
+  "source": "FN",
+  "reason": "not ablatable: held-out crop/disease coverage lost"
+ },
+ {
+  "fold": "I5",
+  "source": "FP",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I5",
+  "source": "GD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I5",
+  "source": "GLD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I5",
+  "source": "LSAN",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I5",
+  "source": "MLBD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I5",
+  "source": "MPC",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I5",
+  "source": "OD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I5",
+  "source": "OSF",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I5",
+  "source": "PDN",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I5",
+  "source": "PWV2",
+  "reason": "not ablatable: held-out crop/disease coverage lost"
+ },
+ {
+  "fold": "I5",
+  "source": "RDD1",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I5",
+  "source": "RDD2",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I5",
+  "source": "SBL",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I5",
+  "source": "SCLD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I5",
+  "source": "SFLD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I5",
+  "source": "SLDD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I5",
+  "source": "TSD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I5",
+  "source": "VN",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I6",
+  "source": "APPD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I6",
+  "source": "BDPL",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I6",
+  "source": "BLD2",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I6",
+  "source": "BLDI",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I6",
+  "source": "BLSD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I6",
+  "source": "BPLD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I6",
+  "source": "CC",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I6",
+  "source": "CD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I6",
+  "source": "CDRD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I6",
+  "source": "COF",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I6",
+  "source": "COF2",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I6",
+  "source": "COPD",
+  "reason": "not ablatable: held-out crop/disease coverage lost"
+ },
+ {
+  "fold": "I6",
+  "source": "CUPD",
+  "reason": "not ablatable: held-out crop/disease coverage lost"
+ },
+ {
+  "fold": "I6",
+  "source": "DMOS",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I6",
+  "source": "DPD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I6",
+  "source": "ESCA",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I6",
+  "source": "FN",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I6",
+  "source": "GD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I6",
+  "source": "GLD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I6",
+  "source": "LSAN",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I6",
+  "source": "MLBD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I6",
+  "source": "MPC",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I6",
+  "source": "OD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I6",
+  "source": "OSF",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I6",
+  "source": "PDN",
+  "reason": "not ablatable: held-out crop/disease coverage lost"
+ },
+ {
+  "fold": "I6",
+  "source": "PWV2",
+  "reason": "not ablatable: held-out crop/disease coverage lost"
+ },
+ {
+  "fold": "I6",
+  "source": "RDD1",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I6",
+  "source": "RDD2",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I6",
+  "source": "SBL",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I6",
+  "source": "SCLD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I6",
+  "source": "SFLD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I6",
+  "source": "TSD",
+  "reason": "fewer than 10 evaluation images"
+ },
+ {
+  "fold": "I6",
+  "source": "VN",
+  "reason": "fewer than 10 evaluation images"
+ }
+]

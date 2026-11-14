@@ -1,0 +1,35 @@
+{
+ "backbone": "clip_l14_ml",
+ "weights_file": "clip/ViT-L-14.pt",
+ "weights_sha256": "b8cca3fd41ae0c99ba7e8951adf17d267cdb84cd88be6f7c2e0eca1737a03836",
+ "image_sha256_list_sha256": "5fdbecaaa04f1c7fc23174554926bdf1570b7a1cb97250d694de1e4654eefc2f",
+ "train_csv_sha256": "9f1b729ab08f120c9e8d3a5681aa1ccbdf1d9210f9aaa6143959363dcb106a7d",
+ "torch": "2.5.1+cu121",
+ "precision": "fp16 weights (clip.load on CUDA), fp16 autocast forward, stored fp16",
+ "source_v3_features_sha256": "33cfc028c157990303ddde6a410a036a14d3d56cf0e04faf146f285ee0331294",
+ "schema": "r2v4-frozen-features-multilayer-v1",
+ "layers": [
+  16,
+  20,
+  24
+ ],
+ "views": [
+  "centre",
+  "hflip"
+ ],
+ "transform": "v3 CLIP-L/14 transform (Resize 224 bicubic, CenterCrop 224, CLIP normalisation)",
+ "per_layer": "CLS after resblock L -> ln_post -> proj",
+ "block24_vs_v3": {
+  "cos_min": 0.9999996423721313,
+  "cos_mean": 1.0,
+  "bit_identical_fraction": 1.0
+ },
+ "features_sha256": "660a67ff355ba3aee7e008e6c899732274048ccaf414eb3969f7b4cbbe7f7e98",
+ "shape": [
+  8000,
+  2,
+  2304
+ ],
+ "seconds": 169.11375617980957,
+ "peak_gpu_bytes": 1243516416
+}

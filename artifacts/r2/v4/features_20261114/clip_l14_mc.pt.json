@@ -1,0 +1,36 @@
+{
+ "backbone": "clip_l14_mc",
+ "weights_file": "clip/ViT-L-14.pt",
+ "weights_sha256": "b8cca3fd41ae0c99ba7e8951adf17d267cdb84cd88be6f7c2e0eca1737a03836",
+ "image_sha256_list_sha256": "5fdbecaaa04f1c7fc23174554926bdf1570b7a1cb97250d694de1e4654eefc2f",
+ "train_csv_sha256": "9f1b729ab08f120c9e8d3a5681aa1ccbdf1d9210f9aaa6143959363dcb106a7d",
+ "torch": "2.5.1+cu121",
+ "precision": "fp16 weights (clip.load on CUDA), fp16 autocast forward, stored fp16",
+ "source_v3_features_sha256": "33cfc028c157990303ddde6a410a036a14d3d56cf0e04faf146f285ee0331294",
+ "schema": "r2v4-frozen-features-multicrop-v1",
+ "views": [
+  "centre (v3)",
+  "hflip (v3)",
+  "fivecrop0",
+  "fivecrop1",
+  "fivecrop2",
+  "fivecrop3",
+  "fivecrop4",
+  "fivecrop0_hflip",
+  "fivecrop1_hflip",
+  "fivecrop2_hflip",
+  "fivecrop3_hflip",
+  "fivecrop4_hflip"
+ ],
+ "transform_extra_views": "Resize(256, bicubic) + FiveCrop(224) [tl, tr, bl, br, centre], then h-flip of each; CLIP normalisation",
+ "views_0_1": "copied unchanged from v3 clip_l14 features (evaluation view identical to D1)",
+ "use_rule": "only fitting rows use views 2-11; evaluation rows use view 0 (research_r2.runner.make_fold)",
+ "features_sha256": "f6223a1160564041a8bab3e725d1ecc111a4c871daf269e33ab863eb715cd7b1",
+ "shape": [
+  8000,
+  12,
+  768
+ ],
+ "seconds": 906.1233999729156,
+ "peak_gpu_bytes": 1697975808
+}

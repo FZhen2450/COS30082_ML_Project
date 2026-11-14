@@ -1,0 +1,125 @@
+{
+ "row": "I5b_supcon_any_crop",
+ "label": "post-freeze exploratory (v4); development cross-validation on v3 inner folds; not blind",
+ "spec": {
+  "kind": "fresh",
+  "feat": "clip_l14",
+  "fn": "proj",
+  "cfg": {
+   "projection": "supcon",
+   "cross_crop": false,
+   "seed": 0
+  },
+  "stochastic": true
+ },
+ "started": "2026-11-13T16:47:57Z",
+ "folds": {
+  "I1": {
+   "packet_sha256": "ce2ac325547a37b0397b5cc2200b4904fb745481f3bebe389823b07d5c451cc4",
+   "contract_sha256": "50fc05ebba923e311d294f7f709a4d36a2119b14789279cc12110de2b4905d66"
+  },
+  "I2": {
+   "packet_sha256": "a99ec1fceb672bd12d64a568724d495ae2170bb5f64d65c88b031f63cd932c56",
+   "contract_sha256": "76b55d6c02d6d9c4c71e2f2a572dff172cae08ee928d0021fa27fed1d09f465c"
+  },
+  "I3": {
+   "packet_sha256": "b79ccaa3b4e5e797544c8577bf33901879b7675b089476897b33b0865d3e72ec",
+   "contract_sha256": "23396b8ea981cb164facfd70b0d034fb675e23323d7abf634e62d935aa2e0109"
+  },
+  "I4": {
+   "packet_sha256": "cdb210c42b0de9196cbba0f60ada4f0c6d8b29eb2e43e3095c6f18d7c7dd573d",
+   "contract_sha256": "eed6ae546c684bee55c0ead27f3f7a3fdde4c6b1b840634048e2463cae79c6ba"
+  },
+  "I5": {
+   "packet_sha256": "e8cbfeec774a30f6568bca33e8773bde4df34422f9ed75c5219f74dba20b69df",
+   "contract_sha256": "a965325d8d5872f22f743a68d0a5f56c3a90052d4857357dd1f6433f2013b472"
+  },
+  "I6": {
+   "packet_sha256": "4a9ce207d2faccec290ad2c9826b22982c536143e3bc6919b5f7b7a5b409b25f",
+   "contract_sha256": "a36660129120ede7ab9717fd0e5857d7be27048840368f17765ccd639e939f72"
+  }
+ },
+ "feature_identity": {
+  "clip_l14": {
+   "weights_sha256": "b8cca3fd41ae0c99ba7e8951adf17d267cdb84cd88be6f7c2e0eca1737a03836",
+   "image_sha256_list_sha256": "5fdbecaaa04f1c7fc23174554926bdf1570b7a1cb97250d694de1e4654eefc2f"
+  }
+ },
+ "projection_logs": {
+  "I1": [
+   {
+    "epoch": 0,
+    "supcon": 4.241056973383196,
+    "anchors_with_positive": 9390
+   },
+   {
+    "epoch": 29,
+    "supcon": 2.662800400008895,
+    "anchors_with_positive": 9394
+   }
+  ],
+  "I2": [
+   {
+    "epoch": 0,
+    "supcon": 4.301276470015257,
+    "anchors_with_positive": 9420
+   },
+   {
+    "epoch": 29,
+    "supcon": 2.6681429542031903,
+    "anchors_with_positive": 9372
+   }
+  ],
+  "I3": [
+   {
+    "epoch": 0,
+    "supcon": 4.290801063315579,
+    "anchors_with_positive": 9450
+   },
+   {
+    "epoch": 29,
+    "supcon": 2.679782850283794,
+    "anchors_with_positive": 9385
+   }
+  ],
+  "I4": [
+   {
+    "epoch": 0,
+    "supcon": 4.283144000911348,
+    "anchors_with_positive": 9424
+   },
+   {
+    "epoch": 29,
+    "supcon": 2.6512663472874634,
+    "anchors_with_positive": 9408
+   }
+  ],
+  "I5": [
+   {
+    "epoch": 0,
+    "supcon": 4.366128319673515,
+    "anchors_with_positive": 9411
+   },
+   {
+    "epoch": 29,
+    "supcon": 2.6954291246741193,
+    "anchors_with_positive": 9414
+   }
+  ],
+  "I6": [
+   {
+    "epoch": 0,
+    "supcon": 4.340331485108654,
+    "anchors_with_positive": 9402
+   },
+   {
+    "epoch": 29,
+    "supcon": 2.716820140857982,
+    "anchors_with_positive": 9360
+   }
+  ]
+ },
+ "config_sha256": "a3ea192556498d95c4f4a6de6a37b76fff9e0a71ace4841656982798c25ce7a4",
+ "seconds": 42.5789475440979,
+ "finished": "2026-11-13T16:48:40Z"
+}
