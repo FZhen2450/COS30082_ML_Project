@@ -114,6 +114,13 @@ class Button(tk.Canvas):
 
 class RankedList(tk.Frame):
     """Selectable ranking cards with the minimal Treeview selection interface."""
+    COMPACT_ROW, COMPACT_GAP = 32, 1
+
+    @classmethod
+    def compact_height(cls, count=5):
+        """Height needed to show ``count`` compact ranking rows unclipped."""
+        return count * (cls.COMPACT_ROW + cls.COMPACT_GAP)
+
     def __init__(self, parent):
         super().__init__(parent, bg=WHITE)
         self.rows = {}
@@ -150,9 +157,9 @@ class RankedList(tk.Frame):
     def insert(self, _parent, _where, iid, values):
         if not self.rows:
             self.empty.destroy()
-        canvas = tk.Canvas(self, height=32 if self.compact else (82 if not self.rows else 72), bg=WHITE,
+        canvas = tk.Canvas(self, height=self.COMPACT_ROW if self.compact else (82 if not self.rows else 72), bg=WHITE,
                            highlightthickness=0, cursor="hand2", takefocus=True)
-        canvas.pack(fill="x", pady=(0, 1 if self.compact else 10))
+        canvas.pack(fill="x", pady=(0, self.COMPACT_GAP if self.compact else 10))
         self.rows[iid] = {"canvas": canvas, "values": values}
         canvas.bind("<Configure>", lambda _e, key=iid: self._draw(key))
         canvas.bind("<Button-1>", lambda _e, key=iid: self._choose(key))
@@ -185,7 +192,7 @@ class RankedList(tk.Frame):
         self.compact = compact
         for row in self.rows.values():
             first = row["values"][0] == 1
-            row["canvas"].configure(height=32 if compact else (82 if first else 72))
+            row["canvas"].configure(height=self.COMPACT_ROW if compact else (82 if first else 72))
 
     def _draw(self, iid):
         row = self.rows[iid]
