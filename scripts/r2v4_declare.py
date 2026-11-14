@@ -17,7 +17,8 @@ from research_r2.data import sha256_file  # noqa: E402
 FILES = ["research_r2_v4/protocol_v4.json", "research_r2_v4/matrices/stage_h_v4.json",
          "research_r2_v4/matrices/stage_i_v4.json", "research_r2_v4/matrices/stage_j_v4.json", "docs/R2_v4_Plan.md"]
 OUT = ROOT / "research_r2_v4/DECLARATION.json"
-AMENDMENTS = {1: ["research_r2_v4/amendment_1.json", "research_r2_v4/matrices/stage_i_v4_amendment1.json"]}
+AMENDMENTS = {1: ["research_r2_v4/amendment_1.json", "research_r2_v4/matrices/stage_i_v4_amendment1.json"],
+              2: ["research_r2_v4/amendment_2.json", "research_r2_v4/DECLARATION_AMENDMENT_1.json"]}  # each pins the earlier ones
 
 
 def main():
