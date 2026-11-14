@@ -1,0 +1,12 @@
+== J1_clipL_last2 start 11:45
+== J1_clipL_last2 exit=0 end 12:38
+== J2_clipL_last4 start 12:38
+== J2_clipL_last4 exit=0 end 13:37
+== J3_clipL_lora8_mlp start 13:37
+== J3_clipL_lora8_mlp exit=0 end 15:42
+== hrf J1_clipL_last2 start 15:44
+== hrf J1_clipL_last2 exit=0 end 16:05
+== hrf J2_clipL_last4 start 16:05
+== hrf J2_clipL_last4 exit=0 end 16:24
+== hrf J3_clipL_lora8_mlp start 16:24
+== hrf J3_clipL_lora8_mlp exit=0 end 16:45
