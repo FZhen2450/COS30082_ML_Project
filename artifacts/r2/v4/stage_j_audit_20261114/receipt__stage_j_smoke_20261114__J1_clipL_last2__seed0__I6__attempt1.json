@@ -1,0 +1,8 @@
+{
+ "row": "J1_clipL_last2",
+ "seed": 0,
+ "fold": "I6",
+ "status": "failed",
+ "error": "JCheckError: AMP skipped 2/20 steps (> 5%)",
+ "trace": "Traceback (most recent call last):\n  File \"<PROJECT>/workspace/worktrees/r2-v4/research_r2_v4/jrun.py\", line 599, in run_row\n    rec = run_fold(cfg, seed, fn, i, frame, bench, backend, access, adir, device, frozen_feats, recipe)\n  File \"<PROJECT>/workspace/worktrees/r2-v4/research_r2_v4/jrun.py\", line 484, in run_fold\n    rec[\"grad_checks\"] = mon.finish(skipped, steps)\n  File \"<PROJECT>/workspace/worktrees/r2-v4/research_r2_v4/jrun.py\", line 325, in finish\n    raise JCheckError(f\"AMP skipped {skipped}/{steps} steps (> 5%)\")\nresearch_r2_v4.jrun.JCheckError: AMP skipped 2/20 steps (> 5%)\n"
+}

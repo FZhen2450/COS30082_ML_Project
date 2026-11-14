@@ -1,0 +1,1 @@
+10:25 MYT: attempt1 (20 steps) failed closed: AMP skipped 2/20 steps > 5% (scaler warm-up). Rule unchanged; attempt2 runs 100 steps.

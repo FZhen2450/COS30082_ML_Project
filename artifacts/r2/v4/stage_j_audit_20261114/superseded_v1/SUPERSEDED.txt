@@ -1,0 +1,1 @@
+10:47 MYT: SUPERSEDED by stage_j_audit_20261114_v2. Fold-only extraction changed fp16 batch composition: features differ from v3 by 1 fp16 ULP (7.8e-3 CLIP, 1.95e-3 ConvNeXt), D1 packets by up to 0.44; candidate ids and truth identical. Fix: v3 batch-layout extraction (jrun.LayoutChunks).

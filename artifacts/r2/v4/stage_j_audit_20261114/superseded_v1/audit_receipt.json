@@ -1,0 +1,160 @@
+{
+ "tolerance": 1e-05,
+ "J0_pipeline_zero_epochs": {
+  "reference": "D1_synthComp_norm",
+  "folds": {
+   "I1": {
+    "cand_ids_identical": true,
+    "truth_identical": true,
+    "packet_max_abs_diff_vs_registered": 0.19614028930664062,
+    "features_bit_identical_vs_v3": false,
+    "features_max_abs_diff_vs_v3": 0.0078125,
+    "rows_extracted": 6249,
+    "reload_max_abs_diff": 0.0
+   },
+   "I2": {
+    "cand_ids_identical": true,
+    "truth_identical": true,
+    "packet_max_abs_diff_vs_registered": 0.4400596618652344,
+    "features_bit_identical_vs_v3": false,
+    "features_max_abs_diff_vs_v3": 0.0078125,
+    "rows_extracted": 6245,
+    "reload_max_abs_diff": 0.0
+   },
+   "I3": {
+    "cand_ids_identical": true,
+    "truth_identical": true,
+    "packet_max_abs_diff_vs_registered": 0.31833648681640625,
+    "features_bit_identical_vs_v3": false,
+    "features_max_abs_diff_vs_v3": 0.0078125,
+    "rows_extracted": 6249,
+    "reload_max_abs_diff": 0.0
+   },
+   "I4": {
+    "cand_ids_identical": true,
+    "truth_identical": true,
+    "packet_max_abs_diff_vs_registered": 0.4290733337402344,
+    "features_bit_identical_vs_v3": false,
+    "features_max_abs_diff_vs_v3": 0.0078125,
+    "rows_extracted": 6249,
+    "reload_max_abs_diff": 0.0
+   },
+   "I5": {
+    "cand_ids_identical": true,
+    "truth_identical": true,
+    "packet_max_abs_diff_vs_registered": 0.20270156860351562,
+    "features_bit_identical_vs_v3": false,
+    "features_max_abs_diff_vs_v3": 0.0078125,
+    "rows_extracted": 6249,
+    "reload_max_abs_diff": 0.0
+   },
+   "I6": {
+    "cand_ids_identical": true,
+    "truth_identical": true,
+    "packet_max_abs_diff_vs_registered": 0.41148948669433594,
+    "features_bit_identical_vs_v3": false,
+    "features_max_abs_diff_vs_v3": 0.0078125,
+    "rows_extracted": 6249,
+    "reload_max_abs_diff": 0.0
+   }
+  }
+ },
+ "J8_zero_epochs": {
+  "reference": "F10_concat_convnext",
+  "folds": {
+   "I1": {
+    "cand_ids_identical": true,
+    "truth_identical": true,
+    "packet_max_abs_diff_vs_registered": 0.188079833984375,
+    "features_bit_identical_vs_v3": false,
+    "features_max_abs_diff_vs_v3": 0.001953125,
+    "rows_extracted": 6249,
+    "reload_max_abs_diff": 0.0
+   },
+   "I2": {
+    "cand_ids_identical": true,
+    "truth_identical": true,
+    "packet_max_abs_diff_vs_registered": 0.1955108642578125,
+    "features_bit_identical_vs_v3": false,
+    "features_max_abs_diff_vs_v3": 0.001953125,
+    "rows_extracted": 6245,
+    "reload_max_abs_diff": 0.0
+   },
+   "I3": {
+    "cand_ids_identical": true,
+    "truth_identical": true,
+    "packet_max_abs_diff_vs_registered": 0.24289321899414062,
+    "features_bit_identical_vs_v3": false,
+    "features_max_abs_diff_vs_v3": 0.001953125,
+    "rows_extracted": 6249,
+    "reload_max_abs_diff": 0.0
+   },
+   "I4": {
+    "cand_ids_identical": true,
+    "truth_identical": true,
+    "packet_max_abs_diff_vs_registered": 0.385711669921875,
+    "features_bit_identical_vs_v3": false,
+    "features_max_abs_diff_vs_v3": 0.001953125,
+    "rows_extracted": 6249,
+    "reload_max_abs_diff": 0.0
+   },
+   "I5": {
+    "cand_ids_identical": true,
+    "truth_identical": true,
+    "packet_max_abs_diff_vs_registered": 0.14484596252441406,
+    "features_bit_identical_vs_v3": false,
+    "features_max_abs_diff_vs_v3": 0.001953125,
+    "rows_extracted": 6249,
+    "reload_max_abs_diff": 0.0
+   },
+   "I6": {
+    "cand_ids_identical": true,
+    "truth_identical": true,
+    "packet_max_abs_diff_vs_registered": 0.2731590270996094,
+    "features_bit_identical_vs_v3": false,
+    "features_max_abs_diff_vs_v3": 0.001953125,
+    "rows_extracted": 6249,
+    "reload_max_abs_diff": 0.0
+   }
+  }
+ },
+ "smoke": {
+  "J1_clipL_last2/seed0/I6/attempt2": {
+   "status": "ok",
+   "error": null,
+   "grad_checks": {
+    "checks": 4,
+    "finite_checks": 4,
+    "max_nonfinite_run": 0,
+    "skipped_steps": 2,
+    "steps": 100,
+    "tensors": 27
+   },
+   "train_loss": {
+    "first50": 8.737626838684083,
+    "last50": 6.490911750793457,
+    "steps": 100
+   },
+   "trainable_tensors_changed": "27/27",
+   "reload_max_abs_diff": 0.0,
+   "packet_sha256": "d67e278bea37ce8964f03ca07c6d37dc8943b792c177a1808a4b8eb3e7b0ce00",
+   "seconds": 672.9031255245209,
+   "trainable_backbone_params": 25980928
+  },
+  "J1_clipL_last2/seed0/I6/attempt1": {
+   "status": "failed",
+   "error": "JCheckError: AMP skipped 2/20 steps (> 5%)",
+   "grad_checks": null,
+   "train_loss": null,
+   "trainable_tensors_changed": null,
+   "reload_max_abs_diff": null,
+   "packet_sha256": null,
+   "seconds": null,
+   "trainable_backbone_params": null
+  }
+ },
+ "smoke_latest_attempts": [
+  "J1_clipL_last2/seed0/I6/attempt2"
+ ],
+ "pass": false
+}

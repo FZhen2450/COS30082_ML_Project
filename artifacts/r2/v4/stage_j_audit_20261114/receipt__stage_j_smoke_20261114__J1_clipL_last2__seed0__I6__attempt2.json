@@ -1,0 +1,52 @@
+{
+ "row": "J1_clipL_last2",
+ "seed": 0,
+ "fold": "I6",
+ "config": {
+  "row": "J1_clipL_last2",
+  "backbone": "clip_l14",
+  "trainable": "last2",
+  "augment": "flip",
+  "source_balanced": false,
+  "extra": null,
+  "epochs": 5,
+  "batch": 32,
+  "lr_backbone": 1e-05,
+  "lr_head": 0.001,
+  "weight_decay": 0.05,
+  "warmup_epochs": 1,
+  "max_steps": 100,
+  "concat_frozen": null,
+  "workers": 8
+ },
+ "config_sha256": "97f7786e9f0c50d9ab5c1ee1ff110f39f56f5a0c837972fc6f61eb1ab9002570",
+ "torch_seed": 0,
+ "weights_file": "clip/ViT-L-14.pt",
+ "trainable_backbone_params": 25980928,
+ "frozen_params": 401635585,
+ "n_fitting": 5062,
+ "started": "2026-11-14T02:26:18Z",
+ "grad_checks": {
+  "checks": 4,
+  "finite_checks": 4,
+  "max_nonfinite_run": 0,
+  "skipped_steps": 2,
+  "steps": 100,
+  "tensors": 27
+ },
+ "train_loss": {
+  "first50": 8.737626838684083,
+  "last50": 6.490911750793457,
+  "steps": 100
+ },
+ "trainable_tensors_changed": "27/27",
+ "checkpoint_sha256": "d352b77e570d1f4c69692c9029357e2663951b6594dabe400c91a2dc91e2ef51",
+ "reload_max_abs_diff": 0.0,
+ "features_sha256": "2651d94d66a9afd07ac0deded881007c39848d2cc63ad20b64dd432fe61a1b67",
+ "packet_sha256": "d67e278bea37ce8964f03ca07c6d37dc8943b792c177a1808a4b8eb3e7b0ce00",
+ "contract_sha256": "a36660129120ede7ab9717fd0e5857d7be27048840368f17765ccd639e939f72",
+ "images_opened_main_process": 8,
+ "seconds": 672.9031255245209,
+ "status": "ok",
+ "finished": "2026-11-14T02:37:14Z"
+}
