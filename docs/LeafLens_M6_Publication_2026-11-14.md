@@ -83,7 +83,7 @@ test-image access occurred during publication.
 ## Remaining handoffs
 
 - Frederick's independent human rehearsal is due **15 November MYT**.
-- Jonathan reported Top-5 clipping on shorter laptop windows and has a separate
+- Yuen Kai reported Top-5 clipping on shorter laptop windows and has a separate
   local layout patch. That unpublished patch is not included here; review it
   against this branch and repeat the affected resize checks before acceptance.
 - WP1 independent saved-score verification is already recorded on #30 (89
