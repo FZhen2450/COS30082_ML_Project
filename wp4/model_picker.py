@@ -63,10 +63,9 @@ class ModelPanel(tk.Frame):
         training_sha = protocol.get('training_manifest_sha256') if protocol.get('schema') == SCHEMA else None
         if training_sha != self.final_training_sha:
             self.final_training_sha = training_sha
-            for key in ('crop', 'disease'):
+            for key in ('crop', 'disease', 'adapter_checkpoint'):
                 self.paths[key].set('')
-            self.choice.configure(values=[('M6 / historical adapter' if kind == 'm6' and training_sha else SHORT_LABELS[kind])
-                                          for kind in self.kinds])
+            self.choice.configure(values=[SHORT_LABELS[kind] for kind in self.kinds])
             self.start_search()
 
     def render_fields(self, _event=None):
