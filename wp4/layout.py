@@ -111,6 +111,17 @@ def build(app):
     score_note.pack(fill='x', pady=(3, 0))
     results.body.bind('<Configure>', lambda e: app.result_note.configure(wraplength=max(280, e.width-4)), add='+')
 
+    def reserve_rankings(_event=None):
+        # Short laptop screens: never clip the five rankings or the score caveat.
+        # The 60/40 split still applies when there is room; otherwise the preview,
+        # which always fits the whole image, gives up height first.
+        need = (heading.winfo_reqheight() + app.result_note.winfo_reqheight() + 7
+                + app.table.compact_height(5) + score_note.winfo_reqheight() + 3 + 2 * results.padding)
+        center.rowconfigure(1, minsize=need)
+
+    reserve_rankings()
+    results.body.bind('<Configure>', reserve_rankings, add='+')
+
     reference_card = Card(shell, padding=18)
     reference_card.grid(row=0, column=2, sticky='nsew')
     references = reference_card.body

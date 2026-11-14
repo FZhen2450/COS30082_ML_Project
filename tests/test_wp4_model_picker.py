@@ -292,6 +292,34 @@ class ModelPickerTkTests(unittest.TestCase):
         self.assertEqual(int(self.app.page_canvas.cget('scrollregion').split()[-1]),
                          self.app.page_canvas.bbox('all')[3])
 
+    def test_short_laptop_windows_keep_all_five_rankings_and_score_note_visible(self):
+        # Maximised client areas of 1366x768, 1280x720 and 1280x640 screens. The app
+        # bounds its own minimum size by the screen, so emulate that here.
+        self.root.deiconify()
+        for index, candidate in enumerate(list(self.catalog.candidates.values())[:5]):
+            self.app.table.insert('', 'end', iid=str(index), values=(index+1,
+                candidate['crop_name'], candidate['disease_name'], '0.1234'))
+        body = self.app.table.master
+        score_note = body.pack_slaves()[-1]
+        for width, height in ((1366, 688), (1280, 640), (1280, 560)):
+            with self.subTest(window=f'{width}x{height}'):
+                self.root.minsize(min(1280, width), min(840, height))
+                self.root.geometry(f'{width}x{height}')
+                self.root.update()
+                self.root.update()
+                self.assertEqual(self.root.winfo_height(), height)
+                visible_bottom = body.winfo_rooty() + body.winfo_height()
+                for rank in range(5):
+                    row = self.app.table.rows[str(rank)]['canvas']
+                    self.assertEqual(row.winfo_height(), row.winfo_reqheight(), f'rank {rank+1} squeezed')
+                    self.assertLessEqual(row.winfo_rooty()+row.winfo_height(), visible_bottom,
+                                         f'rank {rank+1} clipped')
+                self.assertEqual(score_note.winfo_height(), score_note.winfo_reqheight())
+                self.assertLessEqual(score_note.winfo_rooty()+score_note.winfo_height(), visible_bottom)
+                # The preview yields height first but must stay visible (55 px at 1280x560).
+                self.assertGreater(self.app.image_panel.winfo_height(), 40)
+                self.assertTrue(self.app.export_button.winfo_ismapped())
+
     def test_preview_fits_whole_image_without_changing_model_input(self):
         self.root.deiconify()
         self.root.geometry('1280x840')
