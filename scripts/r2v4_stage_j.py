@@ -1,7 +1,7 @@
 """Stage J driver (v4, post-freeze exploratory): six-fold J rows, evaluation, and the H_RF source co-endpoint.
 
   run       python scripts/r2v4_stage_j.py run --row J1_clipL_last2 --seed 0 --out <E>/stage_j_full [--folds I6] [--max-steps 20]
-  evaluate  python scripts/r2v4_stage_j.py evaluate --out <E>/stage_j_full [--parent J1_clipL_last2]
+  evaluate  python scripts/r2v4_stage_j.py evaluate --out <E>/eval_dir [--runs <E>/runs_a <E>/runs_b] [--parent J1_clipL_last2]
   hrf       python scripts/r2v4_stage_j.py hrf --row J1_clipL_last2 --seed 0 --out <E>/stage_j_full
   dry-run   python scripts/r2v4_stage_j.py dryrun --out <tmp>      (synthetic backend, six folds, CPU)
 
@@ -26,6 +26,8 @@ from research_r2.candidates import derive_fold  # noqa: E402
 from research_r2.metrics import GAMMA_GRID  # noqa: E402
 from research_r2.packets import fold_contract, validate_packet  # noqa: E402
 from research_r2.runner import scorer_from_scores  # noqa: E402
+from research_r2.packets import PacketError  # noqa: E402
+from research_r2_v4 import confirm  # noqa: E402
 from research_r2_v4 import evaluate as ev  # noqa: E402
 from research_r2_v4 import jrun  # noqa: E402
 from research_r2_v4.common import EXP, INNER, LABEL, V4, append_jsonl, env, now, read_jsonl, restrict, scorer  # noqa: E402
@@ -85,11 +87,7 @@ def table_from_packets(frame, F, packets, name):
     return ev.RowTable(name, sc, ["single"])
 
 
-def mean_summary(summaries):
-    folds = list(summaries[0]["per"])
-    per = {f: {k: float(np.mean([s["per"][f][k] for s in summaries])) for k in ("H_bal", "ausuc", "unseen_healthy_shortcut")} for f in folds}
-    return {"per": per, "primary": float(np.mean([s["primary"] for s in summaries])),
-            "ausuc": float(np.mean([s["ausuc"] for s in summaries])), "hs": float(np.mean([s["hs"] for s in summaries]))}
+mean_summary = confirm.mean_summary
 
 
 def nested_with_parent_rule(T, control, candidates, folds, children_parent):
@@ -116,27 +114,63 @@ def nested_with_parent_rule(T, control, candidates, folds, children_parent):
             "meets_gate_thresholds": bool(np.mean(d) >= 1.0 and sum(x > 0 for x in d) >= len(folds) - 1)}
 
 
+def _seed_detail(t, ctrl, frame, F, recs):
+    """Per-seed descriptive metrics at each fold's own LOFO choice (and at gamma 0)."""
+    lm = confirm.lofo_metrics(t, INNER)
+    g0 = {k: t.sc[k][0].at(0.0) for k in INNER}
+    keys = list(ev.KEYS) + ["H5_micro", "seen_top5", "unseen_top5_micro", "ausuc", "gamma"]
+    return {"summary_lofo": {key: float(np.mean([lm[f][key] for f in INNER])) for key in keys}, "per_fold_lofo": lm,
+            "summary_gamma0": {key: float(np.mean([g0[f][key] for f in INNER])) for key in ev.KEYS},
+            "bootstrap_vs_D1": ev.paired_bootstrap(t, ctrl, INNER), "false_healthy": ev.false_healthy(t, INNER),
+            "source_strata_seen": ev.source_strata(t, frame, F, INNER),
+            "receipts": {fn: {k: rec.get(k) for k in ("seconds", "peak_gpu_gib_training", "peak_gpu_gib_total", "checkpoint_sha256",
+                                                     "features_sha256", "packet_sha256", "trainable_tensors_changed", "reload_max_abs_diff",
+                                                     "torch_seed", "config_sha256")}
+                         | {"amp_skipped": (rec.get("grad_checks") or {}).get("skipped_steps"), "steps": (rec.get("grad_checks") or {}).get("steps"),
+                            "git_head": rec["code"]["git_head"], "jrun_sha256": rec["code"]["jrun_sha256"],
+                            "epoch_loss": [ep.get("train_loss_mean") for ep in rec.get("epochs", [])]}
+                         for fn, (_, rec) in recs.items()}}
+
+
 def cmd_evaluate(a, d1_table=None):
+    """Seed-0 screen, three-seed confirmation and stage-level nested selection, as separate labelled outputs.
+    Runs are read from --runs (default: --out); results are written to --out. Every (row, seed) must pass
+    confirm.verified_row_seed; a confirmation needs exactly the declared seeds and passes cross-seed checks."""
     frame, bench, F = env()
     base = Path(a.out)
+    base.mkdir(parents=True, exist_ok=True)
+    bases = [Path(p) for p in (getattr(a, "runs", None) or [a.out])]
     si = _script("r2v4_stage_i")
     T = {D1: d1_table or si.table(D1, frame, F, Path("."))}
-    seeds, refused = {}, {}
-    for rdir in sorted(p for p in base.iterdir() if p.is_dir() and p.name.startswith("J")):
-        for sdir in sorted(rdir.glob("seed*")):
-            s = int(sdir.name[4:])
+    declared = jrun.j_rows(getattr(a, "parent", None))
+    runs, refused = confirm.discover(bases)
+    tables, verified = {}, {}
+    for r, by in sorted(runs.items()):
+        for s, b in sorted(by.items()):
             try:
-                pk = jrun.row_packets(base, rdir.name, s, INNER)
-            except jrun.JCheckError as e:
-                refused[f"{rdir.name}/seed{s}"] = str(e)
-                continue
-            seeds.setdefault(rdir.name, {})[s] = table_from_packets(frame, F, pk, f"{rdir.name}/seed{s}")
-    res = {"label": LABEL, "control": D1, "refused_incomplete": refused, "rows": {}, "evaluated": now()}
-    for r, by_seed in seeds.items():
-        T[r] = by_seed[min(by_seed)]  # seed 0 table drives screening and nested (declared)
-        S0 = T[r].summary(INNER); Sd = T[D1].summary(INNER)
+                v = confirm.verified_row_seed(b, r, s, INNER, declared.get(r))
+                tables.setdefault(r, {})[s] = table_from_packets(frame, F, v, f"{r}/seed{s}")
+                verified.setdefault(r, {})[s] = v
+            except (jrun.JCheckError, PacketError) as e:
+                refused[f"{r}/seed{s}"] = f"{type(e).__name__}: {e}"
+    res = {"label": LABEL, "control": D1, "run_dirs": [b.name for b in bases],
+           "declared_seeds": {"screen": list(confirm.SCREEN_SEEDS), "confirmation": list(confirm.CONFIRM_SEEDS)},
+           "outputs": {"rows.*.seed0": "seed-0 SCREEN (declared screen; drives the parent rule and stage_nested)",
+                       "rows.*.three_seed": "three-seed CONFIRMATION (amendment_2 three_seed_gate + nested thresholds)",
+                       "stage_nested": "stage-level nested selection D1 -> best of the screened rows, seed-0 tables",
+                       "stage_nested_three_seed": "stage-level nested selection computed per confirmation seed and averaged"},
+           "refused_incomplete": refused, "rows": {}, "evaluated": now()}
+    Sd = T[D1].summary(INNER)
+    conf_tables = {}
+    for r, by_seed in tables.items():
+        present = sorted(set(runs.get(r, {})) | {int(k.split("/seed")[1]) for k in refused if k.startswith(r + "/seed")})
+        if 0 not in by_seed:
+            refused[f"{r}/screen"] = "no verified seed-0 run: the declared screen is seed 0 and no other seed substitutes for it"
+            continue
+        T[r] = by_seed[0]  # seed 0 drives screening, the parent rule and the stage nested estimate (declared)
+        S0 = T[r].summary(INNER)
         g0 = {k: {key: T[r].sc[k][0].at(0.0)[key] for key in ev.KEYS} for k in INNER}
-        e = {"seeds": sorted(by_seed), "seed0": {
+        e = {"seeds": sorted(by_seed), "seed_dirs_present": present, "seed0_label": "seed-0 screen", "seed0": {
             "primary": S0["primary"], "ausuc": S0["ausuc"],
             "summary_lofo": {key: float(np.mean([S0["per"][f][key] for f in INNER])) for key in ev.KEYS},
             "summary_gamma0": {key: float(np.mean([g0[f][key] for f in INNER])) for key in ev.KEYS},
@@ -149,20 +183,34 @@ def cmd_evaluate(a, d1_table=None):
             "receipts": {fn: {k: rec.get(k) for k in ("seconds", "peak_gpu_gib_training", "peak_gpu_gib_total", "checkpoint_sha256",
                                                      "features_sha256", "packet_sha256", "trainable_tensors_changed", "reload_max_abs_diff")}
                          | {"amp_skipped": (rec.get("grad_checks") or {}).get("skipped_steps"), "steps": (rec.get("grad_checks") or {}).get("steps")}
-                         for fn, (_, rec) in jrun.row_packets(base, r, min(by_seed), INNER).items()}}}
-        (base / "curves").mkdir(exist_ok=True)
-        (base / "curves" / f"{r}__seed{min(by_seed)}.json").write_text(json.dumps(ev.curves(T[r])))
-        if len(by_seed) >= 3:
-            Sm = mean_summary([t.summary(INNER) for t in by_seed.values()])
-            e["three_seed"] = {"primary": Sm["primary"], "gate_vs_D1": ev.gate(Sm, Sd, INNER),
-                               "nested_per_seed": {s: nested_with_parent_rule(dict(T, **{r: t}), D1, [r], INNER, {})["mean_diff_pp"]
-                                                   for s, t in by_seed.items()}}
+                         for fn, (_, rec) in verified[r][0].items()}}}
+        (base / "curves").mkdir(parents=True, exist_ok=True)
+        for s, t in by_seed.items():
+            (base / "curves" / f"{r}__seed{s}.json").write_text(json.dumps(ev.curves(t)))
+        e["three_seed"] = three_seed_entry(r, by_seed, verified[r], present, e["seed0"]["gate_vs_D1"]["pass"], T[D1], frame, F)
+        if e["three_seed"]["status"] == "evaluated":
+            conf_tables[r] = by_seed
         res["rows"][r] = e
-    cands = [r for r in seeds]
-    children_parent = {c: a.parent for c in CHILDREN if c in seeds} if a.parent else {}
+    cands = [r for r in T if r != D1]
+    children_parent = {c: a.parent for c in CHILDREN if c in cands} if getattr(a, "parent", None) else {}
     if cands:
         res["stage_nested"] = nested_with_parent_rule(T, D1, cands, INNER, children_parent)
-        par = [p for p in PARENTS if p in seeds]
+        res["stage_nested"]["label"] = "seed-0 screen tables"
+        if all(r in conf_tables for r in cands):
+            per_seed = {s: nested_with_parent_rule({D1: T[D1], **{r: conf_tables[r][s] for r in cands}}, D1, cands, INNER, children_parent)
+                        for s in confirm.CONFIRM_SEEDS}
+            res["stage_nested_three_seed"] = {"candidates": cands, "label": "per confirmation seed, averaged (amendment_2)",
+                                              "per_seed": per_seed, **confirm.average_nested(per_seed, INNER)}
+        else:
+            res["stage_nested_three_seed"] = {"status": "not evaluated",
+                                              "reason": f"rows without an evaluated confirmation: {[r for r in cands if r not in conf_tables]}"}
+        par3 = [p for p in PARENTS if p in conf_tables]
+        if len(par3) > 1:
+            lead = max(par3, key=lambda r: (np.mean([conf_tables[r][s].summary(INNER)["primary"] for s in confirm.CONFIRM_SEEDS]), -PARENTS.index(r)))
+            res["paired_parent_comparisons"] = {"label": "descriptive; three-seed leader vs each other confirmed parent", "leader": lead,
+                                                **{f"{lead}_vs_{o}": confirm.paired_rows(conf_tables[lead], conf_tables[o], INNER)
+                                                   for o in par3 if o != lead}}
+        par = [p for p in PARENTS if p in cands]
         if par:
             res["parent_by_rule"] = max(par, key=lambda r: (T[r].summary(INNER)["primary"], -PARENTS.index(r)))
             res["parent_rule_complete"] = sorted(par) == sorted(PARENTS)
@@ -174,8 +222,38 @@ def cmd_evaluate(a, d1_table=None):
     for r, e in res["rows"].items():
         g = e["seed0"]["gate_vs_D1"]
         print(f"{r:30s} seed0 H_bal {100*e['seed0']['primary']:6.2f} {g['mean_gain_pp']:+6.2f}pp {g['folds_improved']}/6 pass={g['pass']}")
+        c = e["three_seed"]
+        if c["status"] == "evaluated":
+            g3, n3 = c["gate_vs_D1"], c["nested_vs_D1"]
+            print(f"{'':30s} 3-seed H_bal {100*c['three_seed_mean']['primary']:6.2f} {g3['mean_gain_pp']:+6.2f}pp {g3['folds_improved']}/6 "
+                  f"gate={g3['pass']} nested {n3['mean_diff_pp']:+.2f}pp {n3['folds_better']}/6 -> {c['verdict']}")
+        else:
+            print(f"{'':30s} 3-seed: {c['status']} ({c.get('reason', '')})")
     print("refused:", json.dumps(refused, indent=1))
     return res
+
+
+def three_seed_entry(r, by_seed, verified_r, present, screen_pass, ctrl, frame, F):
+    """The confirmation block for one row: 'not run' (screen only), 'refused' (with the reason) or 'evaluated'."""
+    want = sorted(confirm.CONFIRM_SEEDS)
+    if present == sorted(confirm.SCREEN_SEEDS):
+        return {"status": "not run", "reason": "seed-0 screen only"}
+    if present != want:
+        return {"status": "refused", "reason": f"seed directories {present}; confirmation needs exactly {want}"}
+    if sorted(by_seed) != want:
+        return {"status": "refused", "reason": f"verified seeds {sorted(by_seed)}; seeds {sorted(set(want) - set(by_seed))} refused (see refused_incomplete)"}
+    if not screen_pass:
+        return {"status": "refused", "reason": "the seed-0 screen did not pass; confirmation is declared only after a screen pass"}
+    xp = confirm.cross_seed_problems(r, verified_r, INNER)
+    if xp:
+        return {"status": "refused", "reason": "; ".join(xp)}
+    c = confirm.three_seed_confirmation(r, by_seed, ctrl, D1, INNER, nested_with_parent_rule)
+    c["status"] = "evaluated"
+    c["per_seed_detail"] = {s: _seed_detail(by_seed[s], ctrl, frame, F, verified_r[s]) for s in want}
+    keys = list(c["per_seed_detail"][0]["summary_lofo"])
+    c["three_seed_mean_metrics"] = {k: float(np.mean([c["per_seed_detail"][s]["summary_lofo"][k] for s in want])) for k in keys}
+    c["bootstrap_vs_D1_three_seed"] = confirm.paired_bootstrap_seeds([by_seed[s] for s in want], [ctrl] * len(want), INNER)
+    return c
 
 
 # ----------------------------------------------------------------------------- H_RF source co-endpoint
@@ -183,7 +261,7 @@ def cmd_hrf(a):
     frame, bench, F = env()
     sh = _script("r2v4_stage_h")
     base = Path(a.out)
-    pk = jrun.row_packets(base, a.row, a.seed, INNER)  # refuses incomplete rows
+    pk = confirm.verified_row_seed(base, a.row, a.seed, INNER, jrun.j_rows(getattr(a, "parent", None)).get(a.row))  # refuses incomplete / invalid
     cfgs = {json.dumps(rec["config"], sort_keys=True) for _, rec in pk.values()}
     if len(cfgs) != 1:
         raise jrun.JCheckError(f"{a.row} seed{a.seed}: folds were run with different configurations")
@@ -273,6 +351,8 @@ def main():
             p.add_argument("--seed", type=int, default=0)
         if name == "hrf":
             p.add_argument("--max-pairs", type=int, help="tests / dry runs only")
+        if name == "evaluate":
+            p.add_argument("--runs", nargs="+", help="run directories to read (default: --out); a (row, seed) in two is refused")
         if name == "run":
             p.add_argument("--images", default=str(ROOT.parents[2] / "DPD_Small_dataset"))
             p.add_argument("--folds", nargs="+")
