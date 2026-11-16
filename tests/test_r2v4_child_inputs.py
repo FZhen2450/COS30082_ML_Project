@@ -60,9 +60,10 @@ def copy_child():
     return d / "child"
 
 
-def pair(child_base, mode="screen", **kw):
-    return ci.verified_pair(child_base, _S["tmp"] / "parent", CHILD, mode, _S["frame"], _S["F"], child_cfg=ccfg(), parent_cfg=pcfg(),
-                            parent_row=PARENT, **kw)
+def pair(child_base, mode="screen", rederive=True, child_cfg=None, parent_cfg=None):
+    """TEST path (synthetic configurations): ci._pair. Production is ci.verified_pair (fixed J2 / J4b, no overrides)."""
+    return ci._pair(child_base, {0: _S["tmp"] / "parent"}, CHILD, PARENT, child_cfg or ccfg(), parent_cfg or pcfg(), mode,
+                    _S["frame"], _S["F"], rederive=rederive)
 
 
 def attempt(base, fn):
@@ -87,7 +88,33 @@ class TestVerifiedPair(unittest.TestCase):
         for fn in INNER:
             self.assertEqual(C[0].identity["folds"][fn]["identity_sha256"], P[0].identity["folds"][fn]["identity_sha256"])
         out = cg.primary_gate(C, P, INNER, "screen", reps=20)
-        self.assertEqual(out["role"], "primary"); self.assertIn("pass", cg.promotion_decision(out))
+        self.assertEqual(out["role"], "primary")
+        dec = cg.promotion_decision(C, P, "screen")
+        self.assertEqual(dec["gate"], out["gate"])
+        self.assertTrue(all(C[0].identity["folds"][fn]["rederive_max_abs_diff"] <= ci.REDERIVE_TOL for fn in INNER))
+
+    def test_production_path_has_no_bypass_or_override(self):
+        import inspect
+        sig = inspect.signature(ci.verified_pair)
+        for p in ("rederive", "child_cfg", "parent_cfg", "parent_row", "parent_base"):
+            self.assertNotIn(p, sig.parameters)
+        self.assertNotIn("rederive", inspect.signature(ci.load_verified).parameters)
+        with self.assertRaises(TypeError):
+            ci.verified_pair(_S["tmp"] / "child", "screen", _S["frame"], _S["F"], rederive=False)
+        with self.assertRaisesRegex(ci.ChildInputError, "not an authorised child row"):
+            ci.verified_pair(_S["tmp"] / "child", "screen", _S["frame"], _S["F"], child_row="J5_best_source_balanced")
+        with self.assertRaisesRegex(ci.ChildInputError, "not an authorised child row"):
+            ci.verified_pair(_S["tmp"] / "child", "screen", _S["frame"], _S["F"], child_row=CHILD)
+        # an alternate (here: synthetic) configuration under the authorised row name is refused by the declared-config check
+        alt = Path(tempfile.mkdtemp()) / "child"
+        shutil.copytree(_S["tmp"] / "child" / CHILD, alt / "J4b_best_photometric_aug")
+        with self.assertRaises(jrun.JCheckError):
+            ci.verified_pair(alt, "screen", _S["frame"], _S["F"])
+
+    def test_wrong_parent_configuration_is_refused(self):
+        wrong = pcfg(); wrong.lr_head = 5e-3  # a parent other than the registered one
+        with self.assertRaises(jrun.JCheckError):
+            pair(_S["tmp"] / "child", parent_cfg=wrong)
 
     def test_same_label_swap_inside_a_packet_is_refused(self):
         d = copy_child(); a = attempt(d, "I3")
@@ -97,9 +124,13 @@ class TestVerifiedPair(unittest.TestCase):
         self.assertTrue(np.array_equal(z["seen_truth"], np.load(a / "I3_scores.npz")["seen_truth"]))  # labels unchanged
         np.savez_compressed(a / "I3_scores.npz", **z)
         edit_json(a / "receipt.json", lambda r: r.update(packet_sha256=jrun.sha256_file(a / "I3_scores.npz"))); reseal(a)
-        pair(d, rederive=False)  # receipt, contract, labels and sidecar checks alone are blind to the exchange ...
+        C, P, _ = pair(d, rederive=False)  # receipt, contract, labels and sidecar checks alone are blind to the exchange ...
+        with self.assertRaisesRegex(cg.GateError, "not re-derived"):
+            cg.primary_gate(C, P, INNER, "screen")  # ... but such tables can never reach the gate ...
+        with self.assertRaisesRegex(cg.GateError, "not re-derived"):
+            cg.promotion_decision(C, P, "screen")
         with self.assertRaisesRegex(ci.ChildInputError, "does not re-derive"):
-            pair(d)  # ... the re-derivation from the images' own features is not
+            pair(d)  # ... and the mandatory re-derivation from the images' own features refuses the packet
 
     def test_same_label_swap_in_the_fold_order_is_refused(self):
         from test_r2v4_child_gate import same_label_swap
@@ -171,8 +202,7 @@ class TestConfigurationAndLineage(unittest.TestCase):
         with self.assertRaisesRegex(ci.ChildInputError, "exactly one"):
             ci.modification(dict(j2, row="X", augment="photometric", source_balanced=True), j2)
         with self.assertRaisesRegex(ci.ChildInputError, "exactly one"):
-            ci.verified_pair(_S["tmp"] / "child", _S["tmp"] / "parent", CHILD, "screen", _S["frame"], _S["F"],
-                             child_cfg=ccfg(), parent_cfg=ccfg(), parent_row=PARENT)
+            pair(_S["tmp"] / "child", parent_cfg=ccfg())
 
     def test_lineage_shared_between_fitting_and_evaluation_is_refused(self):
         F = _S["F"]; lin = _S["lin"].copy()

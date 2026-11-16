@@ -22,7 +22,10 @@ Checks (reusing the existing receipts, fold contracts and feature caches; no new
 """
 from __future__ import annotations
 
+import hashlib
+import hmac
 import json
+import secrets
 from dataclasses import asdict
 from pathlib import Path
 
@@ -33,7 +36,7 @@ from research_r2.packets import fold_contract, validate_packet
 from research_r2.runner import scorer_from_scores
 from research_r2_v4 import confirm, jrun
 from research_r2_v4 import evaluate as ev
-from research_r2_v4.common import INNER
+from research_r2_v4.common import INNER, V4
 
 ROOT = Path(__file__).resolve().parents[1]
 LINEAGE = ROOT / "artifacts/r2/lineage_groups_v1.json"
@@ -132,10 +135,43 @@ def write_child_identity(adir, rec, frame, fold, parent_row=PARENT_ROW, lineage=
     return sc
 
 
+
+# ----------------------------------------------------------------------------- sealing (verified-table authenticity)
+_SEAL_KEY = secrets.token_bytes(32)  # per process; a seal cannot be produced without going through _load
+
+
+def _table_digest(t):
+    h = hashlib.sha256()
+    for fn in t.folds:
+        h.update(fn.encode())
+        for s in t.sc[fn]:
+            for arr in (s.parts["seen"]["scores"], s.parts["seen"]["truth"], s.parts["unseen"]["scores"], s.parts["unseen"]["truth"],
+                        s.fit_mask, s.cand_crop, s.cand_dis, s.cand_healthy):
+                a = np.ascontiguousarray(arr); h.update(str(a.dtype).encode()); h.update(str(a.shape).encode()); h.update(a.tobytes())
+    return h.hexdigest()
+
+
+def _mac(identity, t):
+    body = {k: v for k, v in identity.items() if k != "seal"}
+    return hmac.new(_SEAL_KEY, (jrun.sha256_json(body) + _table_digest(t)).encode(), hashlib.sha256).hexdigest()
+
+
+def _seal(t, identity):
+    """Attach a sealed identity record. Production code reaches this only through _load (re-derivation mandatory);
+    tests may call it directly on synthetic tables."""
+    identity = dict(identity)
+    identity["seal"] = _mac(identity, t)
+    t.identity = identity
+    return t
+
+
+def is_sealed(t):
+    idt = getattr(t, "identity", None)
+    return isinstance(idt, dict) and isinstance(idt.get("seal"), str) and hmac.compare_digest(idt["seal"], _mac(idt, t))
+
+
 # ----------------------------------------------------------------------------- loading
-def load_verified(base, row, seed, frame, F, declared, child=False, parent_row=PARENT_ROW, rederive=True, lineage=None):
-    """A RowTable with a verified identity record, or ChildInputError / JCheckError."""
-    lineage = lineage_groups() if lineage is None else lineage
+def _load(base, row, seed, frame, F, declared, child, parent_row, lineage, rederive):
     v = confirm.verified_row_seed(base, row, seed, INNER, declared)
     sc, folds = {}, {}
     for fn, (pkt, rec) in v.items():
@@ -161,37 +197,44 @@ def load_verified(base, row, seed, frame, F, declared, child=False, parent_row=P
             bad = sorted(k for k in want if s.get(k) != want[k])
             if bad:
                 raise ChildInputError(f"{row} seed{seed} {fn}: child provenance does not match ({bad})")
-        if rederive:
-            rederive_packet(adir, rec, frame, reg)
+        diff = rederive_packet(adir, rec, frame, reg) if rederive else None
         z = np.load(pkt)
         validate_packet(z, con)
         sc[fn] = [scorer_from_scores(frame, reg, z["seen"], z["seen_truth"], z["unseen"], z["unseen_truth"], z["cand_ids"])]
         folds[fn] = {**ident, "checkpoint_sha256": rec["checkpoint_sha256"], "packet_sha256": rec["packet_sha256"],
-                     "torch_seed": rec["torch_seed"]}
+                     "torch_seed": rec["torch_seed"], "rederive_max_abs_diff": diff}
     t = ev.RowTable(f"{row}/seed{seed}", sc, ["single"])
     one = next(iter(v.values()))[1]
-    t.identity = {"verified": True, "row": row, "seed": seed, "config": one["config"], "config_sha256": one["config_sha256"],
-                  "jrun_sha256": one["code"]["jrun_sha256"], "folds": folds}
+    _seal(t, {"verified": True, "rederived": bool(rederive), "row": row, "seed": seed, "config": one["config"],
+              "config_sha256": one["config_sha256"], "jrun_sha256": one["code"]["jrun_sha256"], "folds": folds})
     return t, v
 
 
-def verified_pair(child_base, parent_base, child_row, mode, frame, F, child_cfg=None, parent_cfg=None, parent_row=PARENT_ROW,
-                  rederive=True):
-    """({seed: child table}, {seed: parent table}) for the amendment-3 primary gate, or a refusal."""
-    parent_cfg = parent_cfg if parent_cfg is not None else jrun.j_rows()[parent_row]
-    child_cfg = child_cfg if child_cfg is not None else declared_child_config(child_row, parent_row)
+def load_verified(base, row, seed, frame, F, declared, child=False, parent_row=PARENT_ROW, lineage=None):
+    """A sealed RowTable that passed every check, INCLUDING packet re-derivation (not optional)."""
+    return _load(base, row, seed, frame, F, declared, child, parent_row, lineage_groups() if lineage is None else lineage, True)
+
+
+def _pair(child_base, parent_bases, child_row, parent_row, child_cfg, parent_cfg, mode, frame, F, rederive=True):
+    """Shared implementation. TEST USE with synthetic configurations; production uses ``verified_pair``.
+    rederive=False exists only to demonstrate the weakness in tests: such tables are marked rederived=False and the
+    gate refuses them."""
     mod = modification(asdict(child_cfg), asdict(parent_cfg))
+    if mode not in ("screen", "confirm"):
+        raise ChildInputError(f"unknown mode {mode!r}")
     seeds = list(confirm.SCREEN_SEEDS) if mode == "screen" else list(confirm.CONFIRM_SEEDS)
     if mode == "confirm":
-        for b, r in ((child_base, child_row), (parent_base, parent_row)):
-            present = sorted(confirm.seed_dirs(Path(b) / r))
-            if present != sorted(confirm.CONFIRM_SEEDS):
-                raise ChildInputError(f"{r}: seed directories {present}; confirmation needs exactly {sorted(confirm.CONFIRM_SEEDS)}")
+        present = sorted(confirm.seed_dirs(Path(child_base) / child_row))
+        if present != sorted(confirm.CONFIRM_SEEDS):
+            raise ChildInputError(f"{child_row}: seed directories {present}; confirmation needs exactly {sorted(confirm.CONFIRM_SEEDS)}")
     lin = lineage_groups()
     C, P, VC, VP = {}, {}, {}, {}
+    for s in seeds:  # child first: a wrong child configuration is refused before any parent work
+        C[s], VC[s] = _load(child_base, child_row, s, frame, F, child_cfg, True, parent_row, lin, rederive)
     for s in seeds:
-        C[s], VC[s] = load_verified(child_base, child_row, s, frame, F, child_cfg, child=True, parent_row=parent_row, rederive=rederive, lineage=lin)
-        P[s], VP[s] = load_verified(parent_base, parent_row, s, frame, F, parent_cfg, child=False, rederive=rederive, lineage=lin)
+        if s not in parent_bases:
+            raise ChildInputError(f"no registered parent run for seed {s}")
+        P[s], VP[s] = _load(parent_bases[s], parent_row, s, frame, F, parent_cfg, False, parent_row, lin, rederive)
     if mode == "confirm":
         for r, V in ((child_row, VC), (parent_row, VP)):
             xp = confirm.cross_seed_problems(r, V, INNER)
@@ -206,4 +249,22 @@ def verified_pair(child_base, parent_base, child_row, mode, frame, F, child_cfg=
                 raise ChildInputError(f"seed{s} {fn}: child and parent evaluation identity differ")
             if cf["checkpoint_sha256"] == pf["checkpoint_sha256"]:
                 raise ChildInputError(f"seed{s} {fn}: child checkpoint is the parent's checkpoint (no distinct child run)")
-    return C, P, {"modification": mod, "seeds": seeds, "mode": mode}
+    return C, P, {"modification": mod, "seeds": seeds, "mode": mode, "child_row": child_row, "parent_row": parent_row}
+
+
+# ----------------------------------------------------------------------------- production
+PARENT_BASES = {0: V4 / "stage_j_phase1_20261114", 1: V4 / "stage_j_phase2_20261115", 2: V4 / "stage_j_phase2_20261115"}
+AUTHORISED_CHILDREN = ("J4b_best_photometric_aug",)
+AUTHORISED_MODIFICATIONS = {"J4b_best_photometric_aug": ("augment", "photometric")}
+
+
+def verified_pair(child_base, mode, frame, F, child_row="J4b_best_photometric_aug"):
+    """PRODUCTION: the authorised child row on its declared configuration vs the registered J2 runs; no overrides,
+    re-derivation always on."""
+    if child_row not in AUTHORISED_CHILDREN:
+        raise ChildInputError(f"{child_row!r} is not an authorised child row (authorised: {list(AUTHORISED_CHILDREN)})")
+    parent_cfg = jrun.j_rows()[PARENT_ROW]
+    child_cfg = declared_child_config(child_row, PARENT_ROW)
+    if modification(asdict(child_cfg), asdict(parent_cfg)) != AUTHORISED_MODIFICATIONS[child_row]:
+        raise ChildInputError(f"{child_row}: registered modification differs from the authorised one")
+    return _pair(child_base, PARENT_BASES, child_row, PARENT_ROW, child_cfg, parent_cfg, mode, frame, F, rederive=True)

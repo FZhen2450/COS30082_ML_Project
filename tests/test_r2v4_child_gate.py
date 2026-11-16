@@ -50,10 +50,15 @@ def table(name, boost, noise_seed, extra=None, folds=INNER, permute=None, seed=0
     key = (tuple(sorted(boost.items())), noise_seed, tuple(sorted((extra or {}).items())), tuple(folds), permute)
     if key not in _CACHE:
         _CACHE[key] = _build(boost, noise_seed, extra, folds, permute)
+    from research_r2_v4 import child_inputs as ci
     t = copy.copy(_CACHE[key]); t.sc = dict(t.sc); t.name = name
-    t.identity = {"verified": True, "row": name, "seed": seed,
-                  "folds": {fn: (identity_folds or {}).get(fn, identity_of(fn)) for fn in folds}}
-    return t
+    return ci._seal(t, {"verified": True, "rederived": True, "row": name, "seed": seed,  # TEST-ONLY sealing of a synthetic table
+                        "folds": {fn: (identity_folds or {}).get(fn, identity_of(fn)) for fn in folds}})
+
+
+def reseal(t):
+    from research_r2_v4 import child_inputs as ci
+    return ci._seal(t, {k: v for k, v in t.identity.items() if k != "seal"})
 
 
 def _build(boost, noise_seed, extra=None, folds=INNER, permute=None):
@@ -161,7 +166,10 @@ class TestPrimaryGate(unittest.TestCase):
         bad = {s: table(f"c{s}", B, 7 * s, seed=s) for s in (0, 1, 2)}
         import copy
         sc = copy.copy(bad[1].sc["I2"][0]); sc.cand_crop = sc.cand_crop[::-1].copy(); bad[1].sc["I2"] = [sc]
-        with self.assertRaisesRegex(cg.GateError, "candidate order"):
+        with self.assertRaisesRegex(cg.GateError, "unverified input"):  # altered after sealing: the seal no longer matches
+            cg.primary_gate(bad, parent, INNER, "confirm")
+        reseal(bad[1])
+        with self.assertRaisesRegex(cg.GateError, "candidate order"):  # even a (test-)sealed altered table is refused
             cg.primary_gate(bad, parent, INNER, "confirm")
         swapped = {s: table(f"c{s}", B, 7 * s, folds=["I2", "I1", "I3", "I4", "I5", "I6"], seed=s) for s in (0, 1, 2)}
         with self.assertRaisesRegex(cg.GateError, "fold identities"):
@@ -287,7 +295,33 @@ class TestPrimaryEndpointLock(unittest.TestCase):
             cg.promotion_decision(dict(cg.primary_gate(child, parent, INNER, "screen", reps=20), endpoint="unseen_disease_top1"))
         with self.assertRaisesRegex(cg.GateError, "not a diagnostic"):
             cg.diagnostics(child, parent, INNER, "screen", endpoints=("H_bal",))
-        self.assertTrue(cg.promotion_decision(cg.primary_gate(child, parent, INNER, "screen", reps=20))["pass"])
+        self.assertTrue(cg.promotion_decision(child, parent, "screen")["pass"])
+
+    def test_fabricated_promotion_result_is_refused(self):
+        """The reviewer's exact forged input, and variants, never yield a decision."""
+        forged = {"role": "primary", "endpoint": "H_bal", "mode": "confirm", "gate": {"pass": True}}
+        with self.assertRaisesRegex(cg.GateError, "takes verified child tables"):
+            cg.promotion_decision(forged)
+        with self.assertRaisesRegex(cg.GateError, "takes verified"):
+            cg.promotion_decision(forged, forged, "confirm")
+        child, parent = seeds_of("c", B, extra={f: 1.5 for f in INNER}), seeds_of("p", B)
+        with self.assertRaisesRegex(cg.GateError, "takes verified parent tables"):
+            cg.promotion_decision(child, {0: forged}, "screen")
+        fake = seeds_of("f", B, extra={f: 1.5 for f in INNER})
+        fake[0].identity = dict(parent[0].identity)  # a genuine identity record copied onto another table
+        with self.assertRaisesRegex(cg.GateError, "unverified input"):
+            cg.promotion_decision(fake, parent, "screen")
+        null = seeds_of("n", B)
+        self.assertFalse(cg.promotion_decision(null, parent, "confirm")["pass"])  # null child cannot pass
+
+    def test_unrederived_tables_cannot_reach_the_gate(self):
+        child, parent = seeds_of("c", B, extra={f: 1.5 for f in INNER}), seeds_of("p", B)
+        from research_r2_v4 import child_inputs as ci
+        ci._seal(child[0], dict({k: v for k, v in child[0].identity.items() if k != "seal"}, rederived=False))
+        with self.assertRaisesRegex(cg.GateError, "not re-derived"):
+            cg.primary_gate(child, parent, INNER, "screen")
+        with self.assertRaisesRegex(cg.GateError, "not re-derived"):
+            cg.promotion_decision(child, parent, "screen")
 
     def test_secondary_estimate_cannot_promote(self):
         P, j2, j3 = switching_parents()

@@ -35,9 +35,14 @@ class GateError(ValueError):
 
 # ----------------------------------------------------------------------------- input checks
 def _identity(t):
+    """The table's identity record, only if it was sealed by child_inputs over THIS table's arrays and its packets
+    were re-derived; otherwise the input is refused."""
+    from research_r2_v4 import child_inputs
     idt = getattr(t, "identity", None)
-    if not isinstance(idt, dict) or idt.get("verified") is not True or "folds" not in idt:
-        raise GateError(f"{getattr(t, 'name', t)}: unverified input (no identity record from child_inputs.load_verified)")
+    if not isinstance(idt, dict) or idt.get("verified") is not True or "folds" not in idt or not child_inputs.is_sealed(t):
+        raise GateError(f"{getattr(t, 'name', t)}: unverified input (no valid sealed identity record from child_inputs)")
+    if idt.get("rederived") is not True:
+        raise GateError(f"{t.name}: unverified input (packets were not re-derived from their feature caches)")
     return idt
 
 
@@ -198,12 +203,21 @@ def diagnostics(child_by_seed: dict, parent_by_seed: dict, folds, mode="screen",
     return out
 
 
-def promotion_decision(result: dict):
-    """The only decision function: reads the primary H_bal gate; any other result is refused."""
-    if result.get("role") != "primary" or result.get("endpoint") != PRIMARY_ENDPOINT or "gate" not in result:
-        raise GateError("a child can only pass on the primary H_bal gate; diagnostic or alternative-endpoint results cannot promote")
-    return {"mode": result["mode"], "pass": bool(result["gate"]["pass"]),
-            "note": "screen pass -> run seeds 1-2; confirmation pass -> 'confirmed vs J2' (exploratory; never above D1 without review)"}
+def promotion_decision(child_by_seed, parent_by_seed=None, mode=None, folds=None):
+    """The only decision function. It takes the VERIFIED (sealed, re-derived) child and parent tables and recomputes the
+    primary H_bal gate from their actual seed/fold values; a result dictionary (or anything else) is refused, so a
+    fabricated {"role": "primary", ..., "gate": {"pass": True}} can never claim promotion."""
+    from research_r2_v4.common import INNER
+    for name, d in (("child", child_by_seed), ("parent", parent_by_seed)):
+        if not isinstance(d, dict) or not d or not all(isinstance(k, int) and isinstance(v, ev.RowTable) for k, v in d.items()):
+            raise GateError(f"promotion_decision takes verified {name} tables by seed, not a result or other object; "
+                            "a child can only pass on the primary H_bal gate recomputed from verified inputs")
+    if mode not in ("screen", "confirm"):
+        raise GateError(f"unknown mode {mode!r}")
+    res = primary_gate(child_by_seed, parent_by_seed, folds or INNER, mode=mode, reps=200)
+    return {"mode": mode, "pass": bool(res["gate"]["pass"]), "gate": res["gate"],
+            "child_row": next(iter(child_by_seed.values())).identity["row"], "parent_row": next(iter(parent_by_seed.values())).identity["row"],
+            "note": "screen pass -> seeds 1-2 only after independent review; confirmation pass -> 'confirmed vs J2' (exploratory; never above D1 without review)"}
 
 
 # ----------------------------------------------------------------------------- secondary pipeline estimate
