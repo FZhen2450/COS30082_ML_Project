@@ -1,0 +1,3 @@
+J4b_best_photometric_aug vs J2 (screen): H_bal +1.41 pp, 5/6, AUSUC +1.87, shortcut +0.60 pp -> pass=True; bootstrap CI [0.1444658731098746, 2.847263097171695]
+diagnostics: {'unseen_disease_top1': 0.18, 'unseen_crop_top1': 1.06, 'unseen_top1_macro': 2.0, 'unseen_withincrop_macro': 0.87, 'seen_top1': 0.4, 'H_micro': 0.35} calibration-matched 1.72
+source strata delta: {'dominant': np.float64(0.629340277777779), 'other_fitting_source': np.float64(-1.4331210191082744), 'novel_source': np.float64(3.57142857142857)}

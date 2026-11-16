@@ -1,0 +1,312 @@
+# R2 tests, amendment-3 final repair (Gate D); diff vs 2aa5175:
+ M research_r2_v4/child_gate.py
+ M research_r2_v4/child_inputs.py
+ M scripts/r2v4_declare.py
+ M tests/test_r2v4_child_gate.py
+ M tests/test_r2v4_child_inputs.py
+?? docs/R2_v4_Amendment3_v3_Repair.md
+?? research_r2_v4/child_run.py
+?? scripts/r2v4_amendment3_build.py
+?? scripts/r2v4_child.py
+?? tests/test_r2v4_child_run.py
+# cmd: CUDA_VISIBLE_DEVICES='' python -m unittest discover -s tests -p 'test_r2*.py' -v
+test_identity_ignores_descriptive_fields_only (test_r2_hardening.TestConfigurationIdentity) ... ok
+test_reject_conflicting_configuration_across_matrices (test_r2_hardening.TestConfigurationIdentity) ... ok
+test_reject_row_missing_from_declared_matrices (test_r2_hardening.TestConfigurationIdentity) ... ok
+test_reject_wrong_matrix_hash (test_r2_hardening.TestConfigurationIdentity) ... ok
+test_tree_rows_may_be_a_subset_of_the_matrix (test_r2_hardening.TestConfigurationIdentity) ... ok
+test_contract_equals_independent_derivation_all_folds (test_r2_hardening.TestFoldContract) ... ok
+test_contract_hash_is_stable (test_r2_hardening.TestFoldContract) ... ok
+test_legacy_packet_without_cand_ids_passes_on_legacy_fold (test_r2_hardening.TestFoldContract) ... ok
+test_reject_duplicate_candidate (test_r2_hardening.TestFoldContract) ... ok
+test_reject_extra_array (test_r2_hardening.TestFoldContract) ... ok
+test_reject_extra_excluded_candidate (test_r2_hardening.TestFoldContract) ... ok
+test_reject_integer_scores (test_r2_hardening.TestFoldContract) ... ok
+test_reject_legacy_packet_on_v3_fold (test_r2_hardening.TestFoldContract) ... ok
+test_reject_nan_score (test_r2_hardening.TestFoldContract) ... ok
+test_reject_one_wrong_truth_index (test_r2_hardening.TestFoldContract) ... ok
+test_reject_packet_from_another_fold (test_r2_hardening.TestFoldContract) ... ok
+test_reject_reordered_candidates_even_if_scores_permuted_consistently (test_r2_hardening.TestFoldContract) ... ok
+test_reject_substituted_candidate_same_length (test_r2_hardening.TestFoldContract) ... ok
+test_reject_truncated_fitting_candidate (test_r2_hardening.TestFoldContract) ... ok
+test_reject_truncated_heldout_candidate (test_r2_hardening.TestFoldContract) ... ok
+test_reject_truncated_rows (test_r2_hardening.TestFoldContract) ... ok
+test_reject_wrong_truth_on_legacy_fold (test_r2_hardening.TestFoldContract) ... ok
+test_scorer_from_scores_rejects_misaligned_truth_on_derived_fold (test_r2_hardening.TestFoldContract)
+The bug class found in the v3 stress script: truth taken from the parent fold after deriving. ... ok
+test_valid_v3_packet_passes (test_r2_hardening.TestFoldContract) ... ok
+test_reject_conflicting_duplicate_copy (test_r2_hardening.TestPacketProvenance) ... ok
+test_reject_missing_fold_packet (test_r2_hardening.TestPacketProvenance) ... ok
+test_reject_registered_configuration_mismatch (test_r2_hardening.TestPacketProvenance) ... ok
+test_reject_registry_for_another_protocol (test_r2_hardening.TestPacketProvenance) ... ok
+test_reject_runtime_record_from_uncommitted_matrix (test_r2_hardening.TestPacketProvenance) ... ok
+test_reject_runtime_record_with_different_configuration (test_r2_hardening.TestPacketProvenance) ... ok
+test_reject_substituted_packet_against_registry (test_r2_hardening.TestPacketProvenance) ... ok
+test_valid_inputs_pass_and_identical_duplicates_are_recorded (test_r2_hardening.TestPacketProvenance) ... ok
+test_all_registered_real_packets_pass (test_r2_hardening.TestRealPackets) ... ok
+test_build_and_validate (test_r2_research.TestBenchmark) ... ok
+test_eligibility_excludes_healthy_and_unshared (test_r2_research.TestBenchmark) ... ok
+test_heldout_validity_detects_lost_disease (test_r2_research.TestBenchmark) ... ok
+test_lineage_group_not_split (test_r2_research.TestBenchmark) ... ok
+test_refuses_official_test_csvs (test_r2_research.TestGuards) ... ok
+test_training_hash_enforced (test_r2_research.TestGuards) ... ok
+test_balanced_weight_sums_per_composition (test_r2_research.TestMethods) ... ok
+test_leace_removes_linear_crop_information (test_r2_research.TestMethods) ... ok
+test_synth_targets_other_crops (test_r2_research.TestMethods) ... ok
+test_ausuc_bounds (test_r2_research.TestMetrics) ... ok
+test_lofo_never_uses_own_fold (test_r2_research.TestMetrics) ... ok
+test_macro_weights_each_composition_equally (test_r2_research.TestMetrics) ... ok
+test_top1_parity_with_wp5_contract_under_gamma (test_r2_research.TestMetrics) ... ok
+test_replay_real_benchmark (test_r2_research.TestRealBenchmark) ... ok
+test_outer_isolated_from_inner (test_r2_review.TestBenchmarkV2Synthetic) ... ok
+test_arbitrary_matrix_with_its_own_hash_rejected (test_r2_review.TestFrozenRecipeGuard) ... ok
+test_protected_folds_cannot_be_requested_directly (test_r2_review.TestFrozenRecipeGuard) ... ok
+test_registered_recipe_accepted (test_r2_review.TestFrozenRecipeGuard) ... ok
+test_registry_matrix_hash_matches_committed_file (test_r2_review.TestFrozenRecipeGuard) ... ok
+test_wrong_benchmark_rejected (test_r2_review.TestFrozenRecipeGuard) ... ok
+test_nan_scores_rejected (test_r2_review.TestPoisoning) ... ok
+test_replay_v2 (test_r2_review.TestRealBenchmarkV2) ... ok
+test_v1_audit_reproduces_reviewer_counts (test_r2_review.TestRealBenchmarkV2) ... ok
+test_chain (test_r2_review.TestSelectionRule) ... ok
+test_derive_fold_moves_emptied_compositions_to_excluded (test_r2_v3.TestCandidatePolicy) ... ok
+test_make_fold_v3_columns_mask_and_text (test_r2_v3.TestCandidatePolicy) ... ok
+test_tampered_universe_rejected (test_r2_v3.TestCandidatePolicy) ... ok
+test_truth_indices_must_be_read_through_each_folds_own_candidates (test_r2_v3.TestCandidatePolicy)
+Regression for the v3 stress-script bug: a derived fold with a smaller universe shifts columns, ... ok
+test_v2_inner_folds_had_22_phantom_candidates (test_r2_v3.TestCandidatePolicy) ... ok
+test_v3_universe_has_no_phantoms (test_r2_v3.TestCandidatePolicy) ... ok
+test_style_bank_is_composition_centred (test_r2_v3.TestHelpers) ... ok
+test_subspace_shift_is_a_projection (test_r2_v3.TestHelpers) ... ok
+test_within_concept_source_weight_preserves_concept_totals_and_equalises_sources (test_r2_v3.TestHelpers) ... ok
+test_only_fitting_rows_use_extra_views (test_r2v4.TestEvaluationViewIsolation) ... ok
+test_config_zero_wins_ties (test_r2v4.TestLofoEquivalence) ... ok
+test_single_config_matches_v3_lofo (test_r2v4.TestLofoEquivalence) ... ok
+test_invariants (test_r2v4.TestMatchedRemoval) ... ok
+test_pilot_split_is_fitting_only_and_lineage_disjoint (test_r2v4.TestPilotBoundary) ... ok
+test_restrict_matches_by_id_and_validates (test_r2v4.TestRestrict) ... ok
+test_restrict_refuses_missing_candidates (test_r2v4.TestRestrict) ... ok
+test_fallback_gain_is_never_counted_for_the_child (test_r2v4_child_gate.TestPipelineEstimate)
+The registered stage-nested rule falls back to a parent where a child is ineligible; the proposed estimate ... ok
+test_held_fold_does_not_choose_its_parent (test_r2v4_child_gate.TestPipelineEstimate) ... ok
+test_missing_parent_variant_fails_closed (test_r2v4_child_gate.TestPipelineEstimate) ... ok
+test_parent_switching_is_not_credited_to_the_child (test_r2v4_child_gate.TestPipelineEstimate) ... ok
+test_alternative_endpoint_cannot_gate_or_promote (test_r2v4_child_gate.TestPrimaryEndpointLock) ... ok
+test_calibration_matched_sensitivity_is_diagnostic (test_r2v4_child_gate.TestPrimaryEndpointLock) ... ok
+test_fabricated_promotion_result_is_refused (test_r2v4_child_gate.TestPrimaryEndpointLock)
+The reviewer's exact forged input, and variants, never yield a decision. ... ok
+test_secondary_estimate_cannot_promote (test_r2v4_child_gate.TestPrimaryEndpointLock) ... ok
+test_unrederived_tables_cannot_reach_the_gate (test_r2v4_child_gate.TestPrimaryEndpointLock) ... ok
+test_ausuc_and_shortcut_constraints (test_r2v4_child_gate.TestPrimaryGate) ... ok
+test_bootstrap_of_null_child_is_degenerate_at_zero (test_r2v4_child_gate.TestPrimaryGate) ... ok
+test_candidate_order_and_fold_identities (test_r2v4_child_gate.TestPrimaryGate) ... ok
+test_fold_count_threshold (test_r2v4_child_gate.TestPrimaryGate) ... ok
+test_genuine_six_fold_improvement_can_pass (test_r2v4_child_gate.TestPrimaryGate) ... ok
+test_held_fold_does_not_influence_its_own_calibration (test_r2v4_child_gate.TestPrimaryGate) ... ok
+test_incomplete_or_incompatible_seeds_fail (test_r2v4_child_gate.TestPrimaryGate) ... ok
+test_null_child_fails_and_old_rule_passed_it (test_r2v4_child_gate.TestPrimaryGate) ... ok
+test_same_label_image_swap_is_refused (test_r2v4_child_gate.TestPrimaryGate)
+Exchanging two evaluation images with the same truth label leaves every label array equal but changes the ... ok
+test_unverified_or_misidentified_inputs_are_refused (test_r2v4_child_gate.TestPrimaryGate) ... ok
+test_exactly_one_registered_modification (test_r2v4_child_inputs.TestConfigurationAndLineage) ... ok
+test_lineage_shared_between_fitting_and_evaluation_is_refused (test_r2v4_child_inputs.TestConfigurationAndLineage) ... ok
+test_good_pair_feeds_the_gate (test_r2v4_child_inputs.TestVerifiedPair) ... ok
+test_missing_or_invalid_provenance_is_refused (test_r2v4_child_inputs.TestVerifiedPair) ... ok
+test_production_path_has_no_bypass_or_override (test_r2v4_child_inputs.TestVerifiedPair) ... ok
+test_same_label_swap_in_the_fold_order_is_refused (test_r2v4_child_inputs.TestVerifiedPair) ... ok
+test_same_label_swap_inside_a_packet_is_refused (test_r2v4_child_inputs.TestVerifiedPair) ... ok
+test_seed_and_checkpoint_identity (test_r2v4_child_inputs.TestVerifiedPair) ... ok
+test_stale_or_foreign_feature_cache_is_refused (test_r2v4_child_inputs.TestVerifiedPair) ... ok
+test_training_code_must_match (test_r2v4_child_inputs.TestVerifiedPair) ... ok
+test_wrong_parent_configuration_is_refused (test_r2v4_child_inputs.TestVerifiedPair) ... ok
+test_dirty_worktree_refused_before_any_write (test_r2v4_child_run.TestChildRunner) ... ok
+test_end_to_end_runner_then_verified_gate (test_r2v4_child_run.TestChildRunner) ... ok
+test_failure_kept_and_retry_in_new_attempt (test_r2v4_child_run.TestChildRunner) ... ok
+test_production_entry_refuses_without_declaration_or_authorisation (test_r2v4_child_run.TestChildRunner) ... ok
+test_protected_evidence_directories_refused (test_r2v4_child_run.TestChildRunner) ... ok
+test_rejected_attempt_gets_no_sidecar (test_r2v4_child_run.TestChildRunner) ... ok
+test_config_hash_mismatch_refused (test_r2v4_confirm.TestConfirmationNegative) ... ok
+test_declared_configuration_enforced (test_r2v4_confirm.TestConfirmationNegative) ... ok
+test_extra_seed_refused (test_r2v4_confirm.TestConfirmationNegative) ... ok
+test_failed_fold_refused (test_r2v4_confirm.TestConfirmationNegative) ... ok
+test_incompatible_configuration_refused (test_r2v4_confirm.TestConfirmationNegative) ... ok
+test_incomplete_fold_refused (test_r2v4_confirm.TestConfirmationNegative) ... ok
+test_invalid_receipts_refused (test_r2v4_confirm.TestConfirmationNegative) ... ok
+test_mismatched_candidate_mapping_refused (test_r2v4_confirm.TestConfirmationNegative) ... ok
+test_missing_checkpoint_provenance_refused (test_r2v4_confirm.TestConfirmationNegative) ... ok
+test_missing_seed0_refuses_screen_and_confirmation (test_r2v4_confirm.TestConfirmationNegative) ... ok
+test_non_canonical_seed_alias_refused (test_r2v4_confirm.TestConfirmationNegative) ... ok
+test_same_seed_in_two_run_directories_refused (test_r2v4_confirm.TestConfirmationNegative) ... ok
+test_screen_fail_blocks_confirmation (test_r2v4_confirm.TestConfirmationNegative) ... ok
+test_seed_copied_and_relabelled_refused (test_r2v4_confirm.TestConfirmationNegative) ... ok
+test_seed_copied_without_relabel_refused (test_r2v4_confirm.TestConfirmationNegative) ... ok
+test_seed_set_0_1_3_refused (test_r2v4_confirm.TestConfirmationNegative) ... ok
+test_smoke_run_refused (test_r2v4_confirm.TestConfirmationNegative) ... ok
+test_training_code_differs_refused (test_r2v4_confirm.TestConfirmationNegative) ... ok
+test_two_successful_attempts_refused (test_r2v4_confirm.TestConfirmationNegative) ... ok
+test_bootstrap_seeds_reduces_to_single_seed (test_r2v4_confirm.TestConfirmationPositive) ... ok
+test_confirmation_requires_exact_seeds (test_r2v4_confirm.TestConfirmationPositive) ... ok
+test_good_fixture_and_independent_recomputation (test_r2v4_confirm.TestConfirmationPositive) ... ok
+test_duplicate_seed_copy (test_r2v4_confirm.TestPreviousEvaluatorAcceptedInvalidFixtures) ... Jsyn_A                         seed0 H_bal  45.85 +45.49pp 6/6 pass=True
+                               3-seed: refused (verified seeds [0, 2]; seeds [1] refused (see refused_incomplete))
+refused: {
+ "Jsyn_A/seed1": "ConfirmError: Jsyn_A seed1: invalid receipts: I5: config_sha256 does not match the recorded configuration"
+}
+Jsyn_A                         seed0 H_bal  45.85 +45.49pp 6/6 pass=True
+                               3-seed: refused (seed directories [0, 1, 2, 3]; confirmation needs exactly [0, 1, 2])
+refused: {}
+Jsyn_A                         seed0 H_bal  45.85 +45.49pp 6/6 pass=True
+                               3-seed: refused (verified seeds [0, 2]; seeds [1] refused (see refused_incomplete))
+refused: {
+ "Jsyn_A/seed1": "ConfirmError: Jsyn_A seed1: incomplete, missing folds ['I3']"
+}
+Jsyn_A                         seed0 H_bal  45.85 +45.49pp 6/6 pass=True
+                               3-seed: refused (incompatible configurations across seeds: {0: '88ab461b031269794b375ac9c02f7346f138cc5111c5183bf399679d97064770', 1: '88ab461b031269794b375ac9c02f7346f138cc5111c5183bf399679d97064770', 2: '2f379e8ee2cedfcc8ca30ef64e95211aad92d694b4990ee9e102f0371d72422c'})
+refused: {}
+Jsyn_A                         seed0 H_bal  45.85 +45.49pp 6/6 pass=True
+                               3-seed: refused (verified seeds [0, 1]; seeds [2] refused (see refused_incomplete))
+refused: {
+ "Jsyn_A/seed2": "ConfirmError: Jsyn_A seed2: incomplete, missing folds ['I4']"
+}
+Jsyn_A                         seed0 H_bal  45.85 +45.49pp 6/6 pass=True
+                               3-seed: refused (verified seeds [0, 1]; seeds [2] refused (see refused_incomplete))
+refused: {
+ "Jsyn_A/seed2": "PacketError: I1: candidate ids are reordered relative to the contract"
+}
+Jsyn_A                         seed0 H_bal  45.85 +45.49pp 6/6 pass=True
+                               3-seed: refused (verified seeds [0, 2]; seeds [1] refused (see refused_incomplete))
+refused: {
+ "Jsyn_A/seed1": "ConfirmError: Jsyn_A seed1: invalid receipts: I6: feature_cache_meta checkpoint_sha256 does not match the receipt"
+}
+refused: {
+ "Jsyn_A/screen": "no verified seed-0 run: the declared screen is seed 0 and no other seed substitutes for it"
+}
+refused: {
+ "Jsyn_A": "Jsyn_A: non-canonical seed directory 'seed01'"
+}
+Jsyn_A                         seed0 H_bal  45.85 +45.49pp 6/6 pass=True
+                               3-seed: refused (verified seeds [0, 2]; seeds [1] refused (see refused_incomplete))
+refused: {
+ "Jsyn_A/seed1": "duplicate run: Jsyn_A seed1 exists under 2 run directories"
+}
+Jsyn_A                         seed0 H_bal  45.85 +45.49pp 6/6 pass=True
+                               3-seed H_bal  48.89 +48.54pp 6/6 gate=True nested +48.54pp 6/6 -> confirmed
+refused: {}
+Jsyn_A                         seed0 H_bal  45.85  +0.00pp 0/6 pass=False
+                               3-seed: refused (the seed-0 screen did not pass; confirmation is declared only after a screen pass)
+refused: {}
+Jsyn_A                         seed0 H_bal  45.85 +45.49pp 6/6 pass=True
+                               3-seed: refused (I1: duplicate run, checkpoint_sha256 repeats across seeds [0, 1, 2]; I1: duplicate run, features_sha256 repeats across seeds [0, 1, 2]; I1: duplicate run, packet_sha256 repeats across seeds [0, 1, 2]; I2: duplicate run, checkpoint_sha256 repeats across seeds [0, 1, 2]; I2: duplicate run, features_sha256 repeats across seeds [0, 1, 2]; I2: duplicate run, packet_sha256 repeats across seeds [0, 1, 2]; I3: duplicate run, checkpoint_sha256 repeats across seeds [0, 1, 2]; I3: duplicate run, features_sha256 repeats across seeds [0, 1, 2]; I3: duplicate run, packet_sha256 repeats across seeds [0, 1, 2]; I4: duplicate run, checkpoint_sha256 repeats across seeds [0, 1, 2]; I4: duplicate run, features_sha256 repeats across seeds [0, 1, 2]; I4: duplicate run, packet_sha256 repeats across seeds [0, 1, 2]; I5: duplicate run, checkpoint_sha256 repeats across seeds [0, 1, 2]; I5: duplicate run, features_sha256 repeats across seeds [0, 1, 2]; I5: duplicate run, packet_sha256 repeats across seeds [0, 1, 2]; I6: duplicate run, checkpoint_sha256 repeats across seeds [0, 1, 2]; I6: duplicate run, features_sha256 repeats across seeds [0, 1, 2]; I6: duplicate run, packet_sha256 repeats across seeds [0, 1, 2])
+refused: {}
+Jsyn_A                         seed0 H_bal  45.85 +45.49pp 6/6 pass=True
+                               3-seed: refused (verified seeds [0, 1]; seeds [2] refused (see refused_incomplete))
+refused: {
+ "Jsyn_A/seed2": "ConfirmError: Jsyn_A seed2: invalid receipts: I1: receipt seed=1, expected 2; torch_seed 1000 != 1000*seed+fold_index = 2000; feature_cache_meta seed does not match the receipt | I2: receipt seed=1, expected 2; torch_seed 1001 != 1000*seed+fold_index = 2001; feature_cache_meta seed does not match the receipt | I3: receipt seed=1, expected 2; torch_seed 1002 != 1000*seed+fold_index = 2002; feature_cache_meta seed does not match the receipt | I4: receipt seed=1, expected 2; torch_seed 1003 != 1000*seed+fold_index = 2003; feature_cache_meta seed does not match the receipt | I5: receipt seed=1, expected 2; torch_seed 1004 != 1000*seed+fold_index = 2004; feature_cache_meta seed does not match the receipt | I6: receipt seed=1, expected 2; torch_seed 1005 != 1000*seed+fold_index = 2005; feature_cache_meta seed does not match the receipt"
+}
+Jsyn_A                         seed0 H_bal  45.85 +45.49pp 6/6 pass=True
+                               3-seed: refused (seed directories [0, 1, 3]; confirmation needs exactly [0, 1, 2])
+refused: {
+ "Jsyn_A/seed3": "ConfirmError: Jsyn_A seed3: invalid receipts: I1: receipt seed=2, expected 3; torch_seed 2000 != 1000*seed+fold_index = 3000; feature_cache_meta seed does not match the receipt | I2: receipt seed=2, expected 3; torch_seed 2001 != 1000*seed+fold_index = 3001; feature_cache_meta seed does not match the receipt | I3: receipt seed=2, expected 3; torch_seed 2002 != 1000*seed+fold_index = 3002; feature_cache_meta seed does not match the receipt | I4: receipt seed=2, expected 3; torch_seed 2003 != 1000*seed+fold_index = 3003; feature_cache_meta seed does not match the receipt | I5: receipt seed=2, expected 3; torch_seed 2004 != 1000*seed+fold_index = 3004; feature_cache_meta seed does not match the receipt | I6: receipt seed=2, expected 3; torch_seed 2005 != 1000*seed+fold_index = 3005; feature_cache_meta seed does not match the receipt"
+}
+Jsyn_A                         seed0 H_bal  45.85 +45.49pp 6/6 pass=True
+                               3-seed: refused (verified seeds [0, 1]; seeds [2] refused (see refused_incomplete))
+refused: {
+ "Jsyn_A/seed2": "ConfirmError: Jsyn_A seed2: invalid receipts: I1: smoke run (max_steps=20) cannot count | I2: smoke run (max_steps=20) cannot count | I3: smoke run (max_steps=20) cannot count | I4: smoke run (max_steps=20) cannot count | I5: smoke run (max_steps=20) cannot count | I6: smoke run (max_steps=20) cannot count"
+}
+Jsyn_A                         seed0 H_bal  45.85 +45.49pp 6/6 pass=True
+                               3-seed: refused (training code differs across seeds: {0: '433d405805db', 1: '433d405805db', 2: '000000000000'})
+refused: {}
+Jsyn_A                         seed0 H_bal  45.85 +45.49pp 6/6 pass=True
+                               3-seed: refused (verified seeds [0, 2]; seeds [1] refused (see refused_incomplete))
+refused: {
+ "Jsyn_A/seed1": "ConfirmError: Jsyn_A seed1: invalid receipts: I2: duplicate run, 2 successful attempts (attempt1, attempt2)"
+}
+Jsyn_A                         seed0 H_bal  45.85 +45.49pp 6/6 pass=True
+                               3-seed H_bal  48.89 +48.54pp 6/6 gate=True nested +48.54pp 6/6 -> confirmed
+refused: {}
+Jsyn_A                         seed0 H_bal  45.85 +45.49pp 6/6 pass=True
+refused: {}
+Jsyn_A                         seed0 H_bal  45.85 +45.49pp 6/6 pass=True
+                               3-seed: refused (verified seeds [0, 1]; seeds [2] refused (see refused_incomplete))
+refused: ok
+test_seed1_used_as_screen_when_seed0_missing (test_r2v4_confirm.TestPreviousEvaluatorAcceptedInvalidFixtures) ... ok
+test_seed_set_0_1_3 (test_r2v4_confirm.TestPreviousEvaluatorAcceptedInvalidFixtures) ... ok
+test_both_arms_complete_and_evaluate (test_r2v4_hrt.TestEndToEnd) ... ok
+test_excluded_rows_cannot_be_opened (test_r2v4_hrt.TestExclusionAccess) ... ok
+test_training_on_the_unablated_fold_is_refused_before_any_image (test_r2v4_hrt.TestExclusionAccess) ... ok
+test_failure_is_recorded_and_retry_gets_a_new_attempt (test_r2v4_hrt.TestFailureHandling) ... ok
+test_incomplete_source_removal_refused (test_r2v4_hrt.TestScopeAndFolds) ... ok
+test_index_set_must_reproduce_its_manifest (test_r2v4_hrt.TestScopeAndFolds) ... ok
+test_invalid_composition_support_refused (test_r2v4_hrt.TestScopeAndFolds) ... ok
+test_registered_pairs (test_r2v4_hrt.TestScopeAndFolds) ... ok
+test_checkpoint_from_the_other_arm (test_r2v4_hrt.TestVerificationRefusals) ... ok
+test_duplicate_attempts (test_r2v4_hrt.TestVerificationRefusals) ... ok
+test_feature_cache_from_the_other_arm (test_r2v4_hrt.TestVerificationRefusals) ... ok
+test_identity_and_integrity_mutations (test_r2v4_hrt.TestVerificationRefusals) ... ok
+test_marker_for_another_arm (test_r2v4_hrt.TestVerificationRefusals) ... ok
+test_marker_mutations (test_r2v4_hrt.TestVerificationRefusals) ... ok
+test_mismatched_candidate_universe (test_r2v4_hrt.TestVerificationRefusals) ... ok
+test_receipt_changed_after_marker (test_r2v4_hrt.TestVerificationRefusals) ... ok
+test_zero_steps_refused_by_confirmation_checks (test_r2v4_hrt.TestVerificationRefusals) ... ok
+test_altered_weight_fails_output_check (test_r2v4_j.TestCheckpoint) ... ok
+test_corrupted_file (test_r2v4_j.TestCheckpoint) ... ok
+test_good_checkpoint_reloads_exactly (test_r2v4_j.TestCheckpoint) ... ok
+test_metadata_mismatch (test_r2v4_j.TestCheckpoint) ... ok
+test_missing_key (test_r2v4_j.TestCheckpoint) ... ok
+test_frozen_parameter_change_fails (test_r2v4_j.TestFailClosedFold) ... ok
+test_no_trainable_parameters_fails (test_r2v4_j.TestFailClosedFold) ... ok
+test_stale_or_mismatched_cache_refused (test_r2v4_j.TestFeatureCache) ... ok
+test_missing_gradient (test_r2v4_j.TestGradMonitor) ... ok
+test_never_nonzero_and_skips (test_r2v4_j.TestGradMonitor) ... ok
+test_three_consecutive_nonfinite (test_r2v4_j.TestGradMonitor) ... ok
+test_evaluation_rows_refused_during_training (test_r2v4_j.TestImageAccess) ... ok
+test_layout_chunks_load_only_allowed_rows (test_r2v4_j.TestImageAccess) ... ok
+test_nothing_allowed_before_a_phase (test_r2v4_j.TestImageAccess) ... ok
+test_run_fold_rejects_overlapping_fitting_rows (test_r2v4_j.TestImageAccess) ... ok
+test_training_filenames_never_trip_the_test_name_guard (test_r2v4_j.TestImageAccess) ... ok
+test_held_fold_does_not_choose_its_parent (test_r2v4_j.TestNestedParentRule) ... ok
+test_incorrect_candidate_order_refused (test_r2v4_j.TestPacketsAndReceipts) ... ok
+test_dry_run (test_r2v4_j.TestSyntheticSixFoldDryRun) ... {
+ "Jsyn_A/seed2": "ConfirmError: Jsyn_A seed2: invalid receipts: I1: receipt seed=1, expected 2; torch_seed 1000 != 1000*seed+fold_index = 2000; feature_cache_meta seed does not match the receipt | I2: receipt seed=1, expected 2; torch_seed 1001 != 1000*seed+fold_index = 2001; feature_cache_meta seed does not match the receipt | I3: receipt seed=1, expected 2; torch_seed 1002 != 1000*seed+fold_index = 2002; feature_cache_meta seed does not match the receipt | I4: receipt seed=1, expected 2; torch_seed 1003 != 1000*seed+fold_index = 2003; feature_cache_meta seed does not match the receipt | I5: receipt seed=1, expected 2; torch_seed 1004 != 1000*seed+fold_index = 2004; feature_cache_meta seed does not match the receipt | I6: receipt seed=1, expected 2; torch_seed 1005 != 1000*seed+fold_index = 2005; feature_cache_meta seed does not match the receipt"
+}
+Jsyn_A                         seed0 H_bal  51.39 +51.04pp 6/6 pass=True
+refused: {}
+refused: {
+ "Jsyn_A/seed3": "ConfirmError: Jsyn_A seed3: invalid receipts: I1: receipt seed=0, expected 3; torch_seed 0 != 1000*seed+fold_index = 3000; feature_cache_meta seed does not match the receipt | I2: receipt seed=0, expected 3; torch_seed 1 != 1000*seed+fold_index = 3001; feature_cache_meta seed does not match the receipt | I3: receipt seed=0, expected 3; torch_seed 2 != 1000*seed+fold_index = 3002; feature_cache_meta seed does not match the receipt | I4: receipt seed=0, expected 3; torch_seed 3 != 1000*seed+fold_index = 3003; feature_cache_meta seed does not match the receipt | I5: receipt seed=0, expected 3; torch_seed 4 != 1000*seed+fold_index = 3004; feature_cache_meta seed does not match the receipt | I6: receipt seed=0, expected 3; torch_seed 5 != 1000*seed+fold_index = 3005; feature_cache_meta seed does not match the receipt",
+ "Jsyn_A/screen": "no verified seed-0 run: the declared screen is seed 0 and no other seed substitutes for it"
+}
+Jsyn_A                         seed0 H_bal  45.85 +45.49pp 6/6 pass=True
+refused: {}
+Jsyn_A                         seed0 H_bal  45.85 +45.49pp 6/6 pass=True
+                               3-seed: refused (seed directories [0, 1, 3]; confirmation needs exactly [0, 1, 2])
+refused: {
+ "Jsyn_A/seed3": "ConfirmError: Jsyn_A seed3: invalid receipts: I1: receipt seed=2, expected 3; torch_seed 2000 != 1000*seed+fold_index = 3000; feature_cache_meta seed does not match the receipt | I2: receipt seed=2, expected 3; torch_seed 2001 != 1000*seed+fold_index = 3001; feature_cache_meta seed does not match the receipt | I3: receipt seed=2, expected 3; torch_seed 2002 != 1000*seed+fold_index = 3002; feature_cache_meta seed does not match the receipt | I4: receipt seed=2, expected 3; torch_seed 2003 != 1000*seed+fold_index = 3003; feature_cache_meta seed does not match the receipt | I5: receipt seed=2, expected 3; torch_seed 2004 != 1000*seed+fold_index = 3004; feature_cache_meta seed does not match the receipt | I6: receipt seed=2, expected 3; torch_seed 2005 != 1000*seed+fold_index = 3005; feature_cache_meta seed does not match the receipt"
+}
+{"row": "Jsyn_A", "seed": 0, "fold": "I1", "seconds": 1.0661215782165527, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "2/2"}
+{"row": "Jsyn_A", "seed": 0, "fold": "I2", "seconds": 1.097684383392334, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "2/2"}
+{"row": "Jsyn_A", "seed": 0, "fold": "I3", "seconds": 1.233757734298706, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "2/2"}
+{"row": "Jsyn_A", "seed": 0, "fold": "I4", "seconds": 1.201446294784546, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "2/2"}
+{"row": "Jsyn_A", "seed": 0, "fold": "I5", "seconds": 1.1949942111968994, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "2/2"}
+{"row": "Jsyn_A", "seed": 0, "fold": "I6", "seconds": 1.0250420570373535, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "2/2"}
+{"row": "Jsyn_B", "seed": 0, "fold": "I1", "seconds": 1.0871355533599854, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "2/2"}
+{"row": "Jsyn_B", "seed": 0, "fold": "I2", "seconds": 1.0940742492675781, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "2/2"}
+{"row": "Jsyn_B", "seed": 0, "fold": "I3", "seconds": 1.0666000843048096, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "2/2"}
+{"row": "Jsyn_B", "seed": 0, "fold": "I4", "seconds": 1.1867589950561523, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "2/2"}
+{"row": "Jsyn_B", "seed": 0, "fold": "I5", "seconds": 1.1582188606262207, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "2/2"}
+{"row": "Jsyn_B", "seed": 0, "fold": "I6", "seconds": 1.181309461593628, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "2/2"}
+Jsyn_A                         seed0 H_bal  45.85 -20.36pp 0/6 pass=False
+                               3-seed: not run (seed-0 screen only)
+Jsyn_B                         seed0 H_bal  48.04 -18.16pp 0/6 pass=False
+                               3-seed: not run (seed-0 screen only)
+refused: {}
+Jsyn_A I1 CDC ok
+Jsyn_A I1 CLDI ok
+ok
+
+----------------------------------------------------------------------
+Ran 170 tests in 1270.328s
+
+OK
+refused: {
+ "Jsyn_A/seed0": "ConfirmError: Jsyn_A seed0: incomplete, missing folds ['I2']",
+ "Jsyn_B/seed0": "JCheckError: <TMP>/Jsyn_B/seed0/I3/attempt1: I3_scores.npz missing or changed since its receipt"
+}

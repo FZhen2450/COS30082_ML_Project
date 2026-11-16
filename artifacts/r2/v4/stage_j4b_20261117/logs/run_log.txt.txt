@@ -1,0 +1,6 @@
+2026-11-16T17:44:53Z {"row": "J4b_best_photometric_aug", "seed": 0, "fold": "I1", "seconds": 561.2126834392548, "rederive_max_abs_diff": 1.9073486328125e-06, "wall": 565.2460198402405}
+2026-11-16T17:54:29Z {"row": "J4b_best_photometric_aug", "seed": 0, "fold": "I2", "seconds": 571.1153748035431, "rederive_max_abs_diff": 1.9073486328125e-06, "wall": 575.6731610298157}
+2026-11-16T18:04:12Z {"row": "J4b_best_photometric_aug", "seed": 0, "fold": "I3", "seconds": 579.1027584075928, "rederive_max_abs_diff": 1.9073486328125e-06, "wall": 583.6174371242523}
+2026-11-16T18:13:55Z {"row": "J4b_best_photometric_aug", "seed": 0, "fold": "I4", "seconds": 577.7651073932648, "rederive_max_abs_diff": 1.9073486328125e-06, "wall": 582.5049321651459}
+2026-11-16T18:23:42Z {"row": "J4b_best_photometric_aug", "seed": 0, "fold": "I5", "seconds": 582.4770846366882, "rederive_max_abs_diff": 1.9073486328125e-06, "wall": 587.1010630130768}
+2026-11-16T18:33:28Z {"row": "J4b_best_photometric_aug", "seed": 0, "fold": "I6", "seconds": 581.0860929489136, "rederive_max_abs_diff": 1.9073486328125e-06, "wall": 585.501606464386}
