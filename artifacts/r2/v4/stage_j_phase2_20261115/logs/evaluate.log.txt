@@ -1,0 +1,7 @@
+J1_clipL_last2                 seed0 H_bal  69.00  +2.80pp 5/6 pass=True
+                               3-seed H_bal  69.15  +2.95pp 6/6 gate=True nested +2.82pp 6/6 -> confirmed
+J2_clipL_last4                 seed0 H_bal  69.86  +3.66pp 6/6 pass=True
+                               3-seed H_bal  69.56  +3.36pp 6/6 gate=True nested +3.36pp 6/6 -> confirmed
+J3_clipL_lora8_mlp             seed0 H_bal  69.51  +3.31pp 5/6 pass=True
+                               3-seed H_bal  69.90  +3.70pp 6/6 gate=True nested +3.70pp 6/6 -> confirmed
+refused: {}

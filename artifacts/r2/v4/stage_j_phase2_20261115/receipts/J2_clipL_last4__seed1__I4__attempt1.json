@@ -1,0 +1,144 @@
+{
+ "row": "J2_clipL_last4",
+ "seed": 1,
+ "fold": "I4",
+ "config": {
+  "row": "J2_clipL_last4",
+  "backbone": "clip_l14",
+  "trainable": "last4",
+  "augment": "flip",
+  "source_balanced": false,
+  "extra": null,
+  "epochs": 5,
+  "batch": 32,
+  "lr_backbone": 1e-05,
+  "lr_head": 0.001,
+  "weight_decay": 0.05,
+  "warmup_epochs": 1,
+  "max_steps": null,
+  "concat_frozen": null,
+  "workers": 8
+ },
+ "config_sha256": "b42fa6e750c4ff3f23e0165edeadf32bc71e6290e630ad54ecc9669081670053",
+ "torch_seed": 1003,
+ "weights_file": "clip/ViT-L-14.pt",
+ "trainable_backbone_params": 51173376,
+ "frozen_params": 376443137,
+ "n_fitting": 5057,
+ "started": "2026-11-15T18:29:32Z",
+ "frozen_digest_before": "54fe4b8ece561c09df7f2be87818c31ac5965729f3763f3ee223452b13e71ad4",
+ "code": {
+  "git_head": "8cd0b605eda9776c27299dcfe169107701840f42",
+  "worktree_clean": true,
+  "jrun_sha256": "433d405805db25d7b42752e129125380276c159f2a4dc4fe85303cb5fc5f4393"
+ },
+ "epochs": [
+  {
+   "epoch": 1,
+   "steps": 158,
+   "train_loss_mean": 5.818893717814095,
+   "train_loss_last50": 2.7557439374923707,
+   "amp_skipped_steps": 1,
+   "seconds": 78.77768611907959,
+   "images_per_s": 64.18060753304954,
+   "lr_end": [
+    1e-05,
+    0.001
+   ]
+  },
+  {
+   "epoch": 2,
+   "steps": 158,
+   "train_loss_mean": 0.7784764233835136,
+   "train_loss_last50": 0.42228531748056414,
+   "amp_skipped_steps": 0,
+   "seconds": 78.48128318786621,
+   "images_per_s": 64.42300060439699,
+   "lr_end": [
+    8.535533905932739e-06,
+    0.0008535533905932737
+   ]
+  },
+  {
+   "epoch": 3,
+   "steps": 158,
+   "train_loss_mean": 0.27115934912728357,
+   "train_loss_last50": 0.21513933330774307,
+   "amp_skipped_steps": 0,
+   "seconds": 80.37624049186707,
+   "images_per_s": 62.90415873016994,
+   "lr_end": [
+    5e-06,
+    0.0005
+   ]
+  },
+  {
+   "epoch": 4,
+   "steps": 158,
+   "train_loss_mean": 0.16044315417544752,
+   "train_loss_last50": 0.14832425639033317,
+   "amp_skipped_steps": 0,
+   "seconds": 78.97867774963379,
+   "images_per_s": 64.0172758729889,
+   "lr_end": [
+    1.4644660940672628e-06,
+    0.00014644660940672628
+   ]
+  },
+  {
+   "epoch": 5,
+   "steps": 158,
+   "train_loss_mean": 0.13443704270109347,
+   "train_loss_last50": 0.12044070489704609,
+   "amp_skipped_steps": 0,
+   "seconds": 78.5074508190155,
+   "images_per_s": 64.40152810523561,
+   "lr_end": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "validation_curve": "none by design: all fitting rows train (declared); no evaluation row is read during training",
+ "grad_checks": {
+  "checks": 18,
+  "finite_checks": 18,
+  "max_nonfinite_run": 0,
+  "skipped_steps": 1,
+  "steps": 790,
+  "tensors": 51
+ },
+ "train_loss": {
+  "first50": 8.687386083602906,
+  "last50": 0.12044070489704609,
+  "steps": 790
+ },
+ "frozen_digest_after": "54fe4b8ece561c09df7f2be87818c31ac5965729f3763f3ee223452b13e71ad4",
+ "trainable_tensors_changed": "51/51",
+ "trainable_update_norm": {
+  "total": 2.2743679599972797,
+  "min_tensor": 0.006110208109021187
+ },
+ "peak_gpu_gib_training": 3.9587225914001465,
+ "checkpoint_sha256": "b9b3802be0aeb7c2df37fc8d20dbb85c5b110f5dfd6776bb7791965f465736b1",
+ "reload_max_abs_diff": 0.0,
+ "features_sha256": "b042bc8a6033312b677f2ed1e5733cb04d427090c2b20b5b8087cf7c671b6c02",
+ "feature_cache_meta": {
+  "row": "J2_clipL_last4",
+  "seed": 1,
+  "fold": "I4",
+  "config_sha256": "b42fa6e750c4ff3f23e0165edeadf32bc71e6290e630ad54ecc9669081670053",
+  "checkpoint_sha256": "b9b3802be0aeb7c2df37fc8d20dbb85c5b110f5dfd6776bb7791965f465736b1",
+  "rows_sha256": "afeef2c3f630129570aac1c8453b06c158fafc4cdf48ffee6210060f10f4b793",
+  "backbone": "clip_l14",
+  "schema": "r2v4-j-fold-features-v1"
+ },
+ "checkpoint_keys": 51,
+ "peak_gpu_gib_total": 4.333269119262695,
+ "packet_sha256": "1d4a54939846cab8f4816b52d2a5e269717a62fe40c6f7034714cdb5e996f15f",
+ "contract_sha256": "eed6ae546c684bee55c0ead27f3f7a3fdde4c6b1b840634048e2463cae79c6ba",
+ "images_opened_main_process": 32,
+ "seconds": 578.2216501235962,
+ "status": "ok",
+ "finished": "2026-11-15T18:39:05Z"
+}

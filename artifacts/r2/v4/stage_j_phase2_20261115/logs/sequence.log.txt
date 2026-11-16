@@ -1,0 +1,28 @@
+== phase2 start head=8cd0b60 2026-11-16 00:17:59
+== J1_clipL_last2 seed1 train start 2026-11-16 00:17:59
+== J1_clipL_last2 seed1 train exit=0 2026-11-16 01:09:30
+== J1_clipL_last2 seed2 train start 2026-11-16 01:09:30
+== J1_clipL_last2 seed2 train exit=0 2026-11-16 02:00:49
+== J2_clipL_last4 seed1 train start 2026-11-16 02:00:49
+== J2_clipL_last4 seed1 train exit=0 2026-11-16 02:58:21
+== J2_clipL_last4 seed2 train start 2026-11-16 02:58:21
+== J2_clipL_last4 seed2 train exit=0 2026-11-16 03:56:21
+== J3_clipL_lora8_mlp seed1 train start 2026-11-16 03:56:21
+== J3_clipL_lora8_mlp seed1 train exit=0 2026-11-16 05:58:47
+== J3_clipL_lora8_mlp seed2 train start 2026-11-16 05:58:47
+== J3_clipL_lora8_mlp seed2 train exit=0 2026-11-16 08:02:39
+== hrf J1_clipL_last2 seed1 start 2026-11-16 08:02:39
+== hrf J1_clipL_last2 seed1 exit=0 2026-11-16 08:23:09
+== hrf J1_clipL_last2 seed2 start 2026-11-16 08:23:09
+== hrf J1_clipL_last2 seed2 exit=0 2026-11-16 08:43:19
+== hrf J2_clipL_last4 seed1 start 2026-11-16 08:43:19
+== hrf J2_clipL_last4 seed1 exit=0 2026-11-16 09:02:54
+== hrf J2_clipL_last4 seed2 start 2026-11-16 09:02:54
+== hrf J2_clipL_last4 seed2 exit=0 2026-11-16 09:22:24
+== hrf J3_clipL_lora8_mlp seed1 start 2026-11-16 09:22:24
+== hrf J3_clipL_lora8_mlp seed1 exit=0 2026-11-16 09:42:46
+== hrf J3_clipL_lora8_mlp seed2 start 2026-11-16 09:42:46
+== hrf J3_clipL_lora8_mlp seed2 exit=0 2026-11-16 10:03:09
+== evaluate start 2026-11-16 10:03:09
+== evaluate exit=0 2026-11-16 10:06:01
+== phase2 end 2026-11-16 10:06:01

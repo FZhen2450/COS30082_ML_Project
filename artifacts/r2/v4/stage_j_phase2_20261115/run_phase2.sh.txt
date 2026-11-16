@@ -1,0 +1,38 @@
+#!/bin/bash
+# R2 v4 Stage J Phase 2: seeds 1 and 2 of J1-J3 (36 fold runs), then H_RF for those seeds, then evaluation.
+# One GPU-intensive job at a time (strictly sequential). Seed 0 is read from Phase 1, never rerun or rewritten.
+set -u
+export PYTHONDONTWRITEBYTECODE=1
+P=<CONDA_ENV>/bin/python
+W="<WORKSPACE>/worktrees/r2-v4"
+V="<V4_EXP>"
+B="$V/stage_j_phase2_20261115"
+P1="$V/stage_j_phase1_20261114"
+ROWS="J1_clipL_last2 J2_clipL_last4 J3_clipL_lora8_mlp"
+cd "$W" || exit 3
+log() { echo "== $* $(date '+%F %H:%M:%S')" >> "$B/sequence.log"; }
+if [ -n "$(git status --porcelain)" ]; then log "REFUSED: dirty worktree"; exit 3; fi
+{ git rev-parse HEAD; sha256sum research_r2_v4/*.py scripts/r2v4_stage_j.py scripts/r2v4_stage_h.py; date; } > "$B/code_start.txt"
+nvidia-smi --query-gpu=timestamp,memory.used,memory.total,utilization.gpu,temperature.gpu,power.draw --format=csv -l 30 > "$B/gpu_monitor.csv" 2>&1 &
+MON=$!
+trap 'kill $MON 2>/dev/null' EXIT
+log "phase2 start head=$(git rev-parse --short HEAD)"
+for row in $ROWS; do
+  for seed in 1 2; do
+    log "$row seed$seed train start"
+    $P scripts/r2v4_stage_j.py run --row "$row" --seed "$seed" --out "$B" > "$B/${row}__seed${seed}.log" 2>&1
+    log "$row seed$seed train exit=$?"
+  done
+done
+for row in $ROWS; do
+  for seed in 1 2; do
+    log "hrf $row seed$seed start"
+    $P scripts/r2v4_stage_j.py hrf --row "$row" --seed "$seed" --out "$B" > "$B/hrf_${row}__seed${seed}.log" 2>&1
+    log "hrf $row seed$seed exit=$?"
+  done
+done
+log "evaluate start"
+$P scripts/r2v4_stage_j.py evaluate --out "$B/evaluation" --runs "$P1" "$B" > "$B/evaluate.log" 2>&1
+log "evaluate exit=$?"
+if [ -n "$(git status --porcelain)" ]; then log "WARNING: worktree changed during the run"; fi
+log "phase2 end"
