@@ -1,21 +1,20 @@
-"""PROPOSAL (amendment 3 v2, NOT declared): child-versus-parent gate for J4a-J7, fail closed.
+"""PROPOSAL (amendment 3 v3, NOT declared): child-versus-parent gate for J4a-J7, fail closed.
 
-Validated on synthetic tables only (tests/test_r2v4_child_gate.py). Nothing here is used by any registered stage, and
-no real child exists. See docs/R2_v4_Amendment3_PROPOSAL_v2.md for the protocol and its rationale.
+Validated on synthetic tables only (tests/test_r2v4_child_gate.py, tests/test_r2v4_child_inputs.py). Nothing here is
+used by any registered stage, and no real child exists. Protocol: docs/R2_v4_Amendment3_PROPOSAL_v3.md.
 
-Primary gate (one parent for every fold, fixed before any child exists):
-    for seed s and fold k, each row r in {child, parent} gets its own LOFO choice (config, gamma) on folds != k by mean
-    H_bal (research_r2_v4.evaluate.RowTable.choose: ties -> lower config, smaller gamma). The endpoint E (default H_bal)
-    is read at that choice.
-        d_s(k) = E_child,s(k) - E_parent,s(k)        a_s(k) = AUSUC diff        h_s(k) = healthy-shortcut diff
-    screen = seed 0 only; confirmation = exactly the declared seeds {0, 1, 2}, per-fold seed means D(k), A(k), H(k).
-        pass  <=>  100*mean_k D(k) >= 1.0  and  #{k: D(k) > 0} >= n_folds - 1  and  mean_k A(k) >= 0  and  100*mean_k H(k) <= 5.0
-    A child numerically identical to its parent has D = 0 everywhere and fails (0 < 1.0 pp, 0 folds improved).
+Inputs must come from research_r2_v4.child_inputs (verified receipts, registered fold, ordered image identity, packet
+re-derivation, one registered modification); a table without that identity record is refused here.
 
-Secondary "pipeline" estimate (optional; only if the child is also trained on every inner parent, on all six folds):
-    pi(k) = the parent chosen on folds != k from the seed-0 screen tables (the declared parent rule, applied inside);
-    d_s(k) = E(child on pi(k), s, k) - E(pi(k), s, k). Gains from switching parents cancel inside d. A missing variant is
-    refused; there is no fallback to a parent, so no parent result can ever be counted as a child effect.
+Primary gate (PRIMARY ENDPOINT LOCKED TO H_bal; one parent J2 for every fold, fixed before any child exists):
+    for seed s and fold k, child and parent each get their own LOFO choice (config, gamma) on folds != k by mean H_bal
+    (research_r2_v4.evaluate.RowTable.choose: ties -> lower config, smaller gamma); H_bal is read at that choice.
+        d_s(k) = H_bal child - H_bal parent      a_s(k) = AUSUC diff      h_s(k) = healthy-shortcut diff
+    screen = seed 0 only; confirmation = exactly seeds {0, 1, 2}; D(k), A(k), H(k) = means over seeds.
+        pass  <=>  100*mean_k D(k) >= 1.0  and  #{k: D(k) > 0} >= 5  and  mean_k A(k) >= 0  and  100*mean_k H(k) <= 5.0
+    A child numerically identical to its parent has D = 0 everywhere and fails.
+Diagnostics (other endpoints, calibration-matched sensitivity, bootstrap) carry no pass/fail and cannot promote.
+Secondary pipeline estimate (optional): child on the held fold's inner parent vs that parent, all six folds, H_bal only.
 """
 from __future__ import annotations
 
@@ -25,21 +24,35 @@ from research_r2.metrics import GAMMA_GRID, harmonic
 from research_r2_v4 import confirm
 from research_r2_v4 import evaluate as ev
 
+PRIMARY_ENDPOINT = "H_bal"
 THRESHOLDS = {"mean_gain_pp": 1.0, "folds_slack": 1, "ausuc_delta_min": 0.0, "shortcut_delta_max_pp": 5.0}
-ENDPOINTS = ("H_bal", "unseen_disease_top1", "unseen_crop_top1", "unseen_top1_macro", "seen_top1")
+DIAGNOSTIC_ENDPOINTS = ("unseen_disease_top1", "unseen_crop_top1", "unseen_top1_macro", "unseen_withincrop_macro", "seen_top1", "H_micro")
 
 
 class GateError(ValueError):
-    """A child / parent comparison cannot be made (missing, incomplete or incompatible inputs)."""
+    """A child / parent comparison cannot be made, or a decision is requested from a non-primary result."""
 
 
 # ----------------------------------------------------------------------------- input checks
+def _identity(t):
+    idt = getattr(t, "identity", None)
+    if not isinstance(idt, dict) or idt.get("verified") is not True or "folds" not in idt:
+        raise GateError(f"{getattr(t, 'name', t)}: unverified input (no identity record from child_inputs.load_verified)")
+    return idt
+
+
 def check_pair(child: ev.RowTable, parent: ev.RowTable, folds):
-    """Same fold identities in the same order, one configuration, identical candidates (order, crop, disease, healthy,
-    fitting mask) and identical truth in every fold, so the comparison is paired image by image."""
+    """Verified identity on both sides, the same ordered evaluation images per fold, fold identities in the same order,
+    one configuration, identical candidates (order, crop, disease, healthy, fitting mask) and identical truth."""
+    ci, pi = _identity(child), _identity(parent)
     if list(child.folds) != list(folds) or list(parent.folds) != list(folds):
         raise GateError(f"fold identities differ: child {list(child.folds)}, parent {list(parent.folds)}, expected {list(folds)}")
     for k in folds:
+        a, b = ci["folds"].get(k), pi["folds"].get(k)
+        if a is None or b is None or a.get("fold") != k or b.get("fold") != k:
+            raise GateError(f"{k}: identity record missing or names another fold")
+        if a["identity_sha256"] != b["identity_sha256"]:
+            raise GateError(f"{k}: evaluation image identity / order differs between child and parent")
         if len(child.sc[k]) != 1 or len(parent.sc[k]) != 1:
             raise GateError(f"{k}: child and parent must each have exactly one configuration")
         c, p = child.sc[k][0], parent.sc[k][0]
@@ -64,13 +77,16 @@ def check_seeds(child_by_seed: dict, parent_by_seed: dict, mode: str):
             raise GateError(f"{who}: confirmation needs exactly seeds {list(want)}, got {list(have)}")
         if mode == "screen" and not set(want) <= set(have):
             raise GateError(f"{who}: screen needs seed {list(want)}, got {list(have)}")
+        for s in want:
+            if _identity(d[s]).get("seed") != s:
+                raise GateError(f"{who}: table under seed {s} is identified as seed {_identity(d[s]).get('seed')}")
     return list(want)
 
 
 # ----------------------------------------------------------------------------- per-fold values
-def fold_values(t: ev.RowTable, k, folds, endpoint="H_bal", gi=None):
+def fold_values(t: ev.RowTable, k, folds, endpoint=PRIMARY_ENDPOINT, gi=None):
     """Endpoint, AUSUC and healthy shortcut of fold k at the row's own LOFO choice (gi=None) or at a given gamma index."""
-    if endpoint not in ENDPOINTS:
+    if endpoint != PRIMARY_ENDPOINT and endpoint not in DIAGNOSTIC_ENDPOINTS:
         raise GateError(f"unknown endpoint {endpoint!r}")
     ci, g = t.choose([f for f in folds if f != k])
     if gi is not None:
@@ -109,7 +125,7 @@ def _deltas(child_of, parent_of, folds, seeds, endpoint, matched=False):
     return per, detail
 
 
-# ----------------------------------------------------------------------------- uncertainty
+# ----------------------------------------------------------------------------- uncertainty (descriptive)
 def _hits(t, k, gi):
     s = t.sc[k][0]; g = float(GAMMA_GRID[gi])
     return ((s.top1_pred("seen", g) == s.parts["seen"]["truth"]).astype(float), s.parts["seen"]["truth"],
@@ -117,8 +133,10 @@ def _hits(t, k, gi):
 
 
 def paired_bootstrap(detail, child_of, parent_of, folds, seeds, reps=2000, seed=0):
-    """Composition-cluster bootstrap of the seed-mean, fold-mean H_bal difference child - parent, each at its own
-    chosen gamma; the same resampled compositions are used for child and parent and for every seed in a fold."""
+    """Composition-cluster bootstrap CI of the seed-mean, fold-mean H_bal difference child - parent, each at its own
+    chosen gamma; the same resampled compositions for child and parent and for every seed in a fold.
+    ``bootstrap_sign_proportion_le_0`` is the share of bootstrap draws <= 0: DESCRIPTIVE, not a p-value, and it is
+    never multiplicity-adjusted or used as a significance test."""
     rng = np.random.default_rng(seed)
     prep = {}
     for k in folds:
@@ -129,7 +147,8 @@ def paired_bootstrap(detail, child_of, parent_of, folds, seeds, reps=2000, seed=
             S = lambda h, t: (np.array([h[t == x].sum() for x in sc]), np.array([(t == x).sum() for x in sc]))  # noqa: E731
             U = lambda h, t: np.array([h[t == x].mean() for x in uc])  # noqa: E731
             rows.append((S(c[0], c[1]), U(c[2], c[3]), S(p[0], p[1]), U(p[2], p[3])))
-        prep[k] = (rows, len(np.unique(_hits(child_of(k, seeds[0]), k, 0)[1])), len(np.unique(_hits(child_of(k, seeds[0]), k, 0)[3])))
+        h0 = _hits(child_of(k, seeds[0]), k, 0)
+        prep[k] = (rows, len(np.unique(h0[1])), len(np.unique(h0[3])))
     H = lambda Sx, Ux, i, j: harmonic(Sx[0][i].sum() / Sx[1][i].sum(), Ux[j].mean())  # noqa: E731
     draws = np.empty(reps)
     for r in range(reps):
@@ -140,30 +159,51 @@ def paired_bootstrap(detail, child_of, parent_of, folds, seeds, reps=2000, seed=
             vals.append(np.mean([H(a, b, i, j) - H(c, d, i, j) for a, b, c, d in rows]))
         draws[r] = np.mean(vals)
     return {"ci95_pp": [100 * float(np.percentile(draws, 2.5)), 100 * float(np.percentile(draws, 97.5))],
-            "p_le_0": float(np.mean(draws <= 0)), "reps": reps, "seed": seed}
+            "bootstrap_sign_proportion_le_0": float(np.mean(draws <= 0)),
+            "note": "descriptive share of bootstrap draws <= 0; not a p-value; not multiplicity-adjusted",
+            "reps": reps, "seed": seed}
 
 
-def holm(pvals: dict):
-    """Holm step-down adjusted p-values for disclosure across the child rows evaluated (not part of the gate)."""
-    items = sorted(pvals.items(), key=lambda kv: kv[1]); m = len(items); out, run = {}, 0.0
-    for i, (k, p) in enumerate(items):
-        run = max(run, min(1.0, (m - i) * p)); out[k] = run
-    return out
-
-
-# ----------------------------------------------------------------------------- primary gate
-def primary_gate(child_by_seed: dict, parent_by_seed: dict, folds, mode="screen", endpoint="H_bal", reps=2000):
-    """Child vs ONE parent (the declared global parent) on every fold."""
+# ----------------------------------------------------------------------------- primary gate and decision
+def primary_gate(child_by_seed: dict, parent_by_seed: dict, folds, mode="screen", endpoint=PRIMARY_ENDPOINT, reps=2000):
+    """Child vs ONE fixed parent (J2) on every fold; the endpoint is locked to H_bal."""
+    if endpoint != PRIMARY_ENDPOINT:
+        raise GateError(f"the primary endpoint is {PRIMARY_ENDPOINT}; {endpoint!r} is diagnostic only and cannot gate or promote")
     seeds = check_seeds(child_by_seed, parent_by_seed, mode)
     child_of = lambda k, s: child_by_seed[s]  # noqa: E731
     parent_of = lambda k, s: parent_by_seed[s]  # noqa: E731
-    per, detail = _deltas(child_of, parent_of, folds, seeds, endpoint)
-    per_m, _ = _deltas(child_of, parent_of, folds, seeds, endpoint, matched=True)
-    out = {"mode": mode, "endpoint": endpoint, "parent_per_fold": {k: parent_by_seed[seeds[0]].name for k in folds},
-           "gate": gate_from(per, folds), "calibration_matched_sensitivity": gate_from(per_m, folds), "detail": detail}
-    if endpoint == "H_bal":
-        out["bootstrap"] = paired_bootstrap(detail, child_of, parent_of, folds, seeds, reps)
+    per, detail = _deltas(child_of, parent_of, folds, seeds, PRIMARY_ENDPOINT)
+    return {"role": "primary", "mode": mode, "endpoint": PRIMARY_ENDPOINT,
+            "parent_per_fold": {k: parent_by_seed[seeds[0]].identity["row"] for k in folds},
+            "gate": gate_from(per, folds), "detail": detail,
+            "bootstrap": paired_bootstrap(detail, child_of, parent_of, folds, seeds, reps)}
+
+
+def diagnostics(child_by_seed: dict, parent_by_seed: dict, folds, mode="screen", endpoints=DIAGNOSTIC_ENDPOINTS):
+    """Diagnostic differences (no pass/fail): other endpoints at each row's own gamma, and the calibration-matched H_bal
+    difference (child scored at the parent's gamma)."""
+    seeds = check_seeds(child_by_seed, parent_by_seed, mode)
+    child_of = lambda k, s: child_by_seed[s]  # noqa: E731
+    parent_of = lambda k, s: parent_by_seed[s]  # noqa: E731
+    out = {"role": "diagnostic", "mode": mode, "endpoints": {}}
+    for e in endpoints:
+        if e == PRIMARY_ENDPOINT:
+            raise GateError("H_bal is the primary endpoint, not a diagnostic")
+        per, _ = _deltas(child_of, parent_of, folds, seeds, e)
+        out["endpoints"][e] = {"per_fold_delta_pp": {k: 100 * float(np.mean([per[s][k]["d"] for s in seeds])) for k in folds},
+                               "mean_delta_pp": 100 * float(np.mean([per[s][k]["d"] for s in seeds for k in folds]))}
+    per_m, _ = _deltas(child_of, parent_of, folds, seeds, PRIMARY_ENDPOINT, matched=True)
+    out["calibration_matched_H_bal"] = {"per_fold_delta_pp": {k: 100 * float(np.mean([per_m[s][k]["d"] for s in seeds])) for k in folds},
+                                        "mean_delta_pp": 100 * float(np.mean([per_m[s][k]["d"] for s in seeds for k in folds]))}
     return out
+
+
+def promotion_decision(result: dict):
+    """The only decision function: reads the primary H_bal gate; any other result is refused."""
+    if result.get("role") != "primary" or result.get("endpoint") != PRIMARY_ENDPOINT or "gate" not in result:
+        raise GateError("a child can only pass on the primary H_bal gate; diagnostic or alternative-endpoint results cannot promote")
+    return {"mode": result["mode"], "pass": bool(result["gate"]["pass"]),
+            "note": "screen pass -> run seeds 1-2; confirmation pass -> 'confirmed vs J2' (exploratory; never above D1 without review)"}
 
 
 # ----------------------------------------------------------------------------- secondary pipeline estimate
@@ -177,8 +217,8 @@ def inner_parents(parents_seed0: dict, folds, order):
     return out
 
 
-def pipeline_estimate(variants: dict, parents_by_seed: dict, folds, order, mode="screen", endpoint="H_bal", d1=None):
-    """variants: {parent: {seed: child-on-parent RowTable}}; parents_by_seed: {parent: {seed: RowTable}}."""
+def pipeline_estimate(variants: dict, parents_by_seed: dict, folds, order, mode="screen", d1=None):
+    """Secondary, H_bal only. variants: {parent: {seed: child-on-parent table}}; parents_by_seed: {parent: {seed: table}}."""
     pi = inner_parents({p: parents_by_seed[p][0] for p in order}, folds, order)
     need = sorted(set(pi.values()))
     for p in need:
@@ -189,12 +229,12 @@ def pipeline_estimate(variants: dict, parents_by_seed: dict, folds, order, mode=
     seeds = check_seeds(variants[need[0]], parents_by_seed[need[0]], mode)
     child_of = lambda k, s: variants[pi[k]][s]  # noqa: E731
     parent_of = lambda k, s: parents_by_seed[pi[k]][s]  # noqa: E731
-    per, detail = _deltas(child_of, parent_of, folds, seeds, endpoint)
-    out = {"mode": mode, "endpoint": endpoint, "inner_parent": pi, "gate": gate_from(per, folds), "detail": detail}
+    per, detail = _deltas(child_of, parent_of, folds, seeds, PRIMARY_ENDPOINT)
+    out = {"role": "secondary", "mode": mode, "endpoint": PRIMARY_ENDPOINT, "inner_parent": pi, "gate": gate_from(per, folds), "detail": detail}
     if d1 is not None:  # decomposition: child - D1 = (child - parent) + (parent - D1); only the first is the child's
         dec = {}
         for k in folds:
-            dd = fold_values(d1, k, folds, endpoint)["E"]
+            dd = fold_values(d1, k, folds)["E"]
             par = float(np.mean([detail[s][k]["parent"]["E"] for s in seeds])); ch = float(np.mean([detail[s][k]["child"]["E"] for s in seeds]))
             dec[k] = {"child_attributable_pp": 100 * (ch - par), "parent_attributable_pp": 100 * (par - dd), "total_vs_D1_pp": 100 * (ch - dd),
                       "parent": pi[k]}

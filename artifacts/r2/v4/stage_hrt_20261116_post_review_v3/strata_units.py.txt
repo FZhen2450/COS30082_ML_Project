@@ -1,0 +1,21 @@
+import json, sys
+import numpy as np
+sys.path.insert(0, ".")
+from research_r2_v4.common import INNER, env
+frame, bench, F = env()
+src, comp = frame.source.to_numpy(), frame.comp_id.to_numpy()
+inst = {"dominant": [], "other_fitting_source": [], "novel_source": []}
+for k in INNER:
+    f = F[k]; fit = np.asarray(f["fitting_rows"]); dom, have = {}, {}
+    for c in np.unique(comp[fit]):
+        ss, cnt = np.unique(src[fit][comp[fit] == c], return_counts=True); dom[c] = ss[np.argmax(cnt)]; have[c] = set(ss)
+    for r in f["seen_val_rows"]:
+        c = comp[r]; key = "dominant" if src[r] == dom[c] else ("other_fitting_source" if src[r] in have[c] else "novel_source")
+        inst[key].append((k, int(r)))
+out = {}
+for key, v in inst.items():
+    rows = [r for _, r in v]
+    out[key] = {"image_fold_instances": len(v), "unique_images": len(set(rows)), "compositions": len(set(comp[rows].tolist())),
+                "sources": len(set(src[rows].tolist())), "composition_source_clusters": len(set(zip(comp[rows].tolist(), src[rows].tolist())))}
+print(json.dumps(out, indent=1))
+json.dump(out, open(sys.argv[1], "w"), indent=1)

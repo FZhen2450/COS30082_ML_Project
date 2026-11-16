@@ -28,14 +28,31 @@ def E():
 _CACHE = {}
 
 
-def table(name, boost, noise_seed, extra=None, folds=INNER, permute=None):
+_IDENT = {}
+
+
+def identity_of(fn, fold=None):
+    """The ordered evaluation identity of a registered fold (or of a modified copy), as child_inputs computes it."""
+    from research_r2_v4 import child_inputs as ci
+    frame, F = E()
+    if fold is not None:
+        return ci.eval_identity(frame, fold)
+    if fn not in _IDENT:
+        _IDENT[fn] = ci.eval_identity(frame, F[fn])
+    return _IDENT[fn]
+
+
+def table(name, boost, noise_seed, extra=None, folds=INNER, permute=None, seed=0, identity_folds=None):
     """Scores = N(0,1) noise (fixed by noise_seed and fold) + boost[k] (+ extra[k]) on the true column.
-    Built once per content (RowTable construction is the slow part); each call returns its own named object."""
+    Built once per content (RowTable construction is the slow part); each call returns its own named object carrying a
+    synthetic VERIFIED identity record (what child_inputs.load_verified attaches to real tables)."""
     import copy
     key = (tuple(sorted(boost.items())), noise_seed, tuple(sorted((extra or {}).items())), tuple(folds), permute)
     if key not in _CACHE:
         _CACHE[key] = _build(boost, noise_seed, extra, folds, permute)
     t = copy.copy(_CACHE[key]); t.sc = dict(t.sc); t.name = name
+    t.identity = {"verified": True, "row": name, "seed": seed,
+                  "folds": {fn: (identity_folds or {}).get(fn, identity_of(fn)) for fn in folds}}
     return t
 
 
@@ -59,8 +76,22 @@ def _build(boost, noise_seed, extra=None, folds=INNER, permute=None):
 B = {f: 3.0 for f in INNER}
 
 
-def seeds_of(name, boost, extra=None, seeds=(0, 1, 2), base=0):
-    return {s: table(f"{name}/s{s}", boost, base + 7 * s, extra) for s in seeds}
+def seeds_of(name, boost, extra=None, seeds=(0, 1, 2), base=0, identity_folds=None):
+    return {s: table(f"{name}/s{s}", boost, base + 7 * s, extra, seed=s, identity_folds=identity_folds) for s in seeds}
+
+
+def same_label_swap(fn):
+    """A copy of registered fold fn whose seen-val order exchanges two images with the same truth label."""
+    frame, F = E()
+    fold = dict(F[fn]); rows = list(fold["seen_val_rows"])
+    comp = frame.comp_id.to_numpy()
+    for i in range(len(rows)):
+        j = next((j for j in range(i + 1, len(rows)) if comp[rows[j]] == comp[rows[i]]), None)
+        if j is not None:
+            rows[i], rows[j] = rows[j], rows[i]
+            fold["seen_val_rows"] = rows
+            return fold, (i, j)
+    raise AssertionError("no same-label pair")
 
 
 class TestPrimaryGate(unittest.TestCase):
@@ -78,7 +109,9 @@ class TestPrimaryGate(unittest.TestCase):
 
     def test_bootstrap_of_null_child_is_degenerate_at_zero(self):
         b = cg.primary_gate(seeds_of("c", B), seeds_of("p", B), INNER, mode="confirm", reps=60)["bootstrap"]
-        self.assertEqual(b["ci95_pp"], [0.0, 0.0]); self.assertEqual(b["p_le_0"], 1.0)
+        self.assertEqual(b["ci95_pp"], [0.0, 0.0]); self.assertEqual(b["bootstrap_sign_proportion_le_0"], 1.0)
+        self.assertNotIn("p_le_0", b); self.assertIn("not a p-value", b["note"])
+        self.assertFalse(hasattr(cg, "holm"), "no multiplicity adjustment of a descriptive bootstrap proportion")
 
     def test_genuine_six_fold_improvement_can_pass(self):
         parent = seeds_of("J2", B)
@@ -125,15 +158,15 @@ class TestPrimaryGate(unittest.TestCase):
         from research_r2.packets import PacketError
         with self.assertRaisesRegex(PacketError, "reordered"):  # a reordered packet cannot even be scored
             _build(B, 0, permute="I2")
-        bad = {s: table(f"c{s}", B, 7 * s) for s in (0, 1, 2)}
+        bad = {s: table(f"c{s}", B, 7 * s, seed=s) for s in (0, 1, 2)}
         import copy
         sc = copy.copy(bad[1].sc["I2"][0]); sc.cand_crop = sc.cand_crop[::-1].copy(); bad[1].sc["I2"] = [sc]
         with self.assertRaisesRegex(cg.GateError, "candidate order"):
             cg.primary_gate(bad, parent, INNER, "confirm")
-        swapped = {s: table(f"c{s}", B, 7 * s, folds=["I2", "I1", "I3", "I4", "I5", "I6"]) for s in (0, 1, 2)}
+        swapped = {s: table(f"c{s}", B, 7 * s, folds=["I2", "I1", "I3", "I4", "I5", "I6"], seed=s) for s in (0, 1, 2)}
         with self.assertRaisesRegex(cg.GateError, "fold identities"):
             cg.primary_gate(swapped, parent, INNER, "confirm")
-        missing = {s: table(f"c{s}", B, 7 * s, folds=INNER[:5]) for s in (0, 1, 2)}
+        missing = {s: table(f"c{s}", B, 7 * s, folds=INNER[:5], seed=s) for s in (0, 1, 2)}
         with self.assertRaisesRegex(cg.GateError, "fold identities"):
             cg.primary_gate(missing, parent, INNER, "confirm")
         # a fold's data under another fold's key: truth differs -> refused
@@ -141,6 +174,36 @@ class TestPrimaryGate(unittest.TestCase):
         relabel.sc["I1"], relabel.sc["I2"] = relabel.sc["I2"], relabel.sc["I1"]
         with self.assertRaises(cg.GateError):
             cg.check_pair(relabel, parent[0], INNER)
+
+    def test_same_label_image_swap_is_refused(self):
+        """Exchanging two evaluation images with the same truth label leaves every label array equal but changes the
+        ordered image identity: refused."""
+        frame, F = E()
+        parent = seeds_of("J2", B)
+        swapped_fold, (i, j) = same_label_swap("I3")
+        from research_r2.packets import fold_contract
+        a, b = fold_contract(frame, F["I3"]), fold_contract(frame, swapped_fold)
+        self.assertTrue(np.array_equal(a["seen_truth"], b["seen_truth"]) and a["sha256"] == b["sha256"])  # labels / contract blind to it
+        child = seeds_of("c", B, identity_folds={"I3": identity_of("I3", swapped_fold)})
+        self.assertTrue(np.array_equal(child[0].sc["I3"][0].parts["seen"]["truth"], parent[0].sc["I3"][0].parts["seen"]["truth"]))
+        with self.assertRaisesRegex(cg.GateError, "image identity / order differs"):
+            cg.primary_gate(child, parent, INNER, "confirm")
+
+    def test_unverified_or_misidentified_inputs_are_refused(self):
+        parent = seeds_of("J2", B)
+        raw = seeds_of("c", B)
+        del raw[0].identity
+        with self.assertRaisesRegex(cg.GateError, "unverified input"):
+            cg.primary_gate(raw, parent, INNER, "screen")
+        forged = seeds_of("c", B); forged[0].identity = dict(forged[0].identity, verified="yes")
+        with self.assertRaisesRegex(cg.GateError, "unverified input"):
+            cg.primary_gate(forged, parent, INNER, "screen")
+        wrong_seed = seeds_of("c", B); wrong_seed[0], wrong_seed[1] = wrong_seed[1], wrong_seed[0]
+        with self.assertRaisesRegex(cg.GateError, "identified as seed"):
+            cg.primary_gate(wrong_seed, parent, INNER, "confirm")
+        other_fold = seeds_of("c", B, identity_folds={"I4": identity_of("I5")})
+        with self.assertRaisesRegex(cg.GateError, "names another fold"):
+            cg.primary_gate(other_fold, parent, INNER, "screen")
 
     def test_held_fold_does_not_influence_its_own_calibration(self):
         parent = table("J2", B, 0)
@@ -209,18 +272,34 @@ class TestPipelineEstimate(unittest.TestCase):
         self.assertEqual(set(new["inner_parent"].values()), {"J2", "J3"})
 
 
-class TestDisclosure(unittest.TestCase):
-    def test_holm(self):
-        h = cg.holm({"J4b": 0.01, "J7": 0.04})
-        self.assertAlmostEqual(h["J4b"], 0.02); self.assertAlmostEqual(h["J7"], 0.04)
+class TestPrimaryEndpointLock(unittest.TestCase):
+    def test_alternative_endpoint_cannot_gate_or_promote(self):
+        child, parent = seeds_of("c", B, extra={f: 1.5 for f in INNER}), seeds_of("p", B)
+        for e in ("unseen_disease_top1", "unseen_crop_top1", "seen_top1", "accuracy"):
+            with self.assertRaisesRegex(cg.GateError, "primary endpoint is H_bal"):
+                cg.primary_gate(child, parent, INNER, "screen", endpoint=e)
+        diag = cg.diagnostics(child, parent, INNER, "screen", endpoints=("unseen_disease_top1",))
+        self.assertGreater(diag["endpoints"]["unseen_disease_top1"]["mean_delta_pp"], 0)
+        self.assertNotIn("pass", str(diag.keys())); self.assertNotIn("gate", diag)
+        with self.assertRaisesRegex(cg.GateError, "only pass on the primary H_bal gate"):
+            cg.promotion_decision(diag)
+        with self.assertRaisesRegex(cg.GateError, "only pass on the primary H_bal gate"):
+            cg.promotion_decision(dict(cg.primary_gate(child, parent, INNER, "screen", reps=20), endpoint="unseen_disease_top1"))
+        with self.assertRaisesRegex(cg.GateError, "not a diagnostic"):
+            cg.diagnostics(child, parent, INNER, "screen", endpoints=("H_bal",))
+        self.assertTrue(cg.promotion_decision(cg.primary_gate(child, parent, INNER, "screen", reps=20))["pass"])
 
-    def test_endpoint_and_matched_calibration_reported(self):
-        out = cg.primary_gate(seeds_of("c", B), seeds_of("p", B), INNER, "screen", endpoint="unseen_disease_top1")
-        self.assertEqual(out["endpoint"], "unseen_disease_top1")
-        self.assertEqual(out["calibration_matched_sensitivity"]["mean_gain_pp"], 0.0)
-        self.assertNotIn("bootstrap", out)
+    def test_secondary_estimate_cannot_promote(self):
+        P, j2, j3 = switching_parents()
+        good = {"J2": seeds_of("c2", j2, extra={f: 1.5 for f in INNER}, base=200), "J3": seeds_of("c3", j3, extra={f: 1.5 for f in INNER}, base=200)}
+        out = cg.pipeline_estimate(good, P, INNER, ["J1", "J2", "J3"], "confirm")
+        self.assertEqual(out["role"], "secondary")
         with self.assertRaises(cg.GateError):
-            cg.primary_gate(seeds_of("c", B), seeds_of("p", B), INNER, "screen", endpoint="accuracy")
+            cg.promotion_decision(out)
+
+    def test_calibration_matched_sensitivity_is_diagnostic(self):
+        diag = cg.diagnostics(seeds_of("c", B), seeds_of("p", B), INNER, "screen", endpoints=())
+        self.assertEqual(diag["calibration_matched_H_bal"]["mean_delta_pp"], 0.0); self.assertEqual(diag["role"], "diagnostic")
 
 
 if __name__ == "__main__":
