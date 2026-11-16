@@ -131,7 +131,9 @@ def receipt_problems(rec: dict, row: str, seed: int, fold: str, fold_index: int,
         else:
             if gc.get("finite_checks") != gc.get("checks") or not gc.get("checks"):
                 p.append(f"gradient checks {gc.get('finite_checks')}/{gc.get('checks')} finite")
-            if gc.get("steps") and gc.get("skipped_steps", 0) > AMP_SKIP_LIMIT * gc["steps"]:
+            if not isinstance(gc.get("steps"), int) or gc["steps"] <= 0:
+                p.append(f"optimizer step count {gc.get('steps')!r} is not positive")
+            elif gc.get("skipped_steps", 0) > AMP_SKIP_LIMIT * gc["steps"]:
                 p.append(f"AMP skipped {gc.get('skipped_steps')}/{gc.get('steps')} steps > 5%")
     code = rec.get("code") or {}
     if not code.get("jrun_sha256") or not code.get("git_head"):
