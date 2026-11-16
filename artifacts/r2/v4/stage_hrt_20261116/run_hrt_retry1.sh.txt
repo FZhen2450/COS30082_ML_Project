@@ -1,0 +1,28 @@
+#!/bin/bash
+# H_RT retry 1: same registered runs; every arm without a successful attempt gets a NEW attempt directory
+# (attempt1 failures/interruptions are kept). Strictly sequential. Then evaluation.
+set -u
+export PYTHONDONTWRITEBYTECODE=1
+P=<CONDA_ENV>/bin/python
+W="<WORKSPACE>/worktrees/r2-v4"
+V="<V4_EXP>"
+H="$V/stage_hrt_20261116"
+R="$H/runs"
+cd "$W" || exit 3
+log() { echo "== $* $(date '+%F %H:%M:%S')" >> "$H/sequence.log"; }
+if [ -n "$(git status --porcelain)" ]; then log "RETRY1 REFUSED: dirty worktree"; exit 3; fi
+{ git rev-parse HEAD; sha256sum research_r2_v4/*.py scripts/r2v4_hrt.py scripts/r2v4_stage_j.py scripts/r2v4_stage_h.py; date; } > "$H/code_start_retry1.txt"
+nvidia-smi --query-gpu=timestamp,memory.used,memory.total,utilization.gpu,temperature.gpu,power.draw --format=csv -l 30 > "$H/gpu_monitor_retry1.csv" 2>&1 &
+MON=$!
+trap 'kill $MON 2>/dev/null' EXIT
+log "retry1 start head=$(git rev-parse --short HEAD)"
+for row in J1_clipL_last2 J2_clipL_last4 J3_clipL_lora8_mlp; do
+  log "retry1 $row train start"
+  $P scripts/r2v4_hrt.py run --out "$R" --rows "$row" > "$H/${row}__retry1.log" 2>&1
+  log "retry1 $row train exit=$?"
+done
+log "evaluate start"
+$P scripts/r2v4_hrt.py evaluate --out "$R" --eval-out "$H/evaluation" > "$H/evaluate.log" 2>&1
+log "evaluate exit=$?"
+if [ -n "$(git status --porcelain)" ]; then log "WARNING: worktree changed during the run"; fi
+log "retry1 end"

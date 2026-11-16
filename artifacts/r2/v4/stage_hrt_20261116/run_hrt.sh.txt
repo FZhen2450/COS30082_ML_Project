@@ -1,0 +1,30 @@
+#!/bin/bash
+# R2 v4 H_RT (amendment_2 source_co_endpoint.H_RT): J1-J3 x (I6,CDDM) (I1,MTID) (I2,CPDD) x {ablated, random}, seed 0.
+# 18 trainings, strictly one GPU job at a time; then evaluation. Diagnostic only.
+set -u
+export PYTHONDONTWRITEBYTECODE=1
+P=<CONDA_ENV>/bin/python
+W="<WORKSPACE>/worktrees/r2-v4"
+V="<V4_EXP>"
+H="$V/stage_hrt_20261116"
+R="$H/runs"
+cd "$W" || exit 3
+log() { echo "== $* $(date '+%F %H:%M:%S')" >> "$H/sequence.log"; }
+if [ -n "$(git status --porcelain)" ]; then log "REFUSED: dirty worktree"; exit 3; fi
+if [ -e "$R" ]; then log "REFUSED: $R exists (no overwrite; use a new versioned directory)"; exit 3; fi
+mkdir -p "$R"
+{ git rev-parse HEAD; sha256sum research_r2_v4/*.py scripts/r2v4_hrt.py scripts/r2v4_stage_j.py scripts/r2v4_stage_h.py; date; } > "$H/code_start.txt"
+nvidia-smi --query-gpu=timestamp,memory.used,memory.total,utilization.gpu,temperature.gpu,power.draw --format=csv -l 30 > "$H/gpu_monitor.csv" 2>&1 &
+MON=$!
+trap 'kill $MON 2>/dev/null' EXIT
+log "hrt start head=$(git rev-parse --short HEAD)"
+for row in J1_clipL_last2 J2_clipL_last4 J3_clipL_lora8_mlp; do
+  log "$row train start"
+  $P scripts/r2v4_hrt.py run --out "$R" --rows "$row" > "$H/${row}.log" 2>&1
+  log "$row train exit=$?"
+done
+log "evaluate start"
+$P scripts/r2v4_hrt.py evaluate --out "$R" --eval-out "$H/evaluation" > "$H/evaluate.log" 2>&1
+log "evaluate exit=$?"
+if [ -n "$(git status --porcelain)" ]; then log "WARNING: worktree changed during the run"; fi
+log "hrt end"

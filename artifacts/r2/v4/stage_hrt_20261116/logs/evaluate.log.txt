@@ -1,0 +1,12 @@
+J1_clipL_last2       I6_CDDM  novel-seen src -64.44 [-84.1,-47.8] size  -2.22 | H_bal src -1.53 [-12.64,+8.38] size -7.38
+J1_clipL_last2       I1_MTID  novel-seen src -45.28 [-91.7,-6.9] size  +0.00 | H_bal src -1.55 [-7.68,+2.74] size +0.56
+J1_clipL_last2       I2_CPDD  novel-seen src -53.85 [-70.3,-33.3] size  +0.00 | H_bal src +0.68 [-3.00,+5.30] size +0.40
+J1_clipL_last2       aggregate novel-seen -54.52 [-75.43561933464163, -35.59423920679269] H_bal -0.80 [-5.121241692043996, 3.0950207783777675]
+J2_clipL_last4       I6_CDDM  novel-seen src -60.74 [-80.4,-43.6] size  -3.70 | H_bal src +0.57 [-9.64,+10.19] size -8.04
+J2_clipL_last4       I1_MTID  novel-seen src -47.17 [-87.5,-13.8] size  +1.89 | H_bal src -1.96 [-5.54,+1.21] size +1.20
+J2_clipL_last4       I2_CPDD  novel-seen src -51.28 [-64.9,-32.1] size  -5.13 | H_bal src -0.18 [-3.75,+4.73] size -1.56
+J2_clipL_last4       aggregate novel-seen -53.06 [-71.88391558801595, -35.988979141152576] H_bal -0.52 [-4.4654888757789255, 3.218369868514877]
+J3_clipL_lora8_mlp   I6_CDDM  novel-seen src -65.93 [-83.7,-50.6] size  +1.48 | H_bal src -3.10 [-14.56,+7.23] size -6.60
+J3_clipL_lora8_mlp   I1_MTID  novel-seen src -54.72 [-95.8,-20.7] size  +0.00 | H_bal src -0.98 [-4.64,+3.55] size -0.00
+J3_clipL_lora8_mlp   I2_CPDD  novel-seen src -56.41 [-78.3,-35.1] size  +0.00 | H_bal src +0.73 [-2.17,+3.87] size -2.21
+J3_clipL_lora8_mlp   aggregate novel-seen -59.02 [-78.76663120028373, -42.0952719747015] H_bal -1.12 [-5.121938129481056, 2.6966097242115645]

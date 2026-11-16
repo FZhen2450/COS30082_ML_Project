@@ -1,0 +1,34 @@
+{
+ "schema": "r2v4-hrt-v1",
+ "status": "ok",
+ "row": "J2_clipL_last4",
+ "arm_row": "J2_clipL_last4@HRT_I1_MTID_ablated",
+ "fold": "I1",
+ "source": "MTID",
+ "arm": "ablated",
+ "seed": 0,
+ "label": "post-freeze exploratory (v4); H_RT diagnostic only",
+ "support": {
+  "n_fitting_base": 5042,
+  "n_fitting": 4661,
+  "n_removed": 381,
+  "fitting_compositions_base": 291,
+  "fitting_compositions": 290,
+  "emptied_compositions": [
+   164
+  ],
+  "seen_val_rows": 856,
+  "dropped_seen_val_rows": 18,
+  "unseen_val_rows": 333,
+  "universe": 300,
+  "removed_rows_sha256": "f91beff0d095555432ea84ebe22f95fbadb930996e62b545c44ae7dbf114e01b",
+  "fitting_rows_sha256": "168dd4683ef7feca71f4599e41a213da7d873ee4f5400b9a400ab37671ffce53"
+ },
+ "opened_rows_main_process": 8,
+ "opened_rows_excluded": [],
+ "base_checkpoint_sha256": "e2a969894f5f43f829b50d21669e4c3a66ec86849a71f144a84620e7bccbec9e",
+ "base_packet_sha256": "05cf7b9588de2269399a9730b8f1761066ef2b8875955ac5dde810a38aa68490",
+ "receipt_sha256": "242fd30df05325d6c3e4937dd8a0c859d4cc32da37997952f992c6ae370e7cf1",
+ "seconds_total": 566.2088344097137,
+ "finished": "2026-11-16T08:14:07Z"
+}

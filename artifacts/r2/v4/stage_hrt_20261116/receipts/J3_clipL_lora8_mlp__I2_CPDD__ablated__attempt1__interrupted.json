@@ -1,0 +1,1 @@
+{"status": "interrupted", "reason": "operator stopped the launcher after arms failed closed on a dirty worktree (untracked audit script written during the run); this attempt was killed mid-training and has no receipt", "at": "2026-11-16T07:08:02Z"}
