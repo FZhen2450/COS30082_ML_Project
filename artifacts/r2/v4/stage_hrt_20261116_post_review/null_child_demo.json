@@ -1,0 +1,84 @@
+{
+ "label": "synthetic tables on the real fold contracts; no model, no real child",
+ "registered_rule_null_child_vs_D1": {
+  "mean_diff_pp": 58.0371567527662,
+  "folds_better": 6,
+  "meets_gate_thresholds": true
+ },
+ "proposed_null_child_screen": {
+  "gate": {
+   "mean_gain_pp": 0.0,
+   "folds_improved": 0,
+   "ausuc_delta": 0.0,
+   "shortcut_delta_pp": 0.0,
+   "pass": false
+  },
+  "calibration_matched_mean_gain_pp": 0.0,
+  "bootstrap": {
+   "ci95_pp": [
+    0.0,
+    0.0
+   ],
+   "p_le_0": 1.0,
+   "reps": 500,
+   "seed": 0
+  }
+ },
+ "proposed_null_child_confirm": {
+  "gate": {
+   "mean_gain_pp": 0.0,
+   "folds_improved": 0,
+   "ausuc_delta": 0.0,
+   "shortcut_delta_pp": 0.0,
+   "pass": false
+  },
+  "calibration_matched_mean_gain_pp": 0.0,
+  "bootstrap": {
+   "ci95_pp": [
+    0.0,
+    0.0
+   ],
+   "p_le_0": 1.0,
+   "reps": 500,
+   "seed": 0
+  }
+ },
+ "proposed_improving_child_screen": {
+  "gate": {
+   "mean_gain_pp": 32.06794788943982,
+   "folds_improved": 6,
+   "ausuc_delta": 0.4428595356392415,
+   "shortcut_delta_pp": -2.1053333340761453,
+   "pass": true
+  },
+  "calibration_matched_mean_gain_pp": 32.06794788943982,
+  "bootstrap": {
+   "ci95_pp": [
+    30.848415520663362,
+    33.422648954231605
+   ],
+   "p_le_0": 0.0,
+   "reps": 500,
+   "seed": 0
+  }
+ },
+ "proposed_improving_child_confirm": {
+  "gate": {
+   "mean_gain_pp": 32.56399281646221,
+   "folds_improved": 6,
+   "ausuc_delta": 0.4433004145550287,
+   "shortcut_delta_pp": -1.856774528532614,
+   "pass": true
+  },
+  "calibration_matched_mean_gain_pp": 32.56218323904147,
+  "bootstrap": {
+   "ci95_pp": [
+    31.889741855718412,
+    33.321207280816665
+   ],
+   "p_le_0": 0.0,
+   "reps": 500,
+   "seed": 0
+  }
+ }
+}

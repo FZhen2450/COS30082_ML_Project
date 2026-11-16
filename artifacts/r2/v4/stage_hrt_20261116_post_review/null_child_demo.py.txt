@@ -1,0 +1,19 @@
+"""Synthetic demonstration (no model, no real child): null child under the registered rule vs the amendment-3 v2 gate."""
+import json, sys
+sys.path.insert(0, "tests"); sys.path.insert(0, "."); sys.path.insert(0, "scripts")
+import test_r2v4_child_gate as T
+from research_r2_v4 import child_gate as cg
+from research_r2_v4.common import INNER
+import r2v4_stage_j as sj
+parent = T.seeds_of("J2", T.B); null = T.seeds_of("J5_null", T.B); good = T.seeds_of("J5_good", T.B, extra={f: 1.5 for f in INNER})
+d1 = T.table("D1", {f: 1.0 for f in INNER}, 999)
+old = sj.nested_with_parent_rule({sj.D1: d1, "J5": null[0]}, sj.D1, ["J5"], INNER, {})
+rep = {"label": "synthetic tables on the real fold contracts; no model, no real child",
+       "registered_rule_null_child_vs_D1": {k: old[k] for k in ("mean_diff_pp", "folds_better", "meets_gate_thresholds")}}
+for name, c in (("null_child", null), ("improving_child", good)):
+    for mode in ("screen", "confirm"):
+        o = cg.primary_gate(c, parent, INNER, mode=mode, reps=500)
+        rep[f"proposed_{name}_{mode}"] = {"gate": {k: o["gate"][k] for k in ("mean_gain_pp", "folds_improved", "ausuc_delta", "shortcut_delta_pp", "pass")},
+                                          "calibration_matched_mean_gain_pp": o["calibration_matched_sensitivity"]["mean_gain_pp"], "bootstrap": o["bootstrap"]}
+print(json.dumps(rep, indent=1))
+json.dump(rep, open(sys.argv[1], "w"), indent=1)

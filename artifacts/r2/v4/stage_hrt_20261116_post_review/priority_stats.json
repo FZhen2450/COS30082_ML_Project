@@ -1,0 +1,211 @@
+{
+ "label": "post-freeze exploratory (v4); development cross-validation on v3 inner folds; not blind; priority facts (descriptive)",
+ "per_fold": {
+  "I1": {
+   "composition": {
+    "groups": 291,
+    "multi_source_groups": 38,
+    "images_in_multi_source_groups_share": 0.3946846489488298,
+    "median_sources_per_group": 1.0,
+    "image_weighted_dominant_source_share": 0.8901229670765569
+   },
+   "crop": {
+    "groups": 55,
+    "multi_source_groups": 29,
+    "images_in_multi_source_groups_share": 0.9049980166600555,
+    "median_sources_per_group": 2.0,
+    "image_weighted_dominant_source_share": 0.7201507338357794
+   },
+   "disease": {
+    "groups": 175,
+    "multi_source_groups": 40,
+    "images_in_multi_source_groups_share": 0.7056723522411741,
+    "median_sources_per_group": 1.0,
+    "image_weighted_dominant_source_share": 0.7397857992859976
+   }
+  },
+  "I2": {
+   "composition": {
+    "groups": 291,
+    "multi_source_groups": 36,
+    "images_in_multi_source_groups_share": 0.39153648408147124,
+    "median_sources_per_group": 1.0,
+    "image_weighted_dominant_source_share": 0.8912398655329247
+   },
+   "crop": {
+    "groups": 55,
+    "multi_source_groups": 29,
+    "images_in_multi_source_groups_share": 0.8993474391931976,
+    "median_sources_per_group": 2.0,
+    "image_weighted_dominant_source_share": 0.7223650385604113
+   },
+   "disease": {
+    "groups": 175,
+    "multi_source_groups": 41,
+    "images_in_multi_source_groups_share": 0.695076132094127,
+    "median_sources_per_group": 1.0,
+    "image_weighted_dominant_source_share": 0.742337354162547
+   }
+  },
+  "I3": {
+   "composition": {
+    "groups": 290,
+    "multi_source_groups": 38,
+    "images_in_multi_source_groups_share": 0.4122997824797311,
+    "median_sources_per_group": 1.0,
+    "image_weighted_dominant_source_share": 0.8859007316590864
+   },
+   "crop": {
+    "groups": 55,
+    "multi_source_groups": 29,
+    "images_in_multi_source_groups_share": 0.8993474391931976,
+    "median_sources_per_group": 2.0,
+    "image_weighted_dominant_source_share": 0.7265176982400633
+   },
+   "disease": {
+    "groups": 175,
+    "multi_source_groups": 42,
+    "images_in_multi_source_groups_share": 0.7008107573660273,
+    "median_sources_per_group": 1.0,
+    "image_weighted_dominant_source_share": 0.7496539450266957
+   }
+  },
+  "I4": {
+   "composition": {
+    "groups": 290,
+    "multi_source_groups": 38,
+    "images_in_multi_source_groups_share": 0.4180344077516314,
+    "median_sources_per_group": 1.0,
+    "image_weighted_dominant_source_share": 0.8801661063871861
+   },
+   "crop": {
+    "groups": 55,
+    "multi_source_groups": 29,
+    "images_in_multi_source_groups_share": 0.9033023531738185,
+    "median_sources_per_group": 2.0,
+    "image_weighted_dominant_source_share": 0.7108957880166107
+   },
+   "disease": {
+    "groups": 175,
+    "multi_source_groups": 42,
+    "images_in_multi_source_groups_share": 0.6966580976863753,
+    "median_sources_per_group": 1.0,
+    "image_weighted_dominant_source_share": 0.7318568321139015
+   }
+  },
+  "I5": {
+   "composition": {
+    "groups": 290,
+    "multi_source_groups": 37,
+    "images_in_multi_source_groups_share": 0.4033214709371293,
+    "median_sources_per_group": 1.0,
+    "image_weighted_dominant_source_share": 0.8898774219058917
+   },
+   "crop": {
+    "groups": 55,
+    "multi_source_groups": 29,
+    "images_in_multi_source_groups_share": 0.9047054171609332,
+    "median_sources_per_group": 2.0,
+    "image_weighted_dominant_source_share": 0.7263740608936339
+   },
+   "disease": {
+    "groups": 175,
+    "multi_source_groups": 41,
+    "images_in_multi_source_groups_share": 0.7107552392249901,
+    "median_sources_per_group": 1.0,
+    "image_weighted_dominant_source_share": 0.7459470146302887
+   }
+  },
+  "I6": {
+   "composition": {
+    "groups": 291,
+    "multi_source_groups": 39,
+    "images_in_multi_source_groups_share": 0.42730146187277757,
+    "median_sources_per_group": 1.0,
+    "image_weighted_dominant_source_share": 0.8802844725404978
+   },
+   "crop": {
+    "groups": 55,
+    "multi_source_groups": 29,
+    "images_in_multi_source_groups_share": 0.9004346108257606,
+    "median_sources_per_group": 2.0,
+    "image_weighted_dominant_source_share": 0.7080205452390359
+   },
+   "disease": {
+    "groups": 175,
+    "multi_source_groups": 40,
+    "images_in_multi_source_groups_share": 0.7068352429869617,
+    "median_sources_per_group": 1.0,
+    "image_weighted_dominant_source_share": 0.7319241406558672
+   }
+  }
+ },
+ "mean_over_folds": {
+  "composition": {
+   "groups": 290.5,
+   "multi_source_groups": 37.666666666666664,
+   "images_in_multi_source_groups_share": 0.407863042678595,
+   "median_sources_per_group": 1.0,
+   "image_weighted_dominant_source_share": 0.8862652608503573
+  },
+  "crop": {
+   "groups": 55.0,
+   "multi_source_groups": 29.0,
+   "images_in_multi_source_groups_share": 0.9020225460344937,
+   "median_sources_per_group": 2.0,
+   "image_weighted_dominant_source_share": 0.7190539774642558
+  },
+  "disease": {
+   "groups": 175.0,
+   "multi_source_groups": 41.0,
+   "images_in_multi_source_groups_share": 0.702634636933276,
+   "median_sources_per_group": 1.0,
+   "image_weighted_dominant_source_share": 0.7402508476458829
+  }
+ },
+ "seen_val_source_strata_seed0": {
+  "J1_clipL_last2": {
+   "dominant": {
+    "top1": 0.7725694444444444,
+    "n_image_folds": 4608
+   },
+   "other_fitting_source": {
+    "top1": 0.606687898089172,
+    "n_image_folds": 628
+   },
+   "novel_source": {
+    "top1": 0.39285714285714285,
+    "n_image_folds": 28
+   }
+  },
+  "J2_clipL_last4": {
+   "dominant": {
+    "top1": 0.7740885416666666,
+    "n_image_folds": 4608
+   },
+   "other_fitting_source": {
+    "top1": 0.6210191082802548,
+    "n_image_folds": 628
+   },
+   "novel_source": {
+    "top1": 0.35714285714285715,
+    "n_image_folds": 28
+   }
+  },
+  "J3_clipL_lora8_mlp": {
+   "dominant": {
+    "top1": 0.75390625,
+    "n_image_folds": 4608
+   },
+   "other_fitting_source": {
+    "top1": 0.6496815286624203,
+    "n_image_folds": 628
+   },
+   "novel_source": {
+    "top1": 0.25,
+    "n_image_folds": 28
+   }
+  }
+ },
+ "n_sources_total": 42
+}
