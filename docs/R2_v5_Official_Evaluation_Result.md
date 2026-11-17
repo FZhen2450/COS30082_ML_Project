@@ -90,6 +90,39 @@ All three agree with the reported values to 1e-12.
 - **Calibration as a deployment choice.** γ trades seen accuracy for unseen recall. In deployment, the expected share
   of unseen classes would set the right balance.
 
+## Additional limitations (retrospective interpretation of the frozen results; added 17 Nov 2026)
+
+These figures are read from the frozen seen confusion matrix and independently re-verified. No new official prediction
+was made, and nothing about the model, γ or candidates changed.
+
+| Seen-set statistic | Value |
+|---|---|
+| Image-weighted seen Top-1 (the official metric) | 57.10 % (1,142 / 2,000) |
+| Composition-macro seen Top-1 (mean of per-class accuracy over the 323 seen compositions) | 34.5183 % |
+| Seen compositions with **zero** correctly classified images | 163 of 323 |
+| Seen compositions with ≤ 2 evaluation images | 171 of 323 |
+| Seen compositions with ≤ 5 evaluation images | 240 of 323 (median support 2 images) |
+| Seen images predicted as an unseen composition | 574 of 2,000 (28.7 %) |
+
+- **Sparse class support.** Most seen compositions have only a handful of test images, so their individual accuracies
+  are unreliable: one image changes a class's accuracy by 50–100 points. The image-weighted official accuracy is
+  dominated by the larger classes, and the macro figure (34.5 %) shows that many rare seen compositions are rarely
+  recognised.
+- **Unseen structure.** The 10 official unseen compositions span nine crops. Once the model leans toward unseen
+  classes, recognising the crop nearly identifies the composition. This structure helps explain the strong unseen
+  accuracy (84.1 %; unseen crop accuracy 87.1 %).
+- **Calibration trade-off.** γ = 8.75 strongly favours unseen predictions. That raises unseen recall but sacrifices
+  seen accuracy (57.1 % official vs about 71 % on development folds), with 28.7 % of seen images pulled into unseen
+  classes.
+- **Single observation.** This is one training seed and one evaluation, with no estimate of run-to-run variance.
+- **The development-to-official gap has several possible causes.** Calibration explains the gap between uncalibrated
+  and calibrated development scores. But the official split differs from the development folds in other ways too:
+  class supports, the unseen-class structure, image sources and the number of candidates. Those differences may also
+  contribute, and their individual effects are not separated here.
+- **Benchmark scope.** This is a single benchmark result on DPD-Small. It must not be presented as proof of general
+  real-world robustness: earlier source-exclusion experiments showed large losses on image sources absent from
+  training.
+
 ## Evidence (SHA-256)
 
 | File | sha256 |
