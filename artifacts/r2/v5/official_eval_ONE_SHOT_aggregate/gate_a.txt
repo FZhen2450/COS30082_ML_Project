@@ -1,0 +1,41 @@
+{
+ "config": {
+  "row": "J2_clipL_last4",
+  "config_sha256": "b42fa6e750c4ff3f23e0165edeadf32bc71e6290e630ad54ecc9669081670053",
+  "gamma": 8.75,
+  "seed": 0
+ },
+ "payload": {
+  "sha256": "ba17e94119e8b2b7a4b18603e25405d2f52bf4a93396973f80491800697eb62f",
+  "ids_0_332_ascending": true,
+  "unseen_ids": [
+   39,
+   84,
+   107,
+   124,
+   133,
+   136,
+   144,
+   166,
+   276,
+   303
+  ]
+ },
+ "frozen": {
+  "checkpoint": "e9dbbdf3fc95ba791e8e8129ef38bbd85352a0974c3091d6b7667bd633abb1c9",
+  "features": "eee9759f48ec5988e6c58e8ffc2c3d64ba6bd1c99ef6b2bafb07e96a38c8ba25",
+  "verification_record": "verification_07e05ef.json"
+ },
+ "inputs": {
+  "seen": {
+   "rows": 2000,
+   "compositions": 323
+  },
+  "unseen": {
+   "rows": 1448,
+   "compositions": 10
+  }
+ },
+ "output_dir_absent": true
+}
+GATE A: PASS

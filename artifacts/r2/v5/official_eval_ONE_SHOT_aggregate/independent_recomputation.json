@@ -1,0 +1,66 @@
+{
+ "healthy_candidates": 37,
+ "seen": {
+  "n": 2000,
+  "top1_correct": 1142,
+  "top5_correct": 1754,
+  "top1": 0.571,
+  "top5": 0.877,
+  "first_run_metrics_top1": 0.571,
+  "first_run_metrics_top5": 0.877,
+  "saved_top5_equals_rerank_of_saved_scores": true,
+  "reported_top1": 0.571,
+  "reported_top5": 0.877,
+  "crop_top1": 0.8425,
+  "disease_top1": 0.621,
+  "pred_healthy_rate": 0.1425,
+  "pred_unseen_id_rate": 0.287,
+  "false_healthy_on_diseased_seen": 0.018822100789313904,
+  "diseased_seen_images": 1647,
+  "confusion": {
+   "shape": [
+    333,
+    333
+   ],
+   "total": 2000,
+   "diagonal": 1142,
+   "diagonal_equals_top1_count": true,
+   "row_sums_equal_truth_counts": true,
+   "predicted_into_unseen_columns": 574
+  }
+ },
+ "unseen": {
+  "n": 1448,
+  "top1_correct": 1218,
+  "top5_correct": 1429,
+  "top1": 0.8411602209944752,
+  "top5": 0.986878453038674,
+  "first_run_metrics_top1": 0.8411602209944752,
+  "first_run_metrics_top5": 0.986878453038674,
+  "saved_top5_equals_rerank_of_saved_scores": true,
+  "reported_top1": 0.8411602209944752,
+  "reported_top5": 0.986878453038674,
+  "crop_top1": 0.8708563535911602,
+  "disease_top1": 0.8418508287292817,
+  "pred_healthy_rate": 0.0006906077348066298,
+  "pred_unseen_id_rate": 0.9751381215469613,
+  "false_healthy_on_unseen": 0.0006906077348066298,
+  "unseen_truth_all_diseased": true,
+  "pred_correct_crop_but_wrong_disease": 0.029696132596685083
+ },
+ "H@1_recomputed": 0.6802379489908098,
+ "H@5_recomputed": 0.928700476046502,
+ "H@1_first_run_harmonic": 0.6802379489908098,
+ "H@1_reported": 0.6802379489908098,
+ "H@5_reported": 0.928700476046502,
+ "first_run_best_official_H@1": 0.09945951,
+ "classification": "Improved",
+ "output_sha256": {
+  "official_evaluation.json": "0110cb988437dbf16a32eb7b45ebbba85eae71382340b1ba5861b4a09226263c",
+  "seen_calibrated_scores.npy": "abbe5d390c8d04c32242cb7c190a8809c117d257736216f682ce6c4405996809",
+  "seen_confusion_333x333.npy": "faf047144d20c60fc8aed221b18c526535a26df3eb226ceb5c7ea5eb60b4d124",
+  "seen_top5_ids.npy": "1bb40afcac45488e35bbb91233bc295ad637ba2bd5957237266e404075053bbc",
+  "unseen_calibrated_scores.npy": "556e5206262635624b2f92ade2b39d01e6ebb14a95bc051da5cc214cc43d6742",
+  "unseen_top5_ids.npy": "a428f9cc0e80d88441449524afd2dda7dccf5bce692b95000057e48319da1d97"
+ }
+}
