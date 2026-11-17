@@ -1,0 +1,260 @@
+{
+ "schema": "r2v4-amendment-v1",
+ "amendment": 4,
+ "declared": "2026-11-17",
+ "built_utc": "2026-11-17T05:33:44Z",
+ "built_from_commit": "42d64747698f8f5367fd6cc8d3bbea8c1414374e",
+ "status": "post-freeze EXPLORATORY development cross-validation on the reused v3 inner folds; ADAPTIVE (J4b prioritised after H_RT; seeds 1-2 authorised after the reviewed seed-0 screen pass); not blind, independent or confirmatory in the statistical sense; 'confirmation' means the declared amendment-3 three-seed child-vs-J2 gate",
+ "extends": {
+  "amendment": 3,
+  "amendment_3_sha256": "ba3f24425f0c6d5dff0411a40eeb775a868fc44f0afc2a70e014e048e7da3456",
+  "declaration_3_sha256": "95358ee8cc6350918907a991dfe22d15288828282a924e1c24870d9d79419f54",
+  "relation": "append-only: amendment 3 and its 24 code-pinned files are unchanged and must still verify with the pinned tool; amendment 4 adds the authorisation for J4b seeds 1-2 and the three-seed confirmation only"
+ },
+ "unchanged": [
+  "protocol_v4.json and amendments 1-3 with their declarations",
+  "the amendment-3 primary gate, thresholds, endpoint (H_bal), diagnostics, LOFO calibration, gamma grid and tie rules",
+  "jrun.py training code and the J4b / J2 recipes",
+  "all v1-v3 evidence; Stage H, I, J Phase 1/2, H_RT and the J4b seed-0 screen evidence"
+ ],
+ "child": {
+  "row": "J4b_best_photometric_aug",
+  "config": {
+   "row": "J4b_best_photometric_aug",
+   "backbone": "clip_l14",
+   "trainable": "last4",
+   "augment": "photometric",
+   "source_balanced": false,
+   "extra": null,
+   "epochs": 5,
+   "batch": 32,
+   "lr_backbone": 1e-05,
+   "lr_head": 0.001,
+   "weight_decay": 0.05,
+   "warmup_epochs": 1,
+   "max_steps": null,
+   "concat_frozen": null,
+   "workers": 8
+  },
+  "config_sha256": "30eeb0b6426769bb2600e79492699d848a1af417060e0d4c606fa268d4f9f032",
+  "modification_vs_parent": {
+   "augment": "photometric"
+  }
+ },
+ "parent": {
+  "row": "J2_clipL_last4",
+  "config": {
+   "row": "J2_clipL_last4",
+   "backbone": "clip_l14",
+   "trainable": "last4",
+   "augment": "flip",
+   "source_balanced": false,
+   "extra": null,
+   "epochs": 5,
+   "batch": 32,
+   "lr_backbone": 1e-05,
+   "lr_head": 0.001,
+   "weight_decay": 0.05,
+   "warmup_epochs": 1,
+   "max_steps": null,
+   "concat_frozen": null,
+   "workers": 8
+  },
+  "config_sha256": "b42fa6e750c4ff3f23e0165edeadf32bc71e6290e630ad54ecc9669081670053",
+  "runs": {
+   "0": "stage_j_phase1_20261114",
+   "1": "stage_j_phase2_20261115",
+   "2": "stage_j_phase2_20261115"
+  }
+ },
+ "child_runs": {
+  "0": "stage_j4b_20261117/runs",
+  "1": "stage_j4b_confirm_20261117/runs",
+  "2": "stage_j4b_confirm_20261117/runs"
+ },
+ "authorised_now": {
+  "rows": [
+   "J4b_best_photometric_aug"
+  ],
+  "seeds": [
+   1,
+   2
+  ],
+  "evaluation": {
+   "mode": "confirm",
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "folds": [
+    "I1",
+    "I2",
+    "I3",
+    "I4",
+    "I5",
+    "I6"
+   ]
+  },
+  "not_authorised": [
+   "J4a",
+   "J5",
+   "J6",
+   "J7",
+   "J8",
+   "J4b seeds other than 1-2",
+   "J4b or any other H_RT arms",
+   "any other model, row or experiment",
+   "official-test images, labels, scores or inference"
+  ]
+ },
+ "training": "child_run._run unchanged (jrun.run_fold: declared 5 epochs, AdamW lr 1e-5 / 1e-3, wd 0.05, cosine with 1 warm-up epoch, AMP, batch 32, composition-balanced sampler, registered photometric augmentation, initialisation from the original pretrained weights, torch seed 1000*seed + fold index); a new attempt directory per fold; failures kept",
+ "fold_pins": {
+  "I1": {
+   "identity_sha256": "d6122530d7ce9b117c9e037c8064a2ecae675fbe07bd7525fca722b691c22732",
+   "contract_sha256": "50fc05ebba923e311d294f7f709a4d36a2119b14789279cc12110de2b4905d66",
+   "fitting_rows_sha256": "9135cb3516c67814d25b4bdf4fceabac3a6dfeb4639057bff7d299ded374c725"
+  },
+  "I2": {
+   "identity_sha256": "501256f5372e8a0c52629042fae24a4e3f661355271f0f6f69c286f6b8027d4a",
+   "contract_sha256": "76b55d6c02d6d9c4c71e2f2a572dff172cae08ee928d0021fa27fed1d09f465c",
+   "fitting_rows_sha256": "971a6a5cf803594ee47d8cc6bfb36f9fb606c4d221a922caad16d2e75cc956b9"
+  },
+  "I3": {
+   "identity_sha256": "ae1a34b12eada606ea8b72f3789e2fc08f907387bb3d6bf66acb7ae15834e148",
+   "contract_sha256": "23396b8ea981cb164facfd70b0d034fb675e23323d7abf634e62d935aa2e0109",
+   "fitting_rows_sha256": "e30b762607c9c83a3eec6a764f4601b91269604012c25c3355953987a8df02a5"
+  },
+  "I4": {
+   "identity_sha256": "7a0c2ba8f9e510a63e91efce7068d0c15111bfcd8f5022ce420cbc90ae9f45fa",
+   "contract_sha256": "eed6ae546c684bee55c0ead27f3f7a3fdde4c6b1b840634048e2463cae79c6ba",
+   "fitting_rows_sha256": "2a3f96f42db362deb70b736528d125bbbcd0e0e107584d4821c940ac6b15823e"
+  },
+  "I5": {
+   "identity_sha256": "c1408d9e389b5749185d8d4e5db4782d58cb3c675cb6458d5b88b94c719e690b",
+   "contract_sha256": "a965325d8d5872f22f743a68d0a5f56c3a90052d4857357dd1f6433f2013b472",
+   "fitting_rows_sha256": "8c8269b57bd94618af7fd8e7aad79db03b4f8c7f2a4221ced76e1ac52f1a31c4"
+  },
+  "I6": {
+   "identity_sha256": "a198ef17e0e0f7da41822e4fa35569e703479c276272c81eee88956e803d48be",
+   "contract_sha256": "a36660129120ede7ab9717fd0e5857d7be27048840368f17765ccd639e939f72",
+   "fitting_rows_sha256": "29a240c40eb8ea1dcab0107eede0944c35e3d895c28993d7d8ef4e5677c57f03"
+  }
+ },
+ "evidence_pins": {
+  "J2": {
+   "0": {
+    "I1": "6c5f83f1fd9e2d3f077a100fa475cb0749fea8871993f3f8748bb1b4869adb7b",
+    "I2": "11e299f066e038ae86520c1b25abd8a28e7109f7b277b7a6ad3271d49af4191a",
+    "I3": "1739327e9e826242965958358f9d3268a05ecc240953f9af1185a3d07a069d45",
+    "I4": "951d02a3beb45c9d985c67a255a054924960f23e1e0bd6ab2e5bed1a376d2ccb",
+    "I5": "dbead1bd2698a670bf88fa1b6a6d5733d2af458ee510ef7057839c210e65c4ec",
+    "I6": "acc264a7cda1f806ee326570900eaeb0ad9da30a1f3721740588599e45195967"
+   },
+   "1": {
+    "I1": "95b9f9717b321a51b6dcecc7877c3d64d4caea2bd807e626b227aba10e7ac5e4",
+    "I2": "b92d26b0ed5d4dbbb327fdf1b2282e1287886b100e578ad829413892d764219f",
+    "I3": "4f8b0773c9cb5cbafdcbab2601356fd5b77e9fca1e544db651a6b1386212ac81",
+    "I4": "9f8a042be9cf3fc07fa79eff47d6de274518a549c6bf93323338334bbb2e5d51",
+    "I5": "a2e5921badd02a1eb6915650d0d761598aa4620a6a32fbe1cb46db5d71c05868",
+    "I6": "23a21957072b3d5578cb6e631942342b8813bae8effcc1060559cbd6da07e1f5"
+   },
+   "2": {
+    "I1": "4f5e84babf9ad9d0499b44bc12b3b2ca22291bd2f8c7b50d7b933a3e27e7008f",
+    "I2": "7e9ac4a7713b994edc77c7795cc5ff9ac94b280bb3fb2b12240cdc86eb267153",
+    "I3": "ce9170ff1c17781681a638dc98b44fd78fe9c00743be4c5e3193ff0d4ddb552e",
+    "I4": "ea41caad8b68060f20485f005f0c17505070f7da5ddb71e2df99d811731a29b6",
+    "I5": "954e52661b581c2e2a9f74f2a03e91c5d7c5d8556d2a1961d0b58a486548d6ad",
+    "I6": "6723d647c3859bdebf60e8cb401605538f72d05e036d74a2cf3b52527c86d42c"
+   }
+  },
+  "J4b_seed0": {
+   "I1": {
+    "receipt_sha256": "756cfe869d249c5394b90795b12fa513edd3b087e1940f8fe1202c935d54c60e",
+    "sidecar_sha256": "a33c0052f893e6ef7703cd61f1ddc12b6629e03e4f0ec49c2d207888f3e3273a"
+   },
+   "I2": {
+    "receipt_sha256": "3b0a547b2d6c316dff3f1179c1bd47b9b02056ce461ae1047e877dbd621b871e",
+    "sidecar_sha256": "0432dba91acbf58484642f41e3ffa83afc65c868025bdd47251d9ef5addf6eae"
+   },
+   "I3": {
+    "receipt_sha256": "efd88ce98c9613cb7a77f9300d542a077e11903965616baa89524b824a3b0378",
+    "sidecar_sha256": "42004ac1b19e565cf0b6ba564f5043180a05c05509e4fa262d50ff82ebcfbc47"
+   },
+   "I4": {
+    "receipt_sha256": "1ef117ce926c16c7ba086f8f696a59120a58da716ad6dbe8c68754e833161cfe",
+    "sidecar_sha256": "67bbecbe480a9853826198632b56624543fb5d0b1675aabe787869655b5d14e2"
+   },
+   "I5": {
+    "receipt_sha256": "1860a355665c92abcfa6bcfa1b238fd0087fff8055efeaa79321949922178c92",
+    "sidecar_sha256": "ce6f24168f3f741dfca9c7962dbc32ef1f5c33cb4043165a9821b6f67d26444a"
+   },
+   "I6": {
+    "receipt_sha256": "30f6549ff408492ce52b241c01eb76d3a6c8a53a40c10e778872fdfdcdd27ec2",
+    "sidecar_sha256": "25164b181d1593339a5ea4cc58568cc17b38089efd5a1468c732843079ba9c6f"
+   }
+  }
+ },
+ "confirmation": {
+  "decision_function": "amendment4.confirmation_decision -> child_gate.promotion_decision(C, P, 'confirm') on I1-I6",
+  "inputs": "amendment4.verified_confirmation_pair: child_inputs.load_verified (mandatory re-derivation) per seed and base",
+  "thresholds": {
+   "mean_gain_pp": 1.0,
+   "folds_slack": 1,
+   "ausuc_delta_min": 0.0,
+   "shortcut_delta_max_pp": 5.0,
+   "folds_required": 5,
+   "improvement": "strict (> 0)"
+  },
+  "endpoint": "H_bal",
+  "calibration": "each row's own LOFO (config, gamma) on the other five folds; ties -> lower config, smaller gamma",
+  "per_fold": "per-fold means over seeds 0, 1, 2 of child - J2",
+  "meaning": "pass -> 'reproducible exploratory improvement over J2 on the development folds' (not independent confirmation, not official-test superiority, no source-robustness claim); fail -> negative result kept, thresholds unchanged"
+ },
+ "diagnostics_no_pass_fail": [
+  "unseen_disease_top1",
+  "unseen_crop_top1",
+  "unseen_top1_macro",
+  "unseen_withincrop_macro",
+  "seen_top1",
+  "H_micro",
+  "seen / unseen Top-5",
+  "calibration-matched H_bal",
+  "per-fold healthy shortcut",
+  "false-healthy",
+  "source strata with unique-image and composition-source-cluster counts",
+  "paired composition-cluster bootstrap CI (exploratory)",
+  "per-seed deltas"
+ ],
+ "stop": "after the three-seed evaluation, regardless of outcome; final research decision report; no further experiments",
+ "code_pins": {
+  "artifacts/r2/lineage_groups_v1.json": "1648822d480c9165353ef1d31b4add70fd9c73a8849fffdcdb65a26ce77949b4",
+  "docs/R2_v4_Amendment3_PROPOSAL_v3.md": "81468253840daaf92b6493a977ca9f5450b30620192a221b88b1c6c86d076189",
+  "docs/R2_v4_Amendment3_v3_Repair.md": "789f09fdaba3ab2fba9dec173f6a8d59d9460d0dd226d023a405ad79e9ee16f7",
+  "docs/R2_v4_Amendment4_Plan.md": "13b5b8ae846f6a80d6da84879abb2a95d64c8385278f5957ad14ea0f4b90b641",
+  "research_r2/candidates.py": "aadd8c1debbf2108d386792b296423d32c1bac8d5c56d9bfbfbda2986518ed71",
+  "research_r2/data.py": "162815f4117c4395988baa11a412db15dbeeea31564daf48e3d5534af80a9729",
+  "research_r2/methods.py": "3057145a6b757b10585d9a538d6d819869a129e1b015b84649a65235d970089e",
+  "research_r2/metrics.py": "c4a511eecf2b763af2d91bcb8ef800998d308975611b6848d59a17083a2e3eae",
+  "research_r2/packets.py": "cb96e7905cd477624ff8b412ff802137334f1b03830e61c57a99ddad26f7dba0",
+  "research_r2/runner.py": "dc5764d73b7a0e4ab4d75166618999e19ec32d87ec1158eb17d9f10fbbaa688b",
+  "research_r2_v4/amendment4.py": "b6c32dc4cccc6c150c10c319f2e84c18edcd559cad431e4bce899e8687edfde4",
+  "research_r2_v4/amendment_2.json": "da1eb2f1c4c5e586d363587140b6a42d07e83e125c4fd5f5204ad9a32aee026c",
+  "research_r2_v4/child_gate.py": "75d2b735469e0716dedfde96bf9349ab6f145306b83767112d1b32afd7eb7d3e",
+  "research_r2_v4/child_inputs.py": "e2210d77808c80fe2a8d1920efd8bcc6c0e6b368c136f2bf1151100db2e413d7",
+  "research_r2_v4/child_run.py": "246ecc87408f355fd442e89a20cdbe00cb385f9d730fbc1a5d8edb5a021f3e30",
+  "research_r2_v4/common.py": "1e83ffa4cc8ad9099b19cb66e0d576976a321e4cfc5f4a24b504904f66221c26",
+  "research_r2_v4/confirm.py": "7bfed789d96def5e215806e634891a84339f04a4b8d32a7b675dd04e7c02e9f9",
+  "research_r2_v4/evaluate.py": "503c9f93ba9541dc6d3d5eea5112ea06058a6e68fa28af4a55815c6e98ca8b95",
+  "research_r2_v4/jrun.py": "433d405805db25d7b42752e129125380276c159f2a4dc4fe85303cb5fc5f4393",
+  "research_r2_v4/matrices/stage_j_v4.json": "7fe19346b045fbd90d2abab5eeb6bf630d462da775174d81b232b28be94dc421",
+  "scripts/r2v4_a4.py": "dd70175d7cebc377849122e58b30455fa5aae306550583dc651806ff3d12b5de",
+  "scripts/r2v4_amendment3_build.py": "b1cc70294bf653264fe05925508bf350eabbb4eb2affda5d25ad3bb1ec544f61",
+  "scripts/r2v4_child.py": "dd9c6d5a398ac251e5f4571e4d1f5ff37bad4152b59e286359dc5495bbe4d274",
+  "scripts/r2v4_declare.py": "50af12148e45ef073bfc8e99556fcb45605cbf24fd454f825a580292743a022b",
+  "tests/test_r2v4_amendment4.py": "4fe590d5f7dd955e36cc4710048ac3641215b358cfccd8eff9c4fca26df23ff0",
+  "tests/test_r2v4_child_gate.py": "ea6a2133f37c7a366040e0f014345f1937c009764908ca928afd6db6b62b09e1",
+  "tests/test_r2v4_child_inputs.py": "bbab873e55a19ec02626e6d23926efc4709135c5f036ab10925f1b404ae0295e",
+  "tests/test_r2v4_child_run.py": "7f4081a1075bc57ea2731b622e016305024d8b7c998bbbc4a2cc7405b6b32d49"
+ }
+}
