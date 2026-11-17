@@ -1,0 +1,58 @@
+test_altered_weight_fails_output_check (test_r2v4_j.TestCheckpoint) ... ok
+test_corrupted_file (test_r2v4_j.TestCheckpoint) ... ok
+test_good_checkpoint_reloads_exactly (test_r2v4_j.TestCheckpoint) ... ok
+test_metadata_mismatch (test_r2v4_j.TestCheckpoint) ... ok
+test_missing_key (test_r2v4_j.TestCheckpoint) ... ok
+test_frozen_parameter_change_fails (test_r2v4_j.TestFailClosedFold) ... ok
+test_no_trainable_parameters_fails (test_r2v4_j.TestFailClosedFold) ... ok
+test_stale_or_mismatched_cache_refused (test_r2v4_j.TestFeatureCache) ... ok
+test_missing_gradient (test_r2v4_j.TestGradMonitor) ... ok
+test_never_nonzero_and_skips (test_r2v4_j.TestGradMonitor) ... ok
+test_three_consecutive_nonfinite (test_r2v4_j.TestGradMonitor) ... ok
+test_evaluation_rows_refused_during_training (test_r2v4_j.TestImageAccess) ... ok
+test_layout_chunks_load_only_allowed_rows (test_r2v4_j.TestImageAccess) ... ok
+test_nothing_allowed_before_a_phase (test_r2v4_j.TestImageAccess) ... ok
+test_run_fold_rejects_overlapping_fitting_rows (test_r2v4_j.TestImageAccess) ... ok
+test_training_filenames_never_trip_the_test_name_guard (test_r2v4_j.TestImageAccess) ... ok
+test_held_fold_does_not_choose_its_parent (test_r2v4_j.TestNestedParentRule) ... ok
+test_incorrect_candidate_order_refused (test_r2v4_j.TestPacketsAndReceipts) ... ok
+test_dry_run (test_r2v4_j.TestSyntheticSixFoldDryRun) ... {"row": "Jsyn_A", "seed": 0, "fold": "I1", "seconds": 1.8999059200286865, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "2/2"}
+{"row": "Jsyn_A", "seed": 0, "fold": "I2", "seconds": 1.8777470588684082, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "2/2"}
+{"row": "Jsyn_A", "seed": 0, "fold": "I3", "seconds": 1.918915033340454, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "2/2"}
+{"row": "Jsyn_A", "seed": 0, "fold": "I4", "seconds": 1.7910470962524414, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "2/2"}
+{"row": "Jsyn_A", "seed": 0, "fold": "I5", "seconds": 1.8016061782836914, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "2/2"}
+{"row": "Jsyn_A", "seed": 0, "fold": "I6", "seconds": 1.660733699798584, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "2/2"}
+{"row": "Jsyn_B", "seed": 0, "fold": "I1", "seconds": 1.7790138721466064, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "2/2"}
+{"row": "Jsyn_B", "seed": 0, "fold": "I2", "seconds": 1.7300214767456055, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "2/2"}
+{"row": "Jsyn_B", "seed": 0, "fold": "I3", "seconds": 1.6511955261230469, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "2/2"}
+{"row": "Jsyn_B", "seed": 0, "fold": "I4", "seconds": 1.8428056240081787, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "2/2"}
+{"row": "Jsyn_B", "seed": 0, "fold": "I5", "seconds": 1.6962218284606934, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "2/2"}
+{"row": "Jsyn_B", "seed": 0, "fold": "I6", "seconds": 1.8283541202545166, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "2/2"}
+Jsyn_A                         seed0 H_bal  45.85 -20.36pp 0/6 pass=False
+                               3-seed: not run (seed-0 screen only)
+Jsyn_B                         seed0 H_bal  48.04 -18.16pp 0/6 pass=False
+                               3-seed: not run (seed-0 screen only)
+refused: {}
+Jsyn_A I1 CDC ok
+Jsyn_A I1 CLDI ok
+ok
+test_frozen_config_is_validated_j2_and_development_gamma (test_r2v5_final.TestCandidatesAndConfig) ... ok
+test_payload_matches_first_run_contract_and_training_csv (test_r2v5_final.TestCandidatesAndConfig) ... ok
+test_tampered_payload_refused (test_r2v5_final.TestCandidatesAndConfig) ... ok
+test_refused_without_explicit_authorisation (test_r2v5_final.TestOfficialEvaluationGuard) ... ok
+test_calibration_penalises_exactly_the_seen_columns (test_r2v5_final.TestScoringAndRanking) ... ok
+test_metrics_equal_first_run_contract (test_r2v5_final.TestScoringAndRanking) ... ok
+test_non_finite_features_refused (test_r2v5_final.TestScoringAndRanking) ... ok
+test_scores_finite_333_columns_deterministic (test_r2v5_final.TestScoringAndRanking) ... ok
+test_stable_ties_and_top1_top5_consistency (test_r2v5_final.TestScoringAndRanking) ... ok
+test_full_fold_trains_on_every_training_row_and_nothing_else (test_r2v5_final.TestTrainingContract) ... ok
+test_training_access_refuses_non_training_images (test_r2v5_final.TestTrainingContract) ... ok
+
+----------------------------------------------------------------------
+Ran 30 tests in 312.581s
+
+OK
+refused: {
+ "Jsyn_A/seed0": "ConfirmError: Jsyn_A seed0: incomplete, missing folds ['I2']",
+ "Jsyn_B/seed0": "JCheckError: <TMP>/Jsyn_B/seed0/I3/attempt1: I3_scores.npz missing or changed since its receipt"
+}
