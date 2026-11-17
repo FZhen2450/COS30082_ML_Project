@@ -7,6 +7,9 @@ MODEL_SPECS = {
     "frozen_clip": {"label": "Frozen CLIP ViT-L/14", "fields": (("clip_weights", "CLIP ViT-L/14 weights"),)},
     "m6": {"label": "M6 capped adapter (seed 45, epoch 1)", "fields": (
         ("clip_weights", "CLIP ViT-L/14 weights"), ("adapter_checkpoint", "Selected M6 checkpoint"))},
+    "j2": {"label": "J2 final model (CLIP ViT-L/14 last-4 fine-tuned + D1 composition scoring)", "fields": (
+        ("clip_weights", "CLIP ViT-L/14 weights"), ("j2_checkpoint", "Frozen J2 checkpoint"),
+        ("j2_asset", "J2 inference asset"))},
 }
 
 
@@ -23,6 +26,10 @@ def load_model(catalog, kind, paths, device="cpu"):
     if kind == "wp1":
         from .service import load_independent
         return load_independent(catalog, paths["crop"], paths["disease"], device)
+    if kind == "j2":
+        # No fallback: any J2 identity or integrity failure raises to the GUI instead of loading another model.
+        from .j2_predictor import J2Predictor
+        return J2Predictor(catalog, paths["clip_weights"], paths["j2_checkpoint"], paths["j2_asset"], device)
     if getattr(catalog, 'is_final', False):
         from .final_predictor import FinalCLIPPredictor
         return FinalCLIPPredictor(catalog, paths['clip_weights'],

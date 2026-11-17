@@ -30,6 +30,8 @@ Run `python gui.py` with Python 3.11-3.13 to preview a plant image and browse
 fitting-only training references. Real identification is enabled after loading
 trained WP1 crop/disease checkpoints; no predictions are simulated. See the
 [GUI guide](docs/WP4_GUI.md) for setup, current scope and WP2/WP3 integration.
+The final proposed model, J2, is a fourth model in the picker. See the
+[J2 final-model guide](docs/WP4_J2_FINAL_MODEL.md) for its private files, checks and speed.
 
 ## Team work packages
 

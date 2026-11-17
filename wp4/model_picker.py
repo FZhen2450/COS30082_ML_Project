@@ -8,7 +8,8 @@ from .asset_discovery import discover_weight_files
 from .model_loader import MODEL_SPECS, validate_model_inputs
 from .widgets import WHITE, INK, MUTED, Button, label
 
-SHORT_LABELS = {"wp1": "WP1 / ResNet50 pair", "frozen_clip": "Frozen CLIP / ViT-L/14", "m6": "M6 / CLIP adapter"}
+SHORT_LABELS = {"wp1": "WP1 / ResNet50 pair", "frozen_clip": "Frozen CLIP / ViT-L/14", "m6": "M6 / CLIP adapter",
+                "j2": "J2 / final model"}
 
 
 class ModelPanel(tk.Frame):
@@ -40,7 +41,7 @@ class ModelPanel(tk.Frame):
         self.search_button = ttk.Button(tools, text="Search folder", style="Small.TButton", command=self.search_folder)
         self.search_button.pack(side="right")
         self.file_frame = tk.Frame(self, bg=WHITE)
-        self.paths = {key: tk.StringVar(self) for key in ("crop", "disease", "clip_weights", "adapter_checkpoint")}
+        self.paths = {key: tk.StringVar(self) for spec in MODEL_SPECS.values() for key, _ in spec["fields"]}
         bottom = tk.Frame(self, bg=WHITE)
         bottom.pack(fill="x", pady=(0, 12))
         label(bottom, "Device", 13, MUTED).pack(side="left")

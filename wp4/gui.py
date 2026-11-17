@@ -232,9 +232,14 @@ class PlantApp:
         if not self.predictor or self.query is None:
             return
         predictor, query, catalog, model_kind = self.predictor, self.query, self.catalog, self.model_kind
+        query_path = self.query_path
         def action():
             started = time.perf_counter()
-            raw = predictor.predict([query], topk=5)
+            image = query
+            if getattr(predictor, "input_orientation", "exif_corrected") == "stored_pixels":
+                # J2 scores the file's stored pixels exactly as it was trained/evaluated; the display stays EXIF-corrected.
+                image = predictor.load_input(query_path)
+            raw = predictor.predict([image], topk=5)
             return (present_prediction(raw, catalog), raw["score_semantics"],
                     time.perf_counter() - started,
                     raw.get("model_provenance", getattr(predictor, "provenance", {"variant": model_kind})))
