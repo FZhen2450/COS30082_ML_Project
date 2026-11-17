@@ -1,0 +1,23 @@
+{
+ "schema": "r2v5-final-model-config-v1",
+ "frozen": "2026-11-17, before final training and before any official-test access",
+ "row": "J2_clipL_last4",
+ "config": {"row": "J2_clipL_last4", "backbone": "clip_l14", "trainable": "last4", "augment": "flip", "source_balanced": false,
+            "extra": null, "epochs": 5, "batch": 32, "lr_backbone": 1e-05, "lr_head": 0.001, "weight_decay": 0.05,
+            "warmup_epochs": 1, "max_steps": null, "concat_frozen": null, "workers": 8},
+ "config_sha256": "b42fa6e750c4ff3f23e0165edeadf32bc71e6290e630ad54ecc9669081670053",
+ "seed": 0,
+ "torch_seed": 0,
+ "training_data": "all 8,000 DPD-Small training-CSV images (sha256 9f1b729a...6a7d); no official-test image, label or metadata",
+ "recipe": "synth_composition",
+ "d1_cfg": {"fuse": 1.0, "normalise": true},
+ "gamma": 8.75,
+ "gamma_source": "development only: J2 three seeds x six v3 inner folds; pooled H_micro-optimal gamma = 8.75 and mean of per-fold LOFO H_micro choices = 8.75 (range 8.25-9.0); grid 0..16 step 0.25 (v5 phase1_eval.json)",
+ "calibration_rule": "calibrated score = D1 score - gamma for the 323 seen candidates; the 10 unseen candidates are not penalised",
+ "candidate_payload": "artifacts/r2/v5/final_candidates_cos30082_v1.json",
+ "candidate_payload_sha256": "ba17e94119e8b2b7a4b18603e25405d2f52bf4a93396973f80491800697eb62f",
+ "unseen_ids": [39, 84, 107, 124, 133, 136, 144, 166, 276, 303],
+ "candidate_order": "global composition ids 0..332 ascending",
+ "tie_rule": "stable_column_order_ascending_global_id",
+ "metrics": "seen and unseen image-weighted Top-1 / Top-5 over all 333 candidates; H@k = harmonic mean (assignment brief 3.3)"
+}
