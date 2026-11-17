@@ -1,0 +1,36 @@
+#!/bin/bash
+# Amendment 4: J2 seed-1/2 preflight (stop on any failure), then J4b seeds 1 and 2 on I1-I6 (one GPU job at a time),
+# then the three-seed confirmation vs J2. Stops after the evaluation regardless of outcome.
+set -u
+export PYTHONDONTWRITEBYTECODE=1
+P=<CONDA_ENV>/bin/python
+W="<WORKSPACE>/worktrees/r2-v4"
+O="<WORKSPACE>/experiments/r2-compositional/v4/stage_j4b_confirm_20261117"
+cd "$W" || exit 3
+log() { echo "== $* $(date '+%F %H:%M:%S')" >> "$O/sequence.log"; }
+if [ -n "$(git status --porcelain)" ]; then log "REFUSED: dirty worktree"; exit 3; fi
+if [ -e "$O/runs" ]; then log "REFUSED: $O/runs exists"; exit 3; fi
+{ git rev-parse HEAD; sha256sum research_r2_v4/*.py scripts/r2v4_child.py scripts/r2v4_declare.py scripts/r2v4_a4.py; date; } > "$O/code_start.txt"
+$P scripts/r2v4_a4.py verify > "$O/declaration_verify_start.txt" 2>&1 || { log "REFUSED: amendments 3/4 do not verify"; exit 3; }
+for s in 1 2; do
+  log "J2 preflight seed$s start"
+  $P scripts/r2v4_child.py preflight --seed $s --out "$O/preflight_J2_seed$s.json" > "$O/preflight_J2_seed$s.log" 2>&1
+  rc=$?; log "J2 preflight seed$s exit=$rc"
+  if [ $rc -ne 0 ]; then log "STOP: J2 seed$s preflight failed"; exit 4; fi
+done
+nvidia-smi --query-gpu=timestamp,memory.used,memory.total,utilization.gpu,temperature.gpu,power.draw --format=csv -l 30 > "$O/gpu_monitor.csv" 2>&1 &
+MON=$!
+trap 'kill $MON 2>/dev/null' EXIT
+for s in 1 2; do
+  log "j4b seed$s train start head=$(git rev-parse --short HEAD)"
+  $P scripts/r2v4_a4.py run --seed $s > "$O/J4b_seed${s}_train.log" 2>&1
+  rc=$?; log "j4b seed$s train exit=$rc"
+  if [ $rc -ne 0 ]; then log "STOP: seed$s did not complete cleanly (no evaluation)"; exit 5; fi
+done
+kill $MON 2>/dev/null
+log "evaluate start"
+$P scripts/r2v4_a4.py evaluate > "$O/evaluate.log" 2>&1
+log "evaluate exit=$?"
+$P scripts/r2v4_a4.py verify > "$O/declaration_verify_end.txt" 2>&1; log "declaration verify at end exit=$?"
+if [ -n "$(git status --porcelain)" ]; then log "WARNING: worktree changed during the run"; fi
+log "end"

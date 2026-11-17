@@ -1,0 +1,11 @@
+test_real_declaration_state (test_r2v4_amendment4.TestProductionRefusals) ... ok
+test_unauthorised_rows_seeds_and_directories (test_r2v4_amendment4.TestProductionRefusals) ... ok
+test_amendment_3_runner_still_refuses_seeds_1_and_2 (test_r2v4_amendment4.TestAmendment3Preserved) ... ok
+test_amendment_3_unchanged_and_still_verifies (test_r2v4_amendment4.TestAmendment3Preserved) ... ok
+test_historical_artifact_hashes_unchanged (test_r2v4_amendment4.TestAmendment3Preserved) ... ok
+test_j4b_is_j2_plus_photometric_only (test_r2v4_amendment4.TestAmendment3Preserved) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 87.995s
+
+OK

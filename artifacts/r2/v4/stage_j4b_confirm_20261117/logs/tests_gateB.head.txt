@@ -1,0 +1,9 @@
+d9ed896b18c48c616fcfbec442fc9712809edd64
+?? docs/R2_v4_Amendment4_Plan.md
+?? research_r2_v4/amendment4.py
+?? scripts/r2v4_a4.py
+?? tests/test_r2v4_amendment4.py
+b6c32dc4cccc6c150c10c319f2e84c18edcd559cad431e4bce899e8687edfde4  research_r2_v4/amendment4.py
+dd70175d7cebc377849122e58b30455fa5aae306550583dc651806ff3d12b5de  scripts/r2v4_a4.py
+4fe590d5f7dd955e36cc4710048ac3641215b358cfccd8eff9c4fca26df23ff0  tests/test_r2v4_amendment4.py
+13b5b8ae846f6a80d6da84879abb2a95d64c8385278f5957ad14ea0f4b90b641  docs/R2_v4_Amendment4_Plan.md

@@ -1,0 +1,12 @@
+== J2 preflight seed1 start 2026-11-17 13:35:48
+== J2 preflight seed1 exit=0 2026-11-17 13:36:22
+== J2 preflight seed2 start 2026-11-17 13:36:22
+== J2 preflight seed2 exit=0 2026-11-17 13:36:54
+== j4b seed1 train start head=9122366 2026-11-17 13:36:54
+== j4b seed1 train exit=0 2026-11-17 14:36:16
+== j4b seed2 train start head=9122366 2026-11-17 14:36:16
+== j4b seed2 train exit=0 2026-11-17 15:35:39
+== evaluate start 2026-11-17 15:35:39
+== evaluate exit=0 2026-11-17 15:39:14
+== declaration verify at end exit=0 2026-11-17 15:39:16
+== end 2026-11-17 15:39:16

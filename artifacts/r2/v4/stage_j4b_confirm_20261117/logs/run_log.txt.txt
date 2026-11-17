@@ -1,0 +1,12 @@
+2026-11-17T05:46:46Z {"row": "J4b_best_photometric_aug", "seed": 1, "fold": "I1", "seconds": 581.6244342327118, "rederive_max_abs_diff": 1.9073486328125e-06, "wall": 585.8578932285309}
+2026-11-17T05:56:41Z {"row": "J4b_best_photometric_aug", "seed": 1, "fold": "I2", "seconds": 590.9920990467072, "rederive_max_abs_diff": 1.9073486328125e-06, "wall": 595.596551656723}
+2026-11-17T06:06:32Z {"row": "J4b_best_photometric_aug", "seed": 1, "fold": "I3", "seconds": 586.0963001251221, "rederive_max_abs_diff": 1.9073486328125e-06, "wall": 590.7908980846405}
+2026-11-17T06:16:27Z {"row": "J4b_best_photometric_aug", "seed": 1, "fold": "I4", "seconds": 590.7934756278992, "rederive_max_abs_diff": 1.9073486328125e-06, "wall": 595.5108804702759}
+2026-11-17T06:26:20Z {"row": "J4b_best_photometric_aug", "seed": 1, "fold": "I5", "seconds": 588.0194013118744, "rederive_max_abs_diff": 1.9073486328125e-06, "wall": 592.6080188751221}
+2026-11-17T06:36:15Z {"row": "J4b_best_photometric_aug", "seed": 1, "fold": "I6", "seconds": 589.2025814056396, "rederive_max_abs_diff": 1.9073486328125e-06, "wall": 594.523024559021}
+2026-11-17T06:46:18Z {"row": "J4b_best_photometric_aug", "seed": 2, "fold": "I1", "seconds": 590.4997930526733, "rederive_max_abs_diff": 1.9073486328125e-06, "wall": 595.3136560916901}
+2026-11-17T06:56:09Z {"row": "J4b_best_photometric_aug", "seed": 2, "fold": "I2", "seconds": 584.8463885784149, "rederive_max_abs_diff": 1.9073486328125e-06, "wall": 590.5248515605927}
+2026-11-17T07:06:11Z {"row": "J4b_best_photometric_aug", "seed": 2, "fold": "I3", "seconds": 597.8202459812164, "rederive_max_abs_diff": 1.9073486328125e-06, "wall": 602.6994779109955}
+2026-11-17T07:16:06Z {"row": "J4b_best_photometric_aug", "seed": 2, "fold": "I4", "seconds": 589.4444386959076, "rederive_max_abs_diff": 1.9073486328125e-06, "wall": 594.4190225601196}
+2026-11-17T07:25:49Z {"row": "J4b_best_photometric_aug", "seed": 2, "fold": "I5", "seconds": 578.7484147548676, "rederive_max_abs_diff": 1.9073486328125e-06, "wall": 583.3899719715118}
+2026-11-17T07:35:32Z {"row": "J4b_best_photometric_aug", "seed": 2, "fold": "I6", "seconds": 578.0983417034149, "rederive_max_abs_diff": 1.9073486328125e-06, "wall": 582.3679625988007}

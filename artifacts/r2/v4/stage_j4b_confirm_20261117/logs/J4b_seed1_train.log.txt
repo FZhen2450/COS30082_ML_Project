@@ -1,0 +1,25 @@
+<CONDA_ENV>/lib/python3.10/site-packages/torch/optim/lr_scheduler.py:224: UserWarning: Detected call of `lr_scheduler.step()` before `optimizer.step()`. In PyTorch 1.1.0 and later, you should call them in the opposite order: `optimizer.step()` before `lr_scheduler.step()`.  Failure to do this will result in PyTorch skipping the first value of the learning rate schedule. See more details at https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate
+  warnings.warn(
+{"row": "J4b_best_photometric_aug", "seed": 1, "fold": "I1", "seconds": 581.6244342327118, "rederive_max_abs_diff": 1.9073486328125e-06, "wall": 585.8578932285309}
+{"row": "J4b_best_photometric_aug", "seed": 1, "fold": "I2", "seconds": 590.9920990467072, "rederive_max_abs_diff": 1.9073486328125e-06, "wall": 595.596551656723}
+<CONDA_ENV>/lib/python3.10/site-packages/torch/optim/lr_scheduler.py:224: UserWarning: Detected call of `lr_scheduler.step()` before `optimizer.step()`. In PyTorch 1.1.0 and later, you should call them in the opposite order: `optimizer.step()` before `lr_scheduler.step()`.  Failure to do this will result in PyTorch skipping the first value of the learning rate schedule. See more details at https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate
+  warnings.warn(
+{"row": "J4b_best_photometric_aug", "seed": 1, "fold": "I3", "seconds": 586.0963001251221, "rederive_max_abs_diff": 1.9073486328125e-06, "wall": 590.7908980846405}
+<CONDA_ENV>/lib/python3.10/site-packages/torch/optim/lr_scheduler.py:224: UserWarning: Detected call of `lr_scheduler.step()` before `optimizer.step()`. In PyTorch 1.1.0 and later, you should call them in the opposite order: `optimizer.step()` before `lr_scheduler.step()`.  Failure to do this will result in PyTorch skipping the first value of the learning rate schedule. See more details at https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate
+  warnings.warn(
+{"row": "J4b_best_photometric_aug", "seed": 1, "fold": "I4", "seconds": 590.7934756278992, "rederive_max_abs_diff": 1.9073486328125e-06, "wall": 595.5108804702759}
+<CONDA_ENV>/lib/python3.10/site-packages/torch/optim/lr_scheduler.py:224: UserWarning: Detected call of `lr_scheduler.step()` before `optimizer.step()`. In PyTorch 1.1.0 and later, you should call them in the opposite order: `optimizer.step()` before `lr_scheduler.step()`.  Failure to do this will result in PyTorch skipping the first value of the learning rate schedule. See more details at https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate
+  warnings.warn(
+{"row": "J4b_best_photometric_aug", "seed": 1, "fold": "I5", "seconds": 588.0194013118744, "rederive_max_abs_diff": 1.9073486328125e-06, "wall": 592.6080188751221}
+<CONDA_ENV>/lib/python3.10/site-packages/torch/optim/lr_scheduler.py:224: UserWarning: Detected call of `lr_scheduler.step()` before `optimizer.step()`. In PyTorch 1.1.0 and later, you should call them in the opposite order: `optimizer.step()` before `lr_scheduler.step()`.  Failure to do this will result in PyTorch skipping the first value of the learning rate schedule. See more details at https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate
+  warnings.warn(
+{"row": "J4b_best_photometric_aug", "seed": 1, "fold": "I6", "seconds": 589.2025814056396, "rederive_max_abs_diff": 1.9073486328125e-06, "wall": 594.523024559021}
+{
+ "I1": "ok",
+ "I2": "ok",
+ "I3": "ok",
+ "I4": "ok",
+ "I5": "ok",
+ "I6": "ok",
+ "_j2_evidence_unchanged": true
+}

@@ -1,0 +1,17 @@
+{
+ "label": "post-freeze exploratory (v4); development cross-validation on v3 inner folds; not blind; amendment-3 J2 parent preflight",
+ "row": "J2_clipL_last4",
+ "seed": 1,
+ "run_dir": "stage_j_phase2_20261115",
+ "tolerance": 1e-05,
+ "device": "cuda",
+ "started": "2026-11-17T05:35:49Z",
+ "result": "pass",
+ "seconds": 32.50242042541504
+}
+I1 pass max|diff| 1.9073486328125e-06
+I2 pass max|diff| 1.9073486328125e-06
+I3 pass max|diff| 1.9073486328125e-06
+I4 pass max|diff| 1.9073486328125e-06
+I5 pass max|diff| 1.9073486328125e-06
+I6 pass max|diff| 1.9073486328125e-06
