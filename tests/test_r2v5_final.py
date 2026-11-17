@@ -128,7 +128,8 @@ class TestOfficialEvaluationGuard(unittest.TestCase):
     def run_cli(self, env_extra, extra_args):
         e = dict(os.environ, PYTHONDONTWRITEBYTECODE="1"); e.pop("R2V5_OFFICIAL_EVAL_AUTHORIZED", None); e.update(env_extra)
         return subprocess.run([sys.executable, str(ROOT / "scripts/r2v5_final.py"), "official-eval", "--run", "/nonexistent",
-                               "--seen-csv", "/nonexistent/a.csv", "--unseen-csv", "/nonexistent/b.csv", "--out", str(_S["tmp"] / "o")] + extra_args,
+                               "--verification", "/nonexistent/v.json", "--seen-csv", "/nonexistent/a.csv", "--unseen-csv", "/nonexistent/b.csv",
+                               "--out", str(_S["tmp"] / "o")] + extra_args,
                               cwd=ROOT, capture_output=True, text=True, env=e)
 
     def test_refused_without_explicit_authorisation(self):
@@ -136,6 +137,80 @@ class TestOfficialEvaluationGuard(unittest.TestCase):
             r = self.run_cli(env_extra, args)
             self.assertNotEqual(r.returncode, 0); self.assertIn("REFUSED", r.stdout + r.stderr)
         self.assertFalse((_S["tmp"] / "o").exists())
+
+    def test_non_frozen_checkpoint_refused_before_inputs_are_read(self):
+        import r2v5_final as cli
+        v = _S["tmp"] / "ver.json"; v.write_text(json.dumps({"checkpoint_sha256_now": "0" * 64}))
+        with self.assertRaisesRegex(fm.FinalError, "not the frozen candidate"):
+            cli.check_frozen(_S["tmp"], v)  # the synthetic run is not the frozen checkpoint
+
+
+def synthetic_parts(rows, n_seen=2000, n_unseen=1448):
+    """Fabricated official-format records (file names that exist nowhere); seen labels cycle over the 323 seen
+    compositions and unseen labels over the 10 unseen ones, with crop/disease taken from the payload."""
+    seen_ids = [r for r in rows if r["composition_id"] not in FINAL_UNSEEN_IDS]
+    uns = [r for r in rows if r["composition_id"] in FINAL_UNSEEN_IDS]
+    mk = lambda tag, i, r: {"file": f"SYN_{tag}_{i:05d}.jpg", "crop_id": r["crop_id"], "disease_id": r["disease_id"], "comp_id": r["composition_id"]}  # noqa: E731
+    return {"seen": [mk("seen", i, seen_ids[i % len(seen_ids)]) for i in range(n_seen)],
+            "unseen": [mk("uns", i, uns[i % len(uns)]) for i in range(n_unseen)]}
+
+
+def write_csv(path, recs, rows):
+    import csv
+    by = {r["composition_id"]: r for r in rows}
+    with open(path, "w", newline="") as fh:
+        w = csv.writer(fh)
+        for r in recs:
+            b = by.get(r["comp_id"], {"crop_name": "x", "disease_name": "y", "composition_name": "x_y"})
+            w.writerow([r["file"], r["crop_id"], r["disease_id"], r["comp_id"], b["crop_name"], b["disease_name"], b["composition_name"]])
+
+
+class TestOfficialInputValidation(unittest.TestCase):
+    """The official evaluation validates BOTH parts before any model is loaded; every failure stops it."""
+
+    def validate(self, mutate=None, image_root=None):
+        parts = synthetic_parts(_S["rows"])
+        if mutate:
+            mutate(parts)
+        return fm.validate_official_inputs(parts, _S["frame"], _S["rows"], image_root=image_root)
+
+    def test_valid_synthetic_parts_pass_and_csv_round_trip(self):
+        s = self.validate()
+        self.assertEqual(s, {"seen": {"rows": 2000, "compositions": 323}, "unseen": {"rows": 1448, "compositions": 10}})
+        parts = synthetic_parts(_S["rows"])
+        p = _S["tmp"] / "seen.csv"; write_csv(p, parts["seen"], _S["rows"])
+        self.assertEqual(fm.read_assignment_csv(p), parts["seen"])
+
+    def test_every_integrity_failure_stops(self):
+        tr = _S["frame"].file.iloc[0]
+        cases = {
+            "seen: 1999 rows": lambda p: p["seen"].pop(),
+            "unseen: 1449 rows": lambda p: p["unseen"].append(dict(p["unseen"][0], file="SYN_extra.jpg")),
+            "seen: duplicate": lambda p: p["seen"].__setitem__(1, dict(p["seen"][1], file=p["seen"][0]["file"])),
+            "also in the training CSV": lambda p: p["seen"].__setitem__(0, dict(p["seen"][0], file=tr)),
+            "not a seen composition": lambda p: p["seen"].__setitem__(0, dict(p["unseen"][0], file="SYN_x.jpg")),
+            "not a unseen composition": lambda p: p["unseen"].__setitem__(0, dict(p["seen"][0], file="SYN_y.jpg")),
+            "outside the 333-candidate universe": lambda p: p["unseen"].__setitem__(0, dict(p["unseen"][0], comp_id=333)),
+            "disagree with the candidate payload": lambda p: p["seen"].__setitem__(0, dict(p["seen"][0], disease_id=p["seen"][0]["disease_id"] + 1)),
+            "share image files": lambda p: p["unseen"].__setitem__(0, dict(p["unseen"][0], file=p["seen"][5]["file"])),
+        }
+        for msg, mut in cases.items():
+            with self.subTest(msg), self.assertRaisesRegex(fm.FinalError, msg.replace("(", r"\(").replace(")", r"\)")):
+                self.validate(mut)
+        with self.assertRaisesRegex(fm.FinalError, "image file\\(s\\) missing"):
+            self.validate(image_root=_S["tmp"])
+
+    def test_malformed_csv_rows_refused(self):
+        bad = {"header.csv": "image_name,crop_id,disease_id,composition_id,crop_name,disease_name,composition_name\n",
+               "six.csv": "a.jpg,1,2,3,x,y\n", "nonint.csv": "a.jpg,1,two,3,x,y,z\n", "traversal.csv": "../a.jpg,1,2,3,x,y,z\n"}
+        for name, text in bad.items():
+            p = _S["tmp"] / name; p.write_text(text)
+            with self.subTest(name), self.assertRaises(fm.FinalError):
+                fm.read_assignment_csv(p)
+
+    def test_confusion_matrix_dimensions(self):
+        cm = fm.confusion([0, 5, 332, 5], [0, 7, 332, 5])
+        self.assertEqual(cm.shape, (333, 333)); self.assertEqual(int(cm.sum()), 4); self.assertEqual(int(cm[5, 7]), 1)
 
 
 if __name__ == "__main__":

@@ -7,14 +7,14 @@
                  receipt + file hashes, configuration, torch seed, gradient/AMP/frozen/reload checks, feature cache
                  (8,000 rows, finite), candidate payload, independent checkpoint reload (re-extracted training features
                  must equal the cache), query-path consistency, deterministic finite 333-column scores, Top-1/Top-5
-                 consistency, stable tie order; writes verification.json
-  official-eval  ONE-SHOT official DPD-Small evaluation. NOT AUTHORISED IN THIS TASK: refuses unless
+                 consistency, stable tie order; writes verification_<head>.json (never overwritten)
+  rehearse       official-size pipeline rehearsal on training images (2,000 + 1,448); not a performance estimate
+  official-eval  ONE-SHOT official DPD-Small evaluation (--run, --verification, --seen-csv, --unseen-csv, --out). Refuses unless
                  R2V5_OFFICIAL_EVAL_AUTHORIZED=1 AND --owner-authorization is given; refuses if the output exists.
 """
 from __future__ import annotations
 
 import argparse
-import csv
 import json
 import os
 import subprocess
@@ -114,20 +114,82 @@ def cmd_verify(a):
                                     "at_gamma": m_g, "at_gamma0": m_0, "fraction_top1_unseen_id_at_gamma": float(unseen.mean()),
                                     "deterministic": True, "finite": True, "columns": int(cal.shape[1])}
     rep["candidate_payload_sha256"] = fm.FINAL_CANDIDATE_SHA256
-    rep["frozen_hashes"] = {p: jrun.sha256_file(ROOT / p) for p in ("research_r2_v5/final.py", "research_r2_v5/final_config.json",
-                                                                   "scripts/r2v5_final.py", "artifacts/r2/v5/final_candidates_cos30082_v1.json",
-                                                                   "research_r2_v4/jrun.py", "research_r2/methods.py", "research_r2/runner.py")}
+    rep["frozen_hashes"] = frozen_hashes()
     rep["checkpoint_sha256_now"] = jrun.sha256_file(run / "checkpoint.pt")
-    (Path(a.run) / "verification.json").write_text(json.dumps(rep, indent=1, default=float))
-    print(json.dumps({k: rep[k] for k in ("reload_reextract_max_abs_diff", "query_path_max_abs_diff", "smoke_training_images", "checkpoint_sha256_now")},
-                     indent=1, default=float))
+    rep["features_sha256_now"] = jrun.sha256_file(run / "features.pt")
+    if rep["checkpoint_sha256_now"] != fm.FROZEN_CHECKPOINT_SHA256 or rep["features_sha256_now"] != rec["features_sha256"]:
+        raise fm.FinalError("checkpoint or feature cache differs from the frozen candidate / its receipt")
+    out = Path(a.run) / f"verification_{rep['git_head'][:7]}.json"
+    if out.exists():
+        sys.exit(f"{out.name} exists; verification records are never overwritten")
+    out.write_text(json.dumps(rep, indent=1, default=float))
+    print(out.name)
+    print(json.dumps({k: rep[k] for k in ("reload_reextract_max_abs_diff", "query_path_max_abs_diff", "smoke_training_images", "checkpoint_sha256_now",
+                                          "features_sha256_now")}, indent=1, default=float))
 
 
-def read_official_csv(path):
-    """Assignment CSV: file, crop label, disease label, composition label, crop name, disease name, composition name."""
-    with open(path, newline="") as fh:
-        rows = [r for r in csv.reader(fh) if r]
-    return [r[0] for r in rows], np.array([int(r[3]) for r in rows]), np.array([int(r[1]) for r in rows]), np.array([int(r[2]) for r in rows])
+FROZEN_FILES = ("research_r2_v5/final.py", "research_r2_v5/final_config.json", "scripts/r2v5_final.py",
+                "artifacts/r2/v5/final_candidates_cos30082_v1.json", "research_r2_v4/jrun.py", "research_r2/methods.py",
+                "research_r2/runner.py", "research_r2/data.py", "research_r2/candidates.py", "DPD_Small_train.csv")
+
+
+def frozen_hashes():
+    return {p: jrun.sha256_file(ROOT / p) for p in FROZEN_FILES}
+
+
+def check_frozen(run_dir, verification):
+    """Every frozen identity, before anything else is read: checkpoint (pinned), feature cache (= receipt), receipt,
+    configuration, code and payload (= the verification record)."""
+    run = Path(run_dir) / "run"
+    ver = json.loads(Path(verification).read_text())
+    rec = jrun.verify_receipt(run)  # raises if checkpoint / features / packet differ from the receipt
+    if rec is None:
+        raise fm.FinalError("no ok receipt")
+    if jrun.sha256_file(run / "checkpoint.pt") != fm.FROZEN_CHECKPOINT_SHA256 or ver.get("checkpoint_sha256_now") != fm.FROZEN_CHECKPOINT_SHA256:
+        raise fm.FinalError("checkpoint is not the frozen candidate")
+    if jrun.sha256_file(run / "features.pt") != rec["features_sha256"] or ver.get("features_sha256_now") != rec["features_sha256"]:
+        raise fm.FinalError("feature cache is not the verified one")
+    if jrun.sha256_file(run / "receipt.json") != ver.get("receipt_sha256"):
+        raise fm.FinalError("receipt changed since verification")
+    now_h = frozen_hashes()
+    if ver.get("frozen_hashes") != now_h:
+        raise fm.FinalError(f"frozen files changed since verification: {sorted(k for k in now_h if ver.get('frozen_hashes', {}).get(k) != now_h[k])}")
+    return rec
+
+
+def evaluate_parts(parts, frame, rows, run, cfg, c, images, out):
+    """Inference + scoring for already-validated parts {name: records}. Same code for the rehearsal and the official run."""
+    feats, _ = jrun.load_feature_cache(run / "features.pt", jrun.verify_receipt(run)["feature_cache_meta"])
+    meta = {"row": c["row"], "seed": c["seed"], "fold": fm.FOLD_NAME, "config_sha256": c["config_sha256"]}
+    res = {}
+    for part, recs in parts.items():
+        files = [r["file"] for r in recs]
+        comp = np.array([r["comp_id"] for r in recs]); crop = np.array([r["crop_id"] for r in recs]); dis = np.array([r["disease_id"] for r in recs])
+        t0 = time.time()
+        if torch.cuda.is_available():
+            torch.cuda.reset_peak_memory_stats()
+        model, tf = fm.load_model(run / "checkpoint.pt", cfg, frame, meta)
+        q = fm.extract_query(model, tf, files, images)
+        del model
+        raw = fm.raw_scores(frame, feats, rows, q)
+        cal = fm.calibrate(raw, rows, c["gamma"])
+        t = fm.topk(cal, 5)
+        if cal.shape != (len(files), 333) or not np.isfinite(cal).all() or not np.array_equal(t[:, 0], cal.argmax(1)):
+            raise fm.FinalError(f"{part}: invalid score matrix or ranking")
+        pc = np.array([rows[i]["crop_id"] for i in t[:, 0]]); pd_ = np.array([rows[i]["disease_id"] for i in t[:, 0]])
+        res[part] = fm.metrics(cal, comp) | {
+            "crop_top1": float(np.mean(pc == crop)), "disease_top1": float(np.mean(pd_ == dis)),
+            "fraction_top1_unseen_id": float(np.mean(np.isin(t[:, 0], fm.FINAL_UNSEEN_IDS))),
+            "per_crop_top1": {int(k): float(np.mean(t[crop == k, 0] == comp[crop == k])) for k in np.unique(crop)},
+            "per_disease_top1": {int(k): float(np.mean(t[dis == k, 0] == comp[dis == k])) for k in np.unique(dis)},
+            "seconds": time.time() - t0, "peak_gpu_gib": torch.cuda.max_memory_allocated() / 2**30 if torch.cuda.is_available() else None}
+        if part == "seen":
+            np.save(out / "seen_confusion_333x333.npy", fm.confusion(comp, t[:, 0]))
+        np.save(out / f"{part}_calibrated_scores.npy", cal.astype(np.float32))
+        np.save(out / f"{part}_top5_ids.npy", t.astype(np.int16))
+    res["H@1"] = fm.harmonic(res["seen"]["top1"], res["unseen"]["top1"])
+    res["H@5"] = fm.harmonic(res["seen"]["top5"], res["unseen"]["top5"])
+    return res
 
 
 def cmd_official_eval(a):
@@ -140,41 +202,52 @@ def cmd_official_eval(a):
     c = fm.load_config(); cfg = cfg_of(c)
     frame, _, _ = env()
     rows = fm.load_payload(frame)
-    run = Path(a.run) / "run"
-    ver = json.loads((Path(a.run) / "verification.json").read_text())
-    if jrun.sha256_file(run / "checkpoint.pt") != ver["checkpoint_sha256_now"]:
-        raise fm.FinalError("checkpoint changed since verification")
-    for p, h in ver["frozen_hashes"].items():
-        if jrun.sha256_file(ROOT / p) != h:
-            raise fm.FinalError(f"frozen file changed since verification: {p}")
+    rec = check_frozen(a.run, a.verification)                       # 1. frozen identities
+    parts = {"seen": fm.read_assignment_csv(a.seen_csv), "unseen": fm.read_assignment_csv(a.unseen_csv)}
+    summary = fm.validate_official_inputs(parts, frame, rows, image_root=a.images)  # 2. both parts, before any inference
     out.mkdir(parents=True)
-    feats, _ = jrun.load_feature_cache(run / "features.pt", jrun.verify_receipt(run)["feature_cache_meta"])
-    meta = {"row": c["row"], "seed": c["seed"], "fold": fm.FOLD_NAME, "config_sha256": c["config_sha256"]}
     res = {"label": "ONE-SHOT official DPD-Small evaluation of the frozen Second Run final model", "started": now(),
-           "owner_authorization": a.owner_authorization, "gamma": c["gamma"], "checkpoint_sha256": ver["checkpoint_sha256_now"],
+           "owner_authorization": a.owner_authorization, "gamma": c["gamma"], "checkpoint_sha256": fm.FROZEN_CHECKPOINT_SHA256,
+           "features_sha256": rec["features_sha256"], "verification": Path(a.verification).name, "git_head": git("rev-parse", "HEAD"),
+           "input_summary": summary, "csv_sha256": {"seen": jrun.sha256_file(a.seen_csv), "unseen": jrun.sha256_file(a.unseen_csv)},
            "disclosure": "First Run official scores were already known to the project; this is a single final assessment, no tuning follows"}
-    cal = {}
-    for part, path in (("seen", a.seen_csv), ("unseen", a.unseen_csv)):
-        files, comp, crop, dis = read_official_csv(path)
-        model, tf = fm.load_model(run / "checkpoint.pt", cfg, frame, meta)
-        q = fm.extract_query(model, tf, files, a.images)
-        cal[part] = fm.calibrate(fm.raw_scores(frame, feats, rows, q), rows, c["gamma"])
-        t = fm.topk(cal[part], 5)
-        pc = np.array([rows[i]["crop_id"] for i in t[:, 0]]); pd_ = np.array([rows[i]["disease_id"] for i in t[:, 0]])
-        res[part] = fm.metrics(cal[part], comp) | {"crop_top1": float(np.mean(pc == crop)), "disease_top1": float(np.mean(pd_ == dis)),
-                                                   "per_crop_top1": {int(k): float(np.mean(t[crop == k, 0] == comp[crop == k])) for k in np.unique(crop)},
-                                                   "per_disease_top1": {int(k): float(np.mean(t[dis == k, 0] == comp[dis == k])) for k in np.unique(dis)}}
-        if part == "seen":
-            cm = np.zeros((333, 333), dtype=np.int64)
-            np.add.at(cm, (comp, t[:, 0]), 1)
-            np.save(out / "seen_confusion_333x333.npy", cm)
-        np.save(out / f"{part}_calibrated_scores.npy", cal[part].astype(np.float32))
-    res["H@1"] = fm.harmonic(res["seen"]["top1"], res["unseen"]["top1"])
-    res["H@5"] = fm.harmonic(res["seen"]["top5"], res["unseen"]["top5"])
+    res |= evaluate_parts(parts, frame, rows, Path(a.run) / "run", cfg, c, a.images, out)  # 3. inference
     res["first_run_official_H@1_historical"] = FIRST_RUN_OFFICIAL_H1
     res["finished"] = now()
     (out / "official_evaluation.json").write_text(json.dumps(res, indent=1))
     print(json.dumps({k: res[k] for k in ("H@1", "H@5")} | {p: {k: res[p][k] for k in ("top1", "top5", "count")} for p in ("seen", "unseen")}, indent=1))
+
+
+def cmd_rehearse(a):
+    """Official-size pipeline rehearsal on TRAINING images only (2,000 + 1,448 rows): same frozen checks, same inference
+    and output code, relaxed label rules (training images carry seen labels). Accuracy is NOT a performance estimate."""
+    out = Path(a.out)
+    if out.exists():
+        sys.exit(f"{out} exists")
+    c = fm.load_config(); cfg = cfg_of(c)
+    frame, _, _ = env()
+    rows = fm.load_payload(frame)
+    check_frozen(a.run, a.verification)
+    recs = [{"file": f, "crop_id": int(cr), "disease_id": int(d), "comp_id": int(cp)}
+            for f, cr, d, cp in zip(frame.file, frame.crop_id, frame.disease_id, frame.comp_id)]
+    parts = {"seen": recs[:fm.OFFICIAL_COUNTS["seen"]], "unseen": recs[fm.OFFICIAL_COUNTS["seen"]:fm.OFFICIAL_COUNTS["seen"] + fm.OFFICIAL_COUNTS["unseen"]]}
+    out.mkdir(parents=True)
+    t0 = time.time()
+    res = evaluate_parts(parts, frame, rows, Path(a.run) / "run", cfg, c, a.images, out)
+    first = {p: (np.load(out / f"{p}_top5_ids.npy"), np.load(out / f"{p}_calibrated_scores.npy")) for p in parts}
+    res2 = evaluate_parts(parts, frame, rows, Path(a.run) / "run", cfg, c, a.images, out)  # determinism at full size
+    same = all(np.array_equal(first[p][0], np.load(out / f"{p}_top5_ids.npy")) and np.array_equal(first[p][1], np.load(out / f"{p}_calibrated_scores.npy"))
+               for p in parts)
+    strip = lambda r: {p: {k: v for k, v in r[p].items() if k not in ("seconds", "peak_gpu_gib")} for p in parts} | {"H@1": r["H@1"], "H@5": r["H@5"]}  # noqa: E731
+    rep = {"label": "REHEARSAL on training images (already fitted): pipeline, sizes, memory and determinism only; NOT a performance estimate",
+           "sizes": {p: len(v) for p, v in parts.items()}, "deterministic_repeat": bool(same and strip(res) == strip(res2)),
+           "total_seconds": time.time() - t0,
+           "result": {p: {k: res[p][k] for k in ("count", "top1", "top5", "fraction_top1_unseen_id", "seconds", "peak_gpu_gib")} for p in parts},
+           "confusion_shape": list(np.load(out / "seen_confusion_333x333.npy").shape), "H@1_pipeline_only": res["H@1"]}
+    (out / "rehearsal.json").write_text(json.dumps(rep, indent=1))
+    print(json.dumps(rep, indent=1))
+    if not rep["deterministic_repeat"]:
+        sys.exit("rehearsal not deterministic")
 
 
 def main():
@@ -182,11 +255,13 @@ def main():
     sub = ap.add_subparsers(dest="cmd", required=True)
     p = sub.add_parser("train"); p.add_argument("--out", required=True); p.add_argument("--images", default=str(IMAGES))
     p = sub.add_parser("verify"); p.add_argument("--run", required=True); p.add_argument("--images", default=str(IMAGES))
-    p = sub.add_parser("official-eval"); p.add_argument("--run", required=True); p.add_argument("--seen-csv", required=True)
-    p.add_argument("--unseen-csv", required=True); p.add_argument("--out", required=True); p.add_argument("--owner-authorization")
-    p.add_argument("--images", default=str(IMAGES))
+    p = sub.add_parser("rehearse"); p.add_argument("--run", required=True); p.add_argument("--verification", required=True)
+    p.add_argument("--out", required=True); p.add_argument("--images", default=str(IMAGES))
+    p = sub.add_parser("official-eval"); p.add_argument("--run", required=True); p.add_argument("--verification", required=True)
+    p.add_argument("--seen-csv", required=True); p.add_argument("--unseen-csv", required=True); p.add_argument("--out", required=True)
+    p.add_argument("--owner-authorization"); p.add_argument("--images", default=str(IMAGES))
     a = ap.parse_args()
-    {"train": cmd_train, "verify": cmd_verify, "official-eval": cmd_official_eval}[a.cmd](a)
+    {"train": cmd_train, "verify": cmd_verify, "rehearse": cmd_rehearse, "official-eval": cmd_official_eval}[a.cmd](a)
 
 
 if __name__ == "__main__":

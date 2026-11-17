@@ -15,14 +15,39 @@ official-test image, label, CSV or score has been read.
 | Ranking | descending calibrated score; ties broken by ascending global id (First Run tie rule) |
 | Metrics | image-weighted Top-1 and Top-5 for seen and unseen; H@1 and H@5 = 2·s·u/(s+u); seen confusion matrix (333 × 333); per-crop and per-disease accuracy |
 
-Hashes of the checkpoint, feature cache, configuration, code and payload are recorded in `verification.json`. The
-evaluation command refuses to run if any of them has changed.
+Hashes of the checkpoint (pinned in code), feature cache, receipt, configuration, code, payload and training CSV are
+recorded in `verification_<head>.json`. The evaluation command refuses to run if any of them has changed.
+
+## Checks before any inference (fail closed)
+
+All of these run on **both** CSVs before any model is loaded. Any failure stops the evaluation with nothing scored.
+
+1. **Authorisation:** `R2V5_OFFICIAL_EVAL_AUTHORIZED=1` and `--owner-authorization` are both given, and the output
+   directory does not already exist.
+2. **Frozen identities:**
+   - the checkpoint sha256 equals the pinned `e9dbbdf3…`;
+   - the feature cache, checkpoint and packet equal the receipt;
+   - the receipt, configuration, code, payload and training CSV equal the verification record.
+3. **CSV structure:** each row has exactly 7 columns and integer labels; no header row; file names have no path
+   separators and don't start with ".".
+4. **Counts:** exactly 2,000 seen rows and 1,448 unseen rows.
+5. **Labels:**
+   - every seen label is one of the 323 seen compositions, and every unseen label one of the 10 unseen ids;
+   - every label is in the 333-candidate universe;
+   - each row's crop and disease labels agree with the candidate payload.
+6. **Image identity:**
+   - file names are unique within each part;
+   - no file is shared between the seen and unseen parts, or with the training CSV;
+   - every image file exists.
+
+After inference, each score matrix is checked to be finite and n × 333, Top-1 must equal the argmax, and the seen
+confusion matrix must be 333 × 333 and count each image once.
 
 ## Command (only after owner authorisation)
 
 ```bash
 R2V5_OFFICIAL_EVAL_AUTHORIZED=1 python scripts/r2v5_final.py official-eval \
-  --run <E>/v5/final_J2_full8000 \
+  --run <E>/v5/final_J2_full8000 --verification <E>/v5/final_J2_full8000/verification_<head>.json \
   --seen-csv <PROJECT>/DPD_Small_test_seen.csv --unseen-csv <PROJECT>/DPD_Small_test_unseen.csv \
   --out <E>/v5/official_eval_ONE_SHOT \
   --owner-authorization "<owner name, date and approval reference>"

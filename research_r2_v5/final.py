@@ -186,6 +186,75 @@ def extract_query(model, tf, files, image_root, workers=8):
     return f[:, 0].float()
 
 
+# ----------------------------------------------------------------------------- official input integrity (before inference)
+OFFICIAL_COUNTS = {"seen": 2000, "unseen": 1448}  # assignment brief section 4.2
+FROZEN_CHECKPOINT_SHA256 = "e9dbbdf3fc95ba791e8e8129ef38bbd85352a0974c3091d6b7667bd633abb1c9"
+
+
+def read_assignment_csv(path):
+    """Assignment metadata CSV, no header, exactly 7 columns: file, crop id, disease id, composition id, crop name,
+    disease name, composition name. Any malformed row (including a header line) raises."""
+    import csv
+    out = []
+    with open(path, newline="") as fh:
+        for i, r in enumerate(csv.reader(fh)):
+            if not r:
+                continue
+            if len(r) != 7:
+                raise FinalError(f"{Path(path).name}: row {i} has {len(r)} columns, expected 7")
+            try:
+                crop, dis, comp = int(r[1]), int(r[2]), int(r[3])
+            except ValueError:
+                raise FinalError(f"{Path(path).name}: row {i} has non-integer labels") from None
+            if not r[0].strip() or "/" in r[0] or "\\" in r[0] or r[0].startswith("."):
+                raise FinalError(f"{Path(path).name}: row {i} has an invalid image file name")
+            out.append({"file": r[0], "crop_id": crop, "disease_id": dis, "comp_id": comp})
+    return out
+
+
+def validate_official_inputs(parts, frame, rows, counts=OFFICIAL_COUNTS, image_root=None):
+    """Fail-closed integrity checks on BOTH official parts before any model is loaded or any image is scored.
+    parts: {"seen": [records], "unseen": [records]} from read_assignment_csv."""
+    by_id = {r["composition_id"]: r for r in rows}
+    allowed = {"seen": {c for c in by_id if c not in FINAL_UNSEEN_IDS}, "unseen": set(FINAL_UNSEEN_IDS)}
+    if set(parts) != {"seen", "unseen"}:
+        raise FinalError("exactly the seen and unseen parts are required")
+    train_files = set(frame.file)
+    summary = {}
+    for part, recs in parts.items():
+        if len(recs) != counts[part]:
+            raise FinalError(f"{part}: {len(recs)} rows, expected {counts[part]}")
+        files = [r["file"] for r in recs]
+        if len(set(files)) != len(files):
+            raise FinalError(f"{part}: duplicate image file names")
+        if set(files) & train_files:
+            raise FinalError(f"{part}: {len(set(files) & train_files)} file(s) also in the training CSV")
+        for r in recs:
+            c = r["comp_id"]
+            if c not in by_id:
+                raise FinalError(f"{part}: composition {c} outside the 333-candidate universe")
+            if c not in allowed[part]:
+                raise FinalError(f"{part}: composition {c} is not a {part} composition")
+            if (r["crop_id"], r["disease_id"]) != (by_id[c]["crop_id"], by_id[c]["disease_id"]):
+                raise FinalError(f"{part}: composition {c} crop/disease labels disagree with the candidate payload")
+        if image_root is not None:
+            missing = [f for f in files if not (Path(image_root) / f).is_file()]
+            if missing:
+                raise FinalError(f"{part}: {len(missing)} image file(s) missing, e.g. {missing[0]}")
+        summary[part] = {"rows": len(recs), "compositions": len({r['comp_id'] for r in recs})}
+    if {r["file"] for r in parts["seen"]} & {r["file"] for r in parts["unseen"]}:
+        raise FinalError("seen and unseen parts share image files")
+    return summary
+
+
+def confusion(truth_ids, pred_ids, n=333):
+    cm = np.zeros((n, n), dtype=np.int64)
+    np.add.at(cm, (np.asarray(truth_ids), np.asarray(pred_ids)), 1)
+    if cm.shape != (333, 333) or int(cm.sum()) != len(truth_ids):
+        raise FinalError("confusion matrix must be 333 x 333 and count every image once")
+    return cm
+
+
 def metrics(cal, truth_ids, k=5):
     """Image-weighted Top-1 / Top-k on global ids (First Run evaluation/metrics.topk_accuracy contract)."""
     t = np.asarray(truth_ids, np.int64)
