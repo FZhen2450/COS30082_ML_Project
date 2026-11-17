@@ -40,13 +40,37 @@
 * Image files and official-test files or labels. No official-test data was ever used. Every image name quoted in the
   published evidence is a DPD-Small training-CSV image.
 
-## Tests that need private evidence
+## Public verification procedure
 
-These tests can pass only against the private originals and data:
+```bash
+python scripts/r2v4_public_verify.py --tests --json r2v4_public_verify.json
+```
 
-* `test_r2v4_amendment4.TestAmendment3Preserved.test_historical_artifact_hashes_unchanged` checks the manifests against
-  the original evidence bytes and private run files. On the public tree it fails, by design, for the sanitized files.
-* Tests that compare with private commit objects (for example `d9ed896`) or that load the training images, feature caches
-  or registered runs need the owner's local data.
+This script is publication-only: it is not part of any declaration and is not code-pinned. It edits no test or evidence.
+
+**Evidence.** Every entry of every published stage manifest is reported as one of:
+
+| Status | Meaning |
+|---|---|
+| `ORIGINAL` | the published bytes equal the manifest hash |
+| `SANITIZED_DERIVATIVE` | the published bytes equal the map's `public_sanitized_sha256`, and the map's `private_original_sha256` equals the manifest hash. The original bytes are **not** public, so this is not a verification of them |
+| `UNAVAILABLE` | not published. Two feasibility logs were git-ignored at the original commit; private run files (checkpoints, feature caches, score packets, index sets) are verified only where those private directories exist |
+| `FAIL` | anything else (changed, missing or unlisted): exit code 1 |
+
+**Declarations.** It runs `r2v4_declare.py --verify` for the base protocol and amendments 1–3, and `r2v4_a4.py verify`.
+
+**Tests.** It runs every `tests/test_r2*.py` test whose prerequisites are present. Eleven tests need private inputs. When
+an input is missing they are **not run** and are reported `UNAVAILABLE` with the reason, never as passed:
+
+| Prerequisite | Tests |
+|---|---|
+| original evidence bytes | `test_r2v4_amendment4…test_historical_artifact_hashes_unchanged` (always unavailable on this public tree) |
+| private commit objects `d9ed896`, `e96d471` | `test_r2v4_amendment4…test_amendment_3_unchanged_and_still_verifies`; `test_r2v4_confirm.TestPreviousEvaluatorAcceptedInvalidFixtures` (3) |
+| private registered runs | `test_r2v4_amendment4.TestProductionRefusals.test_real_declaration_state` |
+| private Stage H index sets | `test_r2v4_hrt` (4 tests) |
+| private v3 score packets | `test_r2v4_j.TestSyntheticSixFoldDryRun.test_dry_run` |
+
+**Private verification.** The unchanged full suite (`python -m unittest discover -s tests -p 'test_r2*.py'`) remains the
+authenticated check. It is run against the private originals, where all 186 tests run.
 
 All results are development cross-validation on reused training-derived folds, not official-test results.
