@@ -6,6 +6,7 @@ fixed calibrated stacking (γ = 8.75 on the 323 seen classes).
 
 - **Official result:** H@1 68.02%, H@5 92.87%, from one frozen evaluation.
 - **Baselines:** WP1 and WP2 remain the required baselines. Their results are unchanged.
+- **Method, official evaluation and reproduction:** [SECOND_RUN_J2_FINAL_SUBMISSION.md](SECOND_RUN_J2_FINAL_SUBMISSION.md).
 
 ## Required files (private; obtained from the project owner through authorised access, never committed)
 
@@ -54,6 +55,14 @@ orientation tag. The GUI still displays the EXIF-corrected picture, but it hands
 
 This matters for parity: 8 of the first 64 training images have an orientation tag. Rotating them changed J2's Top-5
 for 5 of those 8 images.
+
+## Training code and the inference-asset builder
+
+J2 was trained and officially evaluated with the Second Run code on branch `research/r2-v5-final-model`
+(`scripts/r2v5_final.py`, `research_r2_v5/`). The GUI needs none of it: it uses only the frozen checkpoint and the
+inference asset. `scripts/j2_build_inference_asset.py`, which created that asset, imports the Second Run code through
+`--r2-root` (a checkout of that branch) and also needs the private frozen J2 training features. Teammates do not need
+to rebuild the asset; they verify its SHA-256.
 
 ## Results are not new evaluations
 

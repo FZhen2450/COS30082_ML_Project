@@ -1,5 +1,8 @@
 # Final submission: integrating Second Run J2 as the proposed approach (plan, 18 Nov 2026)
 
+> **Status (18 Nov 2026):** the team adopted J2. The integration commit was pushed and opened as draft PR #39
+> (stacked on #38). The plan below is kept as written; the decisions it lists as pending have since been taken.
+
 ## Current submission state (inspected)
 
 - **`main`** is at `bbdabfd`. Nothing has been merged since 8 Nov.
@@ -23,7 +26,7 @@
    - Run the frozen J2 scoring pipeline once on the frozen training features, to capture its three fitted downstream heads (crop, disease, composition) and the feature standardisation.
    - The capture records the heads the real pipeline fits; it does not refit them separately. The asset changes neither the scientific method nor γ (8.75).
    - It is stored next to the private checkpoint and never committed.
-   - Builder: `scripts/j2_build_inference_asset.py`. It reads the private Second Run code read-only through `--r2-root`, so the R2 code stays out of the submission repository.
+   - Builder: `scripts/j2_build_inference_asset.py`. It reads the private Second Run code read-only through `--r2-root`, so the Second Run code stays on its research branches (`research/r2-v5-final-model`) rather than in this branch.
 3. **`wp4/j2_predictor.py`:**
    - **Loading:**
      - the pinned CLIP ViT-L/14 through the existing `load_native_clip`;
@@ -45,21 +48,21 @@
 6. **Documentation:** a README section with launch instructions and how to obtain the authorised assets; J2 report text and figures for the report master; a presentation and video outline.
 7. **Stop before any push, PR or merge.**
 
-## Proposed team split (owner decides; nothing has been sent)
+## Team split (proposed 17 Nov; each member confirms their own task)
 
 | Member | Task | Why them |
 |---|---|---|
 | **All (blocking)** | Agree to adopt J2 as the proposed approach. WP1 and WP2 stay the required baselines; frozen CLIP and M6 stay reported as earlier attempts. | Reverses the 14 Nov "Round 2 excluded" decision |
-| **Fa Zhen** | Review the J2 GUI integration (the WP4 owner); run it on his machine; record the GUI demo segment for the video | Owns WP4 and the GUI stack |
+| **Fa Zhen** | Review the J2 GUI integration (the WP4 owner); run it on their own machine; record the GUI demo segment for the video | Owns WP4 and the GUI stack |
 | **Jonathan** | Merge the J2 sections into the report master (Word), keep it to 8 pages, add the J2 row and seen confusion-matrix figure next to the existing four-model table | Owns the report master and WP5 |
-| **Andy** | Independently verify the J2 checkpoint and asset hashes and GUI score parity, like his WP1 provenance sign-off | Independent verifier role |
-| **Frederick** | Human GUI rehearsal with J2 (his pending acceptance); slides and narration for the "results and limitations" segment | Pending GUI rehearsal owner |
+| **Andy** | Independently verify the J2 checkpoint and asset hashes and GUI score parity, like the WP1 provenance sign-off in PR #32 | Independent verifier role |
+| **Frederick** | Human GUI rehearsal with J2 (the pending acceptance); slides and narration for the "results and limitations" segment | Pending GUI rehearsal owner |
 | **Yuen Kai (owner)** | Approves pushes and PRs; presents the J2 method and Second Run research in the video and Q&A; checks the Who-did-what entries | Did the Second Run research |
 | **Claude (AI assistant)** | Builds the asset, adapter, tests and parity evidence; drafts the J2 report text and README | Must be disclosed as AI assistance, if the unit's policy requires it |
 
 ## Blockers and risks
 
-1. **Team agreement** to switch the proposed approach to J2 (see above).
+1. **Team agreement** to switch the proposed approach to J2. *Resolved 18 Nov 2026: adopted.*
 2. **Asset distribution.** The checkpoint (196 MiB) and the asset are private. Teammates need authorised private access (the owner shares them, as with the M6 handoff).
 3. **The report must include J2's seen confusion matrix** (assignment requirement). That figure is generated privately for the report and is not published on GitHub.
 4. **Stacked base.** The integration sits on unmerged PRs #32, #37 and #38; merge order is the team's decision.
