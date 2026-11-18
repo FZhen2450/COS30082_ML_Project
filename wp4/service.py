@@ -6,9 +6,12 @@ only a visual ordering of labelled examples, never a disease predictor.
 import hashlib
 import json
 import math
+from numbers import Real
 from pathlib import Path
 
 from PIL import Image, ImageOps
+
+FINAL_WP1_REGISTRY = Path(__file__).resolve().parents[1]/'artifacts/models/wp1_full8000_release.json'
 
 
 def open_rgb(path):
@@ -35,7 +38,12 @@ class Catalog:
         self.source_csv = Path(source_csv).resolve()
         self.images = Path(images).resolve()
         self.protocol = json.loads(self.protocol_path.read_text(encoding="utf-8"))
-        fitting, _, _ = validate_protocol(self.protocol, self.source_csv)
+        from final_protocol import SCHEMA, validate_final_protocol
+        self.is_final = self.protocol.get('schema') == SCHEMA
+        if self.is_final:
+            fitting = validate_final_protocol(self.protocol, self.source_csv)
+        else:
+            fitting, _, _ = validate_protocol(self.protocol, self.source_csv)
         self.fitting = fitting.to_dict("records")
         self.candidates = {int(c["composition_id"]): c for c in self.protocol["candidates"]}
 
@@ -56,8 +64,8 @@ class Catalog:
         query_hash = hashlib.sha256(query.tobytes()).digest() if query is not None else None
         excluded = Path(exclude_path).resolve() if exclude_path else None
         found, unavailable = [], 0
-        # Metadata order and filename ties are deterministic. No validation/test
-        # image can enter this pool, even if present in the dataset directory.
+        # The validated fitting pool is development-4868 or final full-8000.
+        # Official images cannot enter it, even if present in the same folder.
         for row in sorted(rows, key=lambda r: r["image_name"]):
             path = self.image_path(row["image_name"])
             if path == excluded:
@@ -87,11 +95,13 @@ def present_prediction(result, catalog):
     ids = result["candidate_ids"].tolist()
     matrix = result["scores"].tolist()
     expected = list(catalog.candidates)
-    if ids != expected or len(matrix) != 1 or len(matrix[0]) != len(ids):
+    if (any(type(cid) is not int for cid in ids) or ids != expected
+            or len(matrix) != 1 or len(matrix[0]) != len(ids)):
         raise ValueError("Model candidate columns do not match the loaded protocol")
     if result.get("candidate_sha256") != catalog.protocol["candidate_sha256"]:
         raise ValueError("Model and browser candidate fingerprints differ")
-    if not all(math.isfinite(value) for value in matrix[0]):
+    if not all(isinstance(value, Real) and not isinstance(value, bool)
+               and math.isfinite(value) for value in matrix[0]):
         raise ValueError("Model returned non-finite scores")
     ranking = sorted(zip(ids, matrix[0]), key=lambda pair: (-pair[1], pair[0]))[:5]
     return [{**catalog.candidates[cid], "score": float(score)} for cid, score in ranking]
@@ -100,5 +110,50 @@ def present_prediction(result, catalog):
 def load_independent(catalog, crop, disease, device="cpu"):
     # No automatic pretrained download; the existing loader rebuilds checkpoints.
     from independent_baseline import IndependentPredictor
-    return IndependentPredictor(crop, disease, catalog.protocol_path,
-                                catalog.source_csv, device=device)
+    import platform
+    import torch
+    import torchvision
+
+    def identities():
+        values = {}
+        for task, filename in (("crop", crop), ("disease", disease)):
+            digest = hashlib.sha256()
+            with Path(filename).open('rb') as stream:
+                for block in iter(lambda: stream.read(4 * 1024 * 1024), b''):
+                    digest.update(block)
+            values[task] = {"filename": Path(filename).name, "file_sha256": digest.hexdigest()}
+        return values
+
+    before = identities()
+    if getattr(catalog, 'is_final', False):
+        try:
+            release = json.loads(FINAL_WP1_REGISTRY.read_text(encoding='utf-8'))
+            if (release.get('schema') != 'wp1-full8000-release-v1'
+                    or release.get('training_manifest_sha256') != catalog.protocol['training_manifest_sha256']
+                    or release.get('candidate_sha256') != catalog.protocol['candidate_sha256']
+                    or any(before[task]['file_sha256'] != release['checkpoints'][task]['sha256']
+                           for task in ('crop', 'disease'))):
+                raise ValueError('Checkpoint files differ from the registered full-training release')
+        except (OSError, KeyError, TypeError, json.JSONDecodeError) as exc:
+            raise ValueError('Register a verified full-8,000 WP1 release before final GUI loading') from exc
+        from wp1_final import FinalIndependentPredictor
+        predictor = FinalIndependentPredictor(crop, disease, catalog.protocol_path,
+                                              catalog.source_csv, device=device)
+    else:
+        predictor = IndependentPredictor(crop, disease, catalog.protocol_path,
+                                         catalog.source_csv, device=device)
+    if identities() != before:
+        raise ValueError("WP1 checkpoint files changed while loading")
+    predictor.provenance = {
+        "variant": "wp1", "model": "independent crop / disease classifiers",
+        "checkpoints": before,
+        "runtime": {"python": platform.python_version(), "torch": str(torch.__version__),
+                    "torchvision": str(torchvision.__version__), "device": device},
+        "preprocessing": {"crop": str(predictor.crop_transform), "disease": str(predictor.disease_transform)},
+        "catalog_candidate_sha256": catalog.protocol['candidate_sha256'],
+        "split_sha256": catalog.protocol.get('split_sha256'),
+        "training_scope": catalog.protocol.get('training_scope', 'development_4868'),
+        "training_manifest_sha256": catalog.protocol.get('training_manifest_sha256'),
+        "source_sha256": catalog.protocol['source_sha256'],
+    }
+    return predictor

@@ -88,6 +88,19 @@ class WP4ServiceTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "columns"):
             present_prediction(result, self.catalog)
 
+    def test_boolean_and_floating_global_ids_cannot_alias_integer_ids(self):
+        for ids in ([False, 4, 9], [0., 4., 9.]):
+            result = {"candidate_ids": Array(ids), "scores": Array([[0., 2., 1.]]),
+                      "candidate_sha256": self.catalog.protocol["candidate_sha256"]}
+            with self.subTest(ids=ids), self.assertRaises(ValueError):
+                present_prediction(result, self.catalog)
+
+    def test_boolean_scores_are_rejected(self):
+        result = {"candidate_ids": Array([0, 4, 9]), "scores": Array([[True, 0., 1.]]),
+                  "candidate_sha256": self.catalog.protocol["candidate_sha256"]}
+        with self.assertRaises(ValueError):
+            present_prediction(result, self.catalog)
+
 
 if __name__ == "__main__":
     unittest.main()

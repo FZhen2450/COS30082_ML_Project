@@ -1,5 +1,10 @@
 # WP1 shared contract and execution guide
 
+Current status (9 November 2026): the selected pair's first official owner
+evaluation is complete. See [WP1 completion and handoff](WP1_Completion_2026-11-09.md)
+for actual results, compatible runtime, verification and remaining human gates.
+The dated delivery/coordination statements below retain their historical scope.
+
 Prepared 31 October 2026 (Malaysia time), from upstream main
 `38afc2c071876e768f961b50577702a0311578ed`.
 
