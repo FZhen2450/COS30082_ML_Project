@@ -1,0 +1,25 @@
+#!/bin/bash
+# Second Run final sprint: train the frozen J2 configuration on all 8,000 training images (one GPU job), then verify.
+set -u
+export PYTHONDONTWRITEBYTECODE=1
+P=<CONDA_ENV>/bin/python
+W="<WORKSPACE>/worktrees/r2-v5"
+O="<WORKSPACE>/experiments/r2-compositional/v5"
+R="$O/final_J2_full8000"
+cd "$W" || exit 3
+log() { echo "== $* $(date '+%F %H:%M:%S')" >> "$O/final_sequence.log"; }
+if [ -n "$(git status --porcelain)" ]; then log "REFUSED: dirty worktree"; exit 3; fi
+if [ -e "$R" ]; then log "REFUSED: $R exists"; exit 3; fi
+nvidia-smi --query-gpu=timestamp,memory.used,memory.total,utilization.gpu,temperature.gpu,power.draw --format=csv -l 30 > "$O/final_gpu_monitor.csv" 2>&1 &
+MON=$!
+trap 'kill $MON 2>/dev/null' EXIT
+log "train start head=$(git rev-parse --short HEAD)"
+$P scripts/r2v5_final.py train --out "$R" > "$O/final_train.log" 2>&1
+rc=$?; log "train exit=$rc"
+kill $MON 2>/dev/null
+if [ $rc -ne 0 ]; then log "STOP: training failed"; exit 4; fi
+log "verify start"
+$P scripts/r2v5_final.py verify --run "$R" > "$O/final_verify.log" 2>&1
+log "verify exit=$?"
+if [ -n "$(git status --porcelain)" ]; then log "WARNING: worktree changed during the run"; fi
+log "end"

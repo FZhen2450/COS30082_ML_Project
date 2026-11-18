@@ -1,0 +1,9 @@
+{
+ "row": "J1_clipL_last2",
+ "fold": "I1",
+ "source": "MTID",
+ "arm": "ablated",
+ "status": "failed",
+ "error": "HRTError: J1_clipL_last2 I1/MTID/ablated: run started from a dirty worktree",
+ "trace": "Traceback (most recent call last):\n  File \"<WORKSPACE>/worktrees/r2-v4/research_r2_v4/hrt.py\", line 311, in run_arm\n    verify_arm(out, row, fold_meta, source, arm, frame, phase1, declared)  # the marker must also pass evaluation\n  File \"<WORKSPACE>/worktrees/r2-v4/research_r2_v4/hrt.py\", line 281, in verify_arm\n    raise HRTError(f\"{row} {fn}/{source}/{arm}: \" + \"; \".join(p))\nresearch_r2_v4.hrt.HRTError: J1_clipL_last2 I1/MTID/ablated: run started from a dirty worktree\n"
+}

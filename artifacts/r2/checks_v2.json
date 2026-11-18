@@ -1,0 +1,15 @@
+[
+ "outer exclusion set and inner population partition all images; no lineage group spans both",
+ "6 inner folds use only inner-population rows (zero outer rows)",
+ "inner I1: disjoint, complete, composition-disjoint, concept-covered, lineage-clean",
+ "inner I2: disjoint, complete, composition-disjoint, concept-covered, lineage-clean",
+ "inner I3: disjoint, complete, composition-disjoint, concept-covered, lineage-clean",
+ "inner I4: disjoint, complete, composition-disjoint, concept-covered, lineage-clean",
+ "inner I5: disjoint, complete, composition-disjoint, concept-covered, lineage-clean",
+ "inner I6: disjoint, complete, composition-disjoint, concept-covered, lineage-clean",
+ "inner new folds partition the eligible composition set exactly once",
+ "outer compositions absent from inner population; outer crops and diseases all covered by inner data",
+ "outer O1: disjoint, complete, composition-disjoint, concept-covered, lineage-clean",
+ "outer O2: disjoint, complete, composition-disjoint, concept-covered, lineage-clean",
+ "outer new folds partition the eligible composition set exactly once"
+]

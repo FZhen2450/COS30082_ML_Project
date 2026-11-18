@@ -1,0 +1,195 @@
+{
+ "D1_synthComp_norm - B1_clipL_factorised": {
+  "H_bal_diff_pp": {
+   "median": 4.495297668410581,
+   "ci95": [
+    1.0668262709205518,
+    8.566867330638155
+   ],
+   "P(diff>0)": 0.995
+  },
+  "H_micro_diff_pp": {
+   "median": 3.040292662821792,
+   "ci95": [
+    -1.1705793137232003,
+    9.436219744135874
+   ],
+   "P(diff>0)": 0.9108
+  }
+ },
+ "D2_synthComp_norm_text - B1_clipL_factorised": {
+  "H_bal_diff_pp": {
+   "median": 6.35519604550128,
+   "ci95": [
+    1.3494552838639147,
+    13.91658634666847
+   ],
+   "P(diff>0)": 0.9962
+  },
+  "H_micro_diff_pp": {
+   "median": 1.373806536624872,
+   "ci95": [
+    -3.3712255649820055,
+    16.83193952820703
+   ],
+   "P(diff>0)": 0.6614
+  }
+ },
+ "D2_synthComp_norm_text - D1_synthComp_norm": {
+  "H_bal_diff_pp": {
+   "median": 1.8302717072824852,
+   "ci95": [
+    -2.54812754187381,
+    7.672630697299996
+   ],
+   "P(diff>0)": 0.7832
+  },
+  "H_micro_diff_pp": {
+   "median": -1.4562560032035543,
+   "ci95": [
+    -3.9551069647285804,
+    10.479157860202752
+   ],
+   "P(diff>0)": 0.353
+  }
+ },
+ "per_composition_D1_vs_B1": {
+  "better": 8,
+  "worse": 6,
+  "tied": 8
+ },
+ "per_composition": {
+  "O1:bean_angular_leaf_spot": {
+   "n": 18,
+   "D1_synthComp_norm": 0.5,
+   "D2_synthComp_norm_text": 0.8888888888888888,
+   "B1_clipL_factorised": 0.5
+  },
+  "O1:cassava_mosaic": {
+   "n": 544,
+   "D1_synthComp_norm": 0.6856617647058824,
+   "D2_synthComp_norm_text": 0.5753676470588235,
+   "B1_clipL_factorised": 0.7297794117647058
+  },
+  "O1:cucumber_anthracnose": {
+   "n": 8,
+   "D1_synthComp_norm": 0.875,
+   "D2_synthComp_norm_text": 1.0,
+   "B1_clipL_factorised": 0.875
+  },
+  "O1:guava_phytophthora": {
+   "n": 7,
+   "D1_synthComp_norm": 0.8571428571428571,
+   "D2_synthComp_norm_text": 0.7142857142857143,
+   "B1_clipL_factorised": 0.8571428571428571
+  },
+  "O1:paddy_downy_mildew": {
+   "n": 19,
+   "D1_synthComp_norm": 0.8421052631578947,
+   "D2_synthComp_norm_text": 0.5263157894736842,
+   "B1_clipL_factorised": 0.5263157894736842
+  },
+  "O1:pear_spot": {
+   "n": 24,
+   "D1_synthComp_norm": 0.25,
+   "D2_synthComp_norm_text": 0.875,
+   "B1_clipL_factorised": 0.041666666666666664
+  },
+  "O1:strawberry_scorch": {
+   "n": 40,
+   "D1_synthComp_norm": 0.075,
+   "D2_synthComp_norm_text": 0.35,
+   "B1_clipL_factorised": 0.175
+  },
+  "O1:sugarcane_mosaic": {
+   "n": 18,
+   "D1_synthComp_norm": 0.05555555555555555,
+   "D2_synthComp_norm_text": 0.1111111111111111,
+   "B1_clipL_factorised": 0.0
+  },
+  "O1:sugarcane_smut": {
+   "n": 9,
+   "D1_synthComp_norm": 0.8888888888888888,
+   "D2_synthComp_norm_text": 0.8888888888888888,
+   "B1_clipL_factorised": 1.0
+  },
+  "O1:tomato_spider_mites": {
+   "n": 70,
+   "D1_synthComp_norm": 0.22857142857142856,
+   "D2_synthComp_norm_text": 0.3,
+   "B1_clipL_factorised": 0.12857142857142856
+  },
+  "O1:wheat_powdery_mildew": {
+   "n": 5,
+   "D1_synthComp_norm": 1.0,
+   "D2_synthComp_norm_text": 1.0,
+   "B1_clipL_factorised": 1.0
+  },
+  "O2:apple_alternaria_leaf_spot": {
+   "n": 21,
+   "D1_synthComp_norm": 0.23809523809523808,
+   "D2_synthComp_norm_text": 0.2857142857142857,
+   "B1_clipL_factorised": 0.3333333333333333
+  },
+  "O2:apple_scab": {
+   "n": 57,
+   "D1_synthComp_norm": 0.22807017543859648,
+   "D2_synthComp_norm_text": 0.2631578947368421,
+   "B1_clipL_factorised": 0.3508771929824561
+  },
+  "O2:blackgram_anthracnose": {
+   "n": 14,
+   "D1_synthComp_norm": 0.35714285714285715,
+   "D2_synthComp_norm_text": 0.2857142857142857,
+   "B1_clipL_factorised": 0.07142857142857142
+  },
+  "O2:blackgram_powdery_mildew": {
+   "n": 7,
+   "D1_synthComp_norm": 0.8571428571428571,
+   "D2_synthComp_norm_text": 0.8571428571428571,
+   "B1_clipL_factorised": 0.8571428571428571
+  },
+  "O2:mango_powdery_mildew": {
+   "n": 18,
+   "D1_synthComp_norm": 0.8888888888888888,
+   "D2_synthComp_norm_text": 0.8333333333333334,
+   "B1_clipL_factorised": 0.7777777777777778
+  },
+  "O2:paddy_bacterial_blight": {
+   "n": 26,
+   "D1_synthComp_norm": 0.19230769230769232,
+   "D2_synthComp_norm_text": 0.23076923076923078,
+   "B1_clipL_factorised": 0.19230769230769232
+  },
+  "O2:paddy_brown_spot": {
+   "n": 71,
+   "D1_synthComp_norm": 0.8169014084507042,
+   "D2_synthComp_norm_text": 0.8309859154929577,
+   "B1_clipL_factorised": 0.8732394366197183
+  },
+  "O2:papaya_ring_spot": {
+   "n": 18,
+   "D1_synthComp_norm": 0.8333333333333334,
+   "D2_synthComp_norm_text": 0.9444444444444444,
+   "B1_clipL_factorised": 0.5
+  },
+  "O2:peach_bacterial_spot": {
+   "n": 74,
+   "D1_synthComp_norm": 0.8513513513513513,
+   "D2_synthComp_norm_text": 0.8513513513513513,
+   "B1_clipL_factorised": 0.6351351351351351
+  },
+  "O2:peanut_rust": {
+   "n": 9,
+   "D1_synthComp_norm": 1.0,
+   "D2_synthComp_norm_text": 1.0,
+   "B1_clipL_factorised": 1.0
+  },
+  "O2:tea_anthracnose": {
+   "n": 5,
+   "D1_synthComp_norm": 0.8,
+   "D2_synthComp_norm_text": 0.8,
+   "B1_clipL_factorised": 0.8
+  }
+ }
+}

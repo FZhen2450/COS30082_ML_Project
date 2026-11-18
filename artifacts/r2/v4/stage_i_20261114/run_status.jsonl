@@ -1,0 +1,13 @@
+{"row": "I1_count_aware_calibration", "status": "ok", "seconds": 2.4705235958099365, "time": "2026-11-13T16:44:47Z"}
+{"row": "I2_crop_conditional_calibration", "status": "ok", "seconds": 2.3014614582061768, "time": "2026-11-13T16:44:50Z"}
+{"row": "I3_cosine_prototype_head", "status": "ok", "seconds": 26.507196187973022, "time": "2026-11-13T16:45:16Z"}
+{"row": "I3b_cosine_prototype_tau010", "status": "ok", "seconds": 24.39660620689392, "time": "2026-11-13T16:45:40Z"}
+{"row": "I4_orthogonal_factor_projection", "status": "ok", "seconds": 44.66520285606384, "time": "2026-11-13T16:46:25Z"}
+{"row": "I4b_projection_no_hsic", "status": "ok", "seconds": 41.966753005981445, "time": "2026-11-13T16:47:07Z"}
+{"row": "I5_crosscrop_supcon_projection", "status": "ok", "seconds": 50.20392990112305, "time": "2026-11-13T16:47:57Z"}
+{"row": "I5b_supcon_any_crop", "status": "ok", "seconds": 42.5789475440979, "time": "2026-11-13T16:48:40Z"}
+{"row": "I6_text_direction_synthesis", "status": "ok", "seconds": 37.1446738243103, "time": "2026-11-13T16:49:17Z"}
+{"row": "I6b_text_direction_only", "status": "ok", "seconds": 36.160688400268555, "time": "2026-11-13T16:49:53Z"}
+{"row": "I7_multilayer_clipL", "status": "ok", "seconds": 45.36398983001709, "time": "2026-11-13T16:50:39Z"}
+{"row": "I7b_multilayer_20_24", "status": "ok", "seconds": 41.89556550979614, "time": "2026-11-13T16:51:21Z"}
+{"row": "I8_multicrop_views", "status": "ok", "seconds": 59.208280086517334, "time": "2026-11-13T16:52:20Z"}

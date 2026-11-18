@@ -1,0 +1,33 @@
+{
+ "note": "post-hoc diagnostic on outer folds; not used for any selection",
+ "rows": {
+  "D1_synthComp_norm:O1": {
+   "oracle_gamma": 9.0,
+   "oracle_H": 0.6884715744293217,
+   "registered_gamma": 8.0,
+   "H_at_registered": 0.6569634490541855,
+   "regret_pp": 3.1508125375136253
+  },
+  "D1_synthComp_norm:O2": {
+   "oracle_gamma": 8.0,
+   "oracle_H": 0.6856085664720094,
+   "registered_gamma": 8.0,
+   "H_at_registered": 0.6856085664720094,
+   "regret_pp": 0.0
+  },
+  "B1_clipL_factorised:O1": {
+   "oracle_gamma": 12.5,
+   "oracle_H": 0.6603950726502219,
+   "registered_gamma": 10.5,
+   "H_at_registered": 0.6214388754581872,
+   "regret_pp": 3.895619719203469
+  },
+  "B1_clipL_factorised:O2": {
+   "oracle_gamma": 11.5,
+   "oracle_H": 0.6337544348450702,
+   "registered_gamma": 10.5,
+   "H_at_registered": 0.6317060269663444,
+   "regret_pp": 0.20484078787258442
+  }
+ }
+}

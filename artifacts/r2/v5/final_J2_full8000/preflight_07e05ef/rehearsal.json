@@ -1,0 +1,32 @@
+{
+ "label": "REHEARSAL on training images (already fitted): pipeline, sizes, memory and determinism only; NOT a performance estimate",
+ "sizes": {
+  "seen": 2000,
+  "unseen": 1448
+ },
+ "deterministic_repeat": true,
+ "total_seconds": 183.83630633354187,
+ "result": {
+  "seen": {
+   "count": 2000,
+   "top1": 0.88,
+   "top5": 1.0,
+   "fraction_top1_unseen_id": 0.119,
+   "seconds": 51.95659565925598,
+   "peak_gpu_gib": 1.7909998893737793
+  },
+  "unseen": {
+   "count": 1448,
+   "top1": 0.8895027624309392,
+   "top5": 1.0,
+   "fraction_top1_unseen_id": 0.10911602209944751,
+   "seconds": 39.42003011703491,
+   "peak_gpu_gib": 1.809852123260498
+  }
+ },
+ "confusion_shape": [
+  333,
+  333
+ ],
+ "H@1_pipeline_only": 0.8847258648682402
+}

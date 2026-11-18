@@ -1,0 +1,23 @@
+{
+ "dominant": {
+  "image_fold_instances": 4608,
+  "unique_images": 809,
+  "compositions": 195,
+  "sources": 39,
+  "composition_source_clusters": 195
+ },
+ "other_fitting_source": {
+  "image_fold_instances": 628,
+  "unique_images": 111,
+  "compositions": 30,
+  "sources": 15,
+  "composition_source_clusters": 40
+ },
+ "novel_source": {
+  "image_fold_instances": 28,
+  "unique_images": 5,
+  "compositions": 3,
+  "sources": 3,
+  "composition_source_clusters": 3
+ }
+}

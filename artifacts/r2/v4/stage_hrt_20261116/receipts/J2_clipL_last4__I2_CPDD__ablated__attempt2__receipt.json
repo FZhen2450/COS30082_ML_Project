@@ -1,0 +1,144 @@
+{
+ "row": "J2_clipL_last4@HRT_I2_CPDD_ablated",
+ "seed": 0,
+ "fold": "I2",
+ "config": {
+  "row": "J2_clipL_last4@HRT_I2_CPDD_ablated",
+  "backbone": "clip_l14",
+  "trainable": "last4",
+  "augment": "flip",
+  "source_balanced": false,
+  "extra": null,
+  "epochs": 5,
+  "batch": 32,
+  "lr_backbone": 1e-05,
+  "lr_head": 0.001,
+  "weight_decay": 0.05,
+  "warmup_epochs": 1,
+  "max_steps": null,
+  "concat_frozen": null,
+  "workers": 8
+ },
+ "config_sha256": "ed5e917e93e71ecad09e4ae0447c806f4650e14a43422cc2cd15bf15a30aa3ee",
+ "torch_seed": 1,
+ "weights_file": "clip/ViT-L-14.pt",
+ "trainable_backbone_params": 51173376,
+ "frozen_params": 376443137,
+ "n_fitting": 4698,
+ "started": "2026-11-16T08:23:32Z",
+ "frozen_digest_before": "54fe4b8ece561c09df7f2be87818c31ac5965729f3763f3ee223452b13e71ad4",
+ "code": {
+  "git_head": "3334b2be64e2d1cf5431f71a4551d7ff10a8228a",
+  "worktree_clean": true,
+  "jrun_sha256": "433d405805db25d7b42752e129125380276c159f2a4dc4fe85303cb5fc5f4393"
+ },
+ "epochs": [
+  {
+   "epoch": 1,
+   "steps": 146,
+   "train_loss_mean": 5.898309750099704,
+   "train_loss_last50": 3.0262734508514404,
+   "amp_skipped_steps": 1,
+   "seconds": 72.22835326194763,
+   "images_per_s": 64.68373754608803,
+   "lr_end": [
+    1e-05,
+    0.001
+   ]
+  },
+  {
+   "epoch": 2,
+   "steps": 146,
+   "train_loss_mean": 0.8314836064021881,
+   "train_loss_last50": 0.4303018641471863,
+   "amp_skipped_steps": 0,
+   "seconds": 73.46298480033875,
+   "images_per_s": 63.596651992793376,
+   "lr_end": [
+    8.535533905932739e-06,
+    0.0008535533905932737
+   ]
+  },
+  {
+   "epoch": 3,
+   "steps": 146,
+   "train_loss_mean": 0.2597797663040357,
+   "train_loss_last50": 0.20331353694200516,
+   "amp_skipped_steps": 0,
+   "seconds": 72.90517997741699,
+   "images_per_s": 64.08323611490275,
+   "lr_end": [
+    5e-06,
+    0.0005
+   ]
+  },
+  {
+   "epoch": 4,
+   "steps": 146,
+   "train_loss_mean": 0.1724242852515962,
+   "train_loss_last50": 0.15951631523668766,
+   "amp_skipped_steps": 0,
+   "seconds": 72.6046495437622,
+   "images_per_s": 64.34849408793137,
+   "lr_end": [
+    1.4644660940672628e-06,
+    0.00014644660940672628
+   ]
+  },
+  {
+   "epoch": 5,
+   "steps": 146,
+   "train_loss_mean": 0.12738635237902812,
+   "train_loss_last50": 0.12991721637547016,
+   "amp_skipped_steps": 0,
+   "seconds": 73.41908407211304,
+   "images_per_s": 63.63467942527846,
+   "lr_end": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "validation_curve": "none by design: all fitting rows train (declared); no evaluation row is read during training",
+ "grad_checks": {
+  "checks": 17,
+  "finite_checks": 17,
+  "max_nonfinite_run": 0,
+  "skipped_steps": 1,
+  "steps": 730,
+  "tensors": 51
+ },
+ "train_loss": {
+  "first50": 8.623234882354737,
+  "last50": 0.12991721637547016,
+  "steps": 730
+ },
+ "frozen_digest_after": "54fe4b8ece561c09df7f2be87818c31ac5965729f3763f3ee223452b13e71ad4",
+ "trainable_tensors_changed": "51/51",
+ "trainable_update_norm": {
+  "total": 2.209891837982456,
+  "min_tensor": 0.0060006133280694485
+ },
+ "peak_gpu_gib_training": 3.9586615562438965,
+ "checkpoint_sha256": "a2e922d59b4659c6d8df9c396bd0edda599444043e8c7a019fe4588640b8b5cf",
+ "reload_max_abs_diff": 0.0,
+ "features_sha256": "e28cea3215b4e50f502e2e6eb8df58da189f50e877cb8f3f37fc2469c7297df1",
+ "feature_cache_meta": {
+  "row": "J2_clipL_last4@HRT_I2_CPDD_ablated",
+  "seed": 0,
+  "fold": "I2",
+  "config_sha256": "ed5e917e93e71ecad09e4ae0447c806f4650e14a43422cc2cd15bf15a30aa3ee",
+  "checkpoint_sha256": "a2e922d59b4659c6d8df9c396bd0edda599444043e8c7a019fe4588640b8b5cf",
+  "rows_sha256": "97b0d7bb201ccfd715bf5624dd9b401467032c201d28800fdb772836d041d2f7",
+  "backbone": "clip_l14",
+  "schema": "r2v4-j-fold-features-v1"
+ },
+ "checkpoint_keys": 51,
+ "peak_gpu_gib_total": 4.330110549926758,
+ "packet_sha256": "e2a85d09ddb53edfb1432dfd5cf538437974542d593178c8afde1938368983ba",
+ "contract_sha256": "b35eae60f7c3634d7febe782c2f113b8c657083686a9121beb1d17aab939b1b1",
+ "images_opened_main_process": 8,
+ "seconds": 548.0911066532135,
+ "status": "ok",
+ "finished": "2026-11-16T08:32:34Z"
+}

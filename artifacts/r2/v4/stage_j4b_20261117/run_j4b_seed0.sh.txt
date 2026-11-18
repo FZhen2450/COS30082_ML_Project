@@ -1,0 +1,25 @@
+#!/bin/bash
+# Amendment 3 (declared 65dd3fd): J4b_best_photometric_aug, seed 0, I1-I6, screen. One GPU job; then evaluation.
+set -u
+export PYTHONDONTWRITEBYTECODE=1
+P=<CONDA_ENV>/bin/python
+W="<WORKSPACE>/worktrees/r2-v4"
+O="<V4_EXP>/stage_j4b_20261117"
+cd "$W" || exit 3
+log() { echo "== $* $(date '+%F %H:%M:%S')" >> "$O/sequence.log"; }
+if [ -n "$(git status --porcelain)" ]; then log "REFUSED: dirty worktree"; exit 3; fi
+if [ -e "$O/runs" ]; then log "REFUSED: $O/runs exists"; exit 3; fi
+{ git rev-parse HEAD; sha256sum research_r2_v4/*.py scripts/r2v4_child.py scripts/r2v4_declare.py; date; } > "$O/code_start.txt"
+$P scripts/r2v4_declare.py --verify --amendment 3 > "$O/declaration_verify_start.txt" 2>&1 || { log "REFUSED: amendment 3 does not verify"; exit 3; }
+nvidia-smi --query-gpu=timestamp,memory.used,memory.total,utilization.gpu,temperature.gpu,power.draw --format=csv -l 30 > "$O/gpu_monitor.csv" 2>&1 &
+MON=$!
+trap 'kill $MON 2>/dev/null' EXIT
+log "j4b seed0 train start head=$(git rev-parse --short HEAD)"
+$P scripts/r2v4_child.py run --child J4b_best_photometric_aug --seed 0 --out "$O/runs" > "$O/J4b_seed0_train.log" 2>&1
+log "j4b seed0 train exit=$?"
+log "evaluate start"
+$P scripts/r2v4_child.py evaluate --child J4b_best_photometric_aug --mode screen --runs "$O/runs" --out "$O/evaluation" > "$O/evaluate.log" 2>&1
+log "evaluate exit=$?"
+$P scripts/r2v4_declare.py --verify --amendment 3 > "$O/declaration_verify_end.txt" 2>&1; log "declaration verify at end exit=$?"
+if [ -n "$(git status --porcelain)" ]; then log "WARNING: worktree changed during the run"; fi
+log "end"

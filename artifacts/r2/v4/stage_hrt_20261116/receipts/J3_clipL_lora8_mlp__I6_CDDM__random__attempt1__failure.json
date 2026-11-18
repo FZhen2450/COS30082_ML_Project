@@ -1,0 +1,9 @@
+{
+ "row": "J3_clipL_lora8_mlp",
+ "fold": "I6",
+ "source": "CDDM",
+ "arm": "random",
+ "status": "failed",
+ "error": "HRTError: J3_clipL_lora8_mlp I6/CDDM/random: run started from a dirty worktree",
+ "trace": "Traceback (most recent call last):\n  File \"<WORKSPACE>/worktrees/r2-v4/research_r2_v4/hrt.py\", line 311, in run_arm\n    verify_arm(out, row, fold_meta, source, arm, frame, phase1, declared)  # the marker must also pass evaluation\n  File \"<WORKSPACE>/worktrees/r2-v4/research_r2_v4/hrt.py\", line 281, in verify_arm\n    raise HRTError(f\"{row} {fn}/{source}/{arm}: \" + \"; \".join(p))\nresearch_r2_v4.hrt.HRTError: J3_clipL_lora8_mlp I6/CDDM/random: run started from a dirty worktree\n"
+}

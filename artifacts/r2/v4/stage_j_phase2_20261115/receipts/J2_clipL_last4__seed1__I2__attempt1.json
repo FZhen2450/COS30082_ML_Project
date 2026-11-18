@@ -1,0 +1,144 @@
+{
+ "row": "J2_clipL_last4",
+ "seed": 1,
+ "fold": "I2",
+ "config": {
+  "row": "J2_clipL_last4",
+  "backbone": "clip_l14",
+  "trainable": "last4",
+  "augment": "flip",
+  "source_balanced": false,
+  "extra": null,
+  "epochs": 5,
+  "batch": 32,
+  "lr_backbone": 1e-05,
+  "lr_head": 0.001,
+  "weight_decay": 0.05,
+  "warmup_epochs": 1,
+  "max_steps": null,
+  "concat_frozen": null,
+  "workers": 8
+ },
+ "config_sha256": "b42fa6e750c4ff3f23e0165edeadf32bc71e6290e630ad54ecc9669081670053",
+ "torch_seed": 1001,
+ "weights_file": "clip/ViT-L-14.pt",
+ "trainable_backbone_params": 51173376,
+ "frozen_params": 376443137,
+ "n_fitting": 5057,
+ "started": "2026-11-15T18:10:25Z",
+ "frozen_digest_before": "54fe4b8ece561c09df7f2be87818c31ac5965729f3763f3ee223452b13e71ad4",
+ "code": {
+  "git_head": "8cd0b605eda9776c27299dcfe169107701840f42",
+  "worktree_clean": true,
+  "jrun_sha256": "433d405805db25d7b42752e129125380276c159f2a4dc4fe85303cb5fc5f4393"
+ },
+ "epochs": [
+  {
+   "epoch": 1,
+   "steps": 158,
+   "train_loss_mean": 5.808989821355554,
+   "train_loss_last50": 2.743632762432098,
+   "amp_skipped_steps": 2,
+   "seconds": 77.51877117156982,
+   "images_per_s": 65.2229095151047,
+   "lr_end": [
+    1e-05,
+    0.001
+   ]
+  },
+  {
+   "epoch": 2,
+   "steps": 158,
+   "train_loss_mean": 0.7584561303823809,
+   "train_loss_last50": 0.41671263217926025,
+   "amp_skipped_steps": 0,
+   "seconds": 77.98784899711609,
+   "images_per_s": 64.8306098903318,
+   "lr_end": [
+    8.535533905932739e-06,
+    0.0008535533905932737
+   ]
+  },
+  {
+   "epoch": 3,
+   "steps": 158,
+   "train_loss_mean": 0.26642347490297086,
+   "train_loss_last50": 0.22636100485920907,
+   "amp_skipped_steps": 0,
+   "seconds": 79.38032150268555,
+   "images_per_s": 63.69336437711913,
+   "lr_end": [
+    5e-06,
+    0.0005
+   ]
+  },
+  {
+   "epoch": 4,
+   "steps": 158,
+   "train_loss_mean": 0.1640637890447544,
+   "train_loss_last50": 0.1424417670071125,
+   "amp_skipped_steps": 0,
+   "seconds": 78.37999653816223,
+   "images_per_s": 64.50625189304444,
+   "lr_end": [
+    1.4644660940672628e-06,
+    0.00014644660940672628
+   ]
+  },
+  {
+   "epoch": 5,
+   "steps": 158,
+   "train_loss_mean": 0.12923250366238098,
+   "train_loss_last50": 0.12765119917690754,
+   "amp_skipped_steps": 0,
+   "seconds": 78.4338731765747,
+   "images_per_s": 64.46194201646406,
+   "lr_end": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "validation_curve": "none by design: all fitting rows train (declared); no evaluation row is read during training",
+ "grad_checks": {
+  "checks": 18,
+  "finite_checks": 18,
+  "max_nonfinite_run": 0,
+  "skipped_steps": 2,
+  "steps": 790,
+  "tensors": 51
+ },
+ "train_loss": {
+  "first50": 8.698584718704224,
+  "last50": 0.12765119917690754,
+  "steps": 790
+ },
+ "frozen_digest_after": "54fe4b8ece561c09df7f2be87818c31ac5965729f3763f3ee223452b13e71ad4",
+ "trainable_tensors_changed": "51/51",
+ "trainable_update_norm": {
+  "total": 2.2732591055499025,
+  "min_tensor": 0.0062333885580301285
+ },
+ "peak_gpu_gib_training": 3.9598212242126465,
+ "checkpoint_sha256": "f64e36d046f016f86ab64831dc809e4fd10b1a95906f2ce4b0f92b5689a366bf",
+ "reload_max_abs_diff": 0.0,
+ "features_sha256": "a2cd6e0be2e93c39295ac24d25818a71b70d236cdc2c90796fe0243a006b1448",
+ "feature_cache_meta": {
+  "row": "J2_clipL_last4",
+  "seed": 1,
+  "fold": "I2",
+  "config_sha256": "b42fa6e750c4ff3f23e0165edeadf32bc71e6290e630ad54ecc9669081670053",
+  "checkpoint_sha256": "f64e36d046f016f86ab64831dc809e4fd10b1a95906f2ce4b0f92b5689a366bf",
+  "rows_sha256": "c638989f39b41eed32185af1862a4751f0b36d2a571ab68f010e13dc35d729c9",
+  "backbone": "clip_l14",
+  "schema": "r2v4-j-fold-features-v1"
+ },
+ "checkpoint_keys": 51,
+ "peak_gpu_gib_total": 4.330110549926758,
+ "packet_sha256": "903afe8e0434e7d967895c817ca1e399e056e2a7abfca5691e098dcd08edf8cf",
+ "contract_sha256": "76b55d6c02d6d9c4c71e2f2a572dff172cae08ee928d0021fa27fed1d09f465c",
+ "images_opened_main_process": 16,
+ "seconds": 573.3813331127167,
+ "status": "ok",
+ "finished": "2026-11-15T18:19:53Z"
+}

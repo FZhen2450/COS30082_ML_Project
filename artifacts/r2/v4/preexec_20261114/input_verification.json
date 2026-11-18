@@ -1,0 +1,189 @@
+{
+ "schema": "r2v4-input-verification-v1",
+ "git": {
+  "head": "366097567ed9e756b66e7e834ca9aacca3e461a8",
+  "declaration_commit": "366097567ed9e756b66e7e834ca9aacca3e461a8",
+  "declaration_is_ancestor": true,
+  "declared_sha256": {
+   "research_r2_v4/protocol_v4.json": "fd9f0865f96643b42609113eed209ed0d9a041f702b7a36eaf5e94768bbfb483",
+   "research_r2_v4/matrices/stage_h_v4.json": "c83e17da5c6a54c127a017cdbb64328aec88cb164ef213ecfec1e81d02d70b72",
+   "research_r2_v4/matrices/stage_i_v4.json": "45a8d5f16771b0ad109c7a798d38db2049a0edceaeb8596ca95d72b083feecf5",
+   "research_r2_v4/matrices/stage_j_v4.json": "7fe19346b045fbd90d2abab5eeb6bf630d462da775174d81b232b28be94dc421",
+   "docs/R2_v4_Plan.md": "928ae784893524ba96f565581a33ee9c984d46bae8caf2c4297303308bf73245"
+  },
+  "unchanged_since_declaration": true,
+  "declaration_commit_files": [
+   "artifacts/r2/v4/feasibility_20261114/SHA256SUMS",
+   "artifacts/r2/v4/feasibility_20261114/gpu_probe.json",
+   "artifacts/r2/v4/feasibility_20261114/repro_v3_stage_f_check.json",
+   "artifacts/r2/v4/feasibility_20261114/repro_v3_stage_f_summaries.jsonl",
+   "artifacts/r2/v4/feasibility_20261114/source_feasibility.json",
+   "docs/R2_v4_Plan.md",
+   "research_r2_v4/DECLARATION.json",
+   "research_r2_v4/matrices/stage_h_v4.json",
+   "research_r2_v4/matrices/stage_i_v4.json",
+   "research_r2_v4/matrices/stage_j_v4.json",
+   "research_r2_v4/protocol_v4.json",
+   "scripts/r2v4_declare.py",
+   "scripts/r2v4_probe_gpu.py",
+   "scripts/r2v4_repro_check.py",
+   "scripts/r2v4_source_feasibility.py"
+  ],
+  "v4_results_in_declaration_commit": [],
+  "declaration_commit_time": "2026-11-14T00:09:22+08:00"
+ },
+ "benchmark": {
+  "train_csv_sha256": "9f1b729ab08f120c9e8d3a5681aa1ccbdf1d9210f9aaa6143959363dcb106a7d",
+  "expected_train_csv": "9f1b729ab08f120c9e8d3a5681aa1ccbdf1d9210f9aaa6143959363dcb106a7d",
+  "semantic_sha256_stored": "0e85819cbd845eb6794cd8414950aac794e351636ae1f1202306b4ed8b1a7e42",
+  "semantic_sha256_recomputed": "0e85819cbd845eb6794cd8414950aac794e351636ae1f1202306b4ed8b1a7e42",
+  "validator_checks": [
+   "outer exclusion set and inner population partition all images; no lineage group spans both",
+   "6 inner folds use only inner-population rows (zero outer rows)",
+   "inner I1: disjoint, complete, composition-disjoint, concept-covered, lineage-clean",
+   "inner I2: disjoint, complete, composition-disjoint, concept-covered, lineage-clean",
+   "inner I3: disjoint, complete, composition-disjoint, concept-covered, lineage-clean",
+   "inner I4: disjoint, complete, composition-disjoint, concept-covered, lineage-clean",
+   "inner I5: disjoint, complete, composition-disjoint, concept-covered, lineage-clean",
+   "inner I6: disjoint, complete, composition-disjoint, concept-covered, lineage-clean",
+   "inner new folds partition the eligible composition set exactly once",
+   "outer compositions absent from inner population; outer crops and diseases all covered by inner data",
+   "outer O1: disjoint, complete, composition-disjoint, concept-covered, lineage-clean",
+   "outer O2: disjoint, complete, composition-disjoint, concept-covered, lineage-clean",
+   "outer new folds partition the eligible composition set exactly once",
+   "v3 image partitions identical to v2",
+   "every fold: universe = F u H; every penalised candidate has fitting images; inner E = the 22 outer compositions; outer E empty"
+  ]
+ },
+ "folds": {
+  "I1": {
+   "policy_ok": true,
+   "F": 291,
+   "H": 10,
+   "E": 22,
+   "E_is_outer_compositions": true,
+   "lineage_groups_shared_fit_val": 0,
+   "lineage_groups_shared_fit_outer": 0,
+   "rows_overlap_fit_val": 0,
+   "rows_overlap_with_outer": 0,
+   "rows_in_training_csv": true,
+   "ok": true
+  },
+  "I2": {
+   "policy_ok": true,
+   "F": 291,
+   "H": 10,
+   "E": 22,
+   "E_is_outer_compositions": true,
+   "lineage_groups_shared_fit_val": 0,
+   "lineage_groups_shared_fit_outer": 0,
+   "rows_overlap_fit_val": 0,
+   "rows_overlap_with_outer": 0,
+   "rows_in_training_csv": true,
+   "ok": true
+  },
+  "I3": {
+   "policy_ok": true,
+   "F": 290,
+   "H": 11,
+   "E": 22,
+   "E_is_outer_compositions": true,
+   "lineage_groups_shared_fit_val": 0,
+   "lineage_groups_shared_fit_outer": 0,
+   "rows_overlap_fit_val": 0,
+   "rows_overlap_with_outer": 0,
+   "rows_in_training_csv": true,
+   "ok": true
+  },
+  "I4": {
+   "policy_ok": true,
+   "F": 290,
+   "H": 11,
+   "E": 22,
+   "E_is_outer_compositions": true,
+   "lineage_groups_shared_fit_val": 0,
+   "lineage_groups_shared_fit_outer": 0,
+   "rows_overlap_fit_val": 0,
+   "rows_overlap_with_outer": 0,
+   "rows_in_training_csv": true,
+   "ok": true
+  },
+  "I5": {
+   "policy_ok": true,
+   "F": 290,
+   "H": 11,
+   "E": 22,
+   "E_is_outer_compositions": true,
+   "lineage_groups_shared_fit_val": 0,
+   "lineage_groups_shared_fit_outer": 0,
+   "rows_overlap_fit_val": 0,
+   "rows_overlap_with_outer": 0,
+   "rows_in_training_csv": true,
+   "ok": true
+  },
+  "I6": {
+   "policy_ok": true,
+   "F": 291,
+   "H": 10,
+   "E": 22,
+   "E_is_outer_compositions": true,
+   "lineage_groups_shared_fit_val": 0,
+   "lineage_groups_shared_fit_outer": 0,
+   "rows_overlap_fit_val": 0,
+   "rows_overlap_with_outer": 0,
+   "rows_in_training_csv": true,
+   "ok": true
+  }
+ },
+ "d1_scores": {
+  "I1": {
+   "packet_sha256": "2cf6d6d174855936ecb15398f07d59caf4f57b14e3c101d507f7dc4013128ea9",
+   "registered_sha256": "2cf6d6d174855936ecb15398f07d59caf4f57b14e3c101d507f7dc4013128ea9",
+   "registry_match": true,
+   "copies": 3,
+   "fresh_vs_packet_max_abs_diff": 1.9073486328125e-06,
+   "truth_match": true
+  },
+  "I2": {
+   "packet_sha256": "0542c4953bb9855093d87166290233d833f11d9beed76c4011f641647ad4d029",
+   "registered_sha256": "0542c4953bb9855093d87166290233d833f11d9beed76c4011f641647ad4d029",
+   "registry_match": true,
+   "copies": 3,
+   "fresh_vs_packet_max_abs_diff": 1.9073486328125e-06,
+   "truth_match": true
+  },
+  "I3": {
+   "packet_sha256": "6b2df9b607c4767e1a7642d1ba22c4a4a44274172a3bd6121302b79760b84b26",
+   "registered_sha256": "6b2df9b607c4767e1a7642d1ba22c4a4a44274172a3bd6121302b79760b84b26",
+   "registry_match": true,
+   "copies": 3,
+   "fresh_vs_packet_max_abs_diff": 1.9073486328125e-06,
+   "truth_match": true
+  },
+  "I4": {
+   "packet_sha256": "d5b75e1d52b5358e94eacb4c109eaa9a993f13808907993cf0fc19c8991c763e",
+   "registered_sha256": "d5b75e1d52b5358e94eacb4c109eaa9a993f13808907993cf0fc19c8991c763e",
+   "registry_match": true,
+   "copies": 3,
+   "fresh_vs_packet_max_abs_diff": 1.9073486328125e-06,
+   "truth_match": true
+  },
+  "I5": {
+   "packet_sha256": "e0323e62ea3071bf51c376bbc4893c1f809816dbedf29f7de018102fbd882fa9",
+   "registered_sha256": "e0323e62ea3071bf51c376bbc4893c1f809816dbedf29f7de018102fbd882fa9",
+   "registry_match": true,
+   "copies": 3,
+   "fresh_vs_packet_max_abs_diff": 1.9073486328125e-06,
+   "truth_match": true
+  },
+  "I6": {
+   "packet_sha256": "3218aa4407bc1138aa4aa54f4c8c2b12b32b2b0ad17879ed075d2f1105153505",
+   "registered_sha256": "3218aa4407bc1138aa4aa54f4c8c2b12b32b2b0ad17879ed075d2f1105153505",
+   "registry_match": true,
+   "copies": 3,
+   "fresh_vs_packet_max_abs_diff": 1.9073486328125e-06,
+   "truth_match": true
+  }
+ },
+ "pass": true
+}

@@ -1,0 +1,40 @@
+{
+ "schema": "r2v4-hrt-v1",
+ "status": "ok",
+ "row": "J2_clipL_last4",
+ "arm_row": "J2_clipL_last4@HRT_I2_CPDD_random",
+ "fold": "I2",
+ "source": "CPDD",
+ "arm": "random",
+ "seed": 0,
+ "label": "post-freeze exploratory (v4); H_RT diagnostic only",
+ "index_set": "I2_CPDD_seed0.json",
+ "index_set_sha256": "9226e9c75025093f200351cbb9ca8cbb3775cef4895d0495fffcb84fc64ad729",
+ "match_levels": {
+  "composition": 201,
+  "crop": 121,
+  "disease": 2,
+  "any": 35
+ },
+ "support": {
+  "n_fitting_base": 5057,
+  "n_fitting": 4698,
+  "n_removed": 359,
+  "fitting_compositions_base": 291,
+  "fitting_compositions": 291,
+  "emptied_compositions": [],
+  "seen_val_rows": 879,
+  "dropped_seen_val_rows": 0,
+  "unseen_val_rows": 309,
+  "universe": 301,
+  "removed_rows_sha256": "3558220dd46acbc026159e3dcaf1d9165f26b5ca9e9b1d15844a34a7cb197073",
+  "fitting_rows_sha256": "c7dd16c5d4aee8a5f3cfde1703679809ec28a180229341a89392d791a557d78d"
+ },
+ "opened_rows_main_process": 8,
+ "opened_rows_excluded": [],
+ "base_checkpoint_sha256": "fe6f8005e33420300d36f1bac6f92260aa0aa75537032aa124b524a72108e08c",
+ "base_packet_sha256": "100531eefa604d56db5139bee372ac8e0a08c8a92d932326ef4dca807160595c",
+ "receipt_sha256": "068afb34bf31f1ed97ec2458b56633aba787ec7f41b4990c27de616aaa232311",
+ "seconds_total": 553.2622764110565,
+ "finished": "2026-11-16T05:55:33Z"
+}

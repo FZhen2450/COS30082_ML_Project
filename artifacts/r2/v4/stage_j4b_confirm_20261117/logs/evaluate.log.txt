@@ -1,0 +1,5 @@
+J4b_best_photometric_aug vs J2 (confirm, seeds [0, 1, 2]): H_bal +0.86 pp, 4/6, AUSUC +0.83, shortcut -0.11 pp -> pass=False; bootstrap CI [0.07019181071661544, 1.693789977480758]
+per-fold: {'I1': 1.54, 'I2': -0.26, 'I3': 0.95, 'I4': 1.22, 'I5': 1.97, 'I6': -0.24}
+per-seed: {0: 1.41, 1: 1.55, 2: -0.37}
+diagnostics: {'unseen_disease_top1': 1.24, 'unseen_crop_top1': 0.5, 'unseen_top1_macro': 1.76, 'unseen_withincrop_macro': 1.14, 'seen_top1': -0.42, 'H_micro': 0.7} calibration-matched 0.66
+source strata (seed mean): {'dominant': -0.16, 'other_fitting_source': -2.44, 'novel_source': 2.38}

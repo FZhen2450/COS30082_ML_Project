@@ -1,0 +1,1 @@
+01:49 MYT: sequential run stopped (SIGTERM) after owner asked for full hardware use; any in-progress pair was discarded (never written). Resumed as parallel shards (--shard k/n), resuming from completed pairs; code hashes in code_shards.txt.

@@ -1,0 +1,12 @@
+{
+ "status": "ok",
+ "n_fitting": 8000,
+ "seconds": 813.7409338951111,
+ "checkpoint_sha256": "e9dbbdf3fc95ba791e8e8129ef38bbd85352a0974c3091d6b7667bd633abb1c9",
+ "features_sha256": "eee9759f48ec5988e6c58e8ffc2c3d64ba6bd1c99ef6b2bafb07e96a38c8ba25",
+ "reload_max_abs_diff": 0.0,
+ "trainable_tensors_changed": "51/51",
+ "peak_gpu_gib_training": 3.950467586517334,
+ "peak_gpu_gib_total": 4.313570022583008,
+ "torch_seed": 0
+}

@@ -1,0 +1,11 @@
+{
+ "schema": "r2v4-child-identity-v1",
+ "row": "J4b_best_photometric_aug",
+ "seed": 1,
+ "fold": "I3",
+ "parent_row": "J2_clipL_last4",
+ "identity_sha256": "ae1a34b12eada606ea8b72f3789e2fc08f907387bb3d6bf66acb7ae15834e148",
+ "receipt_sha256": "df0e0ebcc2970d68f341be125e3ba29925db435d00ba3815a6f1bd0eb691ec1c",
+ "checkpoint_sha256": "17da5b3418f06c0d6a72553999489da1976d19fb54b35b81f9c31661b42237c7",
+ "packet_sha256": "8811b2acf665cc70bea7a89bd55532cea58adadf959cfaccbf4e65bf06f74032"
+}

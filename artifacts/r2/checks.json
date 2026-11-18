@@ -1,0 +1,12 @@
+[
+ "S1: disjoint, complete, composition-disjoint, concept-covered, lineage-clean",
+ "S2: disjoint, complete, composition-disjoint, concept-covered, lineage-clean",
+ "S3: disjoint, complete, composition-disjoint, concept-covered, lineage-clean",
+ "S4: disjoint, complete, composition-disjoint, concept-covered, lineage-clean",
+ "S5: disjoint, complete, composition-disjoint, concept-covered, lineage-clean",
+ "L1: disjoint, complete, composition-disjoint, concept-covered, lineage-clean",
+ "L2: disjoint, complete, composition-disjoint, concept-covered, lineage-clean",
+ "L3: disjoint, complete, composition-disjoint, concept-covered, lineage-clean",
+ "D0: disjoint, complete, composition-disjoint, concept-covered, lineage-clean",
+ "new folds partition the eligible composition set exactly once"
+]

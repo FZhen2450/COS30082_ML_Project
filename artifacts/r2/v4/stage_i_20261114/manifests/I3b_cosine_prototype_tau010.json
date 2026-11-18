@@ -1,0 +1,49 @@
+{
+ "row": "I3b_cosine_prototype_tau010",
+ "label": "post-freeze exploratory (v4); development cross-validation on v3 inner folds; not blind",
+ "spec": {
+  "kind": "fresh",
+  "feat": "clip_l14",
+  "fn": "synth_v4",
+  "cfg": {
+   "head": "cosine",
+   "tau": 0.1
+  }
+ },
+ "started": "2026-11-13T16:45:16Z",
+ "folds": {
+  "I1": {
+   "packet_sha256": "e5d4375c7e0938e7b23cba40fcd1834c6449c96f815626ac10da035d106c1549",
+   "contract_sha256": "50fc05ebba923e311d294f7f709a4d36a2119b14789279cc12110de2b4905d66"
+  },
+  "I2": {
+   "packet_sha256": "5db1ecabaf6de919c992714138cd8e230e5c3c579c998693af683d78230b253f",
+   "contract_sha256": "76b55d6c02d6d9c4c71e2f2a572dff172cae08ee928d0021fa27fed1d09f465c"
+  },
+  "I3": {
+   "packet_sha256": "8fd1298dc4224e3b809b42cc87c5b6b3739d92c7058452261103a425ec48cdee",
+   "contract_sha256": "23396b8ea981cb164facfd70b0d034fb675e23323d7abf634e62d935aa2e0109"
+  },
+  "I4": {
+   "packet_sha256": "c765b8d4222021d49ab65761ba4b4ea58a4d5310cf0576cb9b06565bbc3f702b",
+   "contract_sha256": "eed6ae546c684bee55c0ead27f3f7a3fdde4c6b1b840634048e2463cae79c6ba"
+  },
+  "I5": {
+   "packet_sha256": "5bfb7b6424ec0ab9b3cf8708aef40d3c929ebc8ae56c626aa95f7ca5c8b00b9a",
+   "contract_sha256": "a965325d8d5872f22f743a68d0a5f56c3a90052d4857357dd1f6433f2013b472"
+  },
+  "I6": {
+   "packet_sha256": "ccef332fe7ed0c7492f7f6bcd0a40d640719e2e551ab0579677e5a48a36653de",
+   "contract_sha256": "a36660129120ede7ab9717fd0e5857d7be27048840368f17765ccd639e939f72"
+  }
+ },
+ "feature_identity": {
+  "clip_l14": {
+   "weights_sha256": "b8cca3fd41ae0c99ba7e8951adf17d267cdb84cd88be6f7c2e0eca1737a03836",
+   "image_sha256_list_sha256": "5fdbecaaa04f1c7fc23174554926bdf1570b7a1cb97250d694de1e4654eefc2f"
+  }
+ },
+ "config_sha256": "76bd62741b2e639b30745d7660e471ea3c1f330b6ba276ceb2147578a2701c2c",
+ "seconds": 24.39660620689392,
+ "finished": "2026-11-13T16:45:40Z"
+}

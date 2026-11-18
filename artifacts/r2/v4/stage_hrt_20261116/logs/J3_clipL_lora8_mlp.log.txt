@@ -1,0 +1,12 @@
+FAILED J3_clipL_lora8_mlp I6/CDDM/ablated: HRTError: J3_clipL_lora8_mlp I6/CDDM/ablated: run started from a dirty worktree
+J3_clipL_lora8_mlp I6 CDDM ablated failed: HRTError: J3_clipL_lora8_mlp I6/CDDM/ablated: run started from a dirty worktree
+FAILED J3_clipL_lora8_mlp I6/CDDM/random: HRTError: J3_clipL_lora8_mlp I6/CDDM/random: run started from a dirty worktree
+J3_clipL_lora8_mlp I6 CDDM random failed: HRTError: J3_clipL_lora8_mlp I6/CDDM/random: run started from a dirty worktree
+FAILED J3_clipL_lora8_mlp I1/MTID/ablated: HRTError: J3_clipL_lora8_mlp I1/MTID/ablated: run started from a dirty worktree
+J3_clipL_lora8_mlp I1 MTID ablated failed: HRTError: J3_clipL_lora8_mlp I1/MTID/ablated: run started from a dirty worktree
+<CONDA_ENV>/lib/python3.10/site-packages/torch/optim/lr_scheduler.py:224: UserWarning: Detected call of `lr_scheduler.step()` before `optimizer.step()`. In PyTorch 1.1.0 and later, you should call them in the opposite order: `optimizer.step()` before `lr_scheduler.step()`.  Failure to do this will result in PyTorch skipping the first value of the learning rate schedule. See more details at https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate
+  warnings.warn(
+FAILED J3_clipL_lora8_mlp I1/MTID/random: HRTError: J3_clipL_lora8_mlp I1/MTID/random: run started from a dirty worktree
+J3_clipL_lora8_mlp I1 MTID random failed: HRTError: J3_clipL_lora8_mlp I1/MTID/random: run started from a dirty worktree
+<CONDA_ENV>/lib/python3.10/site-packages/torch/optim/lr_scheduler.py:224: UserWarning: Detected call of `lr_scheduler.step()` before `optimizer.step()`. In PyTorch 1.1.0 and later, you should call them in the opposite order: `optimizer.step()` before `lr_scheduler.step()`.  Failure to do this will result in PyTorch skipping the first value of the learning rate schedule. See more details at https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate
+  warnings.warn(

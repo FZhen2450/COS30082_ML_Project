@@ -1,0 +1,65 @@
+Unseen error decomposition (all 8 new folds, pooled gamma):
+err                     ok  ...  wrong_crop
+model                       ...            
+E_ref_B1_factorised  0.590  ...       0.110
+E_selected_D2        0.627  ...       0.075
+
+[2 rows x 4 columns]
+
+Composition-level: D2 better on 43 worse on 22 tied 22 of 87
+
+Worst 12 held-out compositions under D2:
+                            mean  size    B1
+comp                                        
+coffee_spider_mites         0.00     6  0.17
+tomato_spider_mites         0.00    70  0.00
+apple_alternaria_leaf_spot  0.05    21  0.05
+tomato_target_spot          0.12    68  0.22
+papaya_bacterial_spot       0.14    14  0.21
+tomato_curl                 0.14    14  0.36
+apple_frog_eye_leaf_spot    0.15    85  0.61
+bean_rust                   0.20     5  0.00
+sugarcane_mosaic            0.28    18  0.06
+cotton_target_spot          0.31    26  0.23
+tomato_brown_spot           0.35    31  0.03
+rose_black_spot             0.36    14  0.07
+
+Per disease (image-weighted unseen Top-1):
+                         D2    B1  n_crops_in_train
+dis                                                
+spider_mites           0.00  0.01                 2
+alternaria_leaf_spot   0.05  0.05                 4
+target_spot            0.17  0.22                 2
+frog_eye_leaf_spot     0.22  0.63                 2
+scorch                 0.38  0.08                 2
+septoria_leaf_spot     0.38  0.53                 2
+mosaic                 0.47  0.51                 3
+black_spot             0.47  0.21                 2
+bacterial_leaf_streak  0.56  0.56                 2
+canker                 0.57  0.17                 2
+spot                   0.58  0.35                 7
+curl                   0.65  0.55                 5
+bacterial_spot         0.67  0.56                 5
+rust                   0.70  0.69                12
+mosaic_virus           0.70  0.59                 5
+brown_spot             0.71  0.50                 8
+root_rot               0.71  0.14                 2
+downy_mildew           0.71  0.88                11
+scab                   0.73  0.85                 3
+yellowing              0.73  0.59                 3
+smut                   0.75  0.75                 3
+bacterial_blight       0.76  0.73                 3
+early_blight           0.79  0.58                 2
+angular_leaf_spot      0.81  0.69                 2
+ring_spot              0.83  0.67                 2
+phytophthora           0.86  0.86                 2
+powdery_mildew         0.86  0.80                11
+anthracnose            0.87  0.67                 9
+black_rot              0.89  0.29                 5
+leaf_blight            0.92  0.85                 6
+late_blight            0.95  0.94                 2
+bacterial_wilt         1.00  0.86                 2
+monillia_laxa          1.00  1.00                 3
+brown_rot              1.00  1.00                 2
+
+Correlation of per-disease D2 accuracy with #crops the disease occurs on: 0.13

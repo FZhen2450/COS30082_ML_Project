@@ -1,0 +1,337 @@
+{
+ "label": "post-freeze exploratory (v4); development cross-validation on v3 inner folds; not blind; H_RT scope (Gate A)",
+ "pairs": [
+  [
+   "I6",
+   "CDDM"
+  ],
+  [
+   "I1",
+   "MTID"
+  ],
+  [
+   "I2",
+   "CPDD"
+  ]
+ ],
+ "rows": [
+  "J1_clipL_last2",
+  "J2_clipL_last4",
+  "J3_clipL_lora8_mlp"
+ ],
+ "seed": 0,
+ "arms": [
+  "ablated",
+  "random"
+ ],
+ "per_pair": {
+  "I6_CDDM": {
+   "ablated": {
+    "fold": "I6",
+    "source": "CDDM",
+    "arm": "ablated",
+    "support": {
+     "n_fitting_base": 5062,
+     "n_fitting": 3112,
+     "n_removed": 1950,
+     "fitting_compositions_base": 291,
+     "fitting_compositions": 266,
+     "emptied_compositions": [
+      0,
+      3,
+      4,
+      5,
+      8,
+      13,
+      14,
+      42,
+      51,
+      85,
+      87,
+      148,
+      243,
+      246,
+      249,
+      261,
+      266,
+      304,
+      305,
+      308,
+      309,
+      316,
+      320,
+      324,
+      327
+     ],
+     "seen_val_rows": 676,
+     "dropped_seen_val_rows": 202,
+     "unseen_val_rows": 309,
+     "universe": 276,
+     "removed_rows_sha256": "a9a68c38dd62f67002c43db856c8a1251fca39229d374bdc15fba764f00f5112",
+     "fitting_rows_sha256": "f539f19e2ad82ace3ec4705673474c5af04dbc6dbb84464ebf8235e7cf4ef6db"
+    },
+    "lineage_groups_shared_removed_vs_kept": [],
+    "kept_rows_in_shared_groups": [],
+    "eval_rows_sharing_lineage_with_kept_fitting": 0
+   },
+   "random": {
+    "fold": "I6",
+    "source": "CDDM",
+    "arm": "random",
+    "index_set": "I6_CDDM_seed0.json",
+    "index_set_sha256": "53af320eed9b2257ed36b3b70a2684fba8a48095d708820085195d60e17a1185",
+    "match_levels": {
+     "composition": 231,
+     "crop": 435,
+     "disease": 501,
+     "any": 783
+    },
+    "support": {
+     "n_fitting_base": 5062,
+     "n_fitting": 3112,
+     "n_removed": 1950,
+     "fitting_compositions_base": 291,
+     "fitting_compositions": 291,
+     "emptied_compositions": [],
+     "seen_val_rows": 878,
+     "dropped_seen_val_rows": 0,
+     "unseen_val_rows": 309,
+     "universe": 301,
+     "removed_rows_sha256": "33e7ed17f459b2d5bfa9a3fea5f515a763dad58240b5af0d7b7dbd67266ad013",
+     "fitting_rows_sha256": "100aa1d460c3c59442bcaa545212343af771a782ab2b2344dd83a5808a693ad1"
+    },
+    "lineage_groups_shared_removed_vs_kept": [
+     33,
+     68,
+     180,
+     953,
+     2314,
+     4398
+    ],
+    "kept_rows_in_shared_groups": [
+     "MTID_maize_lethal_necrosis_6895.jpg",
+     "PD_paddy_bacterial_leaf_streak_716.jpg",
+     "PWV2_blueberry_anthracnose_1682.jpg",
+     "SCLD_sugarcane_viral_4947.jpg",
+     "MLBD_mango_die_back_1670.jpg",
+     "CD_coffee_phoma_954.jpg",
+     "MTID_maize_streak_virus_13118.jpg",
+     "CD_coffee_cercospora_44.jpg",
+     "PD_paddy_leaf_roller_11898.jpg"
+    ],
+    "eval_rows_sharing_lineage_with_kept_fitting": 0
+   },
+   "n_novel_source_seen": 135,
+   "n_source_unseen": 253
+  },
+  "I1_MTID": {
+   "ablated": {
+    "fold": "I1",
+    "source": "MTID",
+    "arm": "ablated",
+    "support": {
+     "n_fitting_base": 5042,
+     "n_fitting": 4661,
+     "n_removed": 381,
+     "fitting_compositions_base": 291,
+     "fitting_compositions": 290,
+     "emptied_compositions": [
+      164
+     ],
+     "seen_val_rows": 856,
+     "dropped_seen_val_rows": 18,
+     "unseen_val_rows": 333,
+     "universe": 300,
+     "removed_rows_sha256": "f91beff0d095555432ea84ebe22f95fbadb930996e62b545c44ae7dbf114e01b",
+     "fitting_rows_sha256": "168dd4683ef7feca71f4599e41a213da7d873ee4f5400b9a400ab37671ffce53"
+    },
+    "lineage_groups_shared_removed_vs_kept": [
+     33
+    ],
+    "kept_rows_in_shared_groups": [
+     "SCLD_sugarcane_viral_4947.jpg"
+    ],
+    "eval_rows_sharing_lineage_with_kept_fitting": 0
+   },
+   "random": {
+    "fold": "I1",
+    "source": "MTID",
+    "arm": "random",
+    "index_set": "I1_MTID_seed0.json",
+    "index_set_sha256": "c547eadc77847b9616222742480b47cf8f69011dc2133e6fc7bac601b9a1c953",
+    "match_levels": {
+     "composition": 53,
+     "crop": 196,
+     "disease": 51,
+     "any": 81
+    },
+    "support": {
+     "n_fitting_base": 5042,
+     "n_fitting": 4661,
+     "n_removed": 381,
+     "fitting_compositions_base": 291,
+     "fitting_compositions": 291,
+     "emptied_compositions": [],
+     "seen_val_rows": 874,
+     "dropped_seen_val_rows": 0,
+     "unseen_val_rows": 333,
+     "universe": 301,
+     "removed_rows_sha256": "436941f72e78aa19f9d701d2173d8f3c9bb82bc2040a5ac784bd3a8eba13ed38",
+     "fitting_rows_sha256": "682f96f76694cc90b3c89973add0e91d771cb87e8db322b2a12e4ee2e716f0a4"
+    },
+    "lineage_groups_shared_removed_vs_kept": [
+     2314,
+     3916
+    ],
+    "kept_rows_in_shared_groups": [
+     "CD_coffee_rust_1474.jpg",
+     "CPDD_cashew_red_rust_230.jpg",
+     "CD_coffee_phoma_954.jpg",
+     "CD_coffee_cercospora_44.jpg"
+    ],
+    "eval_rows_sharing_lineage_with_kept_fitting": 0
+   },
+   "n_novel_source_seen": 53,
+   "n_source_unseen": 0
+  },
+  "I2_CPDD": {
+   "ablated": {
+    "fold": "I2",
+    "source": "CPDD",
+    "arm": "ablated",
+    "support": {
+     "n_fitting_base": 5057,
+     "n_fitting": 4698,
+     "n_removed": 359,
+     "fitting_compositions_base": 291,
+     "fitting_compositions": 286,
+     "emptied_compositions": [
+      65,
+      68,
+      306,
+      307,
+      315
+     ],
+     "seen_val_rows": 855,
+     "dropped_seen_val_rows": 24,
+     "unseen_val_rows": 309,
+     "universe": 296,
+     "removed_rows_sha256": "40c66afdca2872246ec37d82f974a6b47058e41e5e97b0026a23624c3a031868",
+     "fitting_rows_sha256": "d4b6a92264f4d9d18bb24b9a340870472ae5edb884939d908186ec1608946924"
+    },
+    "lineage_groups_shared_removed_vs_kept": [],
+    "kept_rows_in_shared_groups": [],
+    "eval_rows_sharing_lineage_with_kept_fitting": 0
+   },
+   "random": {
+    "fold": "I2",
+    "source": "CPDD",
+    "arm": "random",
+    "index_set": "I2_CPDD_seed0.json",
+    "index_set_sha256": "9226e9c75025093f200351cbb9ca8cbb3775cef4895d0495fffcb84fc64ad729",
+    "match_levels": {
+     "composition": 201,
+     "crop": 121,
+     "disease": 2,
+     "any": 35
+    },
+    "support": {
+     "n_fitting_base": 5057,
+     "n_fitting": 4698,
+     "n_removed": 359,
+     "fitting_compositions_base": 291,
+     "fitting_compositions": 291,
+     "emptied_compositions": [],
+     "seen_val_rows": 879,
+     "dropped_seen_val_rows": 0,
+     "unseen_val_rows": 309,
+     "universe": 301,
+     "removed_rows_sha256": "3558220dd46acbc026159e3dcaf1d9165f26b5ca9e9b1d15844a34a7cb197073",
+     "fitting_rows_sha256": "c7dd16c5d4aee8a5f3cfde1703679809ec28a180229341a89392d791a557d78d"
+    },
+    "lineage_groups_shared_removed_vs_kept": [
+     407,
+     6065
+    ],
+    "kept_rows_in_shared_groups": [
+     "CDDM_tomato_healthy_91130.jpg",
+     "MTID_maize_healthy_761.jpg"
+    ],
+    "eval_rows_sharing_lineage_with_kept_fitting": 0
+   },
+   "n_novel_source_seen": 39,
+   "n_source_unseen": 0
+  }
+ },
+ "base_models": {
+  "J1_clipL_last2": {
+   "I6": {
+    "checkpoint_sha256": "21985fbe0fc4588a4b593b3a6cc36c84ca704295a3248b539d10186b9954a068",
+    "packet_sha256": "8f9ebc56b7d28ce9c096cbb966975d604177ebb60cb538fe2fe1544e32f33d90",
+    "torch_seed": 5,
+    "frozen_digest_before": "3c69e7f9b2ce24c6edf1d0042ce3c7365a4bd0828f304652b73a4687862fa468",
+    "n_fitting": 5062
+   },
+   "I1": {
+    "checkpoint_sha256": "ddc8fedb0686122fe92da48dd6f96226df792b11d1d7075519847bc0bda8eba2",
+    "packet_sha256": "a8d2a8d5b24c2809b35dba0bd7a805445fb455775048d5d95e9183f49bac77db",
+    "torch_seed": 0,
+    "frozen_digest_before": "3c69e7f9b2ce24c6edf1d0042ce3c7365a4bd0828f304652b73a4687862fa468",
+    "n_fitting": 5042
+   },
+   "I2": {
+    "checkpoint_sha256": "4d43eea7453702221516cebf8afe33ae535cb6b4efcf7ad3b8daa43d19954ded",
+    "packet_sha256": "f5d8bd929e58fda1b55f866d6ce66e5cdda8f967aa14a27c8343c53bd9e7516e",
+    "torch_seed": 1,
+    "frozen_digest_before": "3c69e7f9b2ce24c6edf1d0042ce3c7365a4bd0828f304652b73a4687862fa468",
+    "n_fitting": 5057
+   }
+  },
+  "J2_clipL_last4": {
+   "I6": {
+    "checkpoint_sha256": "2b162c855d9fc4188043cc0e2f47200b65bfe8037587ceb190cb2913ee4c60db",
+    "packet_sha256": "f54a8bda18ecca9d44f8014583dfbd02970cca8de16c61c7ef2cba8c5e39b26e",
+    "torch_seed": 5,
+    "frozen_digest_before": "54fe4b8ece561c09df7f2be87818c31ac5965729f3763f3ee223452b13e71ad4",
+    "n_fitting": 5062
+   },
+   "I1": {
+    "checkpoint_sha256": "e2a969894f5f43f829b50d21669e4c3a66ec86849a71f144a84620e7bccbec9e",
+    "packet_sha256": "05cf7b9588de2269399a9730b8f1761066ef2b8875955ac5dde810a38aa68490",
+    "torch_seed": 0,
+    "frozen_digest_before": "54fe4b8ece561c09df7f2be87818c31ac5965729f3763f3ee223452b13e71ad4",
+    "n_fitting": 5042
+   },
+   "I2": {
+    "checkpoint_sha256": "fe6f8005e33420300d36f1bac6f92260aa0aa75537032aa124b524a72108e08c",
+    "packet_sha256": "100531eefa604d56db5139bee372ac8e0a08c8a92d932326ef4dca807160595c",
+    "torch_seed": 1,
+    "frozen_digest_before": "54fe4b8ece561c09df7f2be87818c31ac5965729f3763f3ee223452b13e71ad4",
+    "n_fitting": 5057
+   }
+  },
+  "J3_clipL_lora8_mlp": {
+   "I6": {
+    "checkpoint_sha256": "b8e7a3289c905bff702140f4b00ff62b9ddb6fe38e392a7f29466fe0e0e16e6b",
+    "packet_sha256": "7ff6dccd70dc9a2278a1f742b7c1ce06f2e3dbb2989bed98fd37707a5a119380",
+    "torch_seed": 5,
+    "frozen_digest_before": "2ca3941066d021c4a0553446effcbc7b4ada4ed7316c035bad4ea4bad7f1bca2",
+    "n_fitting": 5062
+   },
+   "I1": {
+    "checkpoint_sha256": "41e6bfbcb3ee142472ffab51f11be1f5844ba07d1bd43c461a24110fda5d2855",
+    "packet_sha256": "8436d57fb1d4c4276879d69ab8d11168a44588a24045e1dfa4969906ba63fe2f",
+    "torch_seed": 0,
+    "frozen_digest_before": "2ca3941066d021c4a0553446effcbc7b4ada4ed7316c035bad4ea4bad7f1bca2",
+    "n_fitting": 5042
+   },
+   "I2": {
+    "checkpoint_sha256": "b8e5fa74e64f6011fcd761bf4f9637ffab01edf4acf3e112f37da38de7c7df3f",
+    "packet_sha256": "8a69ab39702c284119dce4ab7158c63d279bcd2f5c12e9a04c92ebb7745b44b1",
+    "torch_seed": 1,
+    "frozen_digest_before": "2ca3941066d021c4a0553446effcbc7b4ada4ed7316c035bad4ea4bad7f1bca2",
+    "n_fitting": 5057
+   }
+  }
+ }
+}

@@ -1,0 +1,188 @@
+[
+ {
+  "id": "B1_clipL_factorised",
+  "backbones": [
+   "clip_l14"
+  ],
+  "recipe": "factorised",
+  "hypothesis": "matched factorised control (re-run under v3 universe)"
+ },
+ {
+  "id": "D1_synthComp_norm",
+  "backbones": [
+   "clip_l14"
+  ],
+  "recipe": "synth_composition",
+  "cfg": {
+   "fuse": 1.0,
+   "normalise": true
+  },
+  "control": "B1_clipL_factorised",
+  "hypothesis": "Phase 2 control: provisional candidate D1 under v3 universe"
+ },
+ {
+  "id": "F1_srcbal_heads",
+  "backbones": [
+   "clip_l14"
+  ],
+  "recipe": "synth_composition",
+  "cfg": {
+   "fuse": 1.0,
+   "normalise": true,
+   "factorised": {
+    "source_balance": true
+   }
+  },
+  "control": "D1_synthComp_norm",
+  "hypothesis": "Source robustness: equal weight per source within each crop (crop head) and each disease (disease head)"
+ },
+ {
+  "id": "F2_srcbal_comphead",
+  "backbones": [
+   "clip_l14"
+  ],
+  "recipe": "synth_composition",
+  "cfg": {
+   "fuse": 1.0,
+   "normalise": true,
+   "source_balance_comp": true
+  },
+  "control": "D1_synthComp_norm",
+  "hypothesis": "Source robustness: equal weight per source within each fitting composition in the composition head"
+ },
+ {
+  "id": "F3_style_aug",
+  "backbones": [
+   "clip_l14"
+  ],
+  "recipe": "synth_composition",
+  "cfg": {
+   "fuse": 1.0,
+   "normalise": true,
+   "factorised": {
+    "style_aug": {
+     "k": 1,
+     "w": 0.5
+    }
+   }
+  },
+  "control": "D1_synthComp_norm",
+  "hypothesis": "Source robustness: add composition-controlled source-style offsets (mean(comp,source) - mean(comp)) to head training features"
+ },
+ {
+  "id": "F4_synth_subspace",
+  "backbones": [
+   "clip_l14"
+  ],
+  "recipe": "synth_composition",
+  "cfg": {
+   "fuse": 1.0,
+   "normalise": true,
+   "synth_mode": "subspace"
+  },
+  "control": "D1_synthComp_norm",
+  "hypothesis": "Synthesis: shift hallucinated features only along the LEACE crop subspace, keeping disease-related directions"
+ },
+ {
+  "id": "F5_synth_seen",
+  "backbones": [
+   "clip_l14"
+  ],
+  "recipe": "synth_composition",
+  "cfg": {
+   "fuse": 1.0,
+   "normalise": true,
+   "synth_seen": 0.5
+  },
+  "control": "D1_synthComp_norm",
+  "hypothesis": "Synthesis: hallucinate fitting pairs too, so real-vs-synthetic stops being a seen/unseen cue"
+ },
+ {
+  "id": "F6_synth_noise",
+  "backbones": [
+   "clip_l14"
+  ],
+  "recipe": "synth_composition",
+  "cfg": {
+   "fuse": 1.0,
+   "normalise": true,
+   "synth_noise": 0.5
+  },
+  "control": "D1_synthComp_norm",
+  "hypothesis": "Synthesis: add within-composition diagonal noise to hallucinations (diversity beyond the few source images)"
+ },
+ {
+  "id": "F7_crop_centred_disease",
+  "backbones": [
+   "clip_l14"
+  ],
+  "recipe": "synth_composition",
+  "cfg": {
+   "fuse": 1.0,
+   "normalise": true,
+   "factorised": {
+    "crop_centred_disease": true
+   }
+  },
+  "control": "D1_synthComp_norm",
+  "hypothesis": "Disentanglement: disease head on crop-centred features (true crop at fit, predicted-crop mixture at test)"
+ },
+ {
+  "id": "F8_srcbal_all",
+  "backbones": [
+   "clip_l14"
+  ],
+  "recipe": "synth_composition",
+  "cfg": {
+   "fuse": 1.0,
+   "normalise": true,
+   "source_balance_comp": true,
+   "factorised": {
+    "source_balance": true
+   }
+  },
+  "control": "D1_synthComp_norm",
+  "hypothesis": "Source robustness: F1 + F2"
+ },
+ {
+  "id": "F9_fuse2",
+  "backbones": [
+   "clip_l14"
+  ],
+  "recipe": "synth_composition",
+  "cfg": {
+   "fuse": 2.0,
+   "normalise": true
+  },
+  "control": "D1_synthComp_norm",
+  "hypothesis": "Fusion: weight the transferring composition head twice the factorised term"
+ },
+ {
+  "id": "F10_concat_convnext",
+  "backbones": [
+   "clip_l14",
+   "tv_convnext_base"
+  ],
+  "recipe": "synth_composition",
+  "cfg": {
+   "fuse": 1.0,
+   "normalise": true
+  },
+  "control": "D1_synthComp_norm",
+  "hypothesis": "Representation: D1 on concatenated L2-normalised CLIP-L/14 + ConvNeXt-B features"
+ },
+ {
+  "id": "F11_tta",
+  "backbones": [
+   "clip_l14"
+  ],
+  "recipe": "synth_composition",
+  "cfg": {
+   "fuse": 1.0,
+   "normalise": true
+  },
+  "control": "D1_synthComp_norm",
+  "hypothesis": "Inference: average centre and h-flip view scores",
+  "tta_hflip": true
+ }
+]

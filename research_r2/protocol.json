@@ -1,0 +1,34 @@
+{
+  "schema": "r2-selection-policy-v1",
+  "declared_before_any_round2_model_scoring": "2026-11-13",
+  "benchmark_semantic_sha256": "b6db7509ac88b2080222d2d0da5424487226d7e557c10e108c968a8987d54c59",
+  "candidate_universe": "all 323 training-source compositions, ascending global composition IDs; held-out compositions of the fold are the 'unseen' candidates",
+  "score_space": "every method emits per-candidate composition log-scores (log-probability scale, float64); exact ties broken by ascending global ID (stable order)",
+  "primary_metric": {
+    "name": "H_bal@1 (LOFO-calibrated)",
+    "definition": "harmonic mean of seen-val micro Top-1 and unseen-val composition-macro Top-1 (each held-out composition weighted equally)",
+    "calibration": "calibrated stacking: subtract gamma from every candidate that is a fitting composition of the fold. For screening fold f, gamma_f = argmax over the grid of mean H_bal@1 on the other four screening folds (leave-one-fold-out); ties -> smallest gamma",
+    "gamma_grid": "0.0 to 16.0 step 0.25",
+    "aggregate": "unweighted mean over S1..S5"
+  },
+  "secondary_metrics": [
+    "uncalibrated H_bal@1 (gamma = 0)",
+    "micro H@1 and H@5 (official-style image-weighted rates)",
+    "AUSUC: area under the seen-micro vs unseen-macro Top-1 curve swept over gamma (gamma-free representation quality)",
+    "unseen crop-component and disease-component Top-1 (from the selected composition)",
+    "healthy shortcut rate: fraction of unseen-val (all diseased) images whose Top-1 is any healthy composition",
+    "seen-val micro Top-1"
+  ],
+  "improvement_gate": {
+    "relative_to": "the matched control named in each experiment row",
+    "requires_all": [
+      "mean primary improvement >= 1.0 percentage point",
+      "primary improves in at least 4 of 5 screening folds (paired)",
+      "mean AUSUC does not decrease",
+      "mean calibrated healthy-shortcut rate increases by no more than 5 percentage points"
+    ]
+  },
+  "locked_folds": "L1..L3 are scored only for the final Stage E recipe(s), with gamma fixed to argmax mean H_bal@1 over all five screening folds; results are reported whatever they show",
+  "legacy_fold": "D0 (historical 65-composition seed-42 holdout) is diagnostic only and never used for selection; it contains 12 healthy held-out compositions unlike the official unseen set",
+  "official_test_policy": "no official-test image, filename or label is read by Round 2 development code; any later official evaluation of a Round 2 model is labelled NON-BLIND because the official sets were examined during Round 1"
+}

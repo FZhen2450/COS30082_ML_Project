@@ -1,0 +1,26 @@
+{"arm_row": "J2_clipL_last4@HRT_I6_CDDM_ablated", "seconds": 448.7612326145172, "n_fitting": 3112, "reload": 0.0}
+J2_clipL_last4 I6 CDDM ablated ok
+{"arm_row": "J2_clipL_last4@HRT_I6_CDDM_random", "seconds": 447.35160183906555, "n_fitting": 3112, "reload": 0.0}
+J2_clipL_last4 I6 CDDM random ok
+{"arm_row": "J2_clipL_last4@HRT_I1_MTID_ablated", "seconds": 565.298636674881, "n_fitting": 4661, "reload": 0.0}
+J2_clipL_last4 I1 MTID ablated ok
+<CONDA_ENV>/lib/python3.10/site-packages/torch/optim/lr_scheduler.py:224: UserWarning: Detected call of `lr_scheduler.step()` before `optimizer.step()`. In PyTorch 1.1.0 and later, you should call them in the opposite order: `optimizer.step()` before `lr_scheduler.step()`.  Failure to do this will result in PyTorch skipping the first value of the learning rate schedule. See more details at https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate
+  warnings.warn(
+{"arm_row": "J2_clipL_last4@HRT_I1_MTID_random", "seconds": 554.5145306587219, "n_fitting": 4661, "reload": 0.0}
+J2_clipL_last4 I1 MTID random ok
+<CONDA_ENV>/lib/python3.10/site-packages/torch/optim/lr_scheduler.py:224: UserWarning: Detected call of `lr_scheduler.step()` before `optimizer.step()`. In PyTorch 1.1.0 and later, you should call them in the opposite order: `optimizer.step()` before `lr_scheduler.step()`.  Failure to do this will result in PyTorch skipping the first value of the learning rate schedule. See more details at https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate
+  warnings.warn(
+{"arm_row": "J2_clipL_last4@HRT_I2_CPDD_ablated", "seconds": 548.0911066532135, "n_fitting": 4698, "reload": 0.0}
+J2_clipL_last4 I2 CPDD ablated ok
+<CONDA_ENV>/lib/python3.10/site-packages/torch/optim/lr_scheduler.py:224: UserWarning: Detected call of `lr_scheduler.step()` before `optimizer.step()`. In PyTorch 1.1.0 and later, you should call them in the opposite order: `optimizer.step()` before `lr_scheduler.step()`.  Failure to do this will result in PyTorch skipping the first value of the learning rate schedule. See more details at https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate
+  warnings.warn(
+{"arm_row": "J2_clipL_last4@HRT_I2_CPDD_random", "seconds": 545.4036831855774, "n_fitting": 4698, "reload": 0.0}
+J2_clipL_last4 I2 CPDD random ok
+{
+ "J2_clipL_last4/I6_CDDM/ablated": "ok",
+ "J2_clipL_last4/I6_CDDM/random": "ok",
+ "J2_clipL_last4/I1_MTID/ablated": "ok",
+ "J2_clipL_last4/I1_MTID/random": "ok",
+ "J2_clipL_last4/I2_CPDD/ablated": "ok",
+ "J2_clipL_last4/I2_CPDD/random": "ok"
+}

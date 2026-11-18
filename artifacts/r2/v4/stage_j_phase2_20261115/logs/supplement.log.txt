@@ -1,0 +1,38 @@
+J1_clipL_last2 {'mean_gain_pp_absdiff': 7.105427357601002e-15, 'folds_improved_equal': True, 'ausuc_delta_absdiff': 0.0, 'shortcut_absdiff': 0.0, 'pass_equal': True}
+J2_clipL_last4 {'mean_gain_pp_absdiff': 0.0, 'folds_improved_equal': True, 'ausuc_delta_absdiff': 1.1102230246251565e-16, 'shortcut_absdiff': 0.0, 'pass_equal': True}
+J3_clipL_lora8_mlp {'mean_gain_pp_absdiff': 3.552713678800501e-15, 'folds_improved_equal': True, 'ausuc_delta_absdiff': 1.1102230246251565e-16, 'shortcut_absdiff': 0.0, 'pass_equal': True}
+J2_clipL_last4_vs_J1_clipL_last2 mean +0.41 folds J2 better 4 seeds J2 better 2 boot3 +0.41 [-0.89, +2.00] p<=0 0.267 {0: 0.86, 1: -0.41, 2: 0.78} {'I1': 0.66, 'I2': 0.36, 'I3': 1.11, 'I4': 1.77, 'I5': -1.33, 'I6': -0.11}
+J2_clipL_last4_vs_J3_clipL_lora8_mlp mean -0.34 folds J2 better 3 seeds J2 better 1 boot3 -0.34 [-2.51, +1.65] p<=0 0.600 {0: 0.35, 1: -1.31, 2: -0.07} {'I1': -1.61, 'I2': -2.4, 'I3': 0.21, 'I4': 0.47, 'I5': 1.64, 'I6': -0.38}
+J1_clipL_last2 g0 novel_seen_top1 source -33.99 [-45.34, -23.80] size +1.03 [-0.31, +2.43] 41 9
+J1_clipL_last2 g0 source_unseen_top1 source -1.85 [-3.66, -0.58] size +0.82 [-0.33, +2.49] 19 14
+J1_clipL_last2 g0 H_bal source -0.02 [-0.52, +0.38] size -0.36 [-0.70, -0.06] 49 16
+J1_clipL_last2 g0 seen_top1 source -0.10 [-0.61, +0.64] size -0.95 [-2.37, -0.09] 49 16
+J1_clipL_last2 g0 unseen_top1_macro source -0.01 [-0.29, +0.21] size -0.20 [-0.39, -0.03] 49 16
+J1_clipL_last2 gsel novel_seen_top1 source -38.27 [-47.14, -29.61] size +0.17 [-1.55, +2.08] 41 9
+J1_clipL_last2 gsel source_unseen_top1 source +1.81 [-7.79, +10.94] size -0.04 [-1.94, +2.26] 19 14
+J1_clipL_last2 gsel H_bal source -0.02 [-0.41, +0.47] size -0.33 [-1.20, +0.05] 49 16
+J1_clipL_last2 gsel seen_top1 source -0.00 [-0.53, +0.76] size -1.32 [-2.95, -0.24] 49 16
+J1_clipL_last2 gsel unseen_top1_macro source -0.07 [-0.83, +0.59] size +0.58 [+0.15, +1.16] 49 16
+J1_clipL_last2 selected gammas {0: ['g8'], 1: ['g8.25'], 2: ['g8.5']}
+J2_clipL_last4 g0 novel_seen_top1 source -22.60 [-32.62, -13.03] size -0.54 [-1.29, +0.10] 41 9
+J2_clipL_last4 g0 source_unseen_top1 source -1.36 [-2.51, -0.38] size +0.49 [-0.33, +1.65] 19 14
+J2_clipL_last4 g0 H_bal source -0.17 [-0.72, +0.31] size -0.23 [-0.46, +0.10] 49 16
+J2_clipL_last4 g0 seen_top1 source +0.20 [-0.29, +0.94] size -0.88 [-1.96, -0.19] 49 16
+J2_clipL_last4 g0 unseen_top1_macro source -0.10 [-0.42, +0.18] size -0.12 [-0.24, +0.06] 49 16
+J2_clipL_last4 gsel novel_seen_top1 source -30.82 [-39.91, -22.77] size -1.72 [-2.62, -0.85] 41 9
+J2_clipL_last4 gsel source_unseen_top1 source +1.50 [-4.98, +7.97] size +1.03 [-0.87, +3.66] 19 14
+J2_clipL_last4 gsel H_bal source -0.04 [-0.38, +0.39] size -0.27 [-0.90, +0.01] 49 16
+J2_clipL_last4 gsel seen_top1 source +0.14 [-0.37, +0.87] size -1.23 [-2.65, -0.28] 49 16
+J2_clipL_last4 gsel unseen_top1_macro source -0.21 [-1.01, +0.44] size +0.53 [+0.06, +1.16] 49 16
+J2_clipL_last4 selected gammas {0: ['g7.75'], 1: ['g8'], 2: ['g8']}
+J3_clipL_lora8_mlp g0 novel_seen_top1 source -35.06 [-43.59, -25.83] size +0.22 [-0.61, +1.23] 41 9
+J3_clipL_lora8_mlp g0 source_unseen_top1 source -1.21 [-2.79, +0.19] size +0.76 [-0.33, +2.11] 19 14
+J3_clipL_lora8_mlp g0 H_bal source -0.24 [-0.78, +0.24] size -0.10 [-0.37, +0.16] 49 16
+J3_clipL_lora8_mlp g0 seen_top1 source -0.08 [-0.58, +0.63] size -1.13 [-2.62, -0.22] 49 16
+J3_clipL_lora8_mlp g0 unseen_top1_macro source -0.14 [-0.47, +0.13] size -0.04 [-0.19, +0.11] 49 16
+J3_clipL_lora8_mlp gsel novel_seen_top1 source -40.03 [-50.83, -27.89] size -0.36 [-1.07, +0.49] 41 9
+J3_clipL_lora8_mlp gsel source_unseen_top1 source -0.75 [-5.98, +4.30] size +1.04 [-0.92, +3.96] 19 14
+J3_clipL_lora8_mlp gsel H_bal source -0.18 [-0.52, +0.25] size -0.49 [-1.34, -0.06] 49 16
+J3_clipL_lora8_mlp gsel seen_top1 source -0.01 [-0.47, +0.81] size -1.48 [-3.19, -0.36] 49 16
+J3_clipL_lora8_mlp gsel unseen_top1_macro source -0.43 [-1.05, +0.11] size +0.57 [+0.09, +1.13] 49 16
+J3_clipL_lora8_mlp selected gammas {0: ['g8'], 1: ['g8.25'], 2: ['g8.25']}

@@ -1,0 +1,17 @@
+[
+ {"id": "I3b_cosine_prototype_tau010", "family": "head-ablation", "ablates": "I3_cosine_prototype_head",
+  "cfg_change": {"temperature": 0.10}, "control": "D1_synthComp_norm",
+  "hypothesis": "temperature sensitivity of the prototype head"},
+ {"id": "I4b_projection_no_hsic", "family": "disentanglement-ablation", "ablates": "I4_orthogonal_factor_projection",
+  "cfg_change": {"hsic_lambda": 0.0}, "control": "D1_synthComp_norm",
+  "hypothesis": "isolates the HSIC independence penalty from the learned projection itself"},
+ {"id": "I5b_supcon_any_crop", "family": "contrastive-ablation", "ablates": "I5_crosscrop_supcon_projection",
+  "cfg_change": {"positives": "same disease, any crop"}, "control": "D1_synthComp_norm",
+  "hypothesis": "isolates the cross-crop restriction of the positives"},
+ {"id": "I6b_text_direction_only", "family": "synthesis-ablation", "ablates": "I6_text_direction_synthesis",
+  "cfg_change": {"text_fraction": 1.0}, "control": "D1_synthComp_norm",
+  "hypothesis": "text-direction samples alone (64 per held-out candidate) versus the 50/50 mix"},
+ {"id": "I7b_multilayer_20_24", "family": "representation-ablation", "ablates": "I7_multilayer_clipL",
+  "cfg_change": {"layers": [20, 24]}, "control": "D1_synthComp_norm",
+  "hypothesis": "whether the mid layer 16 or only the near-final layer 20 carries the benefit"}
+]

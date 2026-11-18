@@ -1,0 +1,3 @@
+Phase 2 evaluation re-derived from the registered Phase 1 + Phase 2 runs with the v3 working tree:
+IDENTICAL to artifacts/r2/v4/stage_j_phase2_20261115/evaluation.json except the "evaluated" timestamp.
+SHA256SUMS verified: stage_j_phase1_20261114, stage_j_phase2_20261115, stage_hrt_20261116, stage_hrt_20261116_post_review.

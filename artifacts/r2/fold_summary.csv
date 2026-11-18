@@ -1,0 +1,10 @@
+fold,role,heldout_comps,fitting,seen_val,unseen_val,lineage_dropped,largest_comp_share,heldout_crops,heldout_diseases,healthy_heldout
+S1,screen,11,6505,1141,350,1,0.391,7,9,0
+S2,screen,11,6512,1142,346,0,0.338,10,10,0
+S3,screen,11,6514,1141,345,0,0.287,9,10,0
+S4,screen,11,6514,1142,344,0,0.247,8,10,0
+S5,screen,11,6481,1137,382,0,0.466,8,9,0
+L1,locked,10,6178,1083,739,0,0.736,10,9,0
+L2,locked,11,6514,1142,344,0,0.267,8,9,0
+L3,locked,11,6513,1141,346,0,0.324,11,9,0
+D0,legacy_diagnostic_previously_examined,65,5194,909,1893,1,0.287,35,31,12

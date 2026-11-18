@@ -1,0 +1,24 @@
+<CONDA_ENV>/lib/python3.10/site-packages/torch/optim/lr_scheduler.py:224: UserWarning: Detected call of `lr_scheduler.step()` before `optimizer.step()`. In PyTorch 1.1.0 and later, you should call them in the opposite order: `optimizer.step()` before `lr_scheduler.step()`.  Failure to do this will result in PyTorch skipping the first value of the learning rate schedule. See more details at https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate
+  warnings.warn(
+{"row": "J2_clipL_last4", "seed": 2, "fold": "I1", "seconds": 578.3619389533997, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "51/51"}
+<CONDA_ENV>/lib/python3.10/site-packages/torch/optim/lr_scheduler.py:224: UserWarning: Detected call of `lr_scheduler.step()` before `optimizer.step()`. In PyTorch 1.1.0 and later, you should call them in the opposite order: `optimizer.step()` before `lr_scheduler.step()`.  Failure to do this will result in PyTorch skipping the first value of the learning rate schedule. See more details at https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate
+  warnings.warn(
+{"row": "J2_clipL_last4", "seed": 2, "fold": "I2", "seconds": 581.7731409072876, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "51/51"}
+{"row": "J2_clipL_last4", "seed": 2, "fold": "I3", "seconds": 581.17338514328, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "51/51"}
+<CONDA_ENV>/lib/python3.10/site-packages/torch/optim/lr_scheduler.py:224: UserWarning: Detected call of `lr_scheduler.step()` before `optimizer.step()`. In PyTorch 1.1.0 and later, you should call them in the opposite order: `optimizer.step()` before `lr_scheduler.step()`.  Failure to do this will result in PyTorch skipping the first value of the learning rate schedule. See more details at https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate
+  warnings.warn(
+{"row": "J2_clipL_last4", "seed": 2, "fold": "I4", "seconds": 583.5585885047913, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "51/51"}
+<CONDA_ENV>/lib/python3.10/site-packages/torch/optim/lr_scheduler.py:224: UserWarning: Detected call of `lr_scheduler.step()` before `optimizer.step()`. In PyTorch 1.1.0 and later, you should call them in the opposite order: `optimizer.step()` before `lr_scheduler.step()`.  Failure to do this will result in PyTorch skipping the first value of the learning rate schedule. See more details at https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate
+  warnings.warn(
+{"row": "J2_clipL_last4", "seed": 2, "fold": "I5", "seconds": 578.8167719841003, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "51/51"}
+<CONDA_ENV>/lib/python3.10/site-packages/torch/optim/lr_scheduler.py:224: UserWarning: Detected call of `lr_scheduler.step()` before `optimizer.step()`. In PyTorch 1.1.0 and later, you should call them in the opposite order: `optimizer.step()` before `lr_scheduler.step()`.  Failure to do this will result in PyTorch skipping the first value of the learning rate schedule. See more details at https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate
+  warnings.warn(
+{"row": "J2_clipL_last4", "seed": 2, "fold": "I6", "seconds": 574.2019996643066, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "51/51"}
+{
+ "I1": "ok",
+ "I2": "ok",
+ "I3": "ok",
+ "I4": "ok",
+ "I5": "ok",
+ "I6": "ok"
+}

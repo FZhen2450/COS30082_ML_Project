@@ -1,0 +1,17 @@
+== hrt start head=d9c9e8d 2026-11-16 12:16:17
+== J1_clipL_last2 train start 2026-11-16 12:16:17
+== J1_clipL_last2 train exit=2 2026-11-16 13:03:35
+== J2_clipL_last4 train start 2026-11-16 13:03:35
+== J2_clipL_last4 train exit=2 2026-11-16 13:55:35
+== J3_clipL_lora8_mlp train start 2026-11-16 13:55:35
+== STOPPED by operator ~15:08: arms after the first failed closed (worktree dirtied by an untracked audit script written during the run); J3 I2_CPDD ablated attempt1 interrupted; retry1 follows 2026-11-16 15:08:02
+== retry1 start head=3334b2b 2026-11-16 15:08:08
+== retry1 J1_clipL_last2 train start 2026-11-16 15:08:08
+== retry1 J1_clipL_last2 train exit=0 2026-11-16 15:49:33
+== retry1 J2_clipL_last4 train start 2026-11-16 15:49:33
+== retry1 J2_clipL_last4 train exit=0 2026-11-16 16:41:43
+== retry1 J3_clipL_lora8_mlp train start 2026-11-16 16:41:43
+== retry1 J3_clipL_lora8_mlp train exit=0 2026-11-16 18:26:09
+== evaluate start 2026-11-16 18:26:09
+== evaluate exit=0 2026-11-16 18:27:21
+== retry1 end 2026-11-16 18:27:21

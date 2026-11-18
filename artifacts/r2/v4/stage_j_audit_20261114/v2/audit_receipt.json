@@ -1,0 +1,149 @@
+{
+ "tolerance": 1e-05,
+ "J0_pipeline_zero_epochs": {
+  "reference": "D1_synthComp_norm",
+  "folds": {
+   "I1": {
+    "cand_ids_identical": true,
+    "truth_identical": true,
+    "packet_max_abs_diff_vs_registered": 0.0,
+    "features_bit_identical_vs_v3": true,
+    "features_max_abs_diff_vs_v3": 0.0,
+    "rows_extracted": 6249,
+    "reload_max_abs_diff": 0.0
+   },
+   "I2": {
+    "cand_ids_identical": true,
+    "truth_identical": true,
+    "packet_max_abs_diff_vs_registered": 0.0,
+    "features_bit_identical_vs_v3": true,
+    "features_max_abs_diff_vs_v3": 0.0,
+    "rows_extracted": 6245,
+    "reload_max_abs_diff": 0.0
+   },
+   "I3": {
+    "cand_ids_identical": true,
+    "truth_identical": true,
+    "packet_max_abs_diff_vs_registered": 0.0,
+    "features_bit_identical_vs_v3": true,
+    "features_max_abs_diff_vs_v3": 0.0,
+    "rows_extracted": 6249,
+    "reload_max_abs_diff": 0.0
+   },
+   "I4": {
+    "cand_ids_identical": true,
+    "truth_identical": true,
+    "packet_max_abs_diff_vs_registered": 0.0,
+    "features_bit_identical_vs_v3": true,
+    "features_max_abs_diff_vs_v3": 0.0,
+    "rows_extracted": 6249,
+    "reload_max_abs_diff": 0.0
+   },
+   "I5": {
+    "cand_ids_identical": true,
+    "truth_identical": true,
+    "packet_max_abs_diff_vs_registered": 0.0,
+    "features_bit_identical_vs_v3": true,
+    "features_max_abs_diff_vs_v3": 0.0,
+    "rows_extracted": 6249,
+    "reload_max_abs_diff": 0.0
+   },
+   "I6": {
+    "cand_ids_identical": true,
+    "truth_identical": true,
+    "packet_max_abs_diff_vs_registered": 0.0,
+    "features_bit_identical_vs_v3": true,
+    "features_max_abs_diff_vs_v3": 0.0,
+    "rows_extracted": 6249,
+    "reload_max_abs_diff": 0.0
+   }
+  }
+ },
+ "J8_zero_epochs": {
+  "reference": "F10_concat_convnext",
+  "folds": {
+   "I1": {
+    "cand_ids_identical": true,
+    "truth_identical": true,
+    "packet_max_abs_diff_vs_registered": 0.0,
+    "features_bit_identical_vs_v3": true,
+    "features_max_abs_diff_vs_v3": 0.0,
+    "rows_extracted": 6249,
+    "reload_max_abs_diff": 0.0
+   },
+   "I2": {
+    "cand_ids_identical": true,
+    "truth_identical": true,
+    "packet_max_abs_diff_vs_registered": 0.0,
+    "features_bit_identical_vs_v3": true,
+    "features_max_abs_diff_vs_v3": 0.0,
+    "rows_extracted": 6245,
+    "reload_max_abs_diff": 0.0
+   },
+   "I3": {
+    "cand_ids_identical": true,
+    "truth_identical": true,
+    "packet_max_abs_diff_vs_registered": 0.0,
+    "features_bit_identical_vs_v3": true,
+    "features_max_abs_diff_vs_v3": 0.0,
+    "rows_extracted": 6249,
+    "reload_max_abs_diff": 0.0
+   },
+   "I4": {
+    "cand_ids_identical": true,
+    "truth_identical": true,
+    "packet_max_abs_diff_vs_registered": 0.0,
+    "features_bit_identical_vs_v3": true,
+    "features_max_abs_diff_vs_v3": 0.0,
+    "rows_extracted": 6249,
+    "reload_max_abs_diff": 0.0
+   },
+   "I5": {
+    "cand_ids_identical": true,
+    "truth_identical": true,
+    "packet_max_abs_diff_vs_registered": 0.0,
+    "features_bit_identical_vs_v3": true,
+    "features_max_abs_diff_vs_v3": 0.0,
+    "rows_extracted": 6249,
+    "reload_max_abs_diff": 0.0
+   },
+   "I6": {
+    "cand_ids_identical": true,
+    "truth_identical": true,
+    "packet_max_abs_diff_vs_registered": 0.0,
+    "features_bit_identical_vs_v3": true,
+    "features_max_abs_diff_vs_v3": 0.0,
+    "rows_extracted": 6249,
+    "reload_max_abs_diff": 0.0
+   }
+  }
+ },
+ "smoke": {
+  "J1_clipL_last2/seed0/I6/attempt1": {
+   "status": "ok",
+   "error": null,
+   "grad_checks": {
+    "checks": 4,
+    "finite_checks": 4,
+    "max_nonfinite_run": 0,
+    "skipped_steps": 2,
+    "steps": 100,
+    "tensors": 27
+   },
+   "train_loss": {
+    "first50": 8.737628335952758,
+    "last50": 6.490888442993164,
+    "steps": 100
+   },
+   "trainable_tensors_changed": "27/27",
+   "reload_max_abs_diff": 0.0,
+   "packet_sha256": "00122d9ba514ead2ae447a912f9c8dfbb7b019fc8b702a3b635ead5a4e898c0d",
+   "seconds": 1051.943393945694,
+   "trainable_backbone_params": 25980928
+  }
+ },
+ "smoke_latest_attempts": [
+  "J1_clipL_last2/seed0/I6/attempt1"
+ ],
+ "pass": true
+}

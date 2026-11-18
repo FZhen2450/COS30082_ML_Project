@@ -1,0 +1,173 @@
+{
+ "row": "D1_synthComp_norm",
+ "folds": [
+  "I1",
+  "I2",
+  "I3",
+  "I4",
+  "I5",
+  "I6"
+ ],
+ "fixed_gamma": 8.0,
+ "A_per_fold": {
+  "I1": {
+   "oracle_gamma": 9.0,
+   "oracle_H_bal": 0.5826796512766422,
+   "fixed_H_bal": 0.5516943768080439,
+   "regret_pp": 3.0985274468598334,
+   "gamma_range_within_2pp": [
+    8.25,
+    10.25
+   ]
+  },
+  "I2": {
+   "oracle_gamma": 6.5,
+   "oracle_H_bal": 0.7379463816354622,
+   "fixed_H_bal": 0.7304509519602291,
+   "regret_pp": 0.749542967523309,
+   "gamma_range_within_2pp": [
+    6.0,
+    8.25
+   ]
+  },
+  "I3": {
+   "oracle_gamma": 7.25,
+   "oracle_H_bal": 0.6442649698355749,
+   "fixed_H_bal": 0.6431105164311973,
+   "regret_pp": 0.11544534043775867,
+   "gamma_range_within_2pp": [
+    6.25,
+    8.75
+   ]
+  },
+  "I4": {
+   "oracle_gamma": 6.75,
+   "oracle_H_bal": 0.7141205641140903,
+   "fixed_H_bal": 0.7026357908053408,
+   "regret_pp": 1.148477330874953,
+   "gamma_range_within_2pp": [
+    5.75,
+    8.0
+   ]
+  },
+  "I5": {
+   "oracle_gamma": 7.75,
+   "oracle_H_bal": 0.6864553204467686,
+   "fixed_H_bal": 0.6835790579566849,
+   "regret_pp": 0.28762624900836586,
+   "gamma_range_within_2pp": [
+    7.25,
+    8.5
+   ]
+  },
+  "I6": {
+   "oracle_gamma": 8.5,
+   "oracle_H_bal": 0.6813684080965088,
+   "fixed_H_bal": 0.677497518124468,
+   "regret_pp": 0.38708899720407697,
+   "gamma_range_within_2pp": [
+    7.5,
+    9.25
+   ]
+  }
+ },
+ "B_bootstrap_pooled_gamma": {
+  "median": 8.0,
+  "p2.5": 7.11875,
+  "p97.5": 8.5,
+  "share_within_pm1_of_fixed": 0.9766666666666667
+ },
+ "C_unseen_candidate_count": {
+  "3": {
+   "median_oracle_gamma": 9.0,
+   "mean_H_bal_fixed": 0.7659381427557509,
+   "mean_H_bal_oracle": 0.8095424414126392
+  },
+  "5": {
+   "median_oracle_gamma": 8.375,
+   "mean_H_bal_fixed": 0.7361279968390746,
+   "mean_H_bal_oracle": 0.7575839210309201
+  },
+  "8": {
+   "median_oracle_gamma": 8.125,
+   "mean_H_bal_fixed": 0.6902157923036951,
+   "mean_H_bal_oracle": 0.7015161683467215
+  },
+  "all": {
+   "median_oracle_gamma": 7.5,
+   "mean_H_bal_fixed": 0.6648280353476607,
+   "mean_H_bal_oracle": 0.6744725492341744
+  }
+ },
+ "D_unseen_by_source_novelty": {
+  "True": {
+   "compositions": 63,
+   "macro_top1": 0.6355929614691316
+  }
+ },
+ "D_unseen_by_crop_macro": {
+  "spread_p10_p90": [
+   0.33747350843516394,
+   0.9846153846153847
+  ],
+  "n_crops": 27,
+  "worst": {
+   "cherry": 0.026,
+   "chilli": 0.2,
+   "citrus": 0.3,
+   "corn": 0.362,
+   "papaya": 0.385
+  }
+ },
+ "D_unseen_by_disease_macro": {
+  "spread_p10_p90": [
+   0.0,
+   0.9640000000000002
+  ],
+  "n_diseases": 27,
+  "worst": {
+   "anthracnose": 0.0,
+   "canker": 0.0,
+   "smut": 0.0,
+   "root_rot": 0.0,
+   "target_spot": 0.022
+  }
+ },
+ "D_seen_cost_by_source": {
+  "n_sources_ge20": 32,
+  "median_drop_pp": 9.807692307692312,
+  "max_drop_pp": 38.80597014925373,
+  "worst": {
+   "FP": {
+    "n": 67,
+    "top1_fixed": 0.418,
+    "top1_gamma0": 0.8059701492537313,
+    "drop_pp": 38.80597014925373
+   },
+   "PDN": {
+    "n": 58,
+    "top1_fixed": 0.517,
+    "top1_gamma0": 0.7758620689655172,
+    "drop_pp": 25.86206896551724
+   },
+   "BDPL": {
+    "n": 36,
+    "top1_fixed": 0.611,
+    "top1_gamma0": 0.8611111111111112,
+    "drop_pp": 25.0
+   },
+   "DPD": {
+    "n": 29,
+    "top1_fixed": 0.552,
+    "top1_gamma0": 0.7931034482758621,
+    "drop_pp": 24.13793103448276
+   },
+   "PWV2": {
+    "n": 241,
+    "top1_fixed": 0.324,
+    "top1_gamma0": 0.5643153526970954,
+    "drop_pp": 24.066390041493772
+   }
+  }
+ }
+}

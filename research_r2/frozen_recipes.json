@@ -1,0 +1,40 @@
+{
+ "schema": "r2-frozen-recipe-registry-v1",
+ "note": "Entries are added only by a reviewed commit, before the protected folds they unlock are scored. stage_e_frozen_v1 was frozen in commit f341991 and registered retrospectively on 2026-11-13 after review; its locked-fold run already happened under the older self-hash guard.",
+ "recipes": {
+  "stage_e_frozen_v1": {
+   "matrix": "research_r2/matrices/stage_e_frozen_v1.json",
+   "matrix_sha256": "51c4dd07db4b3145a484de27d818643d2a092fb1e72a6b69d1d76fdb7904c883",
+   "benchmark_semantic_sha256": "b6db7509ac88b2080222d2d0da5424487226d7e557c10e108c968a8987d54c59",
+   "row_ids": [
+    "E_selected_D2",
+    "E_ref_B1_factorised",
+    "E_ref_B0_zeroshot"
+   ],
+   "protected_folds": [
+    "L1",
+    "L2",
+    "L3"
+   ],
+   "frozen_commit": "f341991"
+  },
+  "outer_v2_frozen": {
+   "matrix": "research_r2/matrices/outer_v2_frozen.json",
+   "matrix_sha256": "f0c9fc9de7576de2c8a8a221a11ad23c29cb434a99151064201b2218dd2c0a58",
+   "benchmark_semantic_sha256": "2689b00713dd34414f563ff317c2b7a8ae9200791e947b3e26a3978b0ce69a68",
+   "row_ids": [
+    "D1_synthComp_norm",
+    "D2_synthComp_norm_text",
+    "B1_clipL_factorised",
+    "B0_clipL_zeroshot_comp"
+   ],
+   "protected_folds": [
+    "O1",
+    "O2"
+   ],
+   "selection_receipt": "artifacts/r2/v2_selection_receipt.json",
+   "gamma_policy": "each row's pooled inner gamma (D1 8.0, D2 8.0, B1 10.5, B0 1.75); gamma=8 reported separately as non-isolated v1 value",
+   "single_use": "score O1/O2 once; any rerun must reproduce, not replace, the first outer summaries"
+  }
+ }
+}

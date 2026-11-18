@@ -1,0 +1,26 @@
+...........................................................................................{"row": "Jsyn_A", "seed": 0, "fold": "I1", "seconds": 1.3587493896484375, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "2/2"}
+{"row": "Jsyn_A", "seed": 0, "fold": "I2", "seconds": 1.3543882369995117, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "2/2"}
+{"row": "Jsyn_A", "seed": 0, "fold": "I3", "seconds": 1.4154517650604248, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "2/2"}
+{"row": "Jsyn_A", "seed": 0, "fold": "I4", "seconds": 1.3503077030181885, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "2/2"}
+{"row": "Jsyn_A", "seed": 0, "fold": "I5", "seconds": 1.348341703414917, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "2/2"}
+{"row": "Jsyn_A", "seed": 0, "fold": "I6", "seconds": 1.2427709102630615, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "2/2"}
+{"row": "Jsyn_B", "seed": 0, "fold": "I1", "seconds": 1.3407208919525146, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "2/2"}
+{"row": "Jsyn_B", "seed": 0, "fold": "I2", "seconds": 1.3560876846313477, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "2/2"}
+{"row": "Jsyn_B", "seed": 0, "fold": "I3", "seconds": 1.2324011325836182, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "2/2"}
+{"row": "Jsyn_B", "seed": 0, "fold": "I4", "seconds": 1.4795303344726562, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "2/2"}
+{"row": "Jsyn_B", "seed": 0, "fold": "I5", "seconds": 1.3150370121002197, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "2/2"}
+{"row": "Jsyn_B", "seed": 0, "fold": "I6", "seconds": 1.3878016471862793, "reload_max_abs_diff": 0.0, "trainable_tensors_changed": "2/2"}
+Jsyn_A                         seed0 H_bal  45.85 -20.36pp 0/6 pass=False
+Jsyn_B                         seed0 H_bal  48.04 -18.16pp 0/6 pass=False
+refused: {}
+Jsyn_A I1 CDC ok
+Jsyn_A I1 CLDI ok
+.
+----------------------------------------------------------------------
+Ran 92 tests in 274.184s
+
+OK
+refused: {
+ "Jsyn_A/seed0": "Jsyn_A seed0: incomplete, missing folds ['I2']",
+ "Jsyn_B/seed0": "<TMP>/Jsyn_B/seed0/I3/attempt1: I3_scores.npz missing or changed since its receipt"
+}

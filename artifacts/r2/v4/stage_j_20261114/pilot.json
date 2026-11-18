@@ -1,0 +1,267 @@
+{
+ "label": "post-freeze exploratory (v4); development cross-validation on v3 inner folds; not blind",
+ "pilot_fold": "I6",
+ "rule": "closest committed v3 D1 LOFO H_bal to the six-fold mean",
+ "started": "2026-11-13T18:34:44Z",
+ "rows": {
+  "J1_clipL_last2": {
+   "row": "J1_clipL_last2",
+   "trainable": "last2",
+   "fold": "I6",
+   "label": "post-freeze exploratory (v4); development cross-validation on v3 inner folds; not blind",
+   "n_pilot_train": 4582,
+   "n_pilot_val": 480,
+   "pilot_split_sha256": "69067ce92e9a4c4ffe882e7a21f1a7137bba9f6f290d91ff0305985b74b253a8",
+   "trainable_backbone_params": 25980928,
+   "trainable_head_params": 176870,
+   "frozen_params": 401635585,
+   "weights_file": "clip/ViT-L-14.pt",
+   "schedule": "declared 5-epoch schedule (1 warm-up epoch, cosine), truncated after 2 pilot epochs",
+   "epochs": [
+    {
+     "epoch": 0,
+     "pilot_val": {
+      "loss": 9.32962449391683,
+      "crop_acc": 0.01875,
+      "dis_acc": 0.0,
+      "n": 480
+     }
+    },
+    {
+     "epoch": 1,
+     "train_loss_mean": 6.315620752481314,
+     "train_loss_last50": 3.7309636878967285,
+     "images": 4576,
+     "seconds": 58.39804005622864,
+     "images_per_s": 78.35879415805722,
+     "lr_end": [
+      1e-05,
+      0.001
+     ],
+     "pilot_val": {
+      "loss": 2.7898932456970216,
+      "crop_acc": 0.8875,
+      "dis_acc": 0.45625,
+      "n": 480
+     }
+    },
+    {
+     "epoch": 2,
+     "train_loss_mean": 1.1225318664854222,
+     "train_loss_last50": 0.701724483370781,
+     "images": 4576,
+     "seconds": 58.92339587211609,
+     "images_per_s": 77.66015404019626,
+     "lr_end": [
+      8.535533905932739e-06,
+      0.0008535533905932737
+     ],
+     "pilot_val": {
+      "loss": 1.3390220324198405,
+      "crop_acc": 0.9520833333333333,
+      "dis_acc": 0.6875,
+      "n": 480
+     }
+    }
+   ],
+   "first_backward": {
+    "step": 5,
+    "scaler_scale": 32768.0,
+    "trainable_with_grad": 27,
+    "trainable_total": 27,
+    "all_finite": true,
+    "grad_norm_total": 7.356209754943848,
+    "zero_norm_tensors": 0,
+    "frozen_with_grad": 0
+   },
+   "peak_gpu_gib": 2.934479236602783,
+   "frozen_unchanged": true,
+   "trainable_update": {
+    "tensors": 27,
+    "changed": 27,
+    "delta_norm_total": 1.702706500094671
+   },
+   "checkpoint_reload": {
+    "max_abs_diff": 0.0,
+    "unexpected_keys": [],
+    "checkpoint_bytes": 104641728,
+    "trainable_keys_saved": 27
+   },
+   "checkpoint_deleted": true,
+   "status": "ok"
+  },
+  "J2_clipL_last4": {
+   "row": "J2_clipL_last4",
+   "trainable": "last4",
+   "fold": "I6",
+   "label": "post-freeze exploratory (v4); development cross-validation on v3 inner folds; not blind",
+   "n_pilot_train": 4582,
+   "n_pilot_val": 480,
+   "pilot_split_sha256": "69067ce92e9a4c4ffe882e7a21f1a7137bba9f6f290d91ff0305985b74b253a8",
+   "trainable_backbone_params": 51173376,
+   "trainable_head_params": 176870,
+   "frozen_params": 376443137,
+   "weights_file": "clip/ViT-L-14.pt",
+   "schedule": "declared 5-epoch schedule (1 warm-up epoch, cosine), truncated after 2 pilot epochs",
+   "epochs": [
+    {
+     "epoch": 0,
+     "pilot_val": {
+      "loss": 9.32962449391683,
+      "crop_acc": 0.01875,
+      "dis_acc": 0.0,
+      "n": 480
+     }
+    },
+    {
+     "epoch": 1,
+     "train_loss_mean": 6.057055091524457,
+     "train_loss_last50": 3.2904424238204957,
+     "images": 4576,
+     "seconds": 68.3394546508789,
+     "images_per_s": 66.95985537749895,
+     "lr_end": [
+      1e-05,
+      0.001
+     ],
+     "pilot_val": {
+      "loss": 2.5421599547068277,
+      "crop_acc": 0.9083333333333333,
+      "dis_acc": 0.48333333333333334,
+      "n": 480
+     }
+    },
+    {
+     "epoch": 2,
+     "train_loss_mean": 0.8608157521152829,
+     "train_loss_last50": 0.5055126336216926,
+     "images": 4576,
+     "seconds": 69.16187000274658,
+     "images_per_s": 66.16362454945588,
+     "lr_end": [
+      8.535533905932739e-06,
+      0.0008535533905932737
+     ],
+     "pilot_val": {
+      "loss": 1.1308186292648315,
+      "crop_acc": 0.9708333333333333,
+      "dis_acc": 0.7375,
+      "n": 480
+     }
+    }
+   ],
+   "first_backward": {
+    "step": 5,
+    "scaler_scale": 32768.0,
+    "trainable_with_grad": 51,
+    "trainable_total": 51,
+    "all_finite": true,
+    "grad_norm_total": 8.384038925170898,
+    "zero_norm_tensors": 0,
+    "frozen_with_grad": 0
+   },
+   "peak_gpu_gib": 4.152439594268799,
+   "frozen_unchanged": true,
+   "trainable_update": {
+    "tensors": 51,
+    "changed": 51,
+    "delta_norm_total": 1.947203924165452
+   },
+   "checkpoint_reload": {
+    "max_abs_diff": 0.0,
+    "unexpected_keys": [],
+    "checkpoint_bytes": 205419568,
+    "trainable_keys_saved": 51
+   },
+   "checkpoint_deleted": true,
+   "status": "ok"
+  },
+  "J3_clipL_lora8_mlp": {
+   "row": "J3_clipL_lora8_mlp",
+   "trainable": "lora8_mlp",
+   "fold": "I6",
+   "label": "post-freeze exploratory (v4); development cross-validation on v3 inner folds; not blind",
+   "n_pilot_train": 4582,
+   "n_pilot_val": 480,
+   "pilot_split_sha256": "69067ce92e9a4c4ffe882e7a21f1a7137bba9f6f290d91ff0305985b74b253a8",
+   "trainable_backbone_params": 1966080,
+   "trainable_head_params": 176870,
+   "frozen_params": 427616513,
+   "weights_file": "clip/ViT-L-14.pt",
+   "schedule": "declared 5-epoch schedule (1 warm-up epoch, cosine), truncated after 2 pilot epochs",
+   "epochs": [
+    {
+     "epoch": 0,
+     "pilot_val": {
+      "loss": 9.32962449391683,
+      "crop_acc": 0.01875,
+      "dis_acc": 0.0,
+      "n": 480
+     }
+    },
+    {
+     "epoch": 1,
+     "train_loss_mean": 6.790209958603332,
+     "train_loss_last50": 4.676065306663514,
+     "images": 4576,
+     "seconds": 180.07727909088135,
+     "images_per_s": 25.4113124270974,
+     "lr_end": [
+      1e-05,
+      0.001
+     ],
+     "pilot_val": {
+      "loss": 3.502188968658447,
+      "crop_acc": 0.8479166666666667,
+      "dis_acc": 0.3645833333333333,
+      "n": 480
+     }
+    },
+    {
+     "epoch": 2,
+     "train_loss_mean": 1.6368549520319158,
+     "train_loss_last50": 1.0278877556324004,
+     "images": 4576,
+     "seconds": 180.9931218624115,
+     "images_per_s": 25.282728718711272,
+     "lr_end": [
+      8.535533905932739e-06,
+      0.0008535533905932737
+     ],
+     "pilot_val": {
+      "loss": 1.6540470441182455,
+      "crop_acc": 0.94375,
+      "dis_acc": 0.6291666666666667,
+      "n": 480
+     }
+    }
+   ],
+   "first_backward": {
+    "step": 5,
+    "scaler_scale": 32768.0,
+    "trainable_with_grad": 96,
+    "trainable_total": 96,
+    "all_finite": true,
+    "grad_norm_total": 7.806242942810059,
+    "zero_norm_tensors": 0,
+    "frozen_with_grad": 0
+   },
+   "peak_gpu_gib": 2.538217544555664,
+   "frozen_unchanged": true,
+   "trainable_update": {
+    "tensors": 96,
+    "changed": 96,
+    "delta_norm_total": 1.721795861982382
+   },
+   "checkpoint_reload": {
+    "max_abs_diff": 0.0,
+    "unexpected_keys": [],
+    "checkpoint_bytes": 8606354,
+    "trainable_keys_saved": 96
+   },
+   "checkpoint_deleted": true,
+   "status": "ok"
+  }
+ },
+ "finished": "2026-11-13T18:46:47Z"
+}

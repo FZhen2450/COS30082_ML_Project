@@ -1,0 +1,144 @@
+{
+ "row": "J3_clipL_lora8_mlp@HRT_I6_CDDM_ablated",
+ "seed": 0,
+ "fold": "I6",
+ "config": {
+  "row": "J3_clipL_lora8_mlp@HRT_I6_CDDM_ablated",
+  "backbone": "clip_l14",
+  "trainable": "lora8_mlp",
+  "augment": "flip",
+  "source_balanced": false,
+  "extra": null,
+  "epochs": 5,
+  "batch": 32,
+  "lr_backbone": 1e-05,
+  "lr_head": 0.001,
+  "weight_decay": 0.05,
+  "warmup_epochs": 1,
+  "max_steps": null,
+  "concat_frozen": null,
+  "workers": 8
+ },
+ "config_sha256": "326ccc9e2e4813c59ddc7680bf794852510348726a2285b185f4374af3c30b31",
+ "torch_seed": 5,
+ "weights_file": "clip/ViT-L-14.pt",
+ "trainable_backbone_params": 1966080,
+ "frozen_params": 427616513,
+ "n_fitting": 3112,
+ "started": "2026-11-16T08:41:52Z",
+ "frozen_digest_before": "2ca3941066d021c4a0553446effcbc7b4ada4ed7316c035bad4ea4bad7f1bca2",
+ "code": {
+  "git_head": "3334b2be64e2d1cf5431f71a4551d7ff10a8228a",
+  "worktree_clean": true,
+  "jrun_sha256": "433d405805db25d7b42752e129125380276c159f2a4dc4fe85303cb5fc5f4393"
+ },
+ "epochs": [
+  {
+   "epoch": 1,
+   "steps": 97,
+   "train_loss_mean": 7.279159536066744,
+   "train_loss_last50": 6.041634244918823,
+   "amp_skipped_steps": 1,
+   "seconds": 127.37146472930908,
+   "images_per_s": 24.369665170334805,
+   "lr_end": [
+    1e-05,
+    0.001
+   ]
+  },
+  {
+   "epoch": 2,
+   "steps": 97,
+   "train_loss_mean": 2.3798083767448506,
+   "train_loss_last50": 1.7041878175735474,
+   "amp_skipped_steps": 0,
+   "seconds": 126.51180505752563,
+   "images_per_s": 24.535259484208794,
+   "lr_end": [
+    8.535533905932739e-06,
+    0.0008535533905932737
+   ]
+  },
+  {
+   "epoch": 3,
+   "steps": 97,
+   "train_loss_mean": 0.9469620997143775,
+   "train_loss_last50": 0.7719510447978973,
+   "amp_skipped_steps": 0,
+   "seconds": 126.93994355201721,
+   "images_per_s": 24.45250779490479,
+   "lr_end": [
+    5e-06,
+    0.0005
+   ]
+  },
+  {
+   "epoch": 4,
+   "steps": 97,
+   "train_loss_mean": 0.5959591988435725,
+   "train_loss_last50": 0.549981625676155,
+   "amp_skipped_steps": 0,
+   "seconds": 125.88157224655151,
+   "images_per_s": 24.65809642899895,
+   "lr_end": [
+    1.4644660940672628e-06,
+    0.00014644660940672628
+   ]
+  },
+  {
+   "epoch": 5,
+   "steps": 97,
+   "train_loss_mean": 0.5251186388669554,
+   "train_loss_last50": 0.5347299343347549,
+   "amp_skipped_steps": 0,
+   "seconds": 125.4838879108429,
+   "images_per_s": 24.736243070702212,
+   "lr_end": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "validation_curve": "none by design: all fitting rows train (declared); no evaluation row is read during training",
+ "grad_checks": {
+  "checks": 12,
+  "finite_checks": 12,
+  "max_nonfinite_run": 0,
+  "skipped_steps": 1,
+  "steps": 485,
+  "tensors": 96
+ },
+ "train_loss": {
+  "first50": 8.51920470237732,
+  "last50": 0.5347299343347549,
+  "steps": 485
+ },
+ "frozen_digest_after": "2ca3941066d021c4a0553446effcbc7b4ada4ed7316c035bad4ea4bad7f1bca2",
+ "trainable_tensors_changed": "96/96",
+ "trainable_update_norm": {
+  "total": 1.7780417641977018,
+  "min_tensor": 0.020971201360225677
+ },
+ "peak_gpu_gib_training": 2.524806022644043,
+ "checkpoint_sha256": "7a153f450251ea5469ac88eac104460ade0376e19c7ea190d4d57861bd047377",
+ "reload_max_abs_diff": 0.0,
+ "features_sha256": "fe4fc8461b79be173602eda1dd0b01762a3aba088c9c8a5e147f6e8f07f7672b",
+ "feature_cache_meta": {
+  "row": "J3_clipL_lora8_mlp@HRT_I6_CDDM_ablated",
+  "seed": 0,
+  "fold": "I6",
+  "config_sha256": "326ccc9e2e4813c59ddc7680bf794852510348726a2285b185f4374af3c30b31",
+  "checkpoint_sha256": "7a153f450251ea5469ac88eac104460ade0376e19c7ea190d4d57861bd047377",
+  "rows_sha256": "6188e67185f6d778bee77add236db4194019ef476e9ed16f7a7249e15d8d22a6",
+  "backbone": "clip_l14",
+  "schema": "r2v4-j-fold-features-v1"
+ },
+ "checkpoint_keys": 96,
+ "peak_gpu_gib_total": 3.411600112915039,
+ "packet_sha256": "32b45b3587ce53dcf0dd0dd840223b497d23376c1ed49a35d3b022b476c3fcb2",
+ "contract_sha256": "a773a480a0bc547d90a380227f2421ec6c35c80253b7c8be319382a546b9bcb7",
+ "images_opened_main_process": 8,
+ "seconds": 836.574343919754,
+ "status": "ok",
+ "finished": "2026-11-16T08:55:42Z"
+}

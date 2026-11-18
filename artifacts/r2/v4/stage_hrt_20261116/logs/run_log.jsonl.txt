@@ -1,0 +1,102 @@
+{"t": "2026-11-16T04:16:18Z", "row": "J1_clipL_last2", "pair": "I6_CDDM", "arm": "ablated", "event": "start"}
+{"t": "2026-11-16T04:22:54Z", "msg": "{\"arm_row\": \"J1_clipL_last2@HRT_I6_CDDM_ablated\", \"seconds\": 395.08615469932556, \"n_fitting\": 3112, \"reload\": 0.0}"}
+{"t": "2026-11-16T04:22:54Z", "row": "J1_clipL_last2", "pair": "I6_CDDM", "arm": "ablated", "status": "ok"}
+{"t": "2026-11-16T04:22:54Z", "row": "J1_clipL_last2", "pair": "I6_CDDM", "arm": "random", "event": "start"}
+{"t": "2026-11-16T04:29:39Z", "msg": "FAILED J1_clipL_last2 I6/CDDM/random: HRTError: J1_clipL_last2 I6/CDDM/random: run started from a dirty worktree"}
+{"t": "2026-11-16T04:29:39Z", "row": "J1_clipL_last2", "pair": "I6_CDDM", "arm": "random", "status": "failed: HRTError: J1_clipL_last2 I6/CDDM/random: run started from a dirty worktree"}
+{"t": "2026-11-16T04:29:39Z", "row": "J1_clipL_last2", "pair": "I1_MTID", "arm": "ablated", "event": "start"}
+{"t": "2026-11-16T04:38:05Z", "msg": "FAILED J1_clipL_last2 I1/MTID/ablated: HRTError: J1_clipL_last2 I1/MTID/ablated: run started from a dirty worktree"}
+{"t": "2026-11-16T04:38:05Z", "row": "J1_clipL_last2", "pair": "I1_MTID", "arm": "ablated", "status": "failed: HRTError: J1_clipL_last2 I1/MTID/ablated: run started from a dirty worktree"}
+{"t": "2026-11-16T04:38:05Z", "row": "J1_clipL_last2", "pair": "I1_MTID", "arm": "random", "event": "start"}
+{"t": "2026-11-16T04:46:32Z", "msg": "FAILED J1_clipL_last2 I1/MTID/random: HRTError: J1_clipL_last2 I1/MTID/random: run started from a dirty worktree"}
+{"t": "2026-11-16T04:46:32Z", "row": "J1_clipL_last2", "pair": "I1_MTID", "arm": "random", "status": "failed: HRTError: J1_clipL_last2 I1/MTID/random: run started from a dirty worktree"}
+{"t": "2026-11-16T04:46:32Z", "row": "J1_clipL_last2", "pair": "I2_CPDD", "arm": "ablated", "event": "start"}
+{"t": "2026-11-16T04:55:05Z", "msg": "FAILED J1_clipL_last2 I2/CPDD/ablated: HRTError: J1_clipL_last2 I2/CPDD/ablated: run started from a dirty worktree"}
+{"t": "2026-11-16T04:55:05Z", "row": "J1_clipL_last2", "pair": "I2_CPDD", "arm": "ablated", "status": "failed: HRTError: J1_clipL_last2 I2/CPDD/ablated: run started from a dirty worktree"}
+{"t": "2026-11-16T04:55:05Z", "row": "J1_clipL_last2", "pair": "I2_CPDD", "arm": "random", "event": "start"}
+{"t": "2026-11-16T05:03:35Z", "msg": "FAILED J1_clipL_last2 I2/CPDD/random: HRTError: J1_clipL_last2 I2/CPDD/random: run started from a dirty worktree"}
+{"t": "2026-11-16T05:03:35Z", "row": "J1_clipL_last2", "pair": "I2_CPDD", "arm": "random", "status": "failed: HRTError: J1_clipL_last2 I2/CPDD/random: run started from a dirty worktree"}
+{"t": "2026-11-16T05:03:37Z", "row": "J2_clipL_last4", "pair": "I6_CDDM", "arm": "ablated", "event": "start"}
+{"t": "2026-11-16T05:11:02Z", "msg": "FAILED J2_clipL_last4 I6/CDDM/ablated: HRTError: J2_clipL_last4 I6/CDDM/ablated: run started from a dirty worktree"}
+{"t": "2026-11-16T05:11:02Z", "row": "J2_clipL_last4", "pair": "I6_CDDM", "arm": "ablated", "status": "failed: HRTError: J2_clipL_last4 I6/CDDM/ablated: run started from a dirty worktree"}
+{"t": "2026-11-16T05:11:02Z", "row": "J2_clipL_last4", "pair": "I6_CDDM", "arm": "random", "event": "start"}
+{"t": "2026-11-16T05:18:24Z", "msg": "FAILED J2_clipL_last4 I6/CDDM/random: HRTError: J2_clipL_last4 I6/CDDM/random: run started from a dirty worktree"}
+{"t": "2026-11-16T05:18:24Z", "row": "J2_clipL_last4", "pair": "I6_CDDM", "arm": "random", "status": "failed: HRTError: J2_clipL_last4 I6/CDDM/random: run started from a dirty worktree"}
+{"t": "2026-11-16T05:18:24Z", "row": "J2_clipL_last4", "pair": "I1_MTID", "arm": "ablated", "event": "start"}
+{"t": "2026-11-16T05:27:41Z", "msg": "FAILED J2_clipL_last4 I1/MTID/ablated: HRTError: J2_clipL_last4 I1/MTID/ablated: run started from a dirty worktree"}
+{"t": "2026-11-16T05:27:41Z", "row": "J2_clipL_last4", "pair": "I1_MTID", "arm": "ablated", "status": "failed: HRTError: J2_clipL_last4 I1/MTID/ablated: run started from a dirty worktree"}
+{"t": "2026-11-16T05:27:41Z", "row": "J2_clipL_last4", "pair": "I1_MTID", "arm": "random", "event": "start"}
+{"t": "2026-11-16T05:36:59Z", "msg": "FAILED J2_clipL_last4 I1/MTID/random: HRTError: J2_clipL_last4 I1/MTID/random: run started from a dirty worktree"}
+{"t": "2026-11-16T05:36:59Z", "row": "J2_clipL_last4", "pair": "I1_MTID", "arm": "random", "status": "failed: HRTError: J2_clipL_last4 I1/MTID/random: run started from a dirty worktree"}
+{"t": "2026-11-16T05:36:59Z", "row": "J2_clipL_last4", "pair": "I2_CPDD", "arm": "ablated", "event": "start"}
+{"t": "2026-11-16T05:46:20Z", "msg": "FAILED J2_clipL_last4 I2/CPDD/ablated: HRTError: J2_clipL_last4 I2/CPDD/ablated: run started from a dirty worktree"}
+{"t": "2026-11-16T05:46:20Z", "row": "J2_clipL_last4", "pair": "I2_CPDD", "arm": "ablated", "status": "failed: HRTError: J2_clipL_last4 I2/CPDD/ablated: run started from a dirty worktree"}
+{"t": "2026-11-16T05:46:20Z", "row": "J2_clipL_last4", "pair": "I2_CPDD", "arm": "random", "event": "start"}
+{"t": "2026-11-16T05:55:35Z", "msg": "FAILED J2_clipL_last4 I2/CPDD/random: HRTError: J2_clipL_last4 I2/CPDD/random: run started from a dirty worktree"}
+{"t": "2026-11-16T05:55:35Z", "row": "J2_clipL_last4", "pair": "I2_CPDD", "arm": "random", "status": "failed: HRTError: J2_clipL_last4 I2/CPDD/random: run started from a dirty worktree"}
+{"t": "2026-11-16T05:55:37Z", "row": "J3_clipL_lora8_mlp", "pair": "I6_CDDM", "arm": "ablated", "event": "start"}
+{"t": "2026-11-16T06:09:46Z", "msg": "FAILED J3_clipL_lora8_mlp I6/CDDM/ablated: HRTError: J3_clipL_lora8_mlp I6/CDDM/ablated: run started from a dirty worktree"}
+{"t": "2026-11-16T06:09:46Z", "row": "J3_clipL_lora8_mlp", "pair": "I6_CDDM", "arm": "ablated", "status": "failed: HRTError: J3_clipL_lora8_mlp I6/CDDM/ablated: run started from a dirty worktree"}
+{"t": "2026-11-16T06:09:46Z", "row": "J3_clipL_lora8_mlp", "pair": "I6_CDDM", "arm": "random", "event": "start"}
+{"t": "2026-11-16T06:23:58Z", "msg": "FAILED J3_clipL_lora8_mlp I6/CDDM/random: HRTError: J3_clipL_lora8_mlp I6/CDDM/random: run started from a dirty worktree"}
+{"t": "2026-11-16T06:23:58Z", "row": "J3_clipL_lora8_mlp", "pair": "I6_CDDM", "arm": "random", "status": "failed: HRTError: J3_clipL_lora8_mlp I6/CDDM/random: run started from a dirty worktree"}
+{"t": "2026-11-16T06:23:58Z", "row": "J3_clipL_lora8_mlp", "pair": "I1_MTID", "arm": "ablated", "event": "start"}
+{"t": "2026-11-16T06:43:10Z", "msg": "FAILED J3_clipL_lora8_mlp I1/MTID/ablated: HRTError: J3_clipL_lora8_mlp I1/MTID/ablated: run started from a dirty worktree"}
+{"t": "2026-11-16T06:43:10Z", "row": "J3_clipL_lora8_mlp", "pair": "I1_MTID", "arm": "ablated", "status": "failed: HRTError: J3_clipL_lora8_mlp I1/MTID/ablated: run started from a dirty worktree"}
+{"t": "2026-11-16T06:43:10Z", "row": "J3_clipL_lora8_mlp", "pair": "I1_MTID", "arm": "random", "event": "start"}
+{"t": "2026-11-16T07:02:13Z", "msg": "FAILED J3_clipL_lora8_mlp I1/MTID/random: HRTError: J3_clipL_lora8_mlp I1/MTID/random: run started from a dirty worktree"}
+{"t": "2026-11-16T07:02:13Z", "row": "J3_clipL_lora8_mlp", "pair": "I1_MTID", "arm": "random", "status": "failed: HRTError: J3_clipL_lora8_mlp I1/MTID/random: run started from a dirty worktree"}
+{"t": "2026-11-16T07:02:13Z", "row": "J3_clipL_lora8_mlp", "pair": "I2_CPDD", "arm": "ablated", "event": "start"}
+{"t": "2026-11-16T07:08:10Z", "row": "J1_clipL_last2", "pair": "I6_CDDM", "arm": "ablated", "event": "start"}
+{"t": "2026-11-16T07:08:10Z", "row": "J1_clipL_last2", "pair": "I6_CDDM", "arm": "ablated", "status": "ok (existing)"}
+{"t": "2026-11-16T07:08:10Z", "row": "J1_clipL_last2", "pair": "I6_CDDM", "arm": "random", "event": "start"}
+{"t": "2026-11-16T07:15:06Z", "msg": "{\"arm_row\": \"J1_clipL_last2@HRT_I6_CDDM_random\", \"seconds\": 412.46695590019226, \"n_fitting\": 3112, \"reload\": 0.0}"}
+{"t": "2026-11-16T07:15:06Z", "row": "J1_clipL_last2", "pair": "I6_CDDM", "arm": "random", "status": "ok"}
+{"t": "2026-11-16T07:15:06Z", "row": "J1_clipL_last2", "pair": "I1_MTID", "arm": "ablated", "event": "start"}
+{"t": "2026-11-16T07:23:41Z", "msg": "{\"arm_row\": \"J1_clipL_last2@HRT_I1_MTID_ablated\", \"seconds\": 513.5143444538116, \"n_fitting\": 4661, \"reload\": 0.0}"}
+{"t": "2026-11-16T07:23:41Z", "row": "J1_clipL_last2", "pair": "I1_MTID", "arm": "ablated", "status": "ok"}
+{"t": "2026-11-16T07:23:41Z", "row": "J1_clipL_last2", "pair": "I1_MTID", "arm": "random", "event": "start"}
+{"t": "2026-11-16T07:32:15Z", "msg": "{\"arm_row\": \"J1_clipL_last2@HRT_I1_MTID_random\", \"seconds\": 512.7937350273132, \"n_fitting\": 4661, \"reload\": 0.0}"}
+{"t": "2026-11-16T07:32:15Z", "row": "J1_clipL_last2", "pair": "I1_MTID", "arm": "random", "status": "ok"}
+{"t": "2026-11-16T07:32:15Z", "row": "J1_clipL_last2", "pair": "I2_CPDD", "arm": "ablated", "event": "start"}
+{"t": "2026-11-16T07:40:53Z", "msg": "{\"arm_row\": \"J1_clipL_last2@HRT_I2_CPDD_ablated\", \"seconds\": 517.0933554172516, \"n_fitting\": 4698, \"reload\": 0.0}"}
+{"t": "2026-11-16T07:40:53Z", "row": "J1_clipL_last2", "pair": "I2_CPDD", "arm": "ablated", "status": "ok"}
+{"t": "2026-11-16T07:40:53Z", "row": "J1_clipL_last2", "pair": "I2_CPDD", "arm": "random", "event": "start"}
+{"t": "2026-11-16T07:49:33Z", "msg": "{\"arm_row\": \"J1_clipL_last2@HRT_I2_CPDD_random\", \"seconds\": 517.6676771640778, \"n_fitting\": 4698, \"reload\": 0.0}"}
+{"t": "2026-11-16T07:49:33Z", "row": "J1_clipL_last2", "pair": "I2_CPDD", "arm": "random", "status": "ok"}
+{"t": "2026-11-16T07:49:35Z", "row": "J2_clipL_last4", "pair": "I6_CDDM", "arm": "ablated", "event": "start"}
+{"t": "2026-11-16T07:57:10Z", "msg": "{\"arm_row\": \"J2_clipL_last4@HRT_I6_CDDM_ablated\", \"seconds\": 448.7612326145172, \"n_fitting\": 3112, \"reload\": 0.0}"}
+{"t": "2026-11-16T07:57:10Z", "row": "J2_clipL_last4", "pair": "I6_CDDM", "arm": "ablated", "status": "ok"}
+{"t": "2026-11-16T07:57:10Z", "row": "J2_clipL_last4", "pair": "I6_CDDM", "arm": "random", "event": "start"}
+{"t": "2026-11-16T08:04:40Z", "msg": "{\"arm_row\": \"J2_clipL_last4@HRT_I6_CDDM_random\", \"seconds\": 447.35160183906555, \"n_fitting\": 3112, \"reload\": 0.0}"}
+{"t": "2026-11-16T08:04:40Z", "row": "J2_clipL_last4", "pair": "I6_CDDM", "arm": "random", "status": "ok"}
+{"t": "2026-11-16T08:04:40Z", "row": "J2_clipL_last4", "pair": "I1_MTID", "arm": "ablated", "event": "start"}
+{"t": "2026-11-16T08:14:08Z", "msg": "{\"arm_row\": \"J2_clipL_last4@HRT_I1_MTID_ablated\", \"seconds\": 565.298636674881, \"n_fitting\": 4661, \"reload\": 0.0}"}
+{"t": "2026-11-16T08:14:08Z", "row": "J2_clipL_last4", "pair": "I1_MTID", "arm": "ablated", "status": "ok"}
+{"t": "2026-11-16T08:14:08Z", "row": "J2_clipL_last4", "pair": "I1_MTID", "arm": "random", "event": "start"}
+{"t": "2026-11-16T08:23:25Z", "msg": "{\"arm_row\": \"J2_clipL_last4@HRT_I1_MTID_random\", \"seconds\": 554.5145306587219, \"n_fitting\": 4661, \"reload\": 0.0}"}
+{"t": "2026-11-16T08:23:25Z", "row": "J2_clipL_last4", "pair": "I1_MTID", "arm": "random", "status": "ok"}
+{"t": "2026-11-16T08:23:25Z", "row": "J2_clipL_last4", "pair": "I2_CPDD", "arm": "ablated", "event": "start"}
+{"t": "2026-11-16T08:32:35Z", "msg": "{\"arm_row\": \"J2_clipL_last4@HRT_I2_CPDD_ablated\", \"seconds\": 548.0911066532135, \"n_fitting\": 4698, \"reload\": 0.0}"}
+{"t": "2026-11-16T08:32:35Z", "row": "J2_clipL_last4", "pair": "I2_CPDD", "arm": "ablated", "status": "ok"}
+{"t": "2026-11-16T08:32:35Z", "row": "J2_clipL_last4", "pair": "I2_CPDD", "arm": "random", "event": "start"}
+{"t": "2026-11-16T08:41:43Z", "msg": "{\"arm_row\": \"J2_clipL_last4@HRT_I2_CPDD_random\", \"seconds\": 545.4036831855774, \"n_fitting\": 4698, \"reload\": 0.0}"}
+{"t": "2026-11-16T08:41:43Z", "row": "J2_clipL_last4", "pair": "I2_CPDD", "arm": "random", "status": "ok"}
+{"t": "2026-11-16T08:41:45Z", "row": "J3_clipL_lora8_mlp", "pair": "I6_CDDM", "arm": "ablated", "event": "start"}
+{"t": "2026-11-16T08:55:42Z", "msg": "{\"arm_row\": \"J3_clipL_lora8_mlp@HRT_I6_CDDM_ablated\", \"seconds\": 836.574343919754, \"n_fitting\": 3112, \"reload\": 0.0}"}
+{"t": "2026-11-16T08:55:42Z", "row": "J3_clipL_lora8_mlp", "pair": "I6_CDDM", "arm": "ablated", "status": "ok"}
+{"t": "2026-11-16T08:55:42Z", "row": "J3_clipL_lora8_mlp", "pair": "I6_CDDM", "arm": "random", "event": "start"}
+{"t": "2026-11-16T09:09:40Z", "msg": "{\"arm_row\": \"J3_clipL_lora8_mlp@HRT_I6_CDDM_random\", \"seconds\": 836.4865746498108, \"n_fitting\": 3112, \"reload\": 0.0}"}
+{"t": "2026-11-16T09:09:40Z", "row": "J3_clipL_lora8_mlp", "pair": "I6_CDDM", "arm": "random", "status": "ok"}
+{"t": "2026-11-16T09:09:40Z", "row": "J3_clipL_lora8_mlp", "pair": "I1_MTID", "arm": "ablated", "event": "start"}
+{"t": "2026-11-16T09:28:44Z", "msg": "{\"arm_row\": \"J3_clipL_lora8_mlp@HRT_I1_MTID_ablated\", \"seconds\": 1143.6691920757294, \"n_fitting\": 4661, \"reload\": 0.0}"}
+{"t": "2026-11-16T09:28:44Z", "row": "J3_clipL_lora8_mlp", "pair": "I1_MTID", "arm": "ablated", "status": "ok"}
+{"t": "2026-11-16T09:28:44Z", "row": "J3_clipL_lora8_mlp", "pair": "I1_MTID", "arm": "random", "event": "start"}
+{"t": "2026-11-16T09:47:49Z", "msg": "{\"arm_row\": \"J3_clipL_lora8_mlp@HRT_I1_MTID_random\", \"seconds\": 1143.7645144462585, \"n_fitting\": 4661, \"reload\": 0.0}"}
+{"t": "2026-11-16T09:47:49Z", "row": "J3_clipL_lora8_mlp", "pair": "I1_MTID", "arm": "random", "status": "ok"}
+{"t": "2026-11-16T09:47:49Z", "row": "J3_clipL_lora8_mlp", "pair": "I2_CPDD", "arm": "ablated", "event": "start"}
+{"t": "2026-11-16T10:06:59Z", "msg": "{\"arm_row\": \"J3_clipL_lora8_mlp@HRT_I2_CPDD_ablated\", \"seconds\": 1150.2481389045715, \"n_fitting\": 4698, \"reload\": 0.0}"}
+{"t": "2026-11-16T10:06:59Z", "row": "J3_clipL_lora8_mlp", "pair": "I2_CPDD", "arm": "ablated", "status": "ok"}
+{"t": "2026-11-16T10:06:59Z", "row": "J3_clipL_lora8_mlp", "pair": "I2_CPDD", "arm": "random", "event": "start"}
+{"t": "2026-11-16T10:26:09Z", "msg": "{\"arm_row\": \"J3_clipL_lora8_mlp@HRT_I2_CPDD_random\", \"seconds\": 1148.9350340366364, \"n_fitting\": 4698, \"reload\": 0.0}"}
+{"t": "2026-11-16T10:26:09Z", "row": "J3_clipL_lora8_mlp", "pair": "I2_CPDD", "arm": "random", "status": "ok"}

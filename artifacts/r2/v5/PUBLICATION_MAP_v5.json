@@ -1,0 +1,104 @@
+{
+ "schema": "r2v5-publication-map-v1",
+ "statement": "The public v5 history is a sanitized replay of the private v5 commits (frozen private head 27d4739). Files under 'derived' are PUBLIC DERIVATIVES, NOT byte-identical to the private originals: local machine paths were replaced (<WORKSPACE>, <CONDA_ENV>, <TMP>) or class-level official statistics were removed (per-crop / per-disease official accuracies, per-unseen-class results, the list of largest class confusions). Files under 'withheld' are not published (the 333 x 333 official seen confusion matrix). Stage SHA256SUMS manifests are published unchanged and record the PRIVATE ORIGINAL hashes. No per-image official prediction, official CSV, official image, checkpoint or feature cache is published; the aggregate official results (counts, Top-1/Top-5, H@1, H@5) are unchanged.",
+ "files": {
+  "derived": {
+   "artifacts/r2/v5/final_J2_full8000/logs/tests_final_targeted.log.txt": {
+    "private_original_sha256": "1996902d1faa25381b2f63eaea2daa2ebde1fa3604e05eedb3e387f41e4aa106",
+    "public_derivative_sha256": "ca9a40675ef709c3a64d57c4ccbf7f8695cd19cbb23f3c495715569c7f0ae4eb",
+    "changes": [
+     "path:tmpdirx1"
+    ]
+   },
+   "artifacts/r2/v5/final_J2_full8000/run_final_train.sh.txt": {
+    "private_original_sha256": "6c012af04a88fda93580883aa539911721f57baf106b4a8fc2bbe8ee0dafb913",
+    "public_derivative_sha256": "1f1556d574791cf21bf990f7011505a63a1f0e00558f07f2a253a284956df313",
+    "changes": [
+     "path:workspacex2",
+     "path:conda_envx1"
+    ]
+   },
+   "artifacts/r2/v5/official_eval_ONE_SHOT_aggregate/independent_recomputation.json": {
+    "private_original_sha256": "1e4e0d878a8877a3cc84173526bc5302784a93abc06d9bfc19a986bcd90e3009",
+    "public_derivative_sha256": "13ea11b20e825afdb2cb098ee0b34221989fe544cd0127d50cb48c3650c434f0",
+    "changes": [
+     "drop:unseen/per_unseen_class_top1",
+     "drop:seen/confusion/top_confusions"
+    ]
+   },
+   "artifacts/r2/v5/official_eval_ONE_SHOT_aggregate/official_evaluation.json": {
+    "private_original_sha256": "0110cb988437dbf16a32eb7b45ebbba85eae71382340b1ba5861b4a09226263c",
+    "public_derivative_sha256": "5e516413f2eeab1d891999bf6edc3213847aaf770bf410dea77ddbe08f7856df",
+    "changes": [
+     "drop:seen/per_crop_top1",
+     "drop:seen/per_disease_top1",
+     "drop:unseen/per_crop_top1",
+     "drop:unseen/per_disease_top1"
+    ]
+   },
+   "docs/R2_v5_Official_Evaluation_Result.md": {
+    "private_original_sha256": "4716fb0cef2a06f3b6ec888c30b3951f6a202892b2a04fcb0fda98041b763388",
+    "public_derivative_sha256": "f58a3e578e6fbfa04b34fb1a31e99344c29bff2d7e73dd531563ef25ea11fb0d",
+    "changes": [
+     "drop: per-unseen-class table and largest-confusion list"
+    ]
+   }
+  },
+  "withheld": {
+   "artifacts/r2/v5/official_eval_ONE_SHOT_aggregate/seen_confusion_333x333.npy": {
+    "private_original_sha256": "faf047144d20c60fc8aed221b18c526535a26df3eb226ceb5c7ea5eb60b4d124",
+    "reason": "333 x 333 official seen confusion matrix (class-level official statistics)"
+   }
+  }
+ },
+ "commits": [
+  {
+   "private_commit": "aec9d39a9d7660f623bb17694b69ee878d78a6d7",
+   "public_commit": "5cf231ea8b7fc99f56240eaff7602e64d7dfda10",
+   "authored": "2026-11-17T19:34:32+08:00",
+   "subject": "impl(r2-v5): Second Run final model (J2 full-data, D1 downstream, 333 candidates, frozen gamma 8.75)",
+   "derived": 0,
+   "withheld": 0
+  },
+  {
+   "private_commit": "0fc5b04aaff03563ea89c82cd842aaedcc8207c6",
+   "public_commit": "536c611a1fd7934a87c16ad19c43e4a215089e9e",
+   "authored": "2026-11-17T19:55:35+08:00",
+   "subject": "results(r2-v5): final J2 full-data checkpoint, verification, official-evaluation procedure (not executed)",
+   "derived": 2,
+   "withheld": 0
+  },
+  {
+   "private_commit": "07e05ef75487610a592ac0a91c1ff7ff9b58300c",
+   "public_commit": "797c9efba84a95dae321bb2e9fe01f34dd1f35c4",
+   "authored": "2026-11-17T20:09:35+08:00",
+   "subject": "fix(r2-v5): fail-closed official-input validation before inference; official-size rehearsal (safety only)",
+   "derived": 2,
+   "withheld": 0
+  },
+  {
+   "private_commit": "a52dbc2964a9e9008ef8a27c6743400b26532eb9",
+   "public_commit": "c8e08ec8b181fed604db50870d5770e584a56c41",
+   "authored": "2026-11-17T20:13:31+08:00",
+   "subject": "evidence(r2-v5): preflight re-verification (07e05ef) and official-size rehearsal on training images",
+   "derived": 2,
+   "withheld": 0
+  },
+  {
+   "private_commit": "45eed872ca908fdda59284b3bba43a07ae5264dd",
+   "public_commit": "516a546bb8e956f843f4b07809592d69197c1882",
+   "authored": "2026-11-17T20:18:57+08:00",
+   "subject": "results(r2-v5): one-shot official DPD-Small evaluation of the frozen J2 model: H@1 68.02% (First Run best 9.95%)",
+   "derived": 5,
+   "withheld": 1
+  },
+  {
+   "private_commit": "27d47390cc90894c6900d516344ef45afb3dac0c",
+   "public_commit": "846326416443f3098ba10fe2ead91c48015be00a",
+   "authored": "2026-11-17T20:24:11+08:00",
+   "subject": "docs(r2-v5): add verified official-evaluation limitations (seen macro accuracy, sparse support, calibration trade-off)",
+   "derived": 5,
+   "withheld": 1
+  }
+ ]
+}

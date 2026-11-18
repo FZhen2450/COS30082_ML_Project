@@ -1,0 +1,54 @@
+{
+ "label": "ONE-SHOT official DPD-Small evaluation of the frozen Second Run final model",
+ "started": "2026-11-17T12:15:56Z",
+ "owner_authorization": "Owner authorization 2026-11-17: exactly ONE official DPD-Small evaluation of the frozen Second Run v5 J2 model (checkpoint e9dbbdf3, gamma 8.75)",
+ "gamma": 8.75,
+ "checkpoint_sha256": "e9dbbdf3fc95ba791e8e8129ef38bbd85352a0974c3091d6b7667bd633abb1c9",
+ "features_sha256": "eee9759f48ec5988e6c58e8ffc2c3d64ba6bd1c99ef6b2bafb07e96a38c8ba25",
+ "verification": "verification_07e05ef.json",
+ "git_head": "a52dbc2964a9e9008ef8a27c6743400b26532eb9",
+ "input_summary": {
+  "seen": {
+   "rows": 2000,
+   "compositions": 323
+  },
+  "unseen": {
+   "rows": 1448,
+   "compositions": 10
+  }
+ },
+ "csv_sha256": {
+  "seen": "45d31d48d2260f56cc28871b44434b5243100dc90dc95652c28c377b35b45e83",
+  "unseen": "757e3c1fdcc894004a69c21dbc00d6b818f563aa671db9ab8d315c4790c2490b"
+ },
+ "disclosure": "First Run official scores were already known to the project; this is a single final assessment, no tuning follows",
+ "seen": {
+  "count": 2000,
+  "top1": 0.571,
+  "top5": 0.877,
+  "crop_top1": 0.8425,
+  "disease_top1": 0.621,
+  "fraction_top1_unseen_id": 0.287,
+  "seconds": 54.60474896430969,
+  "peak_gpu_gib": 1.7909998893737793
+ },
+ "unseen": {
+  "count": 1448,
+  "top1": 0.8411602209944752,
+  "top5": 0.986878453038674,
+  "crop_top1": 0.8708563535911602,
+  "disease_top1": 0.8418508287292817,
+  "fraction_top1_unseen_id": 0.9751381215469613,
+  "seconds": 39.18722653388977,
+  "peak_gpu_gib": 1.809852123260498
+ },
+ "H@1": 0.6802379489908098,
+ "H@5": 0.928700476046502,
+ "first_run_official_H@1_historical": {
+  "WP1 independent ResNet50": 0.09945951,
+  "WP2 ConvNeXt-Base": 0.01757603,
+  "Frozen CLIP ViT-L/14": 0.06617868,
+  "M6 CLIP adapter": 0.05958218
+ },
+ "finished": "2026-11-17T12:17:30Z"
+}

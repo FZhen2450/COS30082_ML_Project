@@ -1,0 +1,40 @@
+{
+ "schema": "r2v4-hrt-v1",
+ "status": "ok",
+ "row": "J2_clipL_last4",
+ "arm_row": "J2_clipL_last4@HRT_I1_MTID_random",
+ "fold": "I1",
+ "source": "MTID",
+ "arm": "random",
+ "seed": 0,
+ "label": "post-freeze exploratory (v4); H_RT diagnostic only",
+ "index_set": "I1_MTID_seed0.json",
+ "index_set_sha256": "c547eadc77847b9616222742480b47cf8f69011dc2133e6fc7bac601b9a1c953",
+ "match_levels": {
+  "composition": 53,
+  "crop": 196,
+  "disease": 51,
+  "any": 81
+ },
+ "support": {
+  "n_fitting_base": 5042,
+  "n_fitting": 4661,
+  "n_removed": 381,
+  "fitting_compositions_base": 291,
+  "fitting_compositions": 291,
+  "emptied_compositions": [],
+  "seen_val_rows": 874,
+  "dropped_seen_val_rows": 0,
+  "unseen_val_rows": 333,
+  "universe": 301,
+  "removed_rows_sha256": "436941f72e78aa19f9d701d2173d8f3c9bb82bc2040a5ac784bd3a8eba13ed38",
+  "fitting_rows_sha256": "682f96f76694cc90b3c89973add0e91d771cb87e8db322b2a12e4ee2e716f0a4"
+ },
+ "opened_rows_main_process": 8,
+ "opened_rows_excluded": [],
+ "base_checkpoint_sha256": "e2a969894f5f43f829b50d21669e4c3a66ec86849a71f144a84620e7bccbec9e",
+ "base_packet_sha256": "05cf7b9588de2269399a9730b8f1761066ef2b8875955ac5dde810a38aa68490",
+ "receipt_sha256": "f26c05678385869c0db224ede093a2d82b3601eef896faaaaf66d54524d2d901",
+ "seconds_total": 555.5999984741211,
+ "finished": "2026-11-16T08:23:24Z"
+}

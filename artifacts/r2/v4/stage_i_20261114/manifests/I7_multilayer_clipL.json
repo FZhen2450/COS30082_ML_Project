@@ -1,0 +1,54 @@
+{
+ "row": "I7_multilayer_clipL",
+ "label": "post-freeze exploratory (v4); development cross-validation on v3 inner folds; not blind",
+ "spec": {
+  "kind": "fresh",
+  "feat": "ml:16,20,24",
+  "fn": "d1",
+  "cfg": {
+   "fuse": 1.0,
+   "normalise": true
+  }
+ },
+ "started": "2026-11-13T16:49:53Z",
+ "folds": {
+  "I1": {
+   "packet_sha256": "a511b21afc51650bf3d437f7ca63f66f392c57ee5ad69a8308b652b7e3612916",
+   "contract_sha256": "50fc05ebba923e311d294f7f709a4d36a2119b14789279cc12110de2b4905d66"
+  },
+  "I2": {
+   "packet_sha256": "6f708840df3a5f45c08307c40e2947433b10386f619f435c85a56fdf3bf7f202",
+   "contract_sha256": "76b55d6c02d6d9c4c71e2f2a572dff172cae08ee928d0021fa27fed1d09f465c"
+  },
+  "I3": {
+   "packet_sha256": "9df91bdb221e353a4654b5de54674c05f3bf1546ea3c52b46c5bf88cb9959cf8",
+   "contract_sha256": "23396b8ea981cb164facfd70b0d034fb675e23323d7abf634e62d935aa2e0109"
+  },
+  "I4": {
+   "packet_sha256": "47968ba87ca056a8cca633e575f247cd076db945b4398caa4559dcec2e684483",
+   "contract_sha256": "eed6ae546c684bee55c0ead27f3f7a3fdde4c6b1b840634048e2463cae79c6ba"
+  },
+  "I5": {
+   "packet_sha256": "d9eaedeb076db13fbcbd1a543445e168efdac1248609d163245e080b4f34530d",
+   "contract_sha256": "a965325d8d5872f22f743a68d0a5f56c3a90052d4857357dd1f6433f2013b472"
+  },
+  "I6": {
+   "packet_sha256": "78854e113130b150519e1e8997587a6ce3b70162495b9f0eb71941866c8f0c4d",
+   "contract_sha256": "a36660129120ede7ab9717fd0e5857d7be27048840368f17765ccd639e939f72"
+  }
+ },
+ "feature_identity": {
+  "file": "r2v4-frozen-features-multilayer-v1",
+  "features_sha256": "660a67ff355ba3aee7e008e6c899732274048ccaf414eb3969f7b4cbbe7f7e98",
+  "weights_sha256": "b8cca3fd41ae0c99ba7e8951adf17d267cdb84cd88be6f7c2e0eca1737a03836",
+  "image_sha256_list_sha256": "5fdbecaaa04f1c7fc23174554926bdf1570b7a1cb97250d694de1e4654eefc2f",
+  "layers": [
+   16,
+   20,
+   24
+  ]
+ },
+ "config_sha256": "16f916840834030c30646efc0cb1cbaf50020f2bd5f27fe88ba9f0ad7d282786",
+ "seconds": 45.36398983001709,
+ "finished": "2026-11-13T16:50:39Z"
+}

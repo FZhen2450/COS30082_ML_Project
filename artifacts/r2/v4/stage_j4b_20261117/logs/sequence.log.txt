@@ -1,0 +1,6 @@
+== j4b seed0 train start head=65dd3fd 2026-11-17 01:35:26
+== j4b seed0 train exit=0 2026-11-17 02:33:29
+== evaluate start 2026-11-17 02:33:29
+== evaluate exit=0 2026-11-17 02:34:39
+== declaration verify at end exit=0 2026-11-17 02:34:40
+== end 2026-11-17 02:34:40

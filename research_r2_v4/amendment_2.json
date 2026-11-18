@@ -1,0 +1,58 @@
+{
+ "schema": "r2v4-amendment-v1",
+ "amendment": 2,
+ "declared": "2026-11-14, after the owner's independent review decision and BEFORE any Stage J scoring (no J1-J8 model has been trained on full folds; no J1-J8 evaluation row has been scored)",
+ "pins": ["research_r2_v4/DECLARATION.json", "research_r2_v4/DECLARATION_AMENDMENT_1.json"],
+ "unchanged": "Every selection rule stays as declared: D1 is the control, primary metric H_bal at LOFO gamma over I1-I6, the fixed v3 candidate universe, the v3 gate, the nested LOFO procedure, three-seed confirmation (seed 0 screen; seeds 1-2 only after a seed-0 in-sample pass), and the J4a-J7 parent = best of J1-J3 by seed-0 mean H_bal. Nothing below changes a gate, a threshold or a selection.",
+ "authorised_now": "implementation, tests, a synthetic six-fold dry run and real-data pipeline audits that train nothing beyond a metric-free smoke run. Full six-fold J1-J8 training waits for owner approval.",
+
+ "source_co_endpoint": {
+  "status": "diagnostic co-endpoint reported for EVERY J row and seed that completes all six folds; never a gate, never used to select, never sufficient to promote",
+  "H_RF": {
+   "name": "representation-fixed source exclusion",
+   "definition": "for each of the 49 declared Stage H pairs, keep the J row's fine-tuned fold features fixed and refit the unchanged D1 downstream on (a) the base fold, (b) the source-ablated fold, (c) the three matched random removals. Uses EXACTLY the Stage H index sets saved in experiments/r2-compositional/v4/stage_h_20261114/D1_synthComp_norm/indexsets (sha256 in artifacts/r2/v4/stage_h_20261114/D1_synthComp_norm/indexsets_SHA256SUMS); each set is re-derived and must match.",
+   "outcomes": "the Stage H outcome set (novel-source seen Top-1, unseen Top-1 on source-s images, seen, unseen macro, H_bal, H_micro, AUSUC) at gamma 0 and at the row's pooled gamma; source and size effects; cluster bootstrap over sources (2,000 resamples, seed 0); reported next to D1's Stage H values",
+   "limitation": "the representation was trained WITH source s present, so H_RF measures downstream sensitivity and is expected to under-state the full source effect"
+  },
+  "H_RT": {
+   "name": "retrained source exclusion",
+   "applies_to": "only rows that pass the three-seed gate",
+   "pairs": [["I6", "CDDM"], ["I1", "MTID"], ["I2", "CPDD"]],
+   "pair_rule": "the three distinct sources with the most novel-source seen images among the 49 pairs (ties -> lower fold), from source_feasibility.json",
+   "arms": "retrain the row (seed 0) on the source-ablated fitting rows and on matched random control seed 0; base = the seed-0 fold model",
+   "status": "diagnostic only"
+  }
+ },
+
+ "execution": {
+  "fitting_only": "every optimisation step reads only the fold's fitting_rows. The image accessor refuses any row outside the phase's allowed set and any file not listed in the training CSV, and checks before opening. The extraction phase allows fitting, seen-val and unseen-val rows of the same fold, never outer rows; outer rows stay NaN.",
+  "seeds": "torch, numpy and the sampler generator are seeded with 1000*seed + fold_index; DataLoader workers get seed 1000*seed + fold_index + 100*worker; cudnn.benchmark off. GPU nondeterminism is not assumed away: reruns are compared, not presumed identical.",
+  "checkpoints": "per (row, seed, fold): the trainable parameters, heads and extra modules, plus a manifest (config sha256, weights sha256, sorted expected keys). Kept, which changes the protocol's 'no checkpoints kept' operational rule; disk is not a constraint. Features are extracted from the RELOADED checkpoint.",
+  "feature_cache": "one file per (row, seed, fold) with metadata: row, seed, fold, config sha256, checkpoint sha256, row-list sha256, base weights sha256, image-list sha256, precision. It is reused only if every field matches, and is otherwise refused.",
+  "downstream": "unchanged D1 recipe (synth_composition, fuse 1, normalise); packets strictly validated against research_r2.packets.fold_contract (ordered candidate ids, truth, shapes, finite)",
+  "fail_closed": {
+   "fold_ok_only_if": [
+    "every trainable tensor received a gradient at every checked step",
+    "every trainable tensor received a non-zero gradient at least once",
+    "checked global gradient norms are finite, except steps the AMP scaler skipped, which may be at most 5% of steps and never 3 checks in a row",
+    "frozen parameters are byte-identical after training",
+    "every trainable tensor changed",
+    "the checkpoint holds exactly the expected keys and reloads with max output difference 0.0",
+    "the feature cache metadata matches",
+    "the packet validates"
+   ],
+   "rows": "a row is complete only when all six folds are ok. Evaluation refuses incomplete rows, and failures are recorded, never retried silently. A rerun writes a new attempt directory; earlier attempts are kept."
+  },
+  "row_details": {
+   "J4a": "RandomResizedCrop(224, scale (0.6, 1.0), bicubic) + h-flip, then CLIP normalisation",
+   "J4b": "ColorJitter(0.3, 0.3, 0.3, 0.05) + RandomGrayscale(0.1) + GaussianBlur(kernel 9, sigma 0.1-2.0, p 0.2) on the CLIP-resized centre crop, + h-flip (the parent's flip is kept)",
+   "J5": "within-concept source-balanced per-sample loss weights (research_r2.methods.within_concept_source_weight), one vector for the crop CE and one for the disease CE, each normalised to mean 1 over the fitting rows, on top of the composition-balanced sampler",
+   "J6": "0.5 x supervised contrastive loss on the L2-normalised image embedding; positives = in-batch images with the same disease and a different crop; tau 0.1; anchors without a positive are excluded",
+   "J7": "disease projection Pd = Linear(d, d); disease head on Pd(z); crop adversary Linear(d, n_crop) on GradReverse(Pd(z), lambda 0.1); crop head on z. Downstream features are z (the encoder embedding).",
+   "J8": "ConvNeXt-B features[7] and the classifier LayerNorm trained; heads on the 1,024-d pooled feature; extraction = v3 torchvision extraction (fp32 weights, fp16 autocast, centre + h-flip). Downstream = D1 on [L2(v3 frozen CLIP-L/14), L2(fold ConvNeXt)], as F10. Reported against D1 (control) and F10."
+  },
+  "nested_parent_rule": "in the nested estimate, for each held fold the J4a-J7 parent is recomputed on the other five folds. J4a-J7 rows are selectable in that held fold only if the inner parent equals the parent they were trained from; otherwise they are excluded there (recorded).",
+  "three_seed_gate": "each seed gets its own LOFO choice per fold; the gate is applied to the per-fold mean over seeds of H_bal, AUSUC and healthy shortcut. The nested estimate is computed per seed and averaged."
+ },
+ "audit_before_training": ["synthetic six-fold dry run (tiny backbone, synthetic images, real folds) through train -> checkpoint -> reload -> extract -> D1 -> packets -> evaluation, monitoring that no official-test file and no image file is opened", "J0 through the complete six-fold workflow on real data (no training): fold packets must equal the registered v3 D1 packets within 1e-5", "J8 at zero epochs through the workflow: ConvNeXt fold features must equal the v3 tv_convnext_base features", "a metric-free J1 smoke run (20 optimiser steps, pilot fold I6) through train -> checkpoint -> reload -> extract -> packet validation; its scores are never summarised"]
+}

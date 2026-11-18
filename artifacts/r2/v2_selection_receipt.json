@@ -1,0 +1,56 @@
+{
+ "selected": "D1_synthComp_norm",
+ "path": [
+  "B1_clipL_factorised",
+  "D1_synthComp_norm"
+ ],
+ "trace": [
+  {
+   "parent": "B1_clipL_factorised",
+   "child": "D1_synthComp_norm",
+   "mean_gain_pp": 2.460508156377661,
+   "folds_improved": 6,
+   "ausuc_delta": 0.03319904781081895,
+   "shortcut_delta_pp": -1.8969064915512264,
+   "folds_required": 5,
+   "pass": true,
+   "child_primary": 0.6603959557675906
+  },
+  {
+   "parent": "D1_synthComp_norm",
+   "child": "D2_synthComp_norm_text",
+   "mean_gain_pp": 0.03320425672660443,
+   "folds_improved": 3,
+   "ausuc_delta": 0.022198635423417934,
+   "shortcut_delta_pp": -0.31110357156983826,
+   "folds_required": 5,
+   "pass": false,
+   "child_primary": 0.6607279983348566
+  },
+  {
+   "parent": "D1_synthComp_norm",
+   "child": "D3_synthComp_norm_erase50",
+   "mean_gain_pp": 1.027392617683598,
+   "folds_improved": 3,
+   "ausuc_delta": 0.003941752274143173,
+   "shortcut_delta_pp": 0.1687281864760068,
+   "folds_required": 5,
+   "pass": false,
+   "child_primary": 0.6706698819444266
+  }
+ ],
+ "inner_folds": [
+  "I1",
+  "I2",
+  "I3",
+  "I4",
+  "I5",
+  "I6"
+ ],
+ "pooled_gamma": {
+  "D1_synthComp_norm": 8.0,
+  "B1_clipL_factorised": 10.5,
+  "D2_synthComp_norm_text": 8.0,
+  "B0_clipL_zeroshot_comp": 1.75
+ }
+}
