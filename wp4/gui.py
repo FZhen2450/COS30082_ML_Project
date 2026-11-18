@@ -221,7 +221,8 @@ class PlantApp:
             self.model_kind = kind
             self.model_label = f"{MODEL_SPECS[kind]['label']} ({device.upper()})"
             if self.catalog.is_final and kind == 'm6':
-                self.model_label = f"M6 legacy-4868 / final-333 ({device.upper()})"
+                scope = 'full-8000' if predictor.provenance.get('final_full8000_adapter_available') else 'legacy-4868'
+                self.model_label = f"M6 {scope} / final-333 ({device.upper()})"
             self.model_status.configure(text=self.model_label)
             self.clear_predictions()
             self._controls()

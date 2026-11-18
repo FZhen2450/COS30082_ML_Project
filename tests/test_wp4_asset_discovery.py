@@ -11,6 +11,19 @@ from wp4.asset_discovery import discover_weight_files
 
 
 class AssetDiscoveryTests(unittest.TestCase):
+    def test_final_m6_discovery_rejects_legacy_and_wrong_training_identity(self):
+        from wp4.clip_predictor import M6_SHA256, FULL8000_TRAINING_SHA256
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            legacy=root/'adapter_epoch_001.pt'
+            legacy.write_bytes(b'legacy placeholder')
+            with patch('wp4.asset_discovery._file_hash',return_value=M6_SHA256):
+                result=discover_weight_files('m6',[root],final_training_sha=FULL8000_TRAINING_SHA256)
+                self.assertNotIn('adapter_checkpoint',result['paths'])
+            result=discover_weight_files('m6',[root],final_training_sha='reordered-training')
+            self.assertEqual(result['paths'],{})
+            self.assertIn('M6 training identity mismatch',result['warnings'])
+
     def test_final_registry_selects_new_full_training_weights_and_never_legacy_defaults(self):
         from final_protocol import SOURCE_SHA256
         with tempfile.TemporaryDirectory() as directory:

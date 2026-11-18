@@ -1,0 +1,152 @@
+{
+  "schema": "wp4-m6-publication-verification-v1",
+  "date_myt": "2026-11-14",
+  "base_commit": "90e70c40b1e565a48b37bc6801da9466352ad592",
+  "rehearsal_date_myt": "2026-11-12",
+  "checks": [
+    {
+      "path": "runs/wp4-full8000-m6-final-20261112/canonical_scores.json",
+      "expected_sha256": "994b0cdcc264820d226f91e34d3d8205424d34cfe5a090f01013d8c45ea57f3c",
+      "actual_sha256": "994b0cdcc264820d226f91e34d3d8205424d34cfe5a090f01013d8c45ea57f3c",
+      "matches": true
+    },
+    {
+      "path": "runs/wp4-full8000-m6-final-20261112/final333-m6.png",
+      "expected_sha256": "953dbc74d8c4273001ba5f948ecca85ef25b8fada215def72dad2c2662a4d260",
+      "actual_sha256": "953dbc74d8c4273001ba5f948ecca85ef25b8fada215def72dad2c2662a4d260",
+      "matches": true
+    },
+    {
+      "path": "runs/wp4-full8000-m6-final-20261112/minimum-final333-m6.png",
+      "expected_sha256": "21b1abd825cb30d38830bc7faee09caff6f9ee9133043b3ee80de8cd56bd4917",
+      "actual_sha256": "21b1abd825cb30d38830bc7faee09caff6f9ee9133043b3ee80de8cd56bd4917",
+      "matches": true
+    },
+    {
+      "path": "runs/wp4-full8000-m6-final-20261112/prediction.json",
+      "expected_sha256": "a2263d3646e2807fe51cba66b27b89a9d6ea99b456e9f09501c3f59f90420f60",
+      "actual_sha256": "a2263d3646e2807fe51cba66b27b89a9d6ea99b456e9f09501c3f59f90420f60",
+      "matches": true
+    },
+    {
+      "path": "runs/wp4-full8000-m6-final-20261112/receipt.json",
+      "expected_sha256": "61cbdb695313ab45f50f57587c00ce13c78ca454b65c0d97d831cd2288ef3703",
+      "actual_sha256": "61cbdb695313ab45f50f57587c00ce13c78ca454b65c0d97d831cd2288ef3703",
+      "matches": true
+    },
+    {
+      "path": "runs/wp4-full8000-m6-final-20261112/unseen-labelled-fallback.png",
+      "expected_sha256": "e62a3986946f3581a0f9fcacc4bfa0db8a47c434fa7df845881e2ff8f2cf4de7",
+      "actual_sha256": "e62a3986946f3581a0f9fcacc4bfa0db8a47c434fa7df845881e2ff8f2cf4de7",
+      "matches": true
+    },
+    {
+      "path": "wp4/__init__.py",
+      "expected_sha256": "05a6d1f4c8668ace82423cb7f138c36a6f8de9f826309713d55f81feb912ffc8",
+      "actual_sha256": "05a6d1f4c8668ace82423cb7f138c36a6f8de9f826309713d55f81feb912ffc8",
+      "matches": true
+    },
+    {
+      "path": "wp4/asset_discovery.py",
+      "expected_sha256": "cf2cacc68a906b568bdbb5780236ff20cfcb89efebb5ec9f7fd7f73aa6cba768",
+      "actual_sha256": "cf2cacc68a906b568bdbb5780236ff20cfcb89efebb5ec9f7fd7f73aa6cba768",
+      "matches": true
+    },
+    {
+      "path": "wp4/clip_predictor.py",
+      "expected_sha256": "2183fa6d0dd82cef7db1d6cffb514bce8b9685a737ff57f3d58d805a1e933fc2",
+      "actual_sha256": "2183fa6d0dd82cef7db1d6cffb514bce8b9685a737ff57f3d58d805a1e933fc2",
+      "matches": true
+    },
+    {
+      "path": "wp4/final_predictor.py",
+      "expected_sha256": "b95cbbf124220b5aa48afbc2e83bceb6b36a8827dcd940b354125c373c84d26c",
+      "actual_sha256": "b95cbbf124220b5aa48afbc2e83bceb6b36a8827dcd940b354125c373c84d26c",
+      "matches": true
+    },
+    {
+      "path": "wp4/gui.py",
+      "expected_sha256": "ea43b8bfb2428cd6c489a61dbedec8ae572dcf7e43bf5e5f199d9d8ad09e8b50",
+      "actual_sha256": "ea43b8bfb2428cd6c489a61dbedec8ae572dcf7e43bf5e5f199d9d8ad09e8b50",
+      "matches": true
+    },
+    {
+      "path": "wp4/layout.py",
+      "expected_sha256": "05aad7acfeb6299bfe68c569237ce290b858a6690357521ef32ee6cbc3e4be83",
+      "actual_sha256": "05aad7acfeb6299bfe68c569237ce290b858a6690357521ef32ee6cbc3e4be83",
+      "matches": true
+    },
+    {
+      "path": "wp4/model_loader.py",
+      "expected_sha256": "804ec8cb7c5afa5b26d280adeb97224bd8fd5e0449b32085f1fb354d48b95eb7",
+      "actual_sha256": "804ec8cb7c5afa5b26d280adeb97224bd8fd5e0449b32085f1fb354d48b95eb7",
+      "matches": true
+    },
+    {
+      "path": "wp4/model_picker.py",
+      "expected_sha256": "c476ee0e0dd5c390ce93230b402e99e251f65953dcfe8d855722cdb82f365a8b",
+      "actual_sha256": "c476ee0e0dd5c390ce93230b402e99e251f65953dcfe8d855722cdb82f365a8b",
+      "matches": true
+    },
+    {
+      "path": "wp4/service.py",
+      "expected_sha256": "b3c5f70297c2acc9dfcf15c1c6bcf136f5bb61be81aa7f61e60191783217a24a",
+      "actual_sha256": "b3c5f70297c2acc9dfcf15c1c6bcf136f5bb61be81aa7f61e60191783217a24a",
+      "matches": true
+    },
+    {
+      "path": "wp4/text_bank.py",
+      "expected_sha256": "d1eda60f8ee3a875817cbb6fd55330fbddeccc782ffc80fe1188af2f9b1d44ee",
+      "actual_sha256": "d1eda60f8ee3a875817cbb6fd55330fbddeccc782ffc80fe1188af2f9b1d44ee",
+      "matches": true
+    },
+    {
+      "path": "wp4/widgets.py",
+      "expected_sha256": "da6b98d42f332456cb62bf861380054596e9df23f36696ad2cd22fea217fc63d",
+      "actual_sha256": "da6b98d42f332456cb62bf861380054596e9df23f36696ad2cd22fea217fc63d",
+      "matches": true
+    },
+    {
+      "path": "scripts/rehearse_wp4_final333.py",
+      "expected_sha256": "2004ad0b3ceb1b7509443a473c762bc48cb451ee18f2b497d9f3688ee4568a58",
+      "actual_sha256": "2004ad0b3ceb1b7509443a473c762bc48cb451ee18f2b497d9f3688ee4568a58",
+      "matches": true
+    },
+    {
+      "path": "runs/m6-full8000-handoff-20261112/adapter_epoch_001.pt",
+      "expected_sha256": "a6bd8980bd091df53e567f9e67601d94d1738c998cfd137fd1270cbec9dc07f0",
+      "actual_sha256": "a6bd8980bd091df53e567f9e67601d94d1738c998cfd137fd1270cbec9dc07f0",
+      "matches": true
+    }
+  ],
+  "regression": {
+    "command": "python -B -m unittest discover -s tests -p \"test_wp4*.py\" -v",
+    "tests_run": 42,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "log_sha256": "c75c654253efb386c3872dc72fe6399a6b5d9b07919245c711d51f0ea452c48d",
+    "log": "runs/wp4-publication-20261114-native-regression.log",
+    "runtime": {
+      "python": "3.13.13",
+      "torch": "2.7.1+cu118",
+      "torchvision": "0.22.1+cu118",
+      "numpy": "2.2.6",
+      "device": "CPU"
+    }
+  },
+  "new_training_or_inference": false,
+  "independent_human_acceptance": "pending",
+  "isolated_publication_checkout": {
+    "base_commit": "90e70c40b1e565a48b37bc6801da9466352ad592",
+    "patch_applied": true,
+    "tests_run": 42,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "elapsed_seconds": 21.377,
+    "raw_log_sha256": "1cf8910faa7e51a9de3f7e105b7ddac8e7a3df2aa7b995972c537edd47876a6a",
+    "published_log": "docs/verification/WP4_M6_Isolated_Regression_2026-11-14.txt",
+    "published_log_sha256": "a25e738c059fe830f3352551091c1cf69e86a9ed2c30e18d3e97278c346e8821"
+  }
+}

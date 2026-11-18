@@ -64,6 +64,13 @@ def discover_weight_files(kind, roots=None, stop=None, final_training_sha=None):
     """
     required = FIELDS[kind]
     assets = ASSETS
+    if kind == 'm6' and final_training_sha is not None:
+        if final_training_sha != '7f94ac00c89b212ec30a646985b24f1a61fca19cf64b6f25757547868e3e4870':
+            return {'paths': {}, 'missing': list(required), 'warnings': ['M6 training identity mismatch'],
+                    'cancelled': False}
+        assets = dict(ASSETS, adapter_checkpoint=(
+            'a6bd8980bd091df53e567f9e67601d94d1738c998cfd137fd1270cbec9dc07f0',
+            'runs/m6-full8000-handoff-20261112/adapter_epoch_001.pt'))
     if kind == 'wp1' and final_training_sha is not None:
         registry = ROOT/'artifacts/models/wp1_full8000_release.json'
         try:

@@ -1,0 +1,101 @@
+python.exe : test_synthetic_prediction_selects_added_class_and_exports_labelled_fallback (test_wp4_added_candidate_gui.
+AddedCandidateGUITests.test_synthetic_prediction_selects_added_class_and_exports_labelled_fallback) ... ok
+At line:2 char:53
++ ... HREADS='2'; & 'D:/COS30082_WP1_Runtime/venv/Scripts/python.exe' -B -m ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (test_synthetic_...allback) ... ok:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+test_final_m6_discovery_rejects_legacy_and_wrong_training_identity
+(test_wp4_asset_discovery.AssetDiscoveryTests.test_final_m6_discovery_rejects_legacy_and_wrong_training_identity) ...
+ok
+test_final_registry_selects_new_full_training_weights_and_never_legacy_defaults (test_wp4_asset_discovery.AssetDiscover
+yTests.test_final_registry_selects_new_full_training_weights_and_never_legacy_defaults) ... ok
+test_missing_weights_and_cancellation_are_explicit
+(test_wp4_asset_discovery.AssetDiscoveryTests.test_missing_weights_and_cancellation_are_explicit) ... ok
+test_modified_file_does_not_reuse_cached_identity
+(test_wp4_asset_discovery.AssetDiscoveryTests.test_modified_file_does_not_reuse_cached_identity) ... ok
+test_renamed_files_are_matched_by_hash_and_wrong_named_files_are_rejected (test_wp4_asset_discovery.AssetDiscoveryTests
+.test_renamed_files_are_matched_by_hash_and_wrong_named_files_are_rejected) ... ok
+test_catalog_rejects_label_order_folds_and_unreconciled_status
+(test_wp4_clip_predictor.CLIPPredictorTests.test_catalog_rejects_label_order_folds_and_unreconciled_status) ... ok
+test_exact_and_one_ulp_sensitive_ranks_keep_global_ids
+(test_wp4_clip_predictor.CLIPPredictorTests.test_exact_and_one_ulp_sensitive_ranks_keep_global_ids) ... ok
+test_frozen_native_image_path_scores_match_independent_cosine
+(test_wp4_clip_predictor.CLIPPredictorTests.test_frozen_native_image_path_scores_match_independent_cosine) ... ok
+test_full8000_release_validates_training_identity_and_rejects_legacy_loading (test_wp4_clip_predictor.CLIPPredictorTest
+s.test_full8000_release_validates_training_identity_and_rejects_legacy_loading) ... ok
+test_importing_picker_or_gui_does_not_import_clip_or_torch
+(test_wp4_clip_predictor.CLIPPredictorTests.test_importing_picker_or_gui_does_not_import_clip_or_torch) ... ok
+test_invalid_checkpoint_metadata_and_tensors_are_rejected
+(test_wp4_clip_predictor.CLIPPredictorTests.test_invalid_checkpoint_metadata_and_tensors_are_rejected) ... ok
+test_invalid_image_features_and_unfrozen_model_fail_without_predictions
+(test_wp4_clip_predictor.CLIPPredictorTests.test_invalid_image_features_and_unfrozen_model_fail_without_predictions)
+... ok
+test_m6_roundtrip_uses_saved_direct_bank_and_presenter
+(test_wp4_clip_predictor.CLIPPredictorTests.test_m6_roundtrip_uses_saved_direct_bank_and_presenter) ... ok
+test_residual_norm_bound_and_identity_match_published_arithmetic
+(test_wp4_clip_predictor.CLIPPredictorTests.test_residual_norm_bound_and_identity_match_published_arithmetic) ... ok
+test_wrong_hash_rejected_before_deserialization_or_backbone
+(test_wp4_clip_predictor.CLIPPredictorTests.test_wrong_hash_rejected_before_deserialization_or_backbone) ... ok
+test_unapproved_package_fails_without_loading_weights
+(test_wp4_clip_predictor.NativeLoaderTests.test_unapproved_package_fails_without_loading_weights) ... ok
+test_verified_jit_only_build_freezes_native_model_without_pickle_fallback
+(test_wp4_clip_predictor.NativeLoaderTests.test_verified_jit_only_build_freezes_native_model_without_pickle_fallback)
+... ok
+test_catalog_contains_333_candidates_and_all_8000_training_references
+(test_wp4_final333.FinalGUI333Tests.test_catalog_contains_333_candidates_and_all_8000_training_references) ... ok
+test_final_frozen_and_historical_adapter_score_all_333_native_columns
+(test_wp4_final333.FinalGUI333Tests.test_final_frozen_and_historical_adapter_score_all_333_native_columns) ... ok
+test_final_gui_refuses_missing_registry_and_changed_checkpoint_bytes
+(test_wp4_final333.FinalGUI333Tests.test_final_gui_refuses_missing_registry_and_changed_checkpoint_bytes) ... ok
+test_unseen_reference_uses_labelled_same_disease_training_fallback
+(test_wp4_final333.FinalGUI333Tests.test_unseen_reference_uses_labelled_same_disease_training_fallback) ... ok
+test_missing_files_and_unknown_choices_rejected
+(test_wp4_model_picker.ModelLoaderTests.test_missing_files_and_unknown_choices_rejected) ... ok
+test_wp1_dispatch_is_preserved_and_frozen_clip_ignores_stale_adapter_path
+(test_wp4_model_picker.ModelLoaderTests.test_wp1_dispatch_is_preserved_and_frozen_clip_ignores_stale_adapter_path) ...
+ok
+test_wp1_export_provenance_binds_files_and_rejects_a_loading_time_change
+(test_wp4_model_picker.ModelLoaderTests.test_wp1_export_provenance_binds_files_and_rejects_a_loading_time_change) ...
+ok
+test_clean_launch_m6_picker_prediction_references_export_and_model_switch
+(test_wp4_model_picker.ModelPickerTkTests.test_clean_launch_m6_picker_prediction_references_export_and_model_switch)
+... ok
+test_close_during_background_work_discards_callback_without_tk_access
+(test_wp4_model_picker.ModelPickerTkTests.test_close_during_background_work_discards_callback_without_tk_access) ... ok
+test_missing_files_do_not_start_load_and_failed_load_retains_correct_old_model (test_wp4_model_picker.ModelPickerTkTest
+s.test_missing_files_do_not_start_load_and_failed_load_retains_correct_old_model) ... ok
+test_preview_fits_whole_image_without_changing_model_input
+(test_wp4_model_picker.ModelPickerTkTests.test_preview_fits_whole_image_without_changing_model_input) ... ok
+test_reference_scrolling_keeps_image_and_five_rankings_visible
+(test_wp4_model_picker.ModelPickerTkTests.test_reference_scrolling_keeps_image_and_five_rankings_visible) ... ok
+test_search_fills_selected_files_without_overwriting_manual_paths
+(test_wp4_model_picker.ModelPickerTkTests.test_search_fills_selected_files_without_overwriting_manual_paths) ... ok
+test_stale_search_result_is_ignored_after_model_switch
+(test_wp4_model_picker.ModelPickerTkTests.test_stale_search_result_is_ignored_after_model_switch) ... ok
+test_worker_target_does_not_own_tk_callbacks_and_picker_drops_variables
+(test_wp4_model_picker.ModelPickerTkTests.test_worker_target_does_not_own_tk_callbacks_and_picker_drops_variables) ...
+ok
+test_boolean_and_floating_global_ids_cannot_alias_integer_ids
+(test_wp4_service.WP4ServiceTests.test_boolean_and_floating_global_ids_cannot_alias_integer_ids) ... ok
+test_boolean_scores_are_rejected (test_wp4_service.WP4ServiceTests.test_boolean_scores_are_rejected) ... ok
+test_exact_and_fallback_references_use_fitting_only
+(test_wp4_service.WP4ServiceTests.test_exact_and_fallback_references_use_fitting_only) ... ok
+test_global_ids_and_ties_not_column_indices
+(test_wp4_service.WP4ServiceTests.test_global_ids_and_ties_not_column_indices) ... ok
+test_mismatch_and_invalid_scores_rejected (test_wp4_service.WP4ServiceTests.test_mismatch_and_invalid_scores_rejected)
+... ok
+test_missing_reference_reported_and_path_escape_rejected
+(test_wp4_service.WP4ServiceTests.test_missing_reference_reported_and_path_escape_rejected) ... ok
+test_query_itself_is_excluded_even_when_copied
+(test_wp4_service.WP4ServiceTests.test_query_itself_is_excluded_even_when_copied) ... ok
+test_exact_stored_tensor_is_returned_without_renormalization
+(test_wp4_text_bank.OfficialTextBankTests.test_exact_stored_tensor_is_returned_without_renormalization) ... ok
+test_wrong_file_hash_schema_columns_precision_and_nonfinite_rows_fail
+(test_wp4_text_bank.OfficialTextBankTests.test_wrong_file_hash_schema_columns_precision_and_nonfinite_rows_fail) ... ok
+
+----------------------------------------------------------------------
+Ran 42 tests in 16.759s
+
+OK

@@ -90,6 +90,35 @@ def fixture_payload(expected):
 
 
 class CLIPPredictorTests(unittest.TestCase):
+    def test_full8000_release_validates_training_identity_and_rejects_legacy_loading(self):
+        payload = fixture_payload(self.expected)
+        payload['contract'].update({'schema':'wp3b-final-refit-contract-v1', 'recipe':'m6',
+            'training':{'rows':8000,'ordered_filename_sha256':cp.FULL8000_TRAINING_SHA256,
+                        'scope':'full_original_training'},'fitting_composition_ids':self.expected['ids']})
+        payload['selection']={'epoch':1,'selection_policy':{'primary':'fixed_terminal_epoch','epoch':1}}
+        for invalid in (False, True):
+            with self.subTest(wrong_training=invalid):
+                if invalid:
+                    payload['contract']['training']['rows']=4868
+                checksum=cp.json_hash(payload['contract'])
+                payload['contract_sha256']=payload['text_state']['contract_sha256']=checksum
+                with tempfile.TemporaryDirectory() as directory:
+                    path=Path(directory)/'adapter.pt'
+                    torch.save(payload,path)
+                    sha=cp.file_hash(path)
+                    with patch.object(cp,'FULL8000_M6_SHA256',sha):
+                        if invalid:
+                            with self.assertRaisesRegex(ValueError,'provenance'):
+                                cp.load_m6_checkpoint(path,self.expected,cp.FULL8000_TRAINING_SHA256)
+                        else:
+                            adapter,text,provenance=cp.load_m6_checkpoint(path,self.expected,cp.FULL8000_TRAINING_SHA256)
+                            self.assertEqual(provenance['adapter_sha256'],sha)
+                            self.assertFalse(adapter.training)
+                            with self.assertRaisesRegex(ValueError,'training identity'):
+                                cp.load_m6_checkpoint(path,self.expected,'wrong-training-order')
+                            with self.assertRaisesRegex(ValueError,'SHA-256'):
+                                cp.load_m6_checkpoint(path,self.expected)
+
     @classmethod
     def setUpClass(cls):
         torch.set_num_threads(2)
