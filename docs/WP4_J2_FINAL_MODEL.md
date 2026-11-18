@@ -60,7 +60,7 @@ for 5 of those 8 images.
 
 ## Training code and the inference-asset builder
 
-J2 was trained and officially evaluated with the Second Run code on branch `research/r2-v5-final-model`
+J2 was trained and officially evaluated with the Second Run code on `main` (merged from `research/r2-v5-final-model`)
 (`scripts/r2v5_final.py`, `research_r2_v5/`). The GUI needs none of it: it uses only the frozen checkpoint and the
 inference asset. `scripts/j2_build_inference_asset.py`, which created that asset, imports the Second Run code through
 `--r2-root` (a checkout of that branch) and also needs the private frozen J2 training features. Teammates do not need
