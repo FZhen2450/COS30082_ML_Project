@@ -52,6 +52,8 @@ click Analyze.
 
 J2 was trained and officially evaluated on each file's stored pixel orientation. It did not apply the EXIF
 orientation tag. The GUI still displays the EXIF-corrected picture, but it hands J2 the stored pixels.
+The JSON export records the input J2 actually received (`input_policy.decode` is "PIL stored pixels then RGB",
+with that image's size and pixel hash), not the rotated display image.
 
 This matters for parity: 8 of the first 64 training images have an orientation tag. Rotating them changed J2's Top-5
 for 5 of those 8 images.
