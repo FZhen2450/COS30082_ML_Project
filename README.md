@@ -1,8 +1,70 @@
-> **Final submission (Group 9, due 27 Nov 2026):** the proposed new approach is **J2** from the Second Run (CLIP ViT-L/14, last four blocks fine-tuned, compositional scoring with calibrated stacking): official H@1 68.02%, H@5 92.87%. WP1 and WP2 are the required CNN baselines. See [Second Run J2 in the final submission](docs/SECOND_RUN_J2_FINAL_SUBMISSION.md) and the [J2 GUI guide](docs/WP4_J2_FINAL_MODEL.md).
+# Recognising Unseen Crop–Disease Compositions (COS30082 AS02, Group 9)
+
+Out-of-distribution plant disease identification on DPD-Small: rank all **333** crop–disease compositions (323 seen in
+training, 10 unseen) for each image. This `main` branch is the **final submission** (due 27 Nov 2026).
+
+| Model | Role | Official H@1 | Official H@5 |
+|---|---|---:|---:|
+| WP1: two independent ResNet50s (crop, disease) | Required CNN baseline | 9.95% | 36.40% |
+| WP2: multi-task ConvNeXt-Base | Required CNN baseline | 1.76% | 30.70% |
+| Frozen CLIP ViT-L/14 | First Run reference | 6.62% | 26.01% |
+| M6: CLIP with a bounded visual adapter | First Run proposed approach | 5.96% | 28.47% |
+| **J2: CLIP ViT-L/14, last 4 blocks fine-tuned + compositional scoring + calibrated stacking** | **Final proposed approach** | **68.02%** | **92.87%** |
+
+H@k is the harmonic mean of seen and unseen Top-k accuracy (2,000 seen and 1,448 unseen official test images). Each
+model was evaluated once on the frozen official protocol; the comparison is descriptive (see the report's limitations).
+
+## Quick start
+
+1. **Python environment:** Python 3.11–3.13 with `pip install -r requirements.txt`. For the CLIP-based models (frozen
+   CLIP, M6, J2) also install the pinned CLIP package:
+   `pip install "git+https://github.com/openai/CLIP.git@d05afc436d78f1c48dc0dbf8e5980a9d471f35f6"`.
+   For a GPU, install the matching PyTorch build from <https://pytorch.org/get-started/locally/>.
+2. **Images:** extract the DPD-Small images into `DPD_Small_dataset/` at the repository root (not stored in Git).
+3. **Model files:** trained weights are not stored in Git. They are shared privately and identified by SHA-256, so the
+   GUI finds them in `runs/` automatically. Hashes and placement: [J2 guide](docs/WP4_J2_FINAL_MODEL.md),
+   [WP1/WP4 release](docs/WP1_WP4_Final_Release_2026-11-11.md), [GUI guide](docs/WP4_GUI.md).
+4. **Run the GUI (LeafLens):** `python gui.py --images DPD_Small_dataset`, choose a model (WP1, frozen CLIP, M6 or
+   J2), load it, open a leaf image and click **Analyze leaf**. It shows the Top-5 compositions and matching training images.
+5. **Tests:** `python -m unittest discover -s tests -p "test_*.py"` (no private files needed).
+
+## Where everything is
+
+| Part | Code | Documentation |
+|---|---|---|
+| Data, splits, EDA | `dataset.py`, `data_utils.py`, `development_data.py`, `eda.py` | [Install and data](#install-and-obtain-images) below |
+| WP1 baseline (independent CNNs) | `independent_baseline.py`, `wp1_final.py`, `evaluate_independent.py` | [WP1/WP4 final release](docs/WP1_WP4_Final_Release_2026-11-11.md) |
+| WP2 baseline (multi-task CNN) | `multitask_model.py`, `multitask_backbones.py`, `train_multitask.py`, `notebooks/wp2_*.ipynb` | [WP2 integration](docs/WP2_Integration_2026-11-01.md) |
+| Frozen CLIP and M6 (First Run) | `notebooks/wp3_*.ipynb`, `notebooks/wp3b_*.ipynb` | [WP3A results](docs/WP3A_ZeroShot_Results_2026-10-31.md), [WP3B adapter](docs/WP3B_M2_Results_2026-11-04.md) |
+| **J2 (Second Run, proposed)** | `research_r2/`, `research_r2_v4/`, `research_r2_v5/`, `scripts/r2v5_final.py` | **[J2 in the final submission](docs/SECOND_RUN_J2_FINAL_SUBMISSION.md)**, [final model](docs/R2_v5_Final_Model.md), [official result](docs/R2_v5_Official_Evaluation_Result.md), [research summary](docs/R2_Second_Run_Final_Summary.md) |
+| Evaluation (Top-k, H, confusion matrix) | `evaluation/` | [Integration checkpoint](docs/Integration_Checkpoint_2026-11-08.md) |
+| LeafLens GUI | `gui.py`, `wp4/` | [GUI guide](docs/WP4_GUI.md), [J2 in LeafLens](docs/WP4_J2_FINAL_MODEL.md) |
+
+## Verify the J2 result without private files
+
+```bash
+python scripts/r2v5_public_verify.py --tests
+```
+
+It checks the frozen configuration (γ = 8.75, checkpoint hash `e9dbbdf3…`), recomputes H@1 and H@5 from the published
+counts, and runs the public J2 tests. Retraining J2: `python scripts/r2v5_final.py train --out <folder> --images
+DPD_Small_dataset`, then `verify --run <folder>`
+([details](docs/SECOND_RUN_J2_FINAL_SUBMISSION.md#reproduce)).
+
+## First Run (legacy)
+
+The First Run, before J2 was adopted, is preserved unchanged on branch
+[`first-run`](https://github.com/FZhen2450/COS30082_ML_Project/tree/first-run) (tag `first-run-final`). Everything below
+this line is the original development README, kept as a historical record; dated status notes in it describe the
+project at the time they were written.
+
+---
+
+## First Run development records (historical)
 
 > **8 November2026 integration checkpoint:** [current protocol, verified results and remaining gates](docs/Integration_Checkpoint_2026-11-08.md). Katana users: retain the existing `as04_yolo_katana` environment; do not replace it with the different dependency pins below. All notebook training/evaluation controls remain default-off. Models, raw images and historical runs are not stored inGit.
 
-# COS30082 Applied Machine Learning Project
+### COS30082 Applied Machine Learning Project (original README)
 
 > **11 November 2026 lecturer clarification:** the student-reported Teams call
 > settles shared-333 evaluation and full-8,000 final training. Report Overall,

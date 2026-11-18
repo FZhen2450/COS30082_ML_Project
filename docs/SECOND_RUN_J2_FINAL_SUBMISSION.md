@@ -17,10 +17,10 @@
 | What | Where |
 |---|---|
 | J2 in the LeafLens GUI (adapter, tests, parity tools) | This branch, `feature/final-j2-integration-20261118`, PR #39. Guide: [WP4_J2_FINAL_MODEL.md](WP4_J2_FINAL_MODEL.md) |
-| J2 training, scoring, guarded official evaluation, frozen configuration and evidence | Branch `research/r2-v5-final-model` at `2583f70`: `scripts/r2v5_final.py`, `research_r2_v5/`, `artifacts/r2/v5/`, `docs/R2_v5_*.md` |
+| J2 training, scoring, guarded official evaluation, frozen configuration and evidence | `main` (merged in #40 from `research/r2-v5-final-model` at `2583f70`): `scripts/r2v5_final.py`, `research_r2_v5/`, `artifacts/r2/v5/`, `docs/R2_v5_*.md` |
 | Second Run research history (benchmark, v4 stages, negative results) | Draft PRs #34 and #36 and the `research/r2-*` branches. They are research records and are not merged into `main`. |
-| Second Run summary | `docs/R2_Second_Run_Final_Summary.md` (research branch) |
-| Public check of the J2 evidence | `python scripts/r2v5_public_verify.py --tests` on the research branch |
+| Second Run summary | `docs/R2_Second_Run_Final_Summary.md` |
+| Public check of the J2 evidence | `python scripts/r2v5_public_verify.py --tests` |
 
 ## Method (frozen configuration `b42fa6e7…`)
 
@@ -47,7 +47,7 @@
 **Why J2.** On the assignment's metric (H_micro, the development equivalent of H@1), J2 had the best development score
 among J1–J3: 66.13% over three seeds, against 61.12% for D1 with frozen features. It also had the best unseen-disease
 accuracy (64.91%). J1–J3 are not statistically separable. J4b (J2 plus photometric augmentation) failed its
-pre-registered confirmation. Details: `docs/R2_v5_Final_Model.md` §1–2 (research branch).
+pre-registered confirmation. Details: `docs/R2_v5_Final_Model.md` §1–2.
 
 ## Official result (one evaluation, 17 Nov 2026, frozen model)
 
@@ -60,7 +60,7 @@ pre-registered confirmation. Details: `docs/R2_v5_Final_Model.md` §1–2 (resea
 - **Comparison:** the First Run's best official H@1 is WP1's 9.945951%. The comparison is descriptive (different
   development processes, one training seed, one evaluation, First Run scores already known).
 - **Audit trail:** `docs/R2_v5_Official_Evaluation_Result.md` and `docs/R2_v5_Official_Evaluation_Procedure.md`
-  (research branch).
+
 - **Withheld:** the seen-test confusion matrix and per-class official statistics are not published here. The seen-test
   confusion matrix is prepared for the submitted report (brief §3.3).
 
@@ -80,13 +80,12 @@ pre-registered confirmation. Details: `docs/R2_v5_Final_Model.md` §1–2 (resea
 
 All steps use training data only. None reruns the official evaluation.
 
-1. **Check the published evidence** (no private files). On the research branch:
+1. **Check the published evidence** (no private files). From the repository root:
    ```bash
-   git switch research/r2-v5-final-model
    python scripts/r2v5_public_verify.py --tests
    ```
    This recomputes H@1 and H@5 from the published counts and checks the frozen configuration and hashes.
-2. **Retrain J2** (about 14 minutes on an RTX 4060 Laptop GPU). On the research branch, with `DPD_Small_dataset`
+2. **Retrain J2** (about 14 minutes on an RTX 4060 Laptop GPU). From the repository root, with `DPD_Small_dataset`
    available:
    ```bash
    python scripts/r2v5_final.py train --out <new folder> --images <DPD_Small_dataset>

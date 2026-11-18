@@ -101,18 +101,29 @@ class TestAmendment3Preserved(unittest.TestCase):
 
     def test_historical_artifact_hashes_unchanged(self):
         arts = ROOT / "artifacts/r2/v4"
+        # Files published as sanitised derivatives (local paths replaced) are recorded with both hashes in the
+        # publication map: the public copy must match its recorded public hash, and the recorded private original
+        # must be the hash in the stage manifest. Every other file must match the manifest exactly.
+        sanitised = dict(json.loads((arts / "PUBLICATION_SANITIZATION_MAP.json").read_text())["files"])
         n = 0
         for stage in ("stage_j_phase1_20261114", "stage_j_phase2_20261115", "stage_hrt_20261116", "stage_hrt_20261116_post_review",
                       "stage_hrt_20261116_post_review_v3", "stage_j4b_20261117"):
             for line in (arts / stage / "SHA256SUMS").read_text().splitlines():
                 h, _, rel = line.partition("  ")
-                self.assertEqual(sha256_file(arts / stage / rel), h, f"{stage}/{rel}")
+                path = arts / stage / rel
+                entry = sanitised.get(path.resolve().relative_to(ROOT.resolve()).as_posix())
+                if entry is None:
+                    self.assertEqual(sha256_file(path), h, f"{stage}/{rel}")
+                else:
+                    self.assertEqual(entry["private_original_sha256"], h, f"{stage}/{rel} (map vs manifest)")
+                    self.assertEqual(sha256_file(path), entry["public_sanitized_sha256"], f"{stage}/{rel} (public copy)")
                 n += 1
+        self.assertGreater(n, 100)
+        if not a4.CHILD_BASES[0].exists():
+            self.skipTest("private J4b run files are only on the project machine; public artifacts verified")
         for line in (arts / "stage_j4b_20261117/private_files_SHA256SUMS.txt").read_text().splitlines():
             h, _, rel = line.partition("  ")
             self.assertEqual(sha256_file(a4.CHILD_BASES[0] / rel), h, rel)
-            n += 1
-        self.assertGreater(n, 100)
 
     def test_j4b_is_j2_plus_photometric_only(self):
         c, p = asdict(ci.declared_child_config(a4.CHILD_ROW)), asdict(jrun.j_rows()[ci.PARENT_ROW])
