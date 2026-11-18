@@ -15,9 +15,13 @@ ASSETS = {
                      "runs/wp4-issue13-20261107/private_assets/ViT-L-14.pt"),
     "adapter_checkpoint": ("8835a18b9eb933ae224bd17866f18bc56406e24d8612743f4e7c88848a8135cc",
                            "runs/wp4-issue13-20261107/private_assets/adapter_epoch_001_e84ba1dd.pt"),
+    "j2_checkpoint": ("e9dbbdf3fc95ba791e8e8129ef38bbd85352a0974c3091d6b7667bd633abb1c9",
+                      "runs/j2-final-20261117/checkpoint.pt"),
+    "j2_asset": ("dd6495bb863c6f2e9b9d473f99ad06d7c1efa349cc72b3602b444eef3c6d2783",
+                 "runs/j2-final-20261117/j2_d1_inference_asset_v1.pt"),
 }
 FIELDS = {"wp1": ("crop", "disease"), "frozen_clip": ("clip_weights",),
-          "m6": ("clip_weights", "adapter_checkpoint")}
+          "m6": ("clip_weights", "adapter_checkpoint"), "j2": ("clip_weights", "j2_checkpoint", "j2_asset")}
 SKIP_DIRS = {".git", ".venv", "venv", "node_modules", "__pycache__", "dpd_small_dataset",
              ".agents", ".codex", "site-packages"}
 _HASH_CACHE = {}

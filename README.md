@@ -1,3 +1,5 @@
+> **Final submission (Group 9, due 27 Nov 2026):** the proposed new approach is **J2** from the Second Run (CLIP ViT-L/14, last four blocks fine-tuned, compositional scoring with calibrated stacking): official H@1 68.02%, H@5 92.87%. WP1 and WP2 are the required CNN baselines. See [Second Run J2 in the final submission](docs/SECOND_RUN_J2_FINAL_SUBMISSION.md) and the [J2 GUI guide](docs/WP4_J2_FINAL_MODEL.md).
+
 > **8 November2026 integration checkpoint:** [current protocol, verified results and remaining gates](docs/Integration_Checkpoint_2026-11-08.md). Katana users: retain the existing `as04_yolo_katana` environment; do not replace it with the different dependency pins below. All notebook training/evaluation controls remain default-off. Models, raw images and historical runs are not stored inGit.
 
 # COS30082 Applied Machine Learning Project
@@ -30,6 +32,8 @@ Run `python gui.py` with Python 3.11-3.13 to preview a plant image and browse
 fitting-only training references. Real identification is enabled after loading
 trained WP1 crop/disease checkpoints; no predictions are simulated. See the
 [GUI guide](docs/WP4_GUI.md) for setup, current scope and WP2/WP3 integration.
+The final proposed model, J2, is a fourth model in the picker. See the
+[J2 final-model guide](docs/WP4_J2_FINAL_MODEL.md) for its private files, checks and speed.
 
 ## Team work packages
 
