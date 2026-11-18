@@ -142,6 +142,39 @@ class ModelPickerTkTests(unittest.TestCase):
         dialog.load()
         return dialog
 
+    def test_export_records_actual_model_pixels_for_exif_and_stored_inputs(self):
+        from wp4.j2_predictor import J2Predictor
+        from wp4.service import open_rgb
+        image = Image.new('RGB', (40, 20), (200, 30, 40))
+        exif = image.getexif()
+        exif[0x0112] = 6
+        image.save(self.query, format='JPEG', exif=exif)
+        self.app.query_path = self.query
+        self.app.query = open_rgb(self.query)
+        self.assertEqual(self.app.query.size, (20, 40))
+        for stored in (False, True):
+            with self.subTest(stored=stored):
+                predictor = SyntheticPredictor(self.catalog, 'j2' if stored else 'wp1')
+                if stored:
+                    predictor.input_orientation = 'stored_pixels'
+                    predictor.load_input = J2Predictor.load_input
+                received = []
+                original_predict = predictor.predict
+                def predict(images, topk=5):
+                    received.append(images[0].copy())
+                    return original_predict(images, topk)
+                predictor.predict = predict
+                self.app.predictor = predictor
+                self.app.model_kind = 'j2' if stored else 'wp1'
+                self.app.model_label = 'synthetic input provenance check'
+                self.app.export_data = None
+                self.app.identify()
+                self.wait_for(lambda: self.app.export_data is not None and not self.app.busy)
+                policy = self.app.export_data['input_policy']
+                self.assertEqual(policy['size'], list(received[0].size))
+                self.assertEqual(policy['rgb_pixel_sha256'], hashlib.sha256(received[0].tobytes()).hexdigest())
+                self.assertEqual(policy['decode'], 'PIL stored pixels then RGB' if stored else 'PIL EXIF transpose then RGB')
+
     def test_clean_launch_m6_picker_prediction_references_export_and_model_switch(self):
         calls = []
         def loader(catalog, kind, paths, device):

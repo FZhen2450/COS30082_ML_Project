@@ -236,15 +236,19 @@ class PlantApp:
         def action():
             started = time.perf_counter()
             image = query
+            decode = "PIL EXIF transpose then RGB"
             if getattr(predictor, "input_orientation", "exif_corrected") == "stored_pixels":
                 # J2 scores the file's stored pixels exactly as it was trained/evaluated; the display stays EXIF-corrected.
                 image = predictor.load_input(query_path)
+                decode = "PIL stored pixels then RGB"
+            input_policy = {"decode": decode, "batch_size": 1, "size": list(image.size),
+                            "rgb_pixel_sha256": hashlib.sha256(image.tobytes()).hexdigest()}
             raw = predictor.predict([image], topk=5)
             return (present_prediction(raw, catalog), raw["score_semantics"],
                     time.perf_counter() - started,
-                    raw.get("model_provenance", getattr(predictor, "provenance", {"variant": model_kind})))
+                    raw.get("model_provenance", getattr(predictor, "provenance", {"variant": model_kind})), input_policy)
         def done(result):
-            predictions, semantics, elapsed, provenance = result
+            predictions, semantics, elapsed, provenance, input_policy = result
             self.table.delete(*self.table.get_children())
             self.predictions = predictions
             for index, row in enumerate(predictions):
@@ -261,9 +265,7 @@ class PlantApp:
                                 "reference_training_scope": self.catalog.protocol.get('training_scope', 'development_4868'),
                                 "historical_reconciliation": self.catalog.protocol.get("historical_reconciliation"),
                                 "score_semantics": semantics, "elapsed_seconds": elapsed,
-                                "input_policy": {"decode": "PIL EXIF transpose then RGB", "batch_size": 1,
-                                                 "size": list(self.query.size),
-                                                 "rgb_pixel_sha256": hashlib.sha256(self.query.tobytes()).hexdigest()},
+                                "input_policy": input_policy,
                                 "model_provenance": provenance,
                                 "predictions": predictions}
             self._controls()
